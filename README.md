@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="assets/calamus.png" alt="logo" width="200" height="auto" />
+  <img src="assets/icon.png" alt="logo" width="200" height="auto" />
   <h1>Calamus</h1>
   
   <p>
