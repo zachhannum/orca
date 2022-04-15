@@ -1,0 +1,22 @@
+{
+  "name": "calamus",
+  "version": "0.0.1",
+  "description": "Write and Publish Books with Ease",
+  "main": "./dist/main/main.js",
+  "author": {
+    "name": "MidnightPrioriem",
+    "email": "zacharyhannum@gmail.com",
+    "url": "https://github.com/electron-react-boilerplate"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts",
+    "postinstall": "npm run electron-rebuild && npm run link-modules",
+    "icons": "png-to-ico ../../assets/icons/256x256.png > ./assets/icon.ico && mk-icns ../../assets/icons/1024x1024.png ./assets/ -n icon"
+  },
+  "dependencies": {
+    "make-icns": "^1.1.4",
+    "png-to-ico": "^2.1.4"
+  },
+  "license": "MIT"
+}

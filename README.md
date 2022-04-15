@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="assets/calamus.png" alt="logo" width="200" height="auto" />
+  <img src="assets/icon.png" alt="logo" width="200" height="auto" />
   <h1>Calamus</h1>
   
   <p>
@@ -8,7 +8,7 @@
   </p>
 </div>
   
-  
+[![Test](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml)
 
 <br />
 
@@ -21,15 +21,6 @@ Calamus is a React Electron application for writing and publishing novels.
 ### :dart: Features
 
 TBD
-
-<!-- Env Variables -->
-### :key: Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
 
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
@@ -46,21 +37,7 @@ This project uses Yarn as package manager
 <!-- Installation -->
 ### :gear: Installation
 
-Install my-project with npm
-
-```bash
-  yarn install my-project
-  cd my-project
-```
-   
-<!-- Running Tests -->
-### :test_tube: Running Tests
-
-To run tests, run the following command
-
-```bash
-  yarn test test
-```
+Install calamus TODO
 
 <!-- Run Locally -->
 ### :running: Run Locally
@@ -87,6 +64,15 @@ Start the server
 
 ```bash
   yarn start
+```
+
+<!-- Running Tests -->
+### :test_tube: Running Tests
+
+To run tests, run the following command
+
+```bash
+  yarn test test
 ```
 
 
