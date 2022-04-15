@@ -8,7 +8,7 @@
   </p>
 </div>
   
-  
+[![Test](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml)
 
 <br />
 
