@@ -1,11 +1,11 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.5.0",
-  "description": "A foundation for scalable desktop apps",
+  "name": "calamus",
+  "version": "0.0.1",
+  "description": "Write and Publish Books with Ease",
   "main": "./dist/main/main.js",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
+    "name": "MidnightPrioriem",
+    "email": "zacharyhannum@gmail.com",
     "url": "https://github.com/electron-react-boilerplate"
   },
   "scripts": {

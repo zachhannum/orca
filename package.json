@@ -89,8 +89,8 @@
       "./assets/**"
     ],
     "publish": {
-      "provider": "midnightprioriem",
-      "owner": "calamus",
+      "provider": "github",
+      "owner": "midnightprioriem",
       "repo": "calamus"
     }
   },
