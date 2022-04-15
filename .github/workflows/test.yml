@@ -5,7 +5,7 @@ on: [push]
 jobs:
   release:
     runs-on: ${{ matrix.os }}
-
+    if: ${{ false }}
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
