@@ -13,7 +13,8 @@
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only ./app/main/main.ts",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
-    "test": "jest"
+    "test": "jest",
+    "icons": "png-to-ico ./assets/icons/256x256.png > ./assets/icon.ico && mk-icns ./assets/icons/1024x1024.png ./assets/ -n icon"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -88,47 +89,31 @@
       "./assets/**"
     ],
     "publish": {
-      "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "provider": "midnightprioriem",
+      "owner": "calamus",
+      "repo": "calamus"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/midnightprioriem/calamus.git"
   },
   "author": {
     "name": "Electron React Boilerplate Maintainers",
     "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "url": "https://github.com/midnightprioriem/calamus"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    },
-    {
-      "name": "John Tran",
-      "email": "jptran318@gmail.com",
-      "url": "https://github.com/jooohhn"
+      "name": "Zach Hannum",
+      "email": "zacharyhannum@gmail.com",
+      "url": "https://github.com/midnightprioriem"
     }
   ],
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/midnightprioriem/calamus/issues"
   },
-  "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
-  ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/midnightprioriem/calamus",
   "jest": {
     "testURL": "http://localhost/",
     "testEnvironment": "jsdom",
@@ -231,6 +216,8 @@
     "electron-log": "^4.4.6",
     "electron-updater": "^4.6.5",
     "history": "^5.3.0",
+    "make-icns": "^1.1.4",
+    "png-to-ico": "^2.1.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0"
