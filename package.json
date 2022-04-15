@@ -31,7 +31,7 @@
   },
   "build": {
     "productName": "Calamus",
-    "appId": "app.calamus",
+    "appId": "app.calamus.id",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -98,8 +98,8 @@
     "url": "git+https://github.com/midnightprioriem/calamus.git"
   },
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
+    "name": "MidnightPrioriem",
+    "email": "zacharyhannum@gmail.com",
     "url": "https://github.com/midnightprioriem/calamus"
   },
   "contributors": [

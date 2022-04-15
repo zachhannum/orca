@@ -6,7 +6,7 @@
   "author": {
     "name": "MidnightPrioriem",
     "email": "zacharyhannum@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "url": "https://github.com/midnightprioriem"
   },
   "scripts": {
     "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
