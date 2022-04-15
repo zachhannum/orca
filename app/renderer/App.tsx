@@ -1,6 +1,7 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import icon from '../../assets/icon.png';
 import './App.css';
+import Writer from '../components/writer';
 
 const Hello = () => {
   return (
@@ -17,7 +18,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/" element={<Writer />} />
       </Routes>
     </Router>
   );

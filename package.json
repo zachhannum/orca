@@ -211,6 +211,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@types/draft-js": "^0.11.9",
     "draft-js": "^0.11.7",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.6",
