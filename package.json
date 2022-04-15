@@ -14,7 +14,6 @@
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
     "test": "jest",
-    "icons": "png-to-ico ./assets/icons/256x256.png > ./assets/icon.ico && mk-icns ./assets/icons/1024x1024.png ./assets/ -n icon"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -216,8 +215,6 @@
     "electron-log": "^4.4.6",
     "electron-updater": "^4.6.5",
     "history": "^5.3.0",
-    "make-icns": "^1.1.4",
-    "png-to-ico": "^2.1.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0"

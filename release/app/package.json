@@ -11,8 +11,12 @@
   "scripts": {
     "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts",
-    "postinstall": "npm run electron-rebuild && npm run link-modules"
+    "postinstall": "npm run electron-rebuild && npm run link-modules",
+    "icons": "png-to-ico ../../assets/icons/256x256.png > ./assets/icon.ico && mk-icns ../../assets/icons/1024x1024.png ./assets/ -n icon"
   },
-  "dependencies": {},
+  "dependencies": {
+    "make-icns": "^1.1.4",
+    "png-to-ico": "^2.1.4"
+  },
   "license": "MIT"
 }
