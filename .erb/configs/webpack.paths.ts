@@ -4,7 +4,7 @@ const rootPath = path.join(__dirname, '../..');
 
 const dllPath = path.join(__dirname, '../dll');
 
-const srcPath = path.join(rootPath, 'src');
+const srcPath = path.join(rootPath, 'app');
 const srcMainPath = path.join(srcPath, 'main');
 const srcRendererPath = path.join(srcPath, 'renderer');
 
