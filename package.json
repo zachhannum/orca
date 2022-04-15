@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Calamus",
+    "appId": "app.calamus",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -114,7 +114,6 @@
       "url": "https://github.com/jooohhn"
     }
   ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
   },
