@@ -1,39 +1,54 @@
-import React, { useRef } from 'react';
 import styled from '@emotion/styled';
-import { Editor, EditorState } from 'draft-js';
-import 'draft-js/dist/Draft.css';
+import React, { useState } from 'react';
+import { BaseEditor, Descendant, createEditor } from 'slate';
+import { ReactEditor, Slate, Editable, withReact } from 'slate-react';
+
+type CustomElement = { type: 'paragraph'; children: CustomText[] };
+type CustomText = { text: string };
+
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: BaseEditor & ReactEditor;
+    Element: CustomElement;
+    Text: CustomText;
+  }
+}
 
 const ScrollContainer = styled.div`
   overflow-y: auto;
   height: 100%;
   width: 100%;
   display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-content: center;
+  justify-content: flex-start;
+  cursor: text;
 `;
 
 const WriterContainer = styled.div`
-  height: 90%;
+  max-width: 700px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   width: 90%;
 `;
 
 const Writer = () => {
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createEmpty()
-  );
-
-  const editorRef = useRef<Editor>(null);
+  const [editor] = useState(() => withReact(createEditor()));
+  const [value, setValue] = useState<Descendant[]>([
+    { type: 'paragraph', children: [{ text: '' }] },
+  ]);
 
   const setFocus = () => {
-    editorRef.current?.focus();
+    ReactEditor.focus(editor);
   };
 
   return (
-    <ScrollContainer>
-      <WriterContainer onClick={() => setFocus()}>
-        <Editor
-          editorState={editorState}
-          onChange={setEditorState}
-          ref={editorRef}
-        />
+    <ScrollContainer onClick={() => setFocus()}>
+      <WriterContainer>
+        <Slate editor={editor} value={value}>
+          <Editable />
+        </Slate>
       </WriterContainer>
     </ScrollContainer>
   );
