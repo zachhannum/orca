@@ -2,36 +2,73 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
+
  :root {
-  --fallback-title-bar-height: 500px;
+    --fallback-title-bar-height: 500px;
 }
 
 #titleBarContainer {
-  position: absolute;
-  top: env(titlebar-area-y, 0);
-  height: env(titlebar-area-height, var(--fallback-title-bar-height));
-  width: 100%;
-  -webkit-app-region: drag;
+    position: absolute;
+    top: env(titlebar-area-y, 0);
+    height: env(titlebar-area-height, var(--fallback-title-bar-height));
+    width: 100%;
+    -webkit-app-region: drag;
 }
 
 #root {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: calc(100vh - env(titlebar-area-height, var(--fallback-title-bar-height)));
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: calc(100vh - env(titlebar-area-height, var(--fallback-title-bar-height)));
 }
 
 body {
-  position: relative;
-  color: white;
-  height: 100vh;
-  font-family: sans-serif;
-  overflow-y: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #29292E;
-  margin: 0;
+    position: relative;
+    color: white;
+    height: 100vh;
+    font-family: sans-serif;
+    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #29292E;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
-h1 { text-align: center;}
+h1 {
+    text-align: center;
+}
+
+
+/* Scrollbar */
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 10px;
+    padding: 5px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #4E4E57;
+    border-radius: 5px;
+}
+
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6b6b77;
+}

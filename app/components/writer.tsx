@@ -1,56 +1,71 @@
-import styled from '@emotion/styled';
-import React, { useState } from 'react';
-import { BaseEditor, Descendant, createEditor } from 'slate';
-import { ReactEditor, Slate, Editable, withReact } from 'slate-react';
+import {
+  PlateProvider,
+  Plate,
+  createParagraphPlugin,
+  createBlockquotePlugin,
+  createHeadingPlugin,
+  createBoldPlugin,
+  createItalicPlugin,
+  createUnderlinePlugin,
+  createStrikethroughPlugin,
+  createCodePlugin,
+  createPlateUI,
+  createPlugins,
+  createAutoformatPlugin,
+  createExitBreakPlugin,
+  createDeserializeMdPlugin,
+  createResetNodePlugin,
+} from '@udecode/plate';
+import {
+  autoFormatPluginOptions,
+  exitBreakPluginOptions,
+  resetNodePluginOptions,
+  plateUiOverrides,
+} from 'writer/options';
+import ScrollContainer from './scrollcontainer';
 
-type CustomElement = { type: 'paragraph'; children: CustomText[] };
-type CustomText = { text: string };
+const editorId = '1';
 
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: BaseEditor & ReactEditor;
-    Element: CustomElement;
-    Text: CustomText;
-  }
-}
-
-const ScrollContainer = styled.div`
-  overflow-y: auto;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  align-content: center;
-  justify-content: flex-start;
-  cursor: text;
-`;
-
-const WriterContainer = styled.div`
-  max-width: 700px;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  width: 90%;
-`;
-
-const Writer = () => {
-  const [editor] = useState(() => withReact(createEditor()));
-  const [value, setValue] = useState<Descendant[]>([
-    { type: 'paragraph', children: [{ text: '' }] },
-  ]);
-
-  const setFocus = () => {
-    ReactEditor.focus(editor);
+const WriterComp = () => {
+  const editableProps = {
+    style: {
+      minHeight: '70vh',
+      width: '100%',
+    },
   };
 
+  const plugins = createPlugins(
+    [
+      createParagraphPlugin(),
+      createBlockquotePlugin(),
+      createHeadingPlugin(),
+      createBoldPlugin(),
+      createItalicPlugin(),
+      createUnderlinePlugin(),
+      createStrikethroughPlugin(),
+      createCodePlugin(),
+      createAutoformatPlugin(autoFormatPluginOptions),
+      createExitBreakPlugin(exitBreakPluginOptions),
+      createDeserializeMdPlugin(),
+      createResetNodePlugin(resetNodePluginOptions),
+    ],
+    {
+      components: createPlateUI(plateUiOverrides),
+    }
+  );
+
   return (
-    <ScrollContainer onClick={() => setFocus()}>
-      <WriterContainer>
-        <Slate editor={editor} value={value}>
-          <Editable />
-        </Slate>
-      </WriterContainer>
+    <ScrollContainer>
+      <Plate id={editorId} editableProps={editableProps} plugins={plugins} />
     </ScrollContainer>
+  );
+};
+
+const Writer = () => {
+  return (
+    <PlateProvider id={editorId}>
+      <WriterComp />
+    </PlateProvider>
   );
 };
 
