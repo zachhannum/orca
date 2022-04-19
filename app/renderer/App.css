@@ -42,6 +42,14 @@ h1 {
 }
 
 
+/* Highlight */
+
+::selection {
+    background: #6060FF;
+    /* WebKit/Blink Browsers */
+}
+
+
 /* Scrollbar */
 
 

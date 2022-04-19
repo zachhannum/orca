@@ -12,9 +12,12 @@ import {
   ELEMENT_H4,
   ELEMENT_H5,
   ELEMENT_H6,
+  MARK_BOLD,
+  MARK_ITALIC,
   withProps,
   StyledElement,
   withPlaceholders,
+  StyledLeaf,
 } from '@udecode/plate';
 import autoformatMarks from 'writer/autoformatMarks';
 import autoformatBlocks from 'writer/autoformatBlocks';
@@ -80,16 +83,32 @@ export const plateUiOverrides = {
       root: {
         fontSize: '2em',
         fontWeight: '600',
-        marginBottom: '1em',
+        marginBottom: '.5em',
       },
     },
   }),
   [ELEMENT_H2]: withProps(StyledElement, {
     styles: {
       root: {
-        fontSize: '1.5em',
+        fontSize: '1.3em',
         fontWeight: '600',
-        marginBottom: '1em',
+        marginBottom: '.5em',
+      },
+    },
+  }),
+  [MARK_ITALIC]: withProps(StyledLeaf, {
+    styles: {
+      root: {
+        color: '#CFCFDE',
+        fontStyle: 'italic',
+      },
+    },
+  }),
+  [MARK_BOLD]: withProps(StyledLeaf, {
+    styles: {
+      root: {
+        color: '#CFCFDE',
+        fontWeight: '800',
       },
     },
   }),

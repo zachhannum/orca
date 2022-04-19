@@ -35,6 +35,7 @@ const WriterComp = () => {
       minHeight: '70vh',
       width: '100%',
     },
+    spellCheck: false,
   };
 
   const plugins = createPlugins(
