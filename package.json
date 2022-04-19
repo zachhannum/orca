@@ -55,7 +55,8 @@
             "gatekeeperAssess": false
         },
         "dmg": {
-            "contents": [{
+            "contents": [
+                {
                     "x": 130,
                     "y": 220
                 },
@@ -101,11 +102,13 @@
         "email": "zacharyhannum@gmail.com",
         "url": "https://github.com/midnightprioriem/calamus"
     },
-    "contributors": [{
-        "name": "Zach Hannum",
-        "email": "zacharyhannum@gmail.com",
-        "url": "https://github.com/midnightprioriem"
-    }],
+    "contributors": [
+        {
+            "name": "Zach Hannum",
+            "email": "zacharyhannum@gmail.com",
+            "url": "https://github.com/midnightprioriem"
+        }
+    ],
     "bugs": {
         "url": "https://github.com/midnightprioriem/calamus/issues"
     },
@@ -208,8 +211,6 @@
         "webpack-merge": "^5.8.0"
     },
     "dependencies": {
-        "@emotion/react": "^11.9.0",
-        "@emotion/styled": "^11.8.1",
         "@openfonts/poppins_latin": "^1.44.5",
         "@udecode/plate": "^10.6.3",
         "electron-debug": "^3.2.0",
@@ -222,7 +223,8 @@
         "slate": "^0.77.0",
         "slate-history": "^0.66.0",
         "slate-hyperscript": "^0.77.0",
-        "slate-react": "^0.77.0"
+        "slate-react": "^0.77.0",
+        "styled-components": "^5.3.5"
     },
     "devEngines": {
         "node": ">=14.x",
@@ -233,15 +235,18 @@
     },
     "browserslist": [],
     "prettier": {
-        "overrides": [{
-            "files": [
-                ".prettierrc",
-                ".eslintrc"
-            ],
-            "options": {
-                "parser": "json"
+        "overrides": [
+            {
+                "files": [
+                    ".prettierrc",
+                    ".eslintrc"
+                ],
+                "options": {
+                    "parser": "json"
+                }
             }
-        }],
+        ],
         "singleQuote": true
-    }
+    },
+    "resolutions": { "styled-components": "5.3.5" }
 }

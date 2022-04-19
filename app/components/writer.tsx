@@ -15,12 +15,15 @@ import {
   createExitBreakPlugin,
   createDeserializeMdPlugin,
   createResetNodePlugin,
+  createSoftBreakPlugin,
 } from '@udecode/plate';
 import {
   autoFormatPluginOptions,
   exitBreakPluginOptions,
   resetNodePluginOptions,
   plateUiOverrides,
+  softBreakPluginOptions,
+  withStyledPlaceholders,
 } from 'writer/options';
 import ScrollContainer from './scrollcontainer';
 
@@ -48,9 +51,10 @@ const WriterComp = () => {
       createExitBreakPlugin(exitBreakPluginOptions),
       createDeserializeMdPlugin(),
       createResetNodePlugin(resetNodePluginOptions),
+      createSoftBreakPlugin(softBreakPluginOptions),
     ],
     {
-      components: createPlateUI(plateUiOverrides),
+      components: withStyledPlaceholders(createPlateUI(plateUiOverrides)),
     }
   );
 

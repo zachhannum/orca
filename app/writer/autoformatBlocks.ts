@@ -61,32 +61,32 @@ const autoformatBlocks: AutoformatRule[] = [
     match: '> ',
     preFormat: clearBlockFormat,
   },
-  {
-    mode: 'block',
-    type: ELEMENT_HR,
-    match: ['---', '—-'],
-    preFormat: clearBlockFormat,
-    format: (editor) => {
-      setNodes(editor, { type: ELEMENT_HR });
-      insertNodes(editor, {
-        type: ELEMENT_DEFAULT,
-        children: [{ text: '' }],
-      });
-    },
-  },
-  {
-    mode: 'block',
-    type: ELEMENT_CODE_BLOCK,
-    match: '```',
-    triggerAtBlockStart: false,
-    preFormat: clearBlockFormat,
-    format: (editor) => {
-      insertEmptyCodeBlock(editor as PlateEditor, {
-        defaultType: getPluginType(editor as PlateEditor, ELEMENT_DEFAULT),
-        insertNodesOptions: { select: true },
-      });
-    },
-  },
+  // {
+  //   mode: 'block',
+  //   type: ELEMENT_HR,
+  //   match: ['---', '—-'],
+  //   preFormat: clearBlockFormat,
+  //   format: (editor) => {
+  //     setNodes(editor, { type: ELEMENT_HR });
+  //     insertNodes(editor, {
+  //       type: ELEMENT_DEFAULT,
+  //       children: [{ text: '' }],
+  //     });
+  //   },
+  // },
+  // {
+  //   mode: 'block',
+  //   type: ELEMENT_CODE_BLOCK,
+  //   match: '```',
+  //   triggerAtBlockStart: false,
+  //   preFormat: clearBlockFormat,
+  //   format: (editor) => {
+  //     insertEmptyCodeBlock(editor as PlateEditor, {
+  //       defaultType: getPluginType(editor as PlateEditor, ELEMENT_DEFAULT),
+  //       insertNodesOptions: { select: true },
+  //     });
+  //   },
+  // },
 ];
 
 export default autoformatBlocks;
