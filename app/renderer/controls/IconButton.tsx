@@ -11,10 +11,14 @@ type IconButtonProps = {
 };
 
 const IconAnchor = styled.a`
+  display: block;
+  height: ${(props) => props.size};
+  width: ${(props) => props.size};
   border-radius: calc(${(props) => props.size} * 0.3);
   background: ${(props) => props.backgroundColor};
   path {
-    fill: ${(props) => props.foregroundColor};
+    /* TODO fix important */
+    fill: ${(props) => props.foregroundColor} !important;
   }
   &: hover {
     background: ${(props) => props.hoverBackgroundColor};
