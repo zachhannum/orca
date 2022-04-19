@@ -19,8 +19,8 @@ import {
   withPlaceholders,
   StyledLeaf,
 } from '@udecode/plate';
-import autoformatMarks from 'writer/autoformatMarks';
-import autoformatBlocks from 'writer/autoformatBlocks';
+import autoformatMarks from './autoformatMarks';
+import autoformatBlocks from './autoformatBlocks';
 
 const resetBlockTypesCommonRule = {
   types: [ELEMENT_BLOCKQUOTE, ...KEYS_HEADING],

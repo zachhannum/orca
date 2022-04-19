@@ -18,8 +18,8 @@
 #root {
     position: absolute;
     bottom: 0;
-    width: 100%;
-    height: calc(100vh - env(titlebar-area-height, var(--fallback-title-bar-height)));
+    width: 100vw;
+    height: 100vh;
 }
 
 body {
