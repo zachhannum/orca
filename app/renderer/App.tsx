@@ -1,24 +1,7 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.png';
+// import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-
-const Hello = () => {
-  return (
-    <div>
-      <div className="Hello">
-        <img width="200px" alt="icon" src={icon} />
-      </div>
-      <h1>calamus</h1>
-    </div>
-  );
-};
+import Writer from '../components/writer';
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
-  );
+  return <Writer />;
 }
