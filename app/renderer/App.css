@@ -24,14 +24,12 @@
 
 body {
     position: relative;
-    color: white;
     height: 100vh;
     font-family: sans-serif;
     overflow-y: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #29292E;
     margin: 0;
     font-family: 'Poppins', sans-serif;
     font-size: 0.9em;

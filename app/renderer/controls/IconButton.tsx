@@ -11,7 +11,16 @@ type IconButtonProps = {
   children: React.ReactElement;
 };
 
-const IconAnchor = styled.a`
+type IconAnchorProps = {
+  size?: string;
+  backgroundColor?: string;
+  foregroundColor?: string;
+  hoverBackgroundColor?: string;
+  hoverForegroundColor?: string;
+  activeBackgroundColor?: string;
+  activeForegroundColor?: string;
+};
+const IconAnchor = styled.a<IconAnchorProps>`
   display: block;
   cursor: pointer;
   height: ${(props) => props.size};

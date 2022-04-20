@@ -1,18 +1,24 @@
-import styled from 'styled-components';
+import { useContext } from 'react';
+import styled, { useTheme } from 'styled-components';
 import { IconButton } from '../controls';
 import { SidebarOpenIcon, SidebarClosedIcon, MoreVerticalIcon } from '../icons';
 import useToggle from '../utils/toggle';
 
-const StyledSidebar = styled.div`
+type StyledSidebarProps = {
+  open: boolean;
+  width: string;
+};
+
+const StyledSidebar = styled.div<StyledSidebarProps>`
   display: flex;
-  background-color: #323238;
+  background-color: ${(p) => p.theme.sidebarBg};
   width: 270px;
   min-width: 270px;
   height: 100vh;
   flex-direction: column;
   flex-wrap: nowrap;
   align-content: space-between;
-  margin-left: ${(props) => (props.open ? '0px' : '-270px')};
+  margin-left: ${(p) => (p.open ? '0px' : '-270px')};
   transition: margin-left 200ms ease-in-out;
 `;
 
@@ -35,25 +41,29 @@ const SidebarTopButtonsDiv = styled.div`
   gap: 10px;
 `;
 
-const SidebarToggleButtonDiv = styled.div`
+type SidebarToggleButtonDivProps = {
+  open: boolean;
+};
+const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
   margin-right: ${(props) => (props.open ? '0px' : '-150px')};
   transition: margin-right 200ms ease-in-out;
   z-index: 100;
 `;
 
 const ProjectSidebar = () => {
+  const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
 
   return (
-    <StyledSidebar open={open}>
+    <StyledSidebar open={open} width="300px">
       <SidebarTopContainer>
         <div /* placeholder */ />
         <SidebarTopButtonsDiv>
           <SidebarToggleButtonDiv open={open}>
             <IconButton
               size="25px"
-              foregroundColor="#848488"
-              backgroundColor="#46464F"
+              foregroundColor={theme.sidebarIconFg}
+              backgroundColor={theme.sidebarIconBg}
               onClick={toggleOpen}
             >
               {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
@@ -61,7 +71,7 @@ const ProjectSidebar = () => {
           </SidebarToggleButtonDiv>
           <IconButton
             size="25px"
-            foregroundColor="#848488"
+            foregroundColor={theme.sidebarIconFg}
             backgroundColor="transparent"
           >
             <MoreVerticalIcon />
