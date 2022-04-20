@@ -213,6 +213,7 @@
     "dependencies": {
         "@openfonts/poppins_latin": "^1.44.5",
         "@udecode/plate": "^10.6.3",
+        "color": "^4.2.3",
         "electron-debug": "^3.2.0",
         "electron-log": "^4.4.6",
         "electron-updater": "^4.6.5",
@@ -248,5 +249,7 @@
         ],
         "singleQuote": true
     },
-    "resolutions": { "styled-components": "5.3.5" }
+    "resolutions": {
+        "styled-components": "5.3.5"
+    }
 }

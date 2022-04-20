@@ -16,6 +16,7 @@ import {
   createDeserializeMdPlugin,
   createResetNodePlugin,
   createSoftBreakPlugin,
+  usePlateEditorRef,
 } from '@udecode/plate';
 import {
   autoFormatPluginOptions,
@@ -24,8 +25,9 @@ import {
   plateUiOverrides,
   softBreakPluginOptions,
   withStyledPlaceholders,
-} from 'writer/options';
-import ScrollContainer from './scrollcontainer';
+} from '../writer/options';
+import ScrollContainer from './ScrollContainer';
+import initialValue from '../writer/initialText';
 
 const editorId = '1';
 
@@ -59,9 +61,19 @@ const WriterComp = () => {
     }
   );
 
+  const editor = usePlateEditorRef();
+  const debug = () => {
+    console.log(editor.children);
+  };
+
   return (
     <ScrollContainer>
-      <Plate id={editorId} editableProps={editableProps} plugins={plugins} />
+      <Plate
+        id={editorId}
+        editableProps={editableProps}
+        plugins={plugins}
+        initialValue={initialValue}
+      />
     </ScrollContainer>
   );
 };
