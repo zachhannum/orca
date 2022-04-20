@@ -6,12 +6,14 @@ type IconButtonProps = {
   size?: string;
   foregroundColor?: string;
   backgroundColor?: string;
+  colorAdjustment?: number;
   onClick?: () => void;
   children: React.ReactElement;
 };
 
 const IconAnchor = styled.a`
   display: block;
+  cursor: pointer;
   height: ${(props) => props.size};
   width: ${(props) => props.size};
   border-radius: calc(${(props) => props.size} * 0.3);
@@ -20,17 +22,17 @@ const IconAnchor = styled.a`
     /* TODO fix important */
     fill: ${(props) => props.foregroundColor} !important;
   }
-  &: hover {
+  &:hover {
     background: ${(props) => props.hoverBackgroundColor};
   }
   &:hover path {
-    fill: ${(props) => props.hoverForegroundColor};
+    fill: ${(props) => props.hoverForegroundColor} !important;
   }
-  &: active {
+  &:active {
     background: ${(props) => props.activeBackgroundColor};
   }
   &:active path {
-    fill: ${(props) => props.activeForegroundColor};
+    fill: ${(props) => props.activeForegroundColor} !important;
   }
 `;
 
@@ -38,14 +40,14 @@ const IconButton = ({
   size = '40px',
   foregroundColor,
   backgroundColor,
+  colorAdjustment,
   onClick = () => {},
   children,
 }: IconButtonProps) => {
-  const colorAdjust = 0.1;
-  const hoverForegroundColor = Color(foregroundColor).lighten(colorAdjust);
-  const hoverBackgroundColor = Color(backgroundColor).lighten(colorAdjust);
-  const activeForegroundColor = Color(foregroundColor).darken(colorAdjust);
-  const activeBackgroundColor = Color(backgroundColor).darken(colorAdjust);
+  const hoverForegroundColor = Color(foregroundColor).lighten(colorAdjustment);
+  const hoverBackgroundColor = Color(backgroundColor).lighten(colorAdjustment);
+  const activeForegroundColor = Color(foregroundColor).darken(colorAdjustment);
+  const activeBackgroundColor = Color(backgroundColor).darken(colorAdjustment);
 
   return (
     <IconAnchor
@@ -69,6 +71,7 @@ IconButton.defaultProps = {
   size: '40px',
   foregroundColor: '#a7a7a7',
   backgroundColor: '#3b3b3b',
+  colorAdjustment: 0.2,
   onClick: () => {
     console.log('Icon Button clicked!');
   },

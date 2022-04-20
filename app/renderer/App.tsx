@@ -6,6 +6,9 @@ import ProjectSidebar from './components/ProjectSidebar';
 
 const AppContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
   height: 100vh;
   width: 100vw;
 `;
