@@ -1,4 +1,4 @@
-name: Publish
+name: Release
 
 on:
   push:
@@ -6,13 +6,8 @@ on:
       - main
 
 jobs:
-  publish:
-    if: ${{ false }}
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest]
+  release:
+    runs-on: [self-hosted, macOS]
 
     steps:
       - name: Checkout git repo
