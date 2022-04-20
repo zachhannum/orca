@@ -8,7 +8,7 @@
   </p>
     
   [![Test](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml)
-  [![Release](https://github.com/midnightprioriem/calamus/actions/workflows/publish.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/publish.yml)
+  [![Release](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml)
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
   
