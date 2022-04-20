@@ -26,7 +26,7 @@ Calamus is a React Electron application for writing and publishing novels.
 <!-- Features -->
 ### :dart: Features
 
-TBD
+For a feature roadmap, please visit our <a href="https://github.com/midnightprioriem/calamus/projects/2" target="_blank">Project Board</a>.
 
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
