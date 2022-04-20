@@ -3,7 +3,7 @@ const initialValue = [
     type: 'h1',
     children: [
       {
-        text: 'Ridge Walking',
+        text: 'Down the Rabbit-Hole',
       },
     ],
   },
@@ -11,7 +11,7 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: 'Night fell over the camp, a dark blanket that smothered the last tendrils of light peering over the horizon. Marcus waited for his new team, standing just past the eastern guard post, his torch a beacon in the darkness. He watched his flickering shadow dance back and forth.',
+        text: 'Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, “and what is the use of a book,” thought Alice “without pictures or conversations?”',
       },
     ],
   },
@@ -19,7 +19,7 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: 'Viggo was the first to arrive, and nodded a silent greeting to Marcus. He was dressed in the traditional field medic’s uniform, save for a unique blue sash across his chest. It stood out against the muted brown tones of the leather jerkin. A small traveling bag hung casually from one shoulder, and a modest blacksmith’s hammer was fastened to a loop on his belt.',
+        text: 'So she was considering in her own mind (as well as she could, for the hot day made her feel very sleepy and stupid), whether the pleasure of making a daisy-chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her.',
       },
     ],
   },
@@ -27,7 +27,28 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: 'He reached into his bag and pulled out a metal flask. He took a quick swig before offering it to Marcus, who declined. Viggo shrugged and stowed the flask away.',
+        text: 'There was nothing so ',
+      },
+      {
+        text: 'very',
+        italic: true,
+      },
+      {
+        text: ' remarkable in that; nor did Alice think it so ',
+      },
+      {
+        text: 'very',
+        italic: true,
+      },
+      {
+        text: ' much out of the way to hear the Rabbit say to itself, “Oh dear! Oh dear! I shall be late!” (when she thought it over afterwards, it occurred to her that she ought to have wondered at this, but at the time it all seemed quite natural); but when the Rabbit actually ',
+      },
+      {
+        text: 'took a watch out of its waistcoat-pocket',
+        italic: true,
+      },
+      {
+        text: ', and looked at it, and then hurried on, Alice started to her feet, for it flashed across her mind that she had never before seen a rabbit with either a waistcoat-pocket, or a watch to take out of it, and burning with curiosity, she ran across the field after it, and fortunately was just in time to see it pop down a large rabbit-hole under the hedge.',
       },
     ],
   },
@@ -35,7 +56,7 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: 'They waited in comfortable silence until Rykker finally appeared. The device he had been working earlier that day floated over his shoulder, smoldering flames within the core casting a radius of warm light around him. Marcus was in awe. He wasn’t sure what was allowing the thing to fly. He could see why the military paid the artificer well to outfit them.',
+        text: 'In another moment down went Alice after it, never once considering how in the world she was to get out again.',
       },
     ],
   },
@@ -43,77 +64,74 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: 'He had also brought his silent companion. A great behemoth, standing at least seven feet tall with broad shoulders. He was humanoid, at least, but his body was forged from a stone-like material. It almost looked like armor, but it covered his entire body. Or maybe it ',
+        text: 'The rabbit-hole went straight on like a tunnel for some way, and then dipped suddenly down, so suddenly that Alice had not a moment to think about stopping herself before she found herself falling down a very deep well.',
+      },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'Either the well was very deep, or she fell very slowly, for she had plenty of time as she went down to look about her and to wonder what was going to happen next. First, she tried to look down and make out what she was coming to, but it was too dark to see anything; then she looked at the sides of the well, and noticed that they were filled with cupboards and book-shelves; here and there she saw maps and pictures hung upon pegs. She took down a jar from one of the shelves as she passed; it was labelled “ORANGE MARMALADE”, but to her great disappointment it was empty: she did not like to drop the jar for fear of killing somebody underneath, so managed to put it into one of the cupboards as she fell past it.',
+      },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: '“Well!” thought Alice to herself, “after such a fall as this, I shall think nothing of tumbling down stairs! How brave they’ll all think me at home! Why, I wouldn’t say anything about it, even if I fell off the top of the house!” (Which was very likely true.)',
+      },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'Down, down, down. Would the fall ',
+      },
+      {
+        text: 'never',
+        italic: true,
+      },
+      {
+        text: ' come to an end? “I wonder how many miles I’ve fallen by this time?” she said aloud. “I must be getting somewhere near the centre of the earth. Let me see: that would be four thousand miles down, I think—” (for, you see, Alice had learnt several things of this sort in her lessons in the schoolroom, and though this was not a ',
+      },
+      {
+        text: 'very',
+        italic: true,
+      },
+      {
+        text: ' good opportunity for showing off her knowledge, as there was no one to listen to her, still it was good practice to say it over) “—yes, that’s about the right distance—but then I wonder what Latitude or Longitude I’ve got to?” (Alice had no idea what Latitude was, or Longitude either, but thought they were nice grand words to say.)',
+      },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'Presently she began again. “I wonder if I shall fall right ',
+      },
+      {
+        text: 'through',
+        italic: true,
+      },
+      {
+        text: ' the earth! How funny it’ll seem to come out among the people that walk with their heads downward! The Antipathies, I think—” (she was rather glad there ',
       },
       {
         text: 'was',
         italic: true,
       },
       {
-        text: ' has body? He wore a dark purple cloak, tattered with what seemed like decades of wear, and kept the wide hood up, obscuring his face. Still, Marcus could see his eyes, perfectly oval, glowing with a yellow light. He carried a comically large warhammer. In his hands the shaft seemed small.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'The odd pair approached, and Rykker gave a wave. “Is this everyone? Hmm. Less than I would have thought.”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'Marcus nodded. “The smaller the crew, the easier it is to get in and get out. That device casts a fine light. How long does it last?”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“As long as it needs to,” Rykker said with a shrug.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'The non-answer irked Marcus, but he ignored it. “Well, it seems to give off enough light for the rest of us.” He doused his torch. The light the device gave spread into a wider radius and was more even than a standard torch.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'They headed east, away from the camp, towards the forest that would take them closer to Valla. The ambience of the camp faded into the night, giving way to the buzzing sounds of nature. The familiarity and comfort of the quiet night was a farce, a deception—for they now drew closer to enemy lines.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“So... that thing knows how to follow you?” Marcus pointed at the floating device that trailed behind Rykker.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“That ',
+        text: ' no one listening, this time, as it didn’t sound at all the right word) “—but I shall have to ask them what the name of the country is, you know. Please, Ma’am, is this New Zealand or Australia?” (and she tried to curtsey as she spoke—fancy ',
       },
       {
-        text: 'thing',
+        text: 'curtseying',
         italic: true,
       },
       {
-        text: ' is my engine. And of course it does. It’s keyed to me,” Rykker said.',
+        text: ' as you’re falling through the air! Do you think you could manage it?) “And what an ignorant little girl she’ll think me for asking! No, it’ll never do to ask: perhaps I shall see it written up somewhere.”',
       },
     ],
   },
@@ -121,7 +139,7 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: '“Well, I hope you can dim that light.”',
+        text: 'Down, down, down. There was nothing else to do, so Alice soon began talking again. “Dinah’ll miss me very much to-night, I should think!” (Dinah was the cat.) “I hope they’ll remember her saucer of milk at tea-time. Dinah my dear! I wish you were down here with me! There are no mice in the air, I’m afraid, but you might catch a bat, and that’s very like a mouse, you know. But do cats eat bats, I wonder?” And here Alice began to get rather sleepy, and went on saying to herself, in a dreamy sort of way, “Do cats eat bats? Do cats eat bats?” and sometimes, “Do bats eat cats?” for, you see, as she couldn’t answer either question, it didn’t much matter which way she put it. She felt that she was dozing off, and had just begun to dream that she was walking hand in hand with Dinah, and saying to her very earnestly, “Now, Dinah, tell me the truth: did you ever eat a bat?” when suddenly, thump! thump! down she came upon a heap of sticks and dry leaves, and the fall was over.',
       },
     ],
   },
@@ -129,109 +147,7 @@ const initialValue = [
     type: 'p',
     children: [
       {
-        text: 'On queue, the light within the engine reduced to a candlelight glow for a moment before flaring back to torch strength. Rykker made a showman’s gesture towards the floating engine.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“Neat trick,” Viggo said, although he didn’t look impressed. “Why doesn’t every soldier in Ilris have one of those?”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“Limited availability,” Rykker said, as if that explained anything. “By the way,” he jabbed a thumb towards his companion. “This is Sev. He’ll be coming along with us.”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“Hello,” Sev said, raising his free hand in greeting.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'Marcus blinked. He... could talk. He’d heard the camp rumors of the autonomous machine that looked human but wasn’t quite human, but hearing him speak was another matter entirely. “How did you create him?”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“',
-      },
-      {
-        italic: true,
-        text: 'Create him',
-      },
-      {
-        text: '? I didn’t create him. I found him.”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“You... found him?” Viggo said. He eyed Sev with a mixture of curiosity and confusion.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: '“Exactly,” Rykker said, and left it at that. They walked in silence for a few minutes before he spoke again. “My inventions are just that, clever manipulations of science.” He brandished a small black device in his hand. Turning a dial on it, the lights on the engine changed in intensity. “Just clever, useful, tricks. But Sev here, Sev is much more than that. He’s a living being, although he doesn’t need food, water, or sleep like we do. I can’t tell you where he came from, and neither can he.”',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'None of them had much to say to that.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'The forest at night was a dark place. Now, the treetops blocked even the moonlight, and their only source of light became the floating engine. It would be a significant trek before they reached the location specified on Vincent’s map.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'Marcus studied Sev as they hiked. It was nearly impossible to read any emotion from his flat, stoney face. Underneath his yellow eyes, an angular line bisected his face in a caricature of a grin. He seemed to be unperturbed by the conversation about him. From what he could tell, Sev wasn’t ',
-      },
-      {
-        text: 'bothered',
-        italic: true,
-      },
-      {
-        text: ' by anything.',
-      },
-    ],
-  },
-  {
-    type: 'p',
-    children: [
-      {
-        text: 'Looking at the rest of Sev’s body, he got the impression that whoever had created Sev gave him the rough features of a human, but abruptly stopped when they had to fill in the details. He stepped through the trees softly and with care. It made Marcus wonder how well he knew how to use that hammer he carried. The thing looked like it weighed nothing in his grip. Marcus decided he didn’t want to ever find out what it was like to be on the other side of it.',
+        text: 'Alice was not a bit hurt, and she jumped up on to her feet in a moment: she looked up, but it was all dark overhead; before her was another long passage, and the White Rabbit was still in sight, hurrying down it. There was not a moment to be lost: away went Alice like the wind, and was just in time to hear it say, as it turned a corner, “Oh my ears and whiskers, how late it’s getting!” She was close behind it when she turned the corner, but the Rabbit was no longer to be seen: she found herself in a long, low hall, which was lit up by a row of lamps hanging from the roof.',
       },
     ],
   },

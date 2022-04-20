@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import IconButton from '../controls/IconButton';
-import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
+import { IconButton } from '../controls';
+import { SidebarOpenIcon, SidebarClosedIcon, MoreVerticalIcon } from '../icons';
 import useToggle from '../utils/toggle';
-import MoreVerticalIcon from '../icons/MoreVerticalIcon';
 
 const StyledSidebar = styled.div`
   display: flex;
