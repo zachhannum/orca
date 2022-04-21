@@ -14,6 +14,7 @@ type StyledToggleBaseProps = {
 };
 
 const StyledToggleBase = styled.div<StyledToggleBaseProps>`
+  cursor: pointer;
   height: 20px;
   width: 36px;
   display: flex;

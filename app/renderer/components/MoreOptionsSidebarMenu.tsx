@@ -1,6 +1,6 @@
 import Popup from 'reactjs-popup';
 import styled, { useTheme } from 'styled-components';
-import Color from 'color';
+import MoreOptionsSidebarItem from './MoreOptionsSidebarItem';
 import { IconButton, ToggleSwitch } from '../controls';
 import {
   ExitIcon,
@@ -16,44 +16,11 @@ import icon from '../../../assets/icon.png';
 const StyledPopupDiv = styled.div`
   width: 220px;
   background-color: ${(p) => p.theme.contextMenuBg};
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
-`;
-
-type StyledMenuItemProps = {
-  hoverColor: string;
-};
-
-const StyledMenuItem = styled.div<StyledMenuItemProps>`
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  padding: 7px 15px 7px 15px;
-  &:first-of-type {
-    padding-top: 15px;
-  }
-  &:last-of-type {
-    padding-bottom: 15px;
-  }
-  color: ${(p) => p.theme.mainFgTextSecondary};
-  &:hover {
-    background-color: ${(p) => p.hoverColor};
-  }
-
-  transition: background-color 100ms ease-in-out;
-`;
-
-const StyledMenuItemIconDesc = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 13px;
 `;
 
 const StyledMenuDivider = styled.div`
@@ -65,7 +32,6 @@ const StyledMenuDivider = styled.div`
 
 const MoreOptionsSidebarMenu = () => {
   const theme = useTheme();
-  const menuItemHoverColor = Color(theme.contextMenuBg).darken(0.2);
   return (
     <div>
       <Popup
@@ -89,57 +55,52 @@ const MoreOptionsSidebarMenu = () => {
         offsetY={10}
       >
         <StyledPopupDiv>
-          <StyledMenuItem hoverColor={menuItemHoverColor}>
-            <StyledMenuItemIconDesc>
-              <NewBookIcon color={theme.mainFgTextSecondary} size="15px" />
-              <span>New Book</span>
-            </StyledMenuItemIconDesc>
-            <span>⌘N</span>
-          </StyledMenuItem>
-          <StyledMenuItem hoverColor={menuItemHoverColor}>
-            <StyledMenuItemIconDesc>
-              <OpenBookIcon color={theme.mainFgTextSecondary} size="15px" />
-              <span>Open Book</span>
-            </StyledMenuItemIconDesc>
-            <span>⌘O</span>
-          </StyledMenuItem>
-          <StyledMenuItem hoverColor={theme.contextMenuBg}>
-            <StyledMenuItemIconDesc>
-              <PreviewIcon color={theme.mainFgTextSecondary} size="15px" />
-              <span>Preview</span>
-            </StyledMenuItemIconDesc>
-            <ToggleSwitch
-              altColor
-              onChange={(val) => {
-                console.log(val);
-              }}
-            />
-          </StyledMenuItem>
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<NewBookIcon />}
+            rightElement={<span>⌘N</span>}
+            label="New Book"
+          />
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<OpenBookIcon />}
+            rightElement={<span>⌘O</span>}
+            label="Open Book"
+          />
+          <MoreOptionsSidebarItem
+            iconElement={<PreviewIcon />}
+            rightElement={
+              <ToggleSwitch
+                altColor
+                onChange={(val) => {
+                  console.log(val);
+                }}
+              />
+            }
+            label="Preview"
+          />
           <StyledMenuDivider />
-          <StyledMenuItem hoverColor={menuItemHoverColor}>
-            <StyledMenuItemIconDesc>
-              <UpdateIcon color={theme.mainFgTextSecondary} size="15px" />
-              <span>Check For Updates</span>
-            </StyledMenuItemIconDesc>
-          </StyledMenuItem>
-          <StyledMenuItem hoverColor={menuItemHoverColor}>
-            <StyledMenuItemIconDesc>
-              <HelpIcon color={theme.mainFgTextSecondary} size="15px" />
-              <span>Help</span>
-            </StyledMenuItemIconDesc>
-          </StyledMenuItem>
-          <StyledMenuItem hoverColor={menuItemHoverColor}>
-            <StyledMenuItemIconDesc>
-              <img width="15px" alt="icon" src={icon} />
-              <span>About</span>
-            </StyledMenuItemIconDesc>
-          </StyledMenuItem>
-          <StyledMenuItem hoverColor={menuItemHoverColor}>
-            <StyledMenuItemIconDesc>
-              <ExitIcon color={theme.contextMenuExit} size="15px" />
-              <span>Exit</span>
-            </StyledMenuItemIconDesc>
-          </StyledMenuItem>
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<UpdateIcon />}
+            label="Check For Updates"
+          />
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<HelpIcon />}
+            label="Help"
+          />
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<img width="15px" alt="icon" src={icon} />}
+            label="About"
+          />
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<ExitIcon size="15px" />}
+            iconColorOverride={theme.contextMenuExit}
+            label="Exit"
+          />
         </StyledPopupDiv>
       </Popup>
     </div>
