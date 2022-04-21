@@ -14,14 +14,9 @@ const StyledMenuItem = styled.div<StyledMenuItemProps>`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding: 7px 15px 7px 15px;
+  padding: 5px;
+  border-radius: 5px;
   font-size: 0.9em;
-  &:first-of-type {
-    padding-top: 15px;
-  }
-  &:last-of-type {
-    padding-bottom: 15px;
-  }
   color: ${(p) => p.theme.mainFgTextSecondary};
   &:hover {
     background-color: ${(p) =>

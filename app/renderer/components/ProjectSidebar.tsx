@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import styled, { useTheme } from 'styled-components';
 import MoreOptionsSidebarMenu from './MoreOptionsSidebarMenu';
 import { IconButton } from '../controls';
-import { SidebarOpenIcon, SidebarClosedIcon, MoreVerticalIcon } from '../icons';
+import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
 import useToggle from '../utils/toggle';
 
 type StyledSidebarProps = {

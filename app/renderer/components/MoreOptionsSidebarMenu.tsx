@@ -14,9 +14,10 @@ import {
 import icon from '../../../assets/icon.png';
 
 const StyledPopupDiv = styled.div`
-  width: 220px;
+  width: 200px;
   background-color: ${(p) => p.theme.contextMenuBg};
-  border-radius: 15px;
+  border-radius: 10px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
