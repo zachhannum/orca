@@ -10,8 +10,10 @@ declare module 'styled-components' {
     sidebarBg: string;
     sidebarFgText: string;
     sidebarFgTextSecondary: string;
-    dropdownBg: string;
-    dropdownAltBg: string;
+    dropdownBg: {
+      default: string,
+      alt: string,
+    };
     dropdownText: string;
     dropdownArrow: string;
     optionSliderBg: string;
@@ -29,8 +31,10 @@ declare module 'styled-components' {
     checkUnselectedAltBg: string;
     checkSelectedBg: string;
     checkFg: string;
-    toggleOffBg: string;
-    toggleOffAltBg: string;
+    toggleOffBg: {
+      default: string,
+      alt: string,
+    };
     toggleOffFg: string;
     toggleOffAltFg: string;
     toggleOnBg: string;
