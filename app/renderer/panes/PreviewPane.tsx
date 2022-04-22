@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { Previewer } from 'pagedjs';
+import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
 import useStore from '../store/useStore';
 import Test from '../pagedjs/test';
 import bookCss from '../pagedjs/book.css';
+import { render } from '@testing-library/react';
 
 type StyledPaneProps = {
   previewEnabled: boolean;
@@ -41,28 +42,37 @@ const Preview = styled.div`
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     justify-content: flex-start;
-    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2), 0 20px 40px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2),
+      0 20px 40px 0 rgba(0, 0, 0, 0.19);
   }
 `;
 
 const PreviewPane = () => {
-  const [previewRendered, setPreviewRendered] = useState(false);
-  useEffect(() => {
-    if (!previewRendered) {
-      console.log('Rendering preview....');
-      const flowText = document.querySelector('#flow');
-      const renderTo = document.querySelector('#previewPane');
-      const paged = new Previewer();
-      paged.preview(flowText, bookCss, renderTo);
-      setPreviewRendered(true);
-    }
-  });
-
+  const polisher = useRef(new Polisher());
+  const previewRef = useRef(null);
+  const chunker = useRef(new Chunker());
   const previewEnabled = useStore((state) => state.previewEnabled);
+
+  useEffect(() => {
+    const preview = async () => {
+      if (previewEnabled) {
+        console.log('Rendering preview....');
+        const flowText = document.querySelector('#flow');
+        // const renderTo = document.querySelector('#previewPane');
+        polisher.current.setup();
+        initializeHandlers(chunker.current, polisher.current);
+        // await polisher.current.add([bookCss]);
+        await chunker.current.flow(flowText, previewRef.current);
+      }
+    };
+
+    preview();
+  }, [previewEnabled]);
+
   return (
     <StyledPane previewEnabled={previewEnabled}>
       <Test />
-      <Preview id="previewPane" />
+      <Preview ref={previewRef} />
     </StyledPane>
   );
 };
