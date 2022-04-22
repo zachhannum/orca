@@ -2,13 +2,17 @@ name: Build and Test Mac
 
 on:
   push:
-    branches: main
+    branches: [main, 16-preview-pane]
   pull_request:
-    branches: main
+    branches: [main]
 
 jobs:
-  release:
-    runs-on: [self-hosted, macOS]
+  build_and_test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [[self-hosted, macOS], [self-hosted, Windows]]
 
     steps:
       - name: Check out Git repository
