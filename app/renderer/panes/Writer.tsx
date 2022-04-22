@@ -25,7 +25,7 @@ import {
   softBreakPluginOptions,
   withStyledPlaceholders,
 } from '../writer/options';
-import ScrollContainer from './ScrollContainer';
+import { ScrollContainer } from '../components';
 import initialValue from '../writer/initialText';
 
 const editorId = '1';

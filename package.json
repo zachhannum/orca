@@ -227,7 +227,8 @@
         "slate-history": "^0.66.0",
         "slate-hyperscript": "^0.77.0",
         "slate-react": "^0.77.0",
-        "styled-components": "^5.3.5"
+        "styled-components": "^5.3.5",
+        "zustand": "^4.0.0-rc.0"
     },
     "devEngines": {
         "node": ">=14.x",

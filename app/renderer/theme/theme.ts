@@ -54,7 +54,7 @@ const theme: DefaultTheme = {
   chapterTitleDropdownInset: 'rgba(72, 72, 81, 1)',
   progressBarBg: 'rgba(107, 107, 120, 1)',
   progressBarFg: 'rgba(240, 240, 248, 1)',
-  contextMenuBg: 'rgba(70, 70, 79, 1)',
+  contextMenuBg: 'rgba(70, 70, 79, .5)',
   contextMenuDivider: 'rgba(99, 99, 111, 1)',
   contextMenuFg: 'rgba(240, 240, 248, 1)',
   contextMenuExit: 'rgba(255, 85, 74, 1)',

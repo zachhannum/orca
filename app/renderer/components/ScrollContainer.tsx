@@ -4,14 +4,14 @@ import styled from 'styled-components';
 const Scroller = styled.div`
   overflow-y: overlay;
   height: 100%;
-  width: calc(100% - 40px);
+  width: calc(100% - 100px);
   display: flex;
   align-items: center;
   flex-direction: column;
   align-content: center;
   justify-content: flex-start;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 50px;
+  padding-left: 50px;
 `;
 
 const Padding = styled.div`

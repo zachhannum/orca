@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
 
 type StyledMenuItemProps = {
@@ -20,10 +20,15 @@ const StyledMenuItem = styled.div<StyledMenuItemProps>`
   font-size: 0.9em;
 
   color: ${(p) => p.theme.mainFgTextSecondary};
-  &:hover {
-    background-color: ${(p) =>
-      p.hover ? p.hoverColor : p.theme.contextMenuBg};
-  }
+
+  ${(p) =>
+    p.hover &&
+    css`
+      &:hover {
+        background-color: ${p.hoverColor}};
+      }
+    `}
+
   transition: background-color 100ms ease-in-out;
 `;
 
@@ -54,7 +59,7 @@ const MoreOptionsSidebarItem = ({
   label,
 }: MoreOptionsSidebarItemProps) => {
   const theme = useTheme();
-  const menuItemHoverColor = Color(theme.contextMenuBg).darken(0.2);
+  const menuItemHoverColor = Color(theme.contextMenuBg).lighten(0.3);
 
   return (
     <StyledMenuItem

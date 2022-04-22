@@ -7,7 +7,7 @@
     Write and Publish Novels With Ease
   </p>
     
-  [![Test](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/test.yml)
+  [![Build and Test](https://github.com/midnightprioriem/calamus/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/build-and-test.yml)
   [![Release](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml)
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
