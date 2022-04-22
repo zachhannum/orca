@@ -35,8 +35,10 @@ declare module 'styled-components' {
       default: string,
       alt: string,
     };
-    toggleOffFg: string;
-    toggleOffAltFg: string;
+    toggleOffFg: {
+      default: string,
+      alt: string
+    }
     toggleOnBg: string;
     toggleOnFg: string;
     radioOffBg: string;

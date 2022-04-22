@@ -14,9 +14,11 @@ const StyledMenuItem = styled.div<StyledMenuItemProps>`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
   border-radius: 5px;
   font-size: 0.9em;
+
   color: ${(p) => p.theme.mainFgTextSecondary};
   &:hover {
     background-color: ${(p) =>
@@ -30,7 +32,8 @@ const StyledMenuItemIconDesc = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 13px;
+  justify-content: center;
+  gap: 7px;
 `;
 
 type MoreOptionsSidebarItemProps = {
@@ -65,7 +68,7 @@ const MoreOptionsSidebarItem = ({
             iconColorOverride !== undefined
               ? iconColorOverride
               : theme.mainFgTextSecondary,
-          size: '15px',
+          size: '10px',
         })}
         <span>{label}</span>
       </StyledMenuItemIconDesc>

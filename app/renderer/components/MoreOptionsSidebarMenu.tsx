@@ -14,7 +14,7 @@ import {
 import icon from '../../../assets/icon.png';
 
 const StyledPopupDiv = styled.div`
-  width: 200px;
+  width: 180px;
   background-color: ${(p) => p.theme.contextMenuBg};
   border-radius: 10px;
   padding: 5px;
@@ -26,9 +26,9 @@ const StyledPopupDiv = styled.div`
 
 const StyledMenuDivider = styled.div`
   height: 2px;
-  width: calc(100% - 30px);
+  width: calc(100% - 10px);
   background-color: ${(p) => p.theme.contextMenuDivider};
-  margin: 10px 15px;
+  margin: 10px 5px;
 `;
 
 const MoreOptionsSidebarMenu = () => {
@@ -40,7 +40,7 @@ const MoreOptionsSidebarMenu = () => {
           // This is for sure hacky using the div since IconButton does not support ref. Should fix in the future
           <div>
             <IconButton
-              size="25px"
+              size="20px"
               foregroundColor={theme.sidebarIconFg}
               backgroundColor="transparent"
               onClick={() => {}} // Do nothing since Popup is using the <div> click. We just need IconButton for the visuals.
@@ -93,12 +93,12 @@ const MoreOptionsSidebarMenu = () => {
           />
           <MoreOptionsSidebarItem
             hover
-            iconElement={<img width="15px" alt="icon" src={icon} />}
+            iconElement={<img width="10px" alt="icon" src={icon} />}
             label="About"
           />
           <MoreOptionsSidebarItem
             hover
-            iconElement={<ExitIcon size="15px" />}
+            iconElement={<ExitIcon />}
             iconColorOverride={theme.contextMenuExit}
             label="Exit"
           />

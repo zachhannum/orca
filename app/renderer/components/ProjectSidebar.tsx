@@ -45,7 +45,7 @@ type SidebarToggleButtonDivProps = {
   open: boolean;
 };
 const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
-  margin-right: ${(props) => (props.open ? '0px' : '-150px')};
+  margin-right: ${(props) => (props.open ? '0px' : '-140px')};
   transition: margin-right 200ms ease-in-out;
   z-index: 100;
 `;
@@ -61,7 +61,7 @@ const ProjectSidebar = () => {
         <SidebarTopButtonsDiv>
           <SidebarToggleButtonDiv open={open}>
             <IconButton
-              size="25px"
+              size="20px"
               foregroundColor={theme.sidebarIconFg}
               backgroundColor={theme.sidebarIconBg}
               onClick={toggleOpen}
