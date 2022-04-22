@@ -11,7 +11,7 @@ const createAppSlice = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _get: GetState<CalamusState>
 ) => ({
-  previewEnabled: false,
+  previewEnabled: true,
   setPreviewEnabled: (val: boolean) => {
     set(() => ({ previewEnabled: val }));
   },
