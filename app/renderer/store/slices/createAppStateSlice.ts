@@ -8,7 +8,8 @@ export interface AppSlice {
 
 const createAppSlice = (
   set: SetState<CalamusState>,
-  get: GetState<CalamusState>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _get: GetState<CalamusState>
 ) => ({
   previewEnabled: false,
   setPreviewEnabled: (val: boolean) => {
