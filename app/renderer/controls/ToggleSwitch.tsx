@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import useToggle from 'renderer/utils/toggle';
+import useToggle from '../utils/toggle';
 
 type ToggleSwitchProps = {
   defaultValue?: boolean;

@@ -1,20 +1,12 @@
 import {
   AutoformatRule,
   ELEMENT_BLOCKQUOTE,
-  ELEMENT_CODE_BLOCK,
-  ELEMENT_DEFAULT,
   ELEMENT_H1,
   ELEMENT_H2,
   ELEMENT_H3,
   ELEMENT_H4,
   ELEMENT_H5,
   ELEMENT_H6,
-  ELEMENT_HR,
-  getPluginType,
-  insertEmptyCodeBlock,
-  insertNodes,
-  PlateEditor,
-  setNodes,
 } from '@udecode/plate';
 import clearBlockFormat from './autoformatUtils';
 
