@@ -11,8 +11,8 @@ declare module 'styled-components' {
     sidebarFgText: string;
     sidebarFgTextSecondary: string;
     dropdownBg: {
-      default: string,
-      alt: string,
+      default: string;
+      alt: string;
     };
     dropdownText: string;
     dropdownArrow: string;
@@ -32,13 +32,13 @@ declare module 'styled-components' {
     checkSelectedBg: string;
     checkFg: string;
     toggleOffBg: {
-      default: string,
-      alt: string,
+      default: string;
+      alt: string;
     };
     toggleOffFg: {
-      default: string,
-      alt: string
-    }
+      default: string;
+      alt: string;
+    };
     toggleOnBg: string;
     toggleOnFg: string;
     radioOffBg: string;
@@ -63,6 +63,5 @@ declare module 'styled-components' {
     contextMenuExit: string;
     searchBg: string;
     searchPlaceholder: string;
-    };
   }
 }
