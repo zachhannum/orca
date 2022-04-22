@@ -12,10 +12,12 @@ import {
   UpdateIcon,
 } from '../icons';
 import icon from '../../../assets/icon.png';
+import useStore from '../store/useStore';
 
 const StyledPopupDiv = styled.div`
   width: 180px;
   background-color: ${(p) => p.theme.contextMenuBg};
+  backdrop-filter: blur(40px);
   border-radius: 10px;
   padding: 5px;
   display: flex;
@@ -33,6 +35,8 @@ const StyledMenuDivider = styled.div`
 
 const MoreOptionsSidebarMenu = () => {
   const theme = useTheme();
+  const previewEnabled = useStore((state) => state.previewEnabled);
+  const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
   return (
     <div>
       <Popup
@@ -73,9 +77,8 @@ const MoreOptionsSidebarMenu = () => {
             rightElement={
               <ToggleSwitch
                 altColor
-                onChange={(val) => {
-                  console.log(val);
-                }}
+                onChange={setPreviewEnabled}
+                defaultValue={previewEnabled}
               />
             }
             label="Preview"

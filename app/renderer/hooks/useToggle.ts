@@ -4,7 +4,6 @@ const useToggle = (initialValue = false): [boolean, () => void] => {
   const [value, setValue] = useState(initialValue);
 
   const toggle = useCallback(() => {
-    console.log('toggling value');
     setValue((v) => !v);
   }, []);
 

@@ -1,8 +1,8 @@
 import styled, { useTheme } from 'styled-components';
-import MoreOptionsSidebarMenu from './MoreOptionsSidebarMenu';
+import { MoreOptionsSidebarMenu } from '../components';
 import { IconButton } from '../controls';
 import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
-import useToggle from '../utils/toggle';
+import { useToggle } from '../hooks';
 
 type StyledSidebarProps = {
   open: boolean;
@@ -32,25 +32,20 @@ const SidebarTopContainer = styled.div`
   justify-content: space-between;
 `;
 
-const SidebarTopButtonsDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  flex-direction: row;
-  height: 100%;
-  gap: 10px;
-`;
-
 type SidebarToggleButtonDivProps = {
   open: boolean;
 };
 const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
-  margin-right: ${(props) => (props.open ? '0px' : '-140px')};
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  gap: 10px;
+  margin-right: ${(props) => (props.open ? '0px' : '-100px')};
   transition: margin-right 200ms ease-in-out;
   z-index: 100;
 `;
 
-const ProjectSidebar = () => {
+const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
 
@@ -58,22 +53,20 @@ const ProjectSidebar = () => {
     <StyledSidebar open={open} width="300px">
       <SidebarTopContainer>
         <div /* placeholder */ />
-        <SidebarTopButtonsDiv>
-          <SidebarToggleButtonDiv open={open}>
-            <IconButton
-              size="20px"
-              foregroundColor={theme.sidebarIconFg}
-              backgroundColor={theme.sidebarIconBg}
-              onClick={toggleOpen}
-            >
-              {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
-            </IconButton>
-          </SidebarToggleButtonDiv>
+        <SidebarToggleButtonDiv open={open}>
+          <IconButton
+            size="20px"
+            foregroundColor={theme.sidebarIconFg}
+            backgroundColor={theme.sidebarIconBg}
+            onClick={toggleOpen}
+          >
+            {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
+          </IconButton>
           <MoreOptionsSidebarMenu />
-        </SidebarTopButtonsDiv>
+        </SidebarToggleButtonDiv>
       </SidebarTopContainer>
     </StyledSidebar>
   );
 };
 
-export default ProjectSidebar;
+export default SidebarPane;

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import styled from 'styled-components';
-import useToggle from '../utils/toggle';
+import { useEffect, useState } from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import { useToggle, useIsMount } from '../hooks';
 
 type ToggleSwitchProps = {
   defaultValue?: boolean;
@@ -31,19 +31,38 @@ const StyledToggleBase = styled.div<StyledToggleBaseProps>`
 type StyledToggleThumbProps = {
   type: string;
   enabled: boolean;
+  animate: boolean;
 };
+
+const animateThumb = keyframes`
+  0% {
+    width: 11px;
+  }
+  50% {
+    width: 25px;
+  }
+  100% {
+    width: 11px;
+  }
+`;
 
 const StyledToggleThumb = styled.div<StyledToggleThumbProps>`
   height: 11px;
   width: 11px;
   border-radius: 8px;
   margin: 4px 2px;
+  ${(p) =>
+    p.animate &&
+    css`
+      animation: ${animateThumb} 300ms ease-in-out;
+    `}
+
   margin-left: ${(p) => (p.enabled ? '15px' : '2px')};
   background-color: ${(p) =>
     p.enabled ? p.theme.toggleOnFg : p.theme.toggleOffFg[p.type]};
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
   user-select: none;
-  transition: all 100ms ease-in-out;
+  transition: all 300ms ease-in-out;
 `;
 
 const ToggleSwitch = ({
@@ -52,10 +71,17 @@ const ToggleSwitch = ({
   onChange,
 }: ToggleSwitchProps) => {
   const [enabled, toggleValue] = useToggle(defaultValue);
-
+  const [animate, setAnimate] = useState(false);
+  const isMount = useIsMount();
   useEffect(() => {
-    if (onChange) onChange(enabled);
-  }, [enabled, onChange]);
+    if (!isMount) {
+      setAnimate(true);
+      if (onChange) onChange(enabled);
+      setTimeout(() => {
+        setAnimate(false);
+      }, 300);
+    }
+  }, [enabled, onChange, isMount]);
 
   return (
     <StyledToggleBase
@@ -64,6 +90,7 @@ const ToggleSwitch = ({
       onClick={toggleValue}
     >
       <StyledToggleThumb
+        animate={animate}
         enabled={enabled}
         type={altColor ? 'alt' : 'default'}
       />
@@ -72,8 +99,8 @@ const ToggleSwitch = ({
 };
 
 ToggleSwitch.defaultProps = {
-  defaultValue: true,
-  altColor: true,
+  defaultValue: false,
+  altColor: false,
   onChange: () => {},
 };
 
