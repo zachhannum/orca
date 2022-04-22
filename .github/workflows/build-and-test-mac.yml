@@ -1,14 +1,12 @@
-name: Test
+name: Build and Test Mac
 
-on: [push]
+on: [push, pull_request]
+  branches: master
+on
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-    if: ${{ false }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: [self-hosted, macOS]
 
     steps:
       - name: Check out Git repository
