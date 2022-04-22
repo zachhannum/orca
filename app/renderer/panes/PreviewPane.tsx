@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Previewer } from 'pagedjs';
 import useStore from '../store/useStore';
 import Test from '../pagedjs/test';
+import bookCss from '../pagedjs/book.css';
 
 type StyledPaneProps = {
   previewEnabled: boolean;
@@ -33,7 +34,7 @@ const Preview = styled.div`
   .pagedjs_pages {
     width: calc(var(--pagedjs-width));
     height: calc(var(--pagedjs-height));
-    transform: scale(0.5) translate(-2.125in, 0px) !important;
+    transform: scale(0.5) translate(-1.25in, 0px) !important;
     transform-origin: center center;
     display: flex;
     flex-direction: row;
@@ -52,7 +53,7 @@ const PreviewPane = () => {
       const flowText = document.querySelector('#flow');
       const renderTo = document.querySelector('#previewPane');
       const paged = new Previewer();
-      paged.preview(flowText, [], renderTo);
+      paged.preview(flowText, bookCss, renderTo);
       setPreviewRendered(true);
     }
   });
