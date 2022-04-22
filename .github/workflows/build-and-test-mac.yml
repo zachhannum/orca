@@ -1,14 +1,14 @@
-name: Test
+name: Build and Test Mac
 
-on: [push]
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-    if: ${{ false }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: [self-hosted, macOS]
 
     steps:
       - name: Check out Git repository
@@ -29,5 +29,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run package
-          npm exec tsc
           npm test

@@ -16,7 +16,6 @@ import {
   createDeserializeMdPlugin,
   createResetNodePlugin,
   createSoftBreakPlugin,
-  usePlateEditorRef,
 } from '@udecode/plate';
 import {
   autoFormatPluginOptions,
@@ -60,11 +59,6 @@ const WriterComp = () => {
       components: withStyledPlaceholders(createPlateUI(plateUiOverrides)),
     }
   );
-
-  const editor = usePlateEditorRef();
-  const debug = () => {
-    console.log(editor.children);
-  };
 
   return (
     <ScrollContainer>

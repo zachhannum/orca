@@ -32,7 +32,7 @@ body {
     align-items: center;
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.9em;
+    font-size: 0.8em;
 }
 
 h1 {
@@ -69,7 +69,7 @@ h1 {
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-    background: #4E4E57;
+    background: #35353a;
     border-radius: 5px;
 }
 

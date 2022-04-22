@@ -4,9 +4,11 @@ import { IconProps, IconPropDefaults } from './type';
 const IconDiv = styled.div<IconProps>`
   height: ${(props) => props.size};
   width: ${(props) => props.size};
+  overflow: hidden;
 `;
 
 const StyledSvg = styled.svg<IconProps>`
+  display: block;
   path {
     fill: ${(props) => props.color};
   }

@@ -1,3 +1,9 @@
 export { default as SidebarClosedIcon } from './SidebarClosedIcon';
 export { default as SidebarOpenIcon } from './SidebarOpenIcon';
 export { default as MoreVerticalIcon } from './MoreVerticalIcon';
+export { default as ExitIcon } from './ExitIcon';
+export { default as HelpIcon } from './HelpIcon';
+export { default as NewBookIcon } from './NewBookIcon';
+export { default as OpenBookIcon } from './OpenBookIcon';
+export { default as PreviewIcon } from './PreviewIcon';
+export { default as UpdateIcon } from './UpdateIcon';

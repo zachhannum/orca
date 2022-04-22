@@ -1,7 +1,7 @@
-import { useContext } from 'react';
 import styled, { useTheme } from 'styled-components';
+import MoreOptionsSidebarMenu from './MoreOptionsSidebarMenu';
 import { IconButton } from '../controls';
-import { SidebarOpenIcon, SidebarClosedIcon, MoreVerticalIcon } from '../icons';
+import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
 import useToggle from '../utils/toggle';
 
 type StyledSidebarProps = {
@@ -45,7 +45,7 @@ type SidebarToggleButtonDivProps = {
   open: boolean;
 };
 const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
-  margin-right: ${(props) => (props.open ? '0px' : '-150px')};
+  margin-right: ${(props) => (props.open ? '0px' : '-140px')};
   transition: margin-right 200ms ease-in-out;
   z-index: 100;
 `;
@@ -61,7 +61,7 @@ const ProjectSidebar = () => {
         <SidebarTopButtonsDiv>
           <SidebarToggleButtonDiv open={open}>
             <IconButton
-              size="25px"
+              size="20px"
               foregroundColor={theme.sidebarIconFg}
               backgroundColor={theme.sidebarIconBg}
               onClick={toggleOpen}
@@ -69,13 +69,7 @@ const ProjectSidebar = () => {
               {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
             </IconButton>
           </SidebarToggleButtonDiv>
-          <IconButton
-            size="25px"
-            foregroundColor={theme.sidebarIconFg}
-            backgroundColor="transparent"
-          >
-            <MoreVerticalIcon />
-          </IconButton>
+          <MoreOptionsSidebarMenu />
         </SidebarTopButtonsDiv>
       </SidebarTopContainer>
     </StyledSidebar>
