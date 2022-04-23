@@ -37,7 +37,8 @@
         "files": [
             "dist",
             "node_modules",
-            "package.json"
+            "package.json",
+            "./app/renderer/pagedjs/book.css"
         ],
         "afterSign": ".erb/scripts/notarize.js",
         "mac": {
@@ -85,7 +86,7 @@
             "output": "release/build"
         },
         "extraResources": [
-            "./assets/**"
+          {"from": "./assets/", "to": "."}
         ],
         "publish": {
             "provider": "github",
@@ -253,4 +254,4 @@
     "resolutions": {
         "styled-components": "5.3.5"
     }
-}
+  }
