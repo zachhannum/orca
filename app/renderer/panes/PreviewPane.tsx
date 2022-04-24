@@ -47,27 +47,36 @@ const PreviewPane = () => {
   function prev() {
     setPage(page - 1);
   }
-  const [docUrl, setDocUrl] = useState('');
+  const [docUrl, setDocUrl] = useState(
+    URL.createObjectURL(new Blob([alice], { type: 'text/html' }))
+  );
 
-  useEffect(() => {
-    const blob = URL.createObjectURL(new Blob([alice], { type: 'text/html' }));
-    console.log(blob);
-    setDocUrl(blob);
-  }, [previewEnabled]);
+  // useEffect(() => {
+  //   const setUrl = () => {
+  //     const blob = URL.createObjectURL(
+  //       new Blob([alice], { type: 'text/html' })
+  //     );
+  //     setDocUrl(blob);
+  //   };
+  //   setTimeout(() => {
+  //     setUrl();
+  //   }, 300);
+  // }, [previewEnabled]);
 
   return (
     <StyledPane previewEnabled={previewEnabled}>
       <PreviewDiv ref={previewRef} id="PreviewDiv">
+        <button onClick={prev}>Prev</button>
         <Renderer
           source={docUrl}
-          style={{ width: '50%', height: '50%' }}
+          background="transparent"
+          style={{ width: '75%', height: '75%' }}
           autoResize
           fitToScreen
           page={page}
           authorStyleSheet={baseStylesheet}
         />
         <button onClick={next}>Next</button>
-        <button onClick={prev}>Prev</button>
       </PreviewDiv>
       <Test />
     </StyledPane>

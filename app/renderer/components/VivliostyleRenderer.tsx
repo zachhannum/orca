@@ -254,7 +254,7 @@ const Renderer: React.FC<RendererProps> = ({
 };
 
 const Container = styled.div<Pick<RendererProps, 'background'>>`
-  overflow: scroll;
+  overflow: hidden;
   background: ${({ background }) => background};
   @media screen {
     [data-vivliostyle-page-container] {
@@ -262,9 +262,8 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
       z-index: 0;
     }
     [data-vivliostyle-viewer-viewport] {
-      background: transparent !important;
       display: flex;
-      overflow: auto;
+      overflow: hidden;
       position: relative;
     }
     [data-vivliostyle-outer-zoom-box] {
@@ -307,8 +306,14 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
       margin-right: auto;
       transform-origin: center top;
     }
+    [data-vivliostyle-spread-container] {
+      transform-origin: top left;
+    }
   }
   /* vivliostyle-viewport */
+  [data-vivliostyle-viewer-viewport] {
+    background: transparent;
+  }
   [data-vivliostyle-layout-box] {
     position: absolute;
     left: 0;
@@ -347,9 +352,6 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
     background: rgba(248, 248, 248, 0.9);
     border-radius: 2px;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-  }
-  [data-vivliostyle-page-container] {
-      transform: translate(-50%, -50%);
   }
   @media print {
     [data-vivliostyle-toc-box] {
