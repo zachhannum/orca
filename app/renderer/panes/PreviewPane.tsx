@@ -50,10 +50,6 @@ const PreviewPane = () => {
   const [docUrl, setDocUrl] = useState('');
 
   useEffect(() => {
-    const doc = document.implementation.createHTMLDocument('doc');
-    const articleContent = document.querySelector<HTMLTemplateElement>('#flow');
-    // doc.body.appendChild(articleContent?.firstChild);
-    // setDocUrl(doc);
     const blob = URL.createObjectURL(new Blob([alice], { type: 'text/html' }));
     console.log(blob);
     setDocUrl(blob);
@@ -64,7 +60,7 @@ const PreviewPane = () => {
       <PreviewDiv ref={previewRef} id="PreviewDiv">
         <Renderer
           source={docUrl}
-          style={{}}
+          style={{ width: '50%', height: '50%' }}
           autoResize
           fitToScreen
           page={page}

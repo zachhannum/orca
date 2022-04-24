@@ -97,6 +97,8 @@ const Renderer: React.FC<RendererProps> = ({
   }
 
   function loadSource() {
+    console.log("loading");
+    console.log(source);
     const instance = instanceRef.current!;
     const isPublication = source.endsWith('.json');
     const documentOptions = {
@@ -128,12 +130,11 @@ const Renderer: React.FC<RendererProps> = ({
       instance.loadDocument({ url: source }, documentOptions, {
         fontSize,
         pageViewMode,
-        zoom: 1,
         renderAllPages,
         autoResize,
         defaultPaperSize,
         pageBorderWidth,
-        fitToScreen: false,
+        fitToScreen: true,
       });
     }
   }
@@ -220,7 +221,7 @@ const Renderer: React.FC<RendererProps> = ({
   useEffect(() => {
     loadSource();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [source, authorStyleSheet, userStyleSheet]);
+  }, [source, authorStyleSheet, userStyleSheet, source]);
 
   useEffect(() => {
     setViewerOptions();
@@ -261,6 +262,7 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
       z-index: 0;
     }
     [data-vivliostyle-viewer-viewport] {
+      background: transparent !important;
       display: flex;
       overflow: auto;
       position: relative;
@@ -346,6 +348,9 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
     border-radius: 2px;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
   }
+  [data-vivliostyle-page-container] {
+      transform: translate(-50%, -50%);
+  }
   @media print {
     [data-vivliostyle-toc-box] {
       display: none;
@@ -354,7 +359,7 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
     [data-vivliostyle-spread-container] {
       width: 100% !important;
       height: 100% !important;
-    }
+    ,
     [data-vivliostyle-spread-container],
     [data-vivliostyle-page-container] {
       -moz-transform: none !important;
