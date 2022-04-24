@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { Renderer } from '@vivliostyle/react';
+import { VivliostyleRenderer as Renderer } from '../components';
 import useStore from '../store/useStore';
 import Test from '../pagedjs/test';
 import alice from './alice';

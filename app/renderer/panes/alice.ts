@@ -3,28 +3,7 @@ const alice = `<!DOCTYPE html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>Alice's Adventures in Wonderland, by Lewis Carroll</title>
-<link rel="stylesheet" href="gutenberg.css">
 <style>
-@font-face {
-	font-family: 'Crimson Text';
-	src: url('fonts/Crimson-Roman.ttf');
-}
-@font-face {
-	font-family: 'Crimson Text';
-	src: url('fonts/Crimson-Semibold.ttf');
-	font-weight: bold;
-}
-@font-face {
-	font-family: 'Crimson Text';
-	src: url('fonts/Crimson-Italic.ttf');
-	font-style: italic;
-}
-:root {
-	font-family: 'Crimson Text', Georgia, serif;
-	font-feature-settings: "onum", "swsh";
-}
-@page {
-	font-family: 'Crimson Text', Georgia, serif;
 	@top-center { content: "Alice’s Adventures in Wonderland"; }
 }
 .chap-num, h1, h2 {
@@ -38,7 +17,7 @@ h2 {
 	font-weight: normal;
 }
 .chap-num::after {
-	content: "\a";
+	content: "a";
 	white-space: pre-wrap;
 }
 .stars {
