@@ -26,7 +26,7 @@ const pagedmakerCSSDefault = `
     }
     .pagedjs_pages {
         overflow-y: hidden;
-        transform: scale(.5) translate(-2.5in,-4in);
+        transform: scale(.5) translate(0in,0in);
         width: var(--pagedjs-width-right);
         height: var(--pagedjs-height-right);
         display: flex;
@@ -42,7 +42,6 @@ const pagedmakerCSSDefault = `
         margin: 0;
         flex-shrink: 0;
         flex-grow: 0;
-        margin-top: 10mm;
     }
     .pagedjs_first_page {
       margin-left: 0;
@@ -67,6 +66,9 @@ body, html {
 }
 
 @page {
+    size: 5in 8in;
+    margin: .5in;
+    margin-top: .75in;
     @bottom-right{
         content: counter(page) "/" counter(pages);
     }
