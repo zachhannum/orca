@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { VivliostyleRenderer as Renderer } from '../components';
+import { VivliostyleRenderer, PagedRenderer } from '../components';
 import useStore from '../store/useStore';
-import Test from '../pagedjs/test';
 import alice from './alice';
-import {
-  pagedmakerCSSDefault,
-  baseStylesheet,
-} from '../pagedjs/defaultPageCss';
+import { baseStylesheet } from '../pagedjs/defaultPageCss';
+import { Test } from '../pagedjs/test';
 
 type StyledPaneProps = {
   previewEnabled: boolean;
@@ -38,7 +35,7 @@ const PreviewDiv = styled.div`
 const PreviewPane = () => {
   const previewEnabled = useStore((state) => state.previewEnabled);
   const previewRef = useRef<HTMLDivElement>(null);
-  const [page, setPage] = useState(7);
+  const [page, setPage] = useState(1);
 
   function next() {
     setPage(page + 1);
@@ -66,17 +63,20 @@ const PreviewPane = () => {
   return (
     <StyledPane previewEnabled={previewEnabled}>
       <PreviewDiv ref={previewRef} id="PreviewDiv">
-        <button onClick={prev}>Prev</button>
-        <Renderer
+        <button onClick={prev} type="button">
+          Prev
+        </button>
+        {/* <Renderer
           source={docUrl}
           background="transparent"
           style={{ width: '75%', height: '75%' }}
-          autoResize
-          fitToScreen
           page={page}
-          authorStyleSheet={baseStylesheet}
-        />
-        <button onClick={next}>Next</button>
+          authorStyleSheet={baseStylesheet.toString()}
+        /> */}
+        <PagedRenderer />
+        <button onClick={next} type="button">
+          Next
+        </button>
       </PreviewDiv>
       <Test />
     </StyledPane>

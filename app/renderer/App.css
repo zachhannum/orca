@@ -7,6 +7,11 @@
     --fallback-title-bar-height: 500px;
 }
 
+iframe
+{
+    display: none;
+}
+
 #titleBarContainer {
     position: absolute;
     top: env(titlebar-area-y, 0);

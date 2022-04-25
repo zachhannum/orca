@@ -45,6 +45,7 @@ Produced by Arthur DiBianca and David Widger
 </pre>
 </section>
 
+<section>
 <nav id="toc">
 	<h2>Contents</h2>
 	<ol>
@@ -62,8 +63,9 @@ Produced by Arthur DiBianca and David Widger
 		<li><a href="#link2HCH0012">Alice’s Evidence</a>
 	</ol>
 </nav>
+</section>
 <main>
-<section>
+<section class='chapterSection'>
     <h2 id="link2HCH0001">
 <span class="chap-num">Chapter I. </span>Down the Rabbit-Hole</h2>
     <p>

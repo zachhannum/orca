@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import styled from 'styled-components';
 import {
   CoreViewer,
   Navigation,
@@ -33,15 +34,8 @@ interface RendererProps {
   page?: number;
   zoom?: number;
   renderAllPages?: boolean;
-  autoResize?: boolean;
   pageViewMode?: PageViewMode;
-  defaultPaperSize?: {
-    width: number;
-    height: number;
-  };
   pageBorderWidth?: number;
-  fitToScreen?: boolean;
-  fontSize?: number;
   background?: string;
   userStyleSheet?: string;
   authorStyleSheet?: string;
@@ -54,204 +48,6 @@ interface RendererProps {
   onHyperlink?: (payload: HyperlinkPayload) => void;
   children?: React.ReactNode | ChildrenFunction;
 }
-
-const Renderer: React.FC<RendererProps> = ({
-  source,
-  page = 1,
-  zoom = 1,
-  fontSize = 16,
-  background = '#ececec',
-  renderAllPages = true,
-  autoResize = true,
-  pageViewMode = PageViewMode.SINGLE_PAGE,
-  defaultPaperSize,
-  pageBorderWidth = 1,
-  fitToScreen = false,
-  userStyleSheet,
-  authorStyleSheet,
-  style,
-  onMessage,
-  onError,
-  onReadyStateChange,
-  onLoad,
-  onNavigation,
-  onHyperlink,
-  children,
-}) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const instanceRef = useRef<CoreViewer>();
-  const stateRef = React.useRef<VolatileState>();
-
-  function setViewerOptions() {
-    const viewerOptions = {
-      fontSize,
-      pageViewMode,
-      zoom,
-      renderAllPages,
-      autoResize,
-      defaultPaperSize,
-      pageBorderWidth,
-      fitToScreen,
-    };
-    instanceRef.current!.setOptions(viewerOptions);
-  }
-
-  function loadSource() {
-    console.log("loading");
-    console.log(source);
-    const instance = instanceRef.current!;
-    const isPublication = source.endsWith('.json');
-    const documentOptions = {
-      ...(userStyleSheet
-        ? {
-            userStyleSheet: [
-              {
-                [userStyleSheet.endsWith('.css') ? 'url' : 'text']:
-                  userStyleSheet,
-              },
-            ],
-          }
-        : null),
-      ...(authorStyleSheet
-        ? {
-            authorStyleSheet: [
-              {
-                [authorStyleSheet.endsWith('.css') ? 'url' : 'text']:
-                  authorStyleSheet,
-              },
-            ],
-          }
-        : null),
-    };
-
-    if (isPublication) {
-      instance.loadPublication(source, documentOptions);
-    } else {
-      instance.loadDocument({ url: source }, documentOptions, {
-        fontSize,
-        pageViewMode,
-        renderAllPages,
-        autoResize,
-        defaultPaperSize,
-        pageBorderWidth,
-        fitToScreen: true,
-      });
-    }
-  }
-
-  function registerEventHandlers() {
-    function handleMessage(payload: Payload, type: MessageType) {
-      onMessage && onMessage(payload.content, type);
-    }
-
-    const handleDebug = (payload: Payload) => handleMessage(payload, 'debug');
-    const handleInfo = (payload: Payload) => handleMessage(payload, 'info');
-    const handleWarn = (payload: Payload) => handleMessage(payload, 'warn');
-
-    function handleError(payload: Payload) {
-      onError && onError(payload.content);
-    }
-
-    function handleReadyStateChange() {
-      const { readyState } = instanceRef.current!;
-      onReadyStateChange && onReadyStateChange(readyState);
-    }
-
-    function handleLoaded() {
-      onLoad && onLoad(stateRef.current!);
-    }
-
-    function handleNavigation(payload: NavigationPayload) {
-      const { docTitle, epageCount, epage, metadata } = payload;
-      const currentState = {
-        docTitle,
-        epageCount,
-        epage: epage as number,
-        metadata,
-      };
-      stateRef.current = currentState;
-      onNavigation && onNavigation(currentState);
-    }
-
-    function handleHyperlink(payload: HyperlinkPayload) {
-      onHyperlink && onHyperlink(payload);
-    }
-
-    const instance = instanceRef.current!;
-    instance.addListener('debug', handleDebug);
-    instance.addListener('info', handleInfo);
-    instance.addListener('warn', handleWarn);
-    instance.addListener('error', handleError);
-    instance.addListener('readystatechange', handleReadyStateChange);
-    instance.addListener('loaded', handleLoaded);
-    instance.addListener('nav', handleNavigation);
-    instance.addListener('hyperlink', handleHyperlink);
-
-    return () => {
-      onReadyStateChange && onReadyStateChange(ReadyState.LOADING);
-      instance.removeListener('debug', handleDebug);
-      instance.removeListener('info', handleInfo);
-      instance.removeListener('warn', handleWarn);
-      instance.removeListener('error', handleError);
-      instance.removeListener('readystatechange', handleReadyStateChange);
-      instance.removeListener('loaded', handleLoaded);
-      instance.removeListener('nav', handleNavigation);
-      instance.removeListener('hyperlink', handleHyperlink);
-      containerRef.current!.innerHTML = '';
-    };
-  }
-
-  function initInstance() {
-    instanceRef.current = new CoreViewer({
-      viewportElement: containerRef.current!,
-      debug: true,
-      userAgentRootURL: '/resources/',
-    });
-  }
-
-  // initialize document and event handlers
-  useEffect(() => {
-    initInstance();
-    setViewerOptions();
-
-    const cleanup = registerEventHandlers();
-    return cleanup;
-  }, []);
-
-  useEffect(() => {
-    loadSource();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [source, authorStyleSheet, userStyleSheet, source]);
-
-  useEffect(() => {
-    setViewerOptions();
-  }, [
-    fontSize,
-    pageViewMode,
-    zoom,
-    renderAllPages,
-    autoResize,
-    defaultPaperSize,
-    pageBorderWidth,
-    fitToScreen,
-  ]);
-
-  // sync location
-  useEffect(() => {
-    const epage = epageFromPageNumber(page);
-    instanceRef.current?.navigateToPage(Navigation.EPAGE, epage);
-  }, [page]);
-
-  const container = (
-    <Container ref={containerRef} style={style} background={background} />
-  );
-
-  if (typeof children === 'function' && children instanceof Function) {
-    return children({ container, reload: loadSource });
-  }
-
-  return container;
-};
 
 const Container = styled.div<Pick<RendererProps, 'background'>>`
   overflow: hidden;
@@ -375,11 +171,6 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
       height: 100% !important;
       max-height: 100%;
     }
-    /* Workaround for Chrome printing problem */
-    /* [data-vivliostyle-page-box] {
-        padding-bottom: 0 !important;
-        overflow: visible !important;
-    } */
     [data-vivliostyle-bleed-box] > div > div::before {
       display: block;
       content: '';
@@ -389,4 +180,206 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
   }
 `;
 
-export default Renderer;
+const VivliostyleRenderer: React.FC<RendererProps> = ({
+  source,
+  page = 1,
+  zoom = 1,
+  background = '#ececec',
+  renderAllPages = true,
+  pageViewMode = PageViewMode.SINGLE_PAGE,
+  pageBorderWidth = 1,
+  userStyleSheet,
+  authorStyleSheet,
+  style,
+  onMessage,
+  onError,
+  onReadyStateChange,
+  onLoad,
+  onNavigation,
+  onHyperlink,
+  children,
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const instanceRef = useRef<CoreViewer>();
+  const stateRef = React.useRef<VolatileState>();
+
+  function setViewerOptions() {
+    const viewerOptions = {
+      pageViewMode,
+      zoom,
+      renderAllPages,
+      pageBorderWidth,
+    };
+    instanceRef.current?.setOptions(viewerOptions);
+  }
+
+  function loadSource() {
+    console.log('loading');
+    console.log(source);
+    const instance = instanceRef.current!;
+    const isPublication = source.endsWith('.json');
+    const documentOptions = {
+      ...(userStyleSheet
+        ? {
+            userStyleSheet: [
+              {
+                [userStyleSheet.endsWith('.css') ? 'url' : 'text']:
+                  userStyleSheet,
+              },
+            ],
+          }
+        : null),
+      ...(authorStyleSheet
+        ? {
+            authorStyleSheet: [
+              {
+                [authorStyleSheet.endsWith('.css') ? 'url' : 'text']:
+                  authorStyleSheet,
+              },
+            ],
+          }
+        : null),
+    };
+
+    if (isPublication) {
+      instance.loadPublication(source, documentOptions);
+    } else {
+      instance.loadDocument({ url: source }, documentOptions, {
+        pageViewMode,
+        renderAllPages,
+        autoResize: true,
+        pageBorderWidth,
+        fitToScreen: true,
+      });
+    }
+  }
+
+  function registerEventHandlers() {
+    function handleMessage(payload: Payload, type: MessageType) {
+      if (onMessage) onMessage(payload.content, type);
+    }
+
+    const handleDebug = (payload: Payload) => handleMessage(payload, 'debug');
+    const handleInfo = (payload: Payload) => handleMessage(payload, 'info');
+    const handleWarn = (payload: Payload) => handleMessage(payload, 'warn');
+
+    function handleError(payload: Payload) {
+      if (onError) onError(payload.content);
+    }
+
+    function handleReadyStateChange() {
+      const { readyState } = instanceRef.current!;
+      if (onReadyStateChange) onReadyStateChange(readyState);
+    }
+
+    function handleLoaded() {
+      if (onLoad) onLoad(stateRef.current!);
+    }
+
+    function handleNavigation(payload: NavigationPayload) {
+      const { docTitle, epageCount, epage, metadata } = payload;
+      const currentState = {
+        docTitle,
+        epageCount,
+        epage: epage as number,
+        metadata,
+      };
+      stateRef.current = currentState;
+      if (onNavigation) onNavigation(currentState);
+    }
+
+    function handleHyperlink(payload: HyperlinkPayload) {
+      if (onHyperlink) onHyperlink(payload);
+    }
+
+    const instance = instanceRef.current!;
+    instance.addListener('debug', handleDebug);
+    instance.addListener('info', handleInfo);
+    instance.addListener('warn', handleWarn);
+    instance.addListener('error', handleError);
+    instance.addListener('readystatechange', handleReadyStateChange);
+    instance.addListener('loaded', handleLoaded);
+    instance.addListener('nav', handleNavigation);
+    instance.addListener('hyperlink', handleHyperlink);
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      onReadyStateChange && onReadyStateChange(ReadyState.LOADING);
+      instance.removeListener('debug', handleDebug);
+      instance.removeListener('info', handleInfo);
+      instance.removeListener('warn', handleWarn);
+      instance.removeListener('error', handleError);
+      instance.removeListener('readystatechange', handleReadyStateChange);
+      instance.removeListener('loaded', handleLoaded);
+      instance.removeListener('nav', handleNavigation);
+      instance.removeListener('hyperlink', handleHyperlink);
+      const container = containerRef.current!;
+      if (container) container.innerHTML = '';
+    };
+  }
+
+  function initInstance() {
+    instanceRef.current = new CoreViewer({
+      viewportElement: containerRef.current!,
+      debug: true,
+      userAgentRootURL: '/resources/',
+    });
+  }
+
+  // initialize document and event handlers
+  useEffect(() => {
+    initInstance();
+    setViewerOptions();
+
+    const cleanup = registerEventHandlers();
+    return cleanup;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    loadSource();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [source, authorStyleSheet, userStyleSheet, source]);
+
+  useEffect(() => {
+    setViewerOptions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageViewMode, zoom, renderAllPages, pageBorderWidth]);
+
+  // sync location
+  useEffect(() => {
+    const epage = epageFromPageNumber(page);
+    instanceRef.current?.navigateToPage(Navigation.EPAGE, epage);
+  }, [page]);
+
+  const container = (
+    <Container ref={containerRef} style={style} background={background} />
+  );
+
+  if (typeof children === 'function' && children instanceof Function) {
+    return children({ container, reload: loadSource });
+  }
+
+  return container;
+};
+
+VivliostyleRenderer.defaultProps = {
+  page: 1,
+  zoom: 1,
+  renderAllPages: true,
+  pageViewMode: PageViewMode.SINGLE_PAGE,
+  pageBorderWidth: 1,
+  background: '#ffffff',
+  userStyleSheet: ``,
+  authorStyleSheet: ``,
+  style: undefined,
+  onMessage: undefined,
+  onError: undefined,
+  onReadyStateChange: undefined,
+  onLoad: undefined,
+  onNavigation: undefined,
+  onHyperlink: undefined,
+  children: undefined,
+};
+
+export default VivliostyleRenderer;
