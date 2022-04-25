@@ -29,11 +29,6 @@ const Scaler = styled.div`
   transform: scale(0.5);
 `;
 
-// const previewer = new Previewer();
-const styleUrl = URL.createObjectURL(
-  new Blob([baseStylesheet.toString()], { type: 'text/css' })
-);
-
 const PagedRenderer = () => {
   const renderContainer = useRef<HTMLDivElement>(null);
   const previewEnabled = useStore((state) => state.previewEnabled);
@@ -55,7 +50,7 @@ const PagedRenderer = () => {
 
         initializeHandlers(chunker.current, polisher.current);
 
-        await polisher.current.add({ styleUrl: baseStylesheet.toString() });
+        await polisher.current.add({ '': baseStylesheet.toString() });
 
         chunker.current.flow(template.content, container);
       }
