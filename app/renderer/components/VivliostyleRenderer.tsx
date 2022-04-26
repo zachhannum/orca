@@ -157,7 +157,7 @@ const Container = styled.div<Pick<RendererProps, 'background'>>`
     [data-vivliostyle-spread-container] {
       width: 100% !important;
       height: 100% !important;
-    ,
+    }
     [data-vivliostyle-spread-container],
     [data-vivliostyle-page-container] {
       -moz-transform: none !important;

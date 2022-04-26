@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState, useRef, useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import { VivliostyleRenderer, PagedRenderer } from '../components';
+import styled, { useTheme } from 'styled-components';
+import { PagedRenderer } from '../components';
 import useStore from '../store/useStore';
 import alice from './alice';
-import { baseStylesheet } from '../pagedjs/defaultPageCss';
 import { Test } from '../pagedjs/test';
+import { IconButton } from '../controls';
+import { PageRightIcon, PageLeftIcon } from '../icons';
 
 type StyledPaneProps = {
   previewEnabled: boolean;
@@ -27,6 +28,8 @@ const PreviewDiv = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
+  flex-direction: row;
+  gap: 20px;
   align-items: center;
   align-content: center;
   justify-content: center;
@@ -34,14 +37,14 @@ const PreviewDiv = styled.div`
 
 const PreviewPane = () => {
   const previewEnabled = useStore((state) => state.previewEnabled);
-  const previewRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
+  const theme = useTheme();
 
-  function next() {
+  const next = () => {
     setPage(page + 1);
-  }
+  };
 
-  function prev() {
+  const prev = () => {
     setPage(page - 1);
   }
   const [docUrl, setDocUrl] = useState(
@@ -62,21 +65,31 @@ const PreviewPane = () => {
 
   return (
     <StyledPane previewEnabled={previewEnabled}>
-      <PreviewDiv ref={previewRef} id="PreviewDiv">
-        <button onClick={prev} type="button">
-          Prev
-        </button>
-        {/* <Renderer
+      <PreviewDiv>
+        <IconButton
+          size="11px"
+          foregroundColor={theme.previewArrow}
+          scaleOnHover
+          onClick={prev}
+        >
+          <PageLeftIcon />
+        </IconButton>
+        {/* <VivliostyleRenderer
           source={docUrl}
           background="transparent"
           style={{ width: '75%', height: '75%' }}
           page={page}
           authorStyleSheet={baseStylesheet.toString()}
         /> */}
-        <PagedRenderer />
-        <button onClick={next} type="button">
-          Next
-        </button>
+        <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
+        <IconButton
+          size="11px"
+          foregroundColor={theme.previewArrow}
+          scaleOnHover
+          onClick={next}
+        >
+          <PageRightIcon />
+        </IconButton>
       </PreviewDiv>
       <Test />
     </StyledPane>

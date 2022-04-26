@@ -7,3 +7,5 @@ export { default as NewBookIcon } from './NewBookIcon';
 export { default as OpenBookIcon } from './OpenBookIcon';
 export { default as PreviewIcon } from './PreviewIcon';
 export { default as UpdateIcon } from './UpdateIcon';
+export { default as PageLeftIcon } from './PageLeftIcon';
+export { default as PageRightIcon } from './PageRightIcon';

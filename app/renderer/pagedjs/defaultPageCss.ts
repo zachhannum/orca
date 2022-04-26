@@ -3,14 +3,17 @@
 import { css } from 'styled-components';
 
 const baseStylesheet = css`
-  section {
+  section p {
     font-family: 'Crimson Pro', serif;
+    text-align: justify;
   }
 
   @page {
     size: 5in 8in;
     margin: 0.5in;
     margin-top: 0.75in;
+    font-family: 'Crimson Pro', serif;
+    font-size: 12pt;
     /* marks: crop; */
 
     @top-center {

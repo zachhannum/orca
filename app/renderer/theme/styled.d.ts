@@ -63,5 +63,6 @@ declare module 'styled-components' {
     contextMenuExit: string;
     searchBg: string;
     searchPlaceholder: string;
+    paperBg: string;
   }
 }
