@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { PagedRenderer } from '../components';
 import useStore from '../store/useStore';
-import alice from './alice';
-import { Test } from '../pagedjs/test';
+// import alice from './alice';
+import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
 
@@ -46,10 +46,10 @@ const PreviewPane = () => {
 
   const prev = () => {
     setPage(page - 1);
-  }
-  const [docUrl, setDocUrl] = useState(
-    URL.createObjectURL(new Blob([alice], { type: 'text/html' }))
-  );
+  };
+  // const [docUrl, setDocUrl] = useState(
+  //   URL.createObjectURL(new Blob([alice], { type: 'text/html' }))
+  // );
 
   // useEffect(() => {
   //   const setUrl = () => {

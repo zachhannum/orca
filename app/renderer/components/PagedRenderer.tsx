@@ -2,9 +2,9 @@ import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
 import { baseStylesheet } from '../pagedjs/defaultPageCss';
-import { TestContent } from '../pagedjs/test';
+import { TestContent } from '../pagedjs/pagedTestContent';
 import { useResizeObserver } from '../hooks';
-import useStore from '../store/useStore';
+// import useStore from '../store/useStore';
 
 const StyledRenderer = styled.div`
   height: 70%;
@@ -15,21 +15,19 @@ const StyledRenderer = styled.div`
 `;
 
 const PageContainer = styled.div`
-  overflow: scroll;
+  overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.7) 0px 20px 35px;
+  background-color: ${(p) => p.theme.paperBg};
   border-radius: 5px;
   .pagedjs_pages {
     display: flex;
     flex-direction: row;
   }
   .pagedjs_page {
-    background-color: #ffffff;
+    background-color: ${(p) => p.theme.paperBg};
   }
   height: var(--pagedjs-height);
   width: var(--pagedjs-width);
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 type ScalerProps = {
@@ -47,7 +45,7 @@ type PagedRendererProps = {
 const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<HTMLDivElement>(null);
-  const previewEnabled = useStore((state) => state.previewEnabled);
+  // const previewEnabled = useStore((state) => state.previewEnabled);
   const polisher = useRef<Polisher>(null);
   const chunker = useRef<Chunker>(null);
   const [scale, setScale] = useState<number>(0.5);
