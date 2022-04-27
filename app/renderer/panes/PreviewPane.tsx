@@ -14,8 +14,8 @@ type StyledPaneProps = {
 
 const StyledPane = styled.div<StyledPaneProps>`
   height: 100%;
-  width: 600px;
-  margin-right: ${(p) => (p.previewEnabled ? '0px' : '-600px')};
+  width: 400px;
+  margin-right: ${(p) => (p.previewEnabled ? '0px' : '-400px')};
   background-color: ${(p) => p.theme.previewBg};
   transition: margin-right 300ms ease-in-out;
   display: flex;

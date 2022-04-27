@@ -130,7 +130,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       <Scaler scale={scale}>
         <PageContainer ref={pageContainerRef} />
       </Scaler>
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           handleFontChange(true);
@@ -145,7 +145,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
         }}
       >
         Font -
-      </button>
+      </button> */}
     </StyledRenderer>
   );
 };
