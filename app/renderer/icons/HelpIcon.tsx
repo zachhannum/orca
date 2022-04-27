@@ -1,9 +1,9 @@
 import Icon from './Icon';
 import { IconProps, IconPropDefaults } from './type';
 
-const HelpIcon = ({ size, color }: IconProps) => {
+const HelpIcon = (props: IconProps) => {
   return (
-    <Icon size={size} color={color}>
+    <Icon {...props}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -9,3 +9,7 @@ export { default as PreviewIcon } from './PreviewIcon';
 export { default as UpdateIcon } from './UpdateIcon';
 export { default as PageLeftIcon } from './PageLeftIcon';
 export { default as PageRightIcon } from './PageRightIcon';
+export { default as WinCloseIcon } from './WinCloseIcon';
+export { default as WinMaximizeIcon } from './WinMaximizeIcon';
+export { default as WinMinimizeIcon } from './WinMinimizeIcon';
+export { default as WinRestoreIcon } from './WinRestoreIcon';

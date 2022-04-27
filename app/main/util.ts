@@ -16,3 +16,15 @@ if (process.env.NODE_ENV === 'development') {
     return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
   };
 }
+
+export const getPlatformWindowSettings = () => {
+  if (process.platform === 'darwin') {
+    return {
+      titleBarOverlay: {
+        color: '#29292E',
+        symbolColor: '#F0F0F8',
+      },
+    };
+  }
+  return {};
+};

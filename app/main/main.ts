@@ -13,7 +13,7 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
+import { getPlatformWindowSettings, resolveHtmlPath } from './util';
 
 export default class AppUpdater {
   constructor() {
@@ -29,6 +29,19 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+ipcMain.on('window', async (_event, arg) => {
+  if (mainWindow) {
+    if (arg === 'close') {
+      mainWindow.close();
+    } else if (arg === 'toggleMaximize') {
+      if (mainWindow.isMaximized()) mainWindow.restore();
+      else mainWindow.maximize();
+    } else if (arg === 'minimize') {
+      mainWindow.minimize();
+    }
+  }
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -80,14 +93,10 @@ const createWindow = async () => {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
-      // nodeIntegration: true,
-      // contextIsolation: false,
     },
     titleBarStyle: 'hidden',
-    titleBarOverlay: {
-      color: '#29292E',
-      symbolColor: '#F0F0F8',
-    },
+    backgroundColor: '#29292E',
+    ...getPlatformWindowSettings(),
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));

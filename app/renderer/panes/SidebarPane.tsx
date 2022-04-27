@@ -24,7 +24,9 @@ const StyledSidebar = styled.div<StyledSidebarProps>`
 
 const SidebarTopContainer = styled.div`
   display: flex;
-  padding-top: calc(env(titlebar-area-height, 500px) + 20px);
+  padding-top: calc(
+    env(titlebar-area-height, var(--fallback-title-bar-height)) + 20px
+  );
   padding-left: 30px;
   padding-right: 30px;
   flex-direction: row;
@@ -55,7 +57,7 @@ const SidebarPane = () => {
         <div /* placeholder */ />
         <SidebarToggleButtonDiv open={open}>
           <IconButton
-            size="20px"
+            iconSize="20px"
             foregroundColor={theme.sidebarIconFg}
             backgroundColor={theme.sidebarIconBg}
             onClick={toggleOpen}

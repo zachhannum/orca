@@ -44,7 +44,7 @@ const MoreOptionsSidebarMenu = () => {
           // This is for sure hacky using the div since IconButton does not support ref. Should fix in the future
           <div>
             <IconButton
-              size="20px"
+              iconSize="20px"
               foregroundColor={theme.sidebarIconFg}
               backgroundColor="transparent"
               onClick={() => {}} // Do nothing since Popup is using the <div> click. We just need IconButton for the visuals.

@@ -1,4 +1,9 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import {
+  contextBridge,
+  ipcRenderer,
+  IpcRendererEvent,
+  ipcMain,
+} from 'electron';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
@@ -26,4 +31,11 @@ contextBridge.exposeInMainWorld('electron', {
       }
     },
   },
+});
+
+contextBridge.exposeInMainWorld('calamusApi', {
+  os: () => process.platform,
+  closeWindow: () => ipcRenderer.send('window', 'close'),
+  toggleMaximized: () => ipcRenderer.send('window', 'toggleMaximize'),
+  minimize: () => ipcRenderer.send('window', 'minimize'),
 });
