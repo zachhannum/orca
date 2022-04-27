@@ -102,6 +102,7 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
+    console.log('Hello world!');
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -110,6 +111,14 @@ const createWindow = async () => {
     } else {
       mainWindow.show();
     }
+  });
+
+  mainWindow.on('maximize', () => {
+    mainWindow?.webContents.send('window', 'maximize');
+  });
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow?.webContents.send('window', 'unmaximize');
   });
 
   mainWindow.on('closed', () => {

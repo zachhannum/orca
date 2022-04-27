@@ -1,6 +1,12 @@
 import styled, { useTheme } from 'styled-components';
+import { useIsWindowMaxized } from '../hooks';
 import IconButton from './IconButton';
-import { WinCloseIcon, WinMaximizeIcon, WinMinimizeIcon } from '../icons';
+import {
+  WinCloseIcon,
+  WinMaximizeIcon,
+  WinMinimizeIcon,
+  WinRestoreIcon,
+} from '../icons';
 
 const StyledWinControls = styled.div`
   display: flex;
@@ -14,10 +20,11 @@ const StyledWinControls = styled.div`
 
 const WinControls = () => {
   const theme = useTheme();
+  const maximized = useIsWindowMaxized();
   const buttonConfig = {
-    iconSize: '10px',
-    height: '20px',
-    width: '30px',
+    iconSize: '12px',
+    height: '25px',
+    width: '40px',
     roundCorners: false,
     backgroundColor: '#00000026',
     onlyShowBackgroundOnHover: true,
@@ -32,7 +39,11 @@ const WinControls = () => {
         <WinMinimizeIcon {...iconConfig} />
       </IconButton>
       <IconButton {...buttonConfig} onClick={window.calamusApi.toggleMaximized}>
-        <WinMaximizeIcon {...iconConfig} />
+        {maximized ? (
+          <WinRestoreIcon {...iconConfig} />
+        ) : (
+          <WinMaximizeIcon {...iconConfig} />
+        )}
       </IconButton>
       <IconButton
         {...buttonConfig}
