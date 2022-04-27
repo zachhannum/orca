@@ -50,9 +50,9 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const printParagraphFontSize = useStore(
     (state) => state.printParagraphFontSize
   );
-  const setPrintParagraphFontSize = useStore(
-    (state) => state.setPrintParagraphFontSize
-  );
+  // const setPrintParagraphFontSize = useStore(
+  //   (state) => state.setPrintParagraphFontSize
+  // );
   const polisher = useRef<Polisher>(null);
   const chunker = useRef<Chunker>(null);
   const [scale, setScale] = useState<number>(0.5);
@@ -118,12 +118,12 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [printParagraphFontSize]);
 
-  const handleFontChange = (increase: boolean) => {
-    const newFontSize = increase
-      ? printParagraphFontSize + 1
-      : printParagraphFontSize - 1;
-    setPrintParagraphFontSize(newFontSize);
-  };
+  // const handleFontChange = (increase: boolean) => {
+  //   const newFontSize = increase
+  //     ? printParagraphFontSize + 1
+  //     : printParagraphFontSize - 1;
+  //   setPrintParagraphFontSize(newFontSize);
+  // };
 
   return (
     <StyledRenderer ref={rendererRef}>
