@@ -50,7 +50,7 @@ TODO
 Clone the project
 
 ```bash
-  git clone https://github.com/Louis3797/awesome-readme-template.git
+  git clone https://github.com/midnightprioriem/calamus.git
 ```
 
 Go to the project directory
@@ -88,7 +88,7 @@ To run tests, run the following command
  - [⚡ Electron](https://www.electronjs.org/)
  - [⚛️ React](https://reactjs.org/)
  - [🏗️ Electron React Boilerplate](https://electron-react-boilerplate.js.org/)
- - [📝 Slate][https://docs.slatejs.org/]
+ - [📝 Slate](https://docs.slatejs.org/)
  - [💅 Styled Components](https://styled-components.com/)
  - [🐻 Zustand](https://github.com/pmndrs/zustand)
  - [📖 pagedjs](https://pagedjs.org/)

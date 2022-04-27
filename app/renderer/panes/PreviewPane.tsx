@@ -3,7 +3,6 @@ import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { PagedRenderer } from '../components';
 import useStore from '../store/useStore';
-// import alice from './alice';
 import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
@@ -47,43 +46,21 @@ const PreviewPane = () => {
   const prev = () => {
     setPage(page - 1);
   };
-  // const [docUrl, setDocUrl] = useState(
-  //   URL.createObjectURL(new Blob([alice], { type: 'text/html' }))
-  // );
-
-  // useEffect(() => {
-  //   const setUrl = () => {
-  //     const blob = URL.createObjectURL(
-  //       new Blob([alice], { type: 'text/html' })
-  //     );
-  //     setDocUrl(blob);
-  //   };
-  //   setTimeout(() => {
-  //     setUrl();
-  //   }, 300);
-  // }, [previewEnabled]);
 
   return (
     <StyledPane previewEnabled={previewEnabled}>
       <PreviewDiv>
         <IconButton
-          size="11px"
+          iconSize="11px"
           foregroundColor={theme.previewArrow}
           scaleOnHover
           onClick={prev}
         >
           <PageLeftIcon />
         </IconButton>
-        {/* <VivliostyleRenderer
-          source={docUrl}
-          background="transparent"
-          style={{ width: '75%', height: '75%' }}
-          page={page}
-          authorStyleSheet={baseStylesheet.toString()}
-        /> */}
         <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
         <IconButton
-          size="11px"
+          iconSize="11px"
           foregroundColor={theme.previewArrow}
           scaleOnHover
           onClick={next}

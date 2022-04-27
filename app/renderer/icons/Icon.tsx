@@ -14,7 +14,7 @@ const StyledSvg = styled.svg<IconProps>`
   }
 `;
 
-const Icon = ({ size, color, children }: IconProps) => {
+const Icon = ({ size, color, shapeRendering, children }: IconProps) => {
   return (
     <IconDiv size={size}>
       <StyledSvg
@@ -24,6 +24,7 @@ const Icon = ({ size, color, children }: IconProps) => {
         viewBox="0 0 40 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        shapeRendering={shapeRendering}
       >
         {children}
       </StyledSvg>

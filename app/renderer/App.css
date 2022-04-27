@@ -4,7 +4,7 @@
  */
 
  :root {
-    --fallback-title-bar-height: 500px;
+    --fallback-title-bar-height: 25px;
 }
 
 iframe

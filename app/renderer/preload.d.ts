@@ -1,3 +1,9 @@
+export interface CalamusApi {
+  os: () => string;
+  closeWindow: () => void;
+  toggleMaximized: () => void;
+  minimize: () => void;
+}
 declare global {
   interface Window {
     electron: {
@@ -10,6 +16,7 @@ declare global {
         once(channel: string, func: (...args: unknown[]) => void): void;
       };
     };
+    calamusApi: CalamusApi;
   }
 }
 
