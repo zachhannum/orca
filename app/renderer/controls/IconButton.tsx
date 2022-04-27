@@ -1,12 +1,13 @@
 import React from 'react';
 import Color from 'color';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type IconButtonProps = {
   size?: string;
   foregroundColor?: string;
   backgroundColor?: string;
   colorAdjustment?: number;
+  scaleOnHover?: boolean;
   onClick?: () => void;
   children: React.ReactElement;
 };
@@ -16,6 +17,7 @@ type IconAnchorProps = {
   backgroundColor?: string;
   foregroundColor?: string;
   hoverBackgroundColor?: string;
+  scaleOnHover?: boolean;
   hoverForegroundColor?: string;
   activeBackgroundColor?: string;
   activeForegroundColor?: string;
@@ -34,6 +36,18 @@ const IconAnchor = styled.a<IconAnchorProps>`
   &:hover {
     background: ${(props) => props.hoverBackgroundColor};
   }
+
+  ${(p) =>
+    p.scaleOnHover &&
+    css`
+      &:hover {
+        transform: scale(1.1);
+      }
+      &:active {
+        transform: scale(1);
+      }
+    `}
+
   &:hover path {
     fill: ${(props) => props.hoverForegroundColor} !important;
   }
@@ -50,6 +64,7 @@ const IconButton = ({
   foregroundColor,
   backgroundColor,
   colorAdjustment,
+  scaleOnHover,
   onClick = () => {},
   children,
 }: IconButtonProps) => {
@@ -67,6 +82,7 @@ const IconButton = ({
       hoverBackgroundColor={hoverBackgroundColor}
       activeForegroundColor={activeForegroundColor}
       activeBackgroundColor={activeBackgroundColor}
+      scaleOnHover={scaleOnHover}
       size={size}
     >
       {React.cloneElement(children, {
@@ -79,8 +95,9 @@ const IconButton = ({
 IconButton.defaultProps = {
   size: '40px',
   foregroundColor: '#a7a7a7',
-  backgroundColor: '#3b3b3b',
+  backgroundColor: 'transparent',
   colorAdjustment: 0.2,
+  scaleOnHover: false,
   onClick: () => {
     console.log('Icon Button clicked!');
   },

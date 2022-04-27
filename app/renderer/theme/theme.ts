@@ -60,6 +60,7 @@ const theme: DefaultTheme = {
   contextMenuExit: 'rgba(255, 85, 74, 1)',
   searchBg: 'rgba(41, 41, 46, 1)',
   searchPlaceholder: 'rgba(132, 132, 136, 1)',
+  paperBg: '#f5f2eb',
 };
 
 export default theme;

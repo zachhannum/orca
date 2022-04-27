@@ -7,6 +7,11 @@
     --fallback-title-bar-height: 500px;
 }
 
+iframe
+{
+    display: none;
+}
+
 #titleBarContainer {
     position: absolute;
     top: env(titlebar-area-y, 0);
@@ -25,7 +30,6 @@
 body {
     position: relative;
     height: 100vh;
-    font-family: sans-serif;
     overflow-y: hidden;
     display: flex;
     justify-content: center;
@@ -33,10 +37,6 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     font-size: 0.9em;
-}
-
-h1 {
-    text-align: center;
 }
 
 

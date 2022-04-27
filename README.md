@@ -28,22 +28,21 @@ Calamus is a React Electron application for writing and publishing novels.
 
 For a feature roadmap, please visit our <a href="https://github.com/midnightprioriem/calamus/projects/2" target="_blank">Project Board</a>.
 
-<!-- Getting Started -->
-## 	:toolbox: Getting Started
-
-<!-- Prerequisites -->
-### :bangbang: Prerequisites
-
-This project uses Yarn as package manager
-
-```bash
- npm install --global yarn
-```
 
 <!-- Installation -->
 ### :gear: Installation
 
-Install calamus TODO
+Download the [latest release here](https://github.com/midnightprioriem/calamus/releases).
+
+
+
+## ⌨️ Contributing 
+
+<details>
+
+### 📜 Contribution Guidelines
+
+TODO
 
 <!-- Run Locally -->
 ### :running: Run Locally
@@ -66,7 +65,7 @@ Install dependencies
   yarn install
 ```
 
-Start the server
+Start the app
 
 ```bash
   yarn start
@@ -78,34 +77,19 @@ Start the server
 To run tests, run the following command
 
 ```bash
-  yarn test test
+  yarn test
 ```
 
-
-<!-- Deployment -->
-### :triangular_flag_on_post: Deployment
-
-To deploy this project run
-
-```bash
-  yarn deploy
-```
-
-
-<!-- Roadmap -->
-## :compass: Roadmap
-
-
-<!-- Code of Conduct -->
-### :scroll: Code of Conduct
-
-Please read the [Code of Conduct](https://github.com/Louis3797/awesome-readme-template/blob/master/CODE_OF_CONDUCT.md)
+</details>
 
 <!-- Acknowledgments -->
 ## :gem: Acknowledgements
 
-Use this section to mention useful resources and libraries that you have used in your projects.
-
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
+ - [⚡ Electron](https://www.electronjs.org/)
+ - [⚛️ React](https://reactjs.org/)
+ - [🏗️ Electron React Boilerplate](https://electron-react-boilerplate.js.org/)
+ - [📝 Slate][https://docs.slatejs.org/]
+ - [💅 Styled Components](https://styled-components.com/)
+ - [🐻 Zustand](https://github.com/pmndrs/zustand)
+ - [📖 pagedjs](https://pagedjs.org/)
 

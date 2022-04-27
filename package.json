@@ -85,7 +85,7 @@
             "output": "release/build"
         },
         "extraResources": [
-            "./assets/**"
+              "./assets/**"
         ],
         "publish": {
             "provider": "github",
@@ -195,6 +195,7 @@
         "react-refresh": "^0.12.0",
         "react-refresh-typescript": "^2.0.4",
         "react-test-renderer": "^18.0.0",
+        "resize-observer-polyfill": "^1.5.1",
         "rimraf": "^3.0.2",
         "sass": "^1.49.11",
         "sass-loader": "^12.6.0",
@@ -212,15 +213,19 @@
         "webpack-merge": "^5.8.0"
     },
     "dependencies": {
+        "@openfonts/crimson-pro_latin": "^1.44.3",
         "@openfonts/poppins_latin": "^1.44.5",
         "@udecode/plate": "^10.6.3",
+        "@vivliostyle/core": "^2.14.6",
         "color": "^4.2.3",
         "electron-debug": "^3.2.0",
         "electron-log": "^4.4.6",
         "electron-updater": "^4.6.5",
         "history": "^5.3.0",
+        "pagedjs": "^0.2.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
+        "react-frame-component": "^5.2.1",
         "react-router-dom": "^6.3.0",
         "reactjs-popup": "^2.0.5",
         "slate": "^0.77.0",
@@ -233,9 +238,6 @@
     "devEngines": {
         "node": ">=14.x",
         "npm": ">=7.x"
-    },
-    "collective": {
-        "url": "https://opencollective.com/electron-react-boilerplate-594"
     },
     "browserslist": [],
     "prettier": {
