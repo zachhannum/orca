@@ -13,8 +13,8 @@ type StyledPaneProps = {
 
 const StyledPane = styled.div<StyledPaneProps>`
   height: 100%;
-  width: 400px;
-  margin-right: ${(p) => (p.previewEnabled ? '0px' : '-400px')};
+  width: 500px;
+  margin-right: ${(p) => (p.previewEnabled ? '0px' : '-500px')};
   background-color: ${(p) => p.theme.previewBg};
   transition: margin-right 300ms ease-in-out;
   display: flex;
@@ -49,25 +49,27 @@ const PreviewPane = () => {
 
   return (
     <StyledPane previewEnabled={previewEnabled}>
-      <PreviewDiv>
-        <IconButton
-          iconSize="11px"
-          foregroundColor={theme.previewArrow}
-          scaleOnHover
-          onClick={prev}
-        >
-          <PageLeftIcon />
-        </IconButton>
-        <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
-        <IconButton
-          iconSize="11px"
-          foregroundColor={theme.previewArrow}
-          scaleOnHover
-          onClick={next}
-        >
-          <PageRightIcon />
-        </IconButton>
-      </PreviewDiv>
+      {previewEnabled && (
+        <PreviewDiv>
+          <IconButton
+            iconSize="11px"
+            foregroundColor={theme.previewArrow}
+            scaleOnHover
+            onClick={prev}
+          >
+            <PageLeftIcon />
+          </IconButton>
+          <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
+          <IconButton
+            iconSize="11px"
+            foregroundColor={theme.previewArrow}
+            scaleOnHover
+            onClick={next}
+          >
+            <PageRightIcon />
+          </IconButton>
+        </PreviewDiv>
+      )}
       <Test />
     </StyledPane>
   );

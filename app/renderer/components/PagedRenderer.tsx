@@ -55,18 +55,38 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   // );
   const polisher = useRef<Polisher>(null);
   const chunker = useRef<Chunker>(null);
-  const [scale, setScale] = useState<number>(0.5);
+  const [scale, setScale] = useState(0.5);
+  const [prevPage, setPrevPage] = useState(1);
   const [page, setPage] = useState(1);
+  const [overflow, setOverflow] = useState(false);
 
-  const navigateToPage = (newPage: number, instant = false) => {
-    const navigatePage = document.querySelector(
-      `[data-page-number="${newPage}"]`
-    );
-    if (navigatePage) {
-      navigatePage.scrollIntoView({ behavior: instant ? 'auto' : 'smooth' });
-      setPage(newPage);
-    } else {
-      onPageOverflow(page);
+  const navigateToPage = (newPage: number, _instant = false) => {
+    const pageContainer = pageContainerRef.current;
+    if (pageContainer) {
+      const navigatePage = pageContainer.querySelector<HTMLElement>(
+        `[data-page-number="${newPage}"]`
+      );
+      if (navigatePage) {
+        navigatePage.style.display = '';
+        navigatePage.scrollIntoView();
+        const prevPageElement = pageContainer.querySelector<HTMLElement>(
+          `[data-page-number="${prevPage}"]`
+        );
+        setPage(newPage);
+        if (prevPageElement && !overflow) {
+          prevPageElement.style.display = 'none';
+          setPrevPage(newPage);
+          document.documentElement.style.setProperty(
+            '--pagedjs-page-counter-increment',
+            `${newPage}`
+          );
+        } else if (overflow) {
+          setOverflow(false);
+        }
+      } else {
+        setOverflow(true);
+        onPageOverflow(page);
+      }
     }
   };
 
@@ -98,7 +118,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       if (chunker.current) chunker.current.destroy();
       polisher.current = new Polisher();
       chunker.current = new Chunker();
-      if (polisher.current && chunker.current) {
+      if (polisher.current && chunker.current && container) {
         polisher.current.setup();
         initializeHandlers(chunker.current, polisher.current);
         await polisher.current.add({
@@ -106,9 +126,16 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
             paragraphFontSize: printParagraphFontSize,
           }).toString(),
         });
-        chunker.current.flow(template.content, container);
+        await chunker.current.flow(template.content, container);
         setPage(1);
         onPageOverflow(1);
+        const paged = container.children[0];
+        if (paged) {
+          const pages = paged.children;
+          for (let i = 1; i < pages.length; i += 1) {
+            (pages[i] as HTMLElement).style.display = 'none';
+          }
+        }
       }
     }
   };
