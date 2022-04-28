@@ -1,7 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-const Scroller = styled.div`
+type ScrollerProps = {
+  win32: boolean;
+};
+
+const Scroller = styled.div<ScrollerProps>`
   overflow-y: overlay;
   height: 100%;
   width: calc(100% - 100px);
@@ -12,6 +16,28 @@ const Scroller = styled.div`
   justify-content: flex-start;
   padding-right: 50px;
   padding-left: 50px;
+
+  ${(p) =>
+    p.win32 &&
+    css`
+      background-color: rgba(0, 0, 0, 0);
+      -webkit-background-clip: text;
+      transition: background-color 0.8s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+      }
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        display: none;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: inherit;
+      }
+    `}
 `;
 
 const Padding = styled.div`
@@ -25,8 +51,10 @@ type Props = {
   children: React.ReactNode;
 };
 
+const platform = window.calamusApi.os();
+
 const ScrollContainer = ({ children }: Props) => (
-  <Scroller>
+  <Scroller win32={platform === 'win32'}>
     <Padding>{children}</Padding>
   </Scroller>
 );

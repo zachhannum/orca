@@ -46,36 +46,3 @@ body {
     background: #6060FF;
     /* WebKit/Blink Browsers */
 }
-
-
-/* Scrollbar
-
-
-/* width */
-
-/* ::-webkit-scrollbar {
-    width: 10px;
-    padding: 5px;
-} */
-
-
-/* Track */
-
-/* ::-webkit-scrollbar-track {
-    background: transparent;
-} */
-
-
-/* Handle */
-/*
-::-webkit-scrollbar-thumb {
-    background: #35353a;
-    border-radius: 5px;
-} */
-
-
-/* Handle on hover */
-
-/* ::-webkit-scrollbar-thumb:hover {
-    background: #6b6b77;
-} */

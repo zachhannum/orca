@@ -87,7 +87,8 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
         } else if (overflow) {
           setOverflow(false);
         }
-      } else {
+      } else if (newPage !== 1) {
+        /* There should be always at least one page, so no overflow on page 1 */
         setOverflow(true);
         onPageOverflow(page);
       }
