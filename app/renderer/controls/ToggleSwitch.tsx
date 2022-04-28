@@ -54,7 +54,7 @@ const StyledToggleThumb = styled.div<StyledToggleThumbProps>`
   ${(p) =>
     p.animate &&
     css`
-      animation: ${animateThumb} 300ms ease-in-out;
+      animation: ${animateThumb} 200ms ease-in-out;
     `}
 
   margin-left: ${(p) => (p.enabled ? '15px' : '2px')};
@@ -62,7 +62,7 @@ const StyledToggleThumb = styled.div<StyledToggleThumbProps>`
     p.enabled ? p.theme.toggleOnFg : p.theme.toggleOffFg[p.type]};
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
   user-select: none;
-  transition: all 300ms ease-in-out;
+  transition: all 200ms ease-in-out;
 `;
 
 const ToggleSwitch = ({
