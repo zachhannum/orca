@@ -10,6 +10,7 @@ import {
 
 const StyledWinControls = styled.div`
   display: flex;
+  z-index: 1000;
   flex-direction: row;
   flex-wrap: nowrap;
   position: absolute;

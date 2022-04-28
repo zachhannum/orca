@@ -9,10 +9,10 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  flex-shrink: 0;
+  justify-content: space-between;
   height: 100vh;
   width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
 `;
 
 const MainContent = styled.div`
@@ -20,9 +20,8 @@ const MainContent = styled.div`
     env(titlebar-area-height, var(--fallback-title-bar-height)) + 20px
   );
   padding-top: var(--top-padding);
-  width: 50%;
-  flex-grow: 2;
-  flex-shrink: 2;
+  flex-grow: 1;
+  flex-shrink: 1000;
   height: calc(100% - var(--top-padding));
   color: ${(p) => p.theme.mainFgText};
   background-color: ${(p) => p.theme.mainBg};

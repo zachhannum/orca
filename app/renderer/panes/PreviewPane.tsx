@@ -1,37 +1,19 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState, useEffect } from 'react';
-import styled, { useTheme } from 'styled-components';
-import { PagedRenderer } from '../components';
+import { useTheme, css } from 'styled-components';
+import { PagedRenderer, Pane } from '../components';
 import useStore from '../store/useStore';
 import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
 
-type StyledPaneProps = {
-  previewEnabled: boolean;
-};
-
-const StyledPane = styled.div<StyledPaneProps>`
-  height: 100%;
-  width: 500px;
-  margin-right: ${(p) => (p.previewEnabled ? '0px' : '-500px')};
-  background-color: ${(p) => p.theme.previewBg};
-  transition: margin-right 300ms ease-in-out;
+const paneStyleMixin = css`
   display: flex;
+  right: 0;
+  justify-content: center;
   align-items: center;
   align-content: center;
-  justify-content: center;
-`;
-
-const PreviewDiv = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
   gap: 20px;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
 `;
 
 const PreviewPane = () => {
@@ -59,30 +41,39 @@ const PreviewPane = () => {
   }, [previewEnabled]);
 
   return (
-    <StyledPane previewEnabled={previewEnabled}>
+    <Pane
+      enabled={previewEnabled}
+      invert
+      backgroundColor={theme.previewBg}
+      defaultWidth="500px"
+      styleMixin={paneStyleMixin}
+    >
       {showPreviewer && (
-        <PreviewDiv>
-          <IconButton
-            iconSize="11px"
-            foregroundColor={theme.previewArrow}
-            scaleOnHover
-            onClick={prev}
-          >
-            <PageLeftIcon />
-          </IconButton>
-          <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
-          <IconButton
-            iconSize="11px"
-            foregroundColor={theme.previewArrow}
-            scaleOnHover
-            onClick={next}
-          >
-            <PageRightIcon />
-          </IconButton>
-        </PreviewDiv>
+        <IconButton
+          iconSize="11px"
+          foregroundColor={theme.previewArrow}
+          scaleOnHover
+          onClick={prev}
+        >
+          <PageLeftIcon />
+        </IconButton>
       )}
+      {showPreviewer && (
+        <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
+      )}
+      {showPreviewer && (
+        <IconButton
+          iconSize="11px"
+          foregroundColor={theme.previewArrow}
+          scaleOnHover
+          onClick={next}
+        >
+          <PageRightIcon />
+        </IconButton>
+      )}
+
       <Test />
-    </StyledPane>
+    </Pane>
   );
 };
 

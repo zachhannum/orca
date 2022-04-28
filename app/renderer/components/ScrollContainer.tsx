@@ -44,7 +44,6 @@ const Padding = styled.div`
   max-width: 700px;
   padding-top: 10vh;
   padding-bottom: 10vh;
-  width: calc(100% - 50px);
 `;
 
 type Props = {
