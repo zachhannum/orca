@@ -33,7 +33,6 @@ const editorId = '1';
 const WriterComp = () => {
   const editableProps = {
     style: {
-      minHeight: '70vh',
       width: '100%',
     },
     spellCheck: false,
