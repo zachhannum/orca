@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { PagedRenderer } from '../components';
 import useStore from '../store/useStore';
@@ -38,7 +38,7 @@ const PreviewPane = () => {
   const previewEnabled = useStore((state) => state.previewEnabled);
   const [page, setPage] = useState(1);
   const theme = useTheme();
-
+  const [showPreviewer, setShowPreviewer] = useState(false);
   const next = () => {
     setPage(page + 1);
   };
@@ -47,9 +47,20 @@ const PreviewPane = () => {
     setPage(page - 1);
   };
 
+  useEffect(() => {
+    if (previewEnabled) {
+      setPage(1);
+      setShowPreviewer(true);
+    } else if (!previewEnabled) {
+      setTimeout(() => {
+        setShowPreviewer(false);
+      }, 300);
+    }
+  }, [previewEnabled]);
+
   return (
     <StyledPane previewEnabled={previewEnabled}>
-      {previewEnabled && (
+      {showPreviewer && (
         <PreviewDiv>
           <IconButton
             iconSize="11px"

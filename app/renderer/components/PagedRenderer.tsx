@@ -60,6 +60,13 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const [page, setPage] = useState(1);
   const [overflow, setOverflow] = useState(false);
 
+  const setPageCounterIncrement = (pageIncrement: number) => {
+    document.documentElement.style.setProperty(
+      '--pagedjs-page-counter-increment',
+      `${pageIncrement}`
+    );
+  };
+
   const navigateToPage = (newPage: number, _instant = false) => {
     const pageContainer = pageContainerRef.current;
     if (pageContainer) {
@@ -76,10 +83,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
         if (prevPageElement && !overflow) {
           prevPageElement.style.display = 'none';
           setPrevPage(newPage);
-          document.documentElement.style.setProperty(
-            '--pagedjs-page-counter-increment',
-            `${newPage}`
-          );
+          setPageCounterIncrement(newPage);
         } else if (overflow) {
           setOverflow(false);
         }
@@ -92,12 +96,13 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
 
   const handleResize = (height: number, width: number) => {
     if (pageContainerRef.current) {
-      setScale(
-        Math.min(
-          height / pageContainerRef.current.offsetHeight,
-          width / pageContainerRef.current.offsetWidth
-        )
+      const newScale = Math.min(
+        height / pageContainerRef.current.offsetHeight,
+        width / pageContainerRef.current.offsetWidth
       );
+      if (newScale !== Infinity) {
+        setScale(newScale);
+      }
     }
   };
 
@@ -128,6 +133,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
         });
         await chunker.current.flow(template.content, container);
         setPage(1);
+        setPageCounterIncrement(1);
         onPageOverflow(1);
         const paged = container.children[0];
         if (paged) {
