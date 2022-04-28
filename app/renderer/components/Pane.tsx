@@ -54,6 +54,7 @@ const StyledResizer = styled.div<StyledResizerProps>`
     background-color: ${(p) => p.hoverColor};
   }
   &:active {
+    width: 10px;
     background-color: ${(p) => p.hoverColor};
   }
   transition: background-color 100ms ease-in-out, width 100ms ease-in-out;
@@ -87,7 +88,10 @@ const Pane = ({
       const adjust = invert
         ? startPosition - mouseMoveEvent.pageX
         : -startPosition + mouseMoveEvent.pageX;
-      setWidth(`${startSize + adjust}px`);
+      const newWidth = startSize + adjust;
+      if (newWidth >= 100) {
+        setWidth(`${newWidth}px`);
+      }
     };
     const onMouseUp = () => {
       document.body.removeEventListener('mousemove', onMouseMove);

@@ -8,14 +8,14 @@ type ScrollerProps = {
 const Scroller = styled.div<ScrollerProps>`
   overflow-y: overlay;
   height: 100%;
-  width: calc(100% - 100px);
+  width: calc(100% - 125px);
   display: flex;
   align-items: center;
   flex-direction: column;
   align-content: center;
   justify-content: flex-start;
   padding-right: 50px;
-  padding-left: 50px;
+  padding-left: 75px;
 
   ${(p) =>
     p.win32 &&
