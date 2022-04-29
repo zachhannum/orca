@@ -41,6 +41,11 @@ const NewBookModal = ({ isOpen, onRequestClose }: NewBookModalProps) => {
       author: { value: string };
       series: { value: string };
     };
+    window.projectApi.createProject({
+      bookTitle: target.book.value,
+      authorName: target.author.value,
+      seriesName: target.series.value,
+    });
   };
   return (
     <Modal

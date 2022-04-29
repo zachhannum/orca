@@ -1,8 +1,13 @@
-export interface CalamusApi {
+import type { BookDetails } from '../types/types';
+
+export interface WindowApi {
   os: () => string;
   closeWindow: () => void;
   toggleMaximized: () => void;
   minimize: () => void;
+}
+export interface ProjectApi {
+  createProject: (bookDetails: BookDetails) => void;
 }
 declare global {
   interface Window {
@@ -16,7 +21,8 @@ declare global {
         once(channel: string, func: (...args: unknown[]) => void): void;
       };
     };
-    calamusApi: CalamusApi;
+    windowApi: WindowApi;
+    projectApi: ProjectApi;
   }
 }
 

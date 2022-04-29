@@ -31,7 +31,7 @@ const MainContent = styled.div`
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      {window.calamusApi.os() === 'win32' && <WinControls />}
+      {window.windowApi.os() === 'win32' && <WinControls />}
       <GlobalStyles />
       <AppContainer>
         <SidebarPane />
