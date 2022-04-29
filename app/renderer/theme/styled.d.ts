@@ -47,10 +47,16 @@ declare module 'styled-components' {
     radioOnFg: string;
     radioText: string;
     themeSelectBorder: string;
-    textInputBg: string;
-    textInputAltBg: string;
-    textInputPlaceholderFg: string;
-    textInputPlaceholderAltFg: string;
+    textInputBg: {
+      default: string;
+      altOne: string;
+      altTwo: string;
+    };
+    textInputPlaceholderFg: {
+      default: string;
+      altOne: string;
+      altTwo: string;
+    };
     sidebarIconBg: string;
     sidebarIconFg: string;
     chapterTitleDropdownBg: string;
@@ -64,5 +70,6 @@ declare module 'styled-components' {
     searchBg: string;
     searchPlaceholder: string;
     paperBg: string;
+    modalFgText: string;
   }
 }

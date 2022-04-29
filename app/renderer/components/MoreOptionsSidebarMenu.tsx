@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import Popup from 'reactjs-popup';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import styled, { useTheme } from 'styled-components';
 import MoreOptionsSidebarItem from './MoreOptionsSidebarItem';
 import { IconButton, ToggleSwitch } from '../controls';
@@ -35,11 +37,15 @@ const StyledMenuDivider = styled.div`
 
 const MoreOptionsSidebarMenu = () => {
   const theme = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const menuRef = useRef<PopupActions | null>(null);
   const previewEnabled = useStore((state) => state.previewEnabled);
   const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
+  const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
   return (
     <div>
       <Popup
+        ref={menuRef}
         trigger={
           // This is for sure hacky using the div since IconButton does not support ref. Should fix in the future
           <div>
@@ -65,6 +71,10 @@ const MoreOptionsSidebarMenu = () => {
             iconElement={<NewBookIcon />}
             rightElement={<span>⌘N</span>}
             label="New Book"
+            onClick={() => {
+              menuRef.current?.close();
+              setNewBookModalOpen(true);
+            }}
           />
           <MoreOptionsSidebarItem
             hover

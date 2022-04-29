@@ -34,7 +34,6 @@ const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
   gap: 10px;
   margin-right: ${(props) => (props.open ? '0px' : '-100px')};
   transition: margin-right 300ms ease-in-out;
-  z-index: 100;
 `;
 
 const SidebarPane = () => {

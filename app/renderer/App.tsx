@@ -1,8 +1,9 @@
 // import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import styled, { ThemeProvider } from 'styled-components';
-import { SidebarPane, PreviewPane, Writer } from './panes';
+import { SidebarPane, PreviewPane, Writer, Modals } from './panes';
 import theme from './theme/theme';
+import GlobalStyles from './theme/globalStyles';
 import { WinControls } from './controls';
 
 const AppContainer = styled.div`
@@ -31,12 +32,14 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       {window.calamusApi.os() === 'win32' && <WinControls />}
+      <GlobalStyles />
       <AppContainer>
         <SidebarPane />
         <MainContent>
           <Writer />
         </MainContent>
         <PreviewPane />
+        <Modals />
       </AppContainer>
     </ThemeProvider>
   );
