@@ -3,6 +3,7 @@ import { MoreOptionsSidebarMenu, Pane } from '../components';
 import { IconButton } from '../controls';
 import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
 import { useToggle } from '../hooks';
+import useStore from '../store/useStore';
 
 const SidebarTopContainer = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
 const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
+  const bookTitle = useStore((state) => state.bookTitle);
 
   return (
     <Pane
@@ -61,6 +63,7 @@ const SidebarPane = () => {
           <MoreOptionsSidebarMenu />
         </SidebarToggleButtonDiv>
       </SidebarTopContainer>
+      <div>{bookTitle}</div>
     </Pane>
   );
 };

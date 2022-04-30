@@ -1,6 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { createProject } from './project';
-import type { BookDetails } from '../types/types';
+import type { BookDetails, Project } from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
@@ -41,4 +40,6 @@ contextBridge.exposeInMainWorld('projectApi', {
   createProject: (bookDetails: BookDetails) => {
     ipcRenderer.send('createProject', bookDetails);
   },
+  onOpenProject: (func: (projectContent: Project) => void) =>
+    ipcRenderer.on('openProject', (_event, arg) => func(arg)),
 });

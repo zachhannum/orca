@@ -5,6 +5,7 @@ import { SidebarPane, PreviewPane, Writer, Modals } from './panes';
 import theme from './theme/theme';
 import GlobalStyles from './theme/globalStyles';
 import { WinControls } from './controls';
+import { useOpenProject } from './hooks';
 
 const AppContainer = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ const MainContent = styled.div`
 `;
 
 const App = () => {
+  useOpenProject();
   return (
     <ThemeProvider theme={theme}>
       {window.windowApi.os() === 'win32' && <WinControls />}

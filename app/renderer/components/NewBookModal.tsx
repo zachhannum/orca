@@ -46,6 +46,7 @@ const NewBookModal = ({ isOpen, onRequestClose }: NewBookModalProps) => {
       authorName: target.author.value,
       seriesName: target.series.value,
     });
+    onRequestClose();
   };
   return (
     <Modal

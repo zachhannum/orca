@@ -1,4 +1,4 @@
-import type { BookDetails } from '../types/types';
+import type { BookDetails, Project } from '../types/types';
 
 export interface WindowApi {
   os: () => string;
@@ -8,6 +8,7 @@ export interface WindowApi {
 }
 export interface ProjectApi {
   createProject: (bookDetails: BookDetails) => void;
+  onOpenProject: (func: (projectContent: Project) => void) => void;
 }
 declare global {
   interface Window {

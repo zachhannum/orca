@@ -25,7 +25,7 @@ const createProject = (mainWindow: BrowserWindow, bookDetails: BookDetails) => {
             if (err) {
               console.log(err);
             } else {
-              openProject(savePath);
+              openProject(mainWindow, savePath);
             }
           }
         );
