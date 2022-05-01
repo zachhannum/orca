@@ -11,7 +11,9 @@ const useOpenProject = () => {
   const setISBN = useStore((state) => state.setISBN);
   const setLanguage = useStore((state) => state.setLanguage);
   const setPublisher = useStore((state) => state.setPublisher);
-  const setContent = useStore((state) => state.setContent);
+  const setFrontMatter = useStore((state) => state.setFrontMatter);
+  const setMainContent = useStore((state) => state.setMainContent);
+  const setBackMatter = useStore((state) => state.setBackMatter);
 
   useEffect(() => {
     window.projectApi.onOpenProject((projectContent: Project) => {
@@ -22,7 +24,9 @@ const useOpenProject = () => {
       setISBN(projectContent.ISBN);
       setLanguage(projectContent.language);
       setPublisher(projectContent.publisher);
-      setContent(projectContent.content);
+      setFrontMatter(projectContent.frontMatter);
+      setMainContent(projectContent.mainContent);
+      setBackMatter(projectContent.backMatter);
       setIsProjectOpen(true);
     });
   });

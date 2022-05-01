@@ -1,5 +1,9 @@
 import styled, { useTheme, css } from 'styled-components';
-import { MoreOptionsSidebarMenu, Pane } from '../components';
+import {
+  MoreOptionsSidebarMenu,
+  Pane,
+  SidebarProjectContent,
+} from '../components';
 import { IconButton } from '../controls';
 import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
 import { useToggle } from '../hooks';
@@ -49,21 +53,23 @@ const SidebarPane = () => {
       backgroundColor={theme.sidebarBg}
       styleMixin={paneStyleMixin}
     >
-      <SidebarTopContainer>
-        <div /* placeholder */ />
-        <SidebarToggleButtonDiv open={open}>
-          <IconButton
-            iconSize="20px"
-            foregroundColor={theme.sidebarIconFg}
-            backgroundColor={theme.sidebarIconBg}
-            onClick={toggleOpen}
-          >
-            {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
-          </IconButton>
-          <MoreOptionsSidebarMenu />
-        </SidebarToggleButtonDiv>
-      </SidebarTopContainer>
-      <div>{bookTitle}</div>
+      <div>
+        <SidebarTopContainer>
+          <div /* placeholder */ />
+          <SidebarToggleButtonDiv open={open}>
+            <IconButton
+              iconSize="20px"
+              foregroundColor={theme.sidebarIconFg}
+              backgroundColor={theme.sidebarIconBg}
+              onClick={toggleOpen}
+            >
+              {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
+            </IconButton>
+            <MoreOptionsSidebarMenu />
+          </SidebarToggleButtonDiv>
+        </SidebarTopContainer>
+        <SidebarProjectContent />
+      </div>
     </Pane>
   );
 };

@@ -8,6 +8,7 @@ type StyledButtonProps = {
 
 const StyledButton = styled.span<StyledButtonProps>`
   height: 30px;
+  line-height: 30px;
   padding-left: 30px;
   padding-right: 30px;
   cursor: pointer;
@@ -21,11 +22,12 @@ const StyledButton = styled.span<StyledButtonProps>`
   }
   color: ${(p) => p.theme.buttonPrimaryText};
   border-radius: 10px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  text-align: center;
   transition: background-color 100ms ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9em;
 `;
 
 type ButtonProps = {

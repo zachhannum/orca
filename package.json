@@ -91,6 +91,11 @@
             "provider": "github",
             "owner": "midnightprioriem",
             "repo": "calamus"
+        },
+        "fileAssociations": {
+          "ext": "cala",
+          "name": "Calamus Project File",
+          "role": "Editor"
         }
     },
     "repository": {

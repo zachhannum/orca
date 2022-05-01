@@ -12,7 +12,9 @@ export interface ProjectSlice extends Project {
   setISBN: (val: string) => void;
   setLanguage: (val: string) => void;
   setPublisher: (val: string) => void;
-  setContent: (val: ProjectContent[]) => void;
+  setFrontMatter: (val: ProjectContent[]) => void;
+  setMainContent: (val: ProjectContent[]) => void;
+  setBackMatter: (val: ProjectContent[]) => void;
 }
 
 const createProjectSlice = (
@@ -53,8 +55,14 @@ const createProjectSlice = (
     set(() => ({ publisher: val }));
   },
   content: [],
-  setContent: (val: ProjectContent[]) => {
-    set(() => ({ content: val }));
+  setFrontMatter: (val: ProjectContent[]) => {
+    set(() => ({ frontMatter: val }));
+  },
+  setMainContent: (val: ProjectContent[]) => {
+    set(() => ({ mainContent: val }));
+  },
+  setBackMatter: (val: ProjectContent[]) => {
+    set(() => ({ backMatter: val }));
   },
 });
 

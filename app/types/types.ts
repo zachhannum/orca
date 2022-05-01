@@ -6,7 +6,6 @@ export type BookDetails = {
 
 export type ProjectContent = {
   path: string;
-  type: string;
 };
 
 export type Project = {
@@ -17,5 +16,7 @@ export type Project = {
   ISBN: string;
   language: string;
   publisher: string;
-  content: ProjectContent[];
+  frontMatter: ProjectContent[];
+  mainContent: ProjectContent[];
+  backMatter: ProjectContent[];
 };
