@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import type { BookDetails, Project } from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
@@ -28,9 +29,17 @@ contextBridge.exposeInMainWorld('electron', {
   },
 });
 
-contextBridge.exposeInMainWorld('calamusApi', {
+contextBridge.exposeInMainWorld('windowApi', {
   os: () => process.platform,
   closeWindow: () => ipcRenderer.send('window', 'close'),
   toggleMaximized: () => ipcRenderer.send('window', 'toggleMaximize'),
   minimize: () => ipcRenderer.send('window', 'minimize'),
+});
+
+contextBridge.exposeInMainWorld('projectApi', {
+  createProject: (bookDetails: BookDetails) => {
+    ipcRenderer.send('createProject', bookDetails);
+  },
+  onOpenProject: (func: (projectContent: Project) => void) =>
+    ipcRenderer.on('openProject', (_event, arg) => func(arg)),
 });

@@ -44,10 +44,16 @@ const theme: DefaultTheme = {
   radioOnFg: 'rgba(240, 240, 248, 1)',
   radioText: 'rgba(240, 240, 248, 1)',
   themeSelectBorder: 'rgba(96, 96, 255, 1)',
-  textInputBg: 'rgba(70, 70, 79, 1)',
-  textInputAltBg: 'rgba(117, 117, 128, 1)',
-  textInputPlaceholderFg: 'rgba(50, 50, 56, 1)',
-  textInputPlaceholderAltFg: 'rgba(78, 78, 87, 1)',
+  textInputBg: {
+    default: 'rgba(70, 70, 79, 1)',
+    altOne: 'rgba(117, 117, 128, 1)',
+    altTwo: 'rgba(142, 142, 155, 0.5)',
+  },
+  textInputPlaceholderFg: {
+    default: 'rgba(50, 50, 56, 1)',
+    altOne: 'rgba(78, 78, 87, 1)',
+    altTwo: '#8D8D94',
+  },
   sidebarIconBg: 'rgba(70, 70, 79, 1)',
   sidebarIconFg: 'rgba(132, 132, 136, 1)',
   chapterTitleDropdownBg: 'rgba(50, 50, 56, 1)',
@@ -61,6 +67,7 @@ const theme: DefaultTheme = {
   searchBg: 'rgba(41, 41, 46, 1)',
   searchPlaceholder: 'rgba(132, 132, 136, 1)',
   paperBg: '#f5f2eb',
+  modalFgText: '#CFCFDE',
 };
 
 export default theme;

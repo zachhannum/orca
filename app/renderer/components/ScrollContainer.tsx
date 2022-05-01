@@ -50,7 +50,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const platform = window.calamusApi.os();
+const platform = window.windowApi.os();
 
 const ScrollContainer = ({ children }: Props) => (
   <Scroller win32={platform === 'win32'}>

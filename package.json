@@ -91,6 +91,11 @@
             "provider": "github",
             "owner": "midnightprioriem",
             "repo": "calamus"
+        },
+        "fileAssociations": {
+          "ext": "cala",
+          "name": "Calamus Project File",
+          "role": "Editor"
         }
     },
     "repository": {
@@ -224,6 +229,7 @@
         "pagedjs": "^0.2.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
+        "react-modal": "^3.15.1",
         "react-router-dom": "^6.3.0",
         "reactjs-popup": "^2.0.5",
         "slate": "^0.77.0",

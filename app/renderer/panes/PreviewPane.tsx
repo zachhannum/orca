@@ -9,6 +9,7 @@ import { PageRightIcon, PageLeftIcon } from '../icons';
 
 const paneStyleMixin = css`
   display: flex;
+  user-select: none;
   right: 0;
   justify-content: center;
   align-items: center;

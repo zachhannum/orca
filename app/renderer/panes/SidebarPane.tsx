@@ -1,8 +1,13 @@
 import styled, { useTheme, css } from 'styled-components';
-import { MoreOptionsSidebarMenu, Pane } from '../components';
+import {
+  MoreOptionsSidebarMenu,
+  Pane,
+  SidebarProjectContent,
+} from '../components';
 import { IconButton } from '../controls';
 import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
 import { useToggle } from '../hooks';
+import useStore from '../store/useStore';
 
 const SidebarTopContainer = styled.div`
   display: flex;
@@ -34,12 +39,12 @@ const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
   gap: 10px;
   margin-right: ${(props) => (props.open ? '0px' : '-100px')};
   transition: margin-right 300ms ease-in-out;
-  z-index: 100;
 `;
 
 const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
+  const bookTitle = useStore((state) => state.bookTitle);
 
   return (
     <Pane
@@ -48,20 +53,23 @@ const SidebarPane = () => {
       backgroundColor={theme.sidebarBg}
       styleMixin={paneStyleMixin}
     >
-      <SidebarTopContainer>
-        <div /* placeholder */ />
-        <SidebarToggleButtonDiv open={open}>
-          <IconButton
-            iconSize="20px"
-            foregroundColor={theme.sidebarIconFg}
-            backgroundColor={theme.sidebarIconBg}
-            onClick={toggleOpen}
-          >
-            {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
-          </IconButton>
-          <MoreOptionsSidebarMenu />
-        </SidebarToggleButtonDiv>
-      </SidebarTopContainer>
+      <div>
+        <SidebarTopContainer>
+          <div /* placeholder */ />
+          <SidebarToggleButtonDiv open={open}>
+            <IconButton
+              iconSize="20px"
+              foregroundColor={theme.sidebarIconFg}
+              backgroundColor={theme.sidebarIconBg}
+              onClick={toggleOpen}
+            >
+              {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
+            </IconButton>
+            <MoreOptionsSidebarMenu />
+          </SidebarToggleButtonDiv>
+        </SidebarTopContainer>
+        <SidebarProjectContent />
+      </div>
     </Pane>
   );
 };

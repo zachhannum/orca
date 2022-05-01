@@ -36,10 +36,10 @@ const WinControls = () => {
   };
   return (
     <StyledWinControls>
-      <IconButton {...buttonConfig} onClick={window.calamusApi.minimize}>
+      <IconButton {...buttonConfig} onClick={window.windowApi.minimize}>
         <WinMinimizeIcon {...iconConfig} />
       </IconButton>
-      <IconButton {...buttonConfig} onClick={window.calamusApi.toggleMaximized}>
+      <IconButton {...buttonConfig} onClick={window.windowApi.toggleMaximized}>
         {maximized ? (
           <WinRestoreIcon {...iconConfig} />
         ) : (
@@ -49,7 +49,7 @@ const WinControls = () => {
       <IconButton
         {...buttonConfig}
         backgroundColor={theme.contextMenuExit}
-        onClick={window.calamusApi.closeWindow}
+        onClick={window.windowApi.closeWindow}
       >
         <WinCloseIcon {...iconConfig} />
       </IconButton>

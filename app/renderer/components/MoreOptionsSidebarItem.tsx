@@ -5,6 +5,7 @@ import Color from 'color';
 type StyledMenuItemProps = {
   hover?: boolean;
   hoverColor: string;
+  activeColor: string;
 };
 
 const StyledMenuItem = styled.div<StyledMenuItemProps>`
@@ -25,7 +26,10 @@ const StyledMenuItem = styled.div<StyledMenuItemProps>`
     p.hover &&
     css`
       &:hover {
-        background-color: ${p.hoverColor}};
+        background-color: ${p.hoverColor}}
+      }
+      &:active {
+        background-color: ${p.activeColor};
       }
     `}
 
@@ -60,10 +64,12 @@ const MoreOptionsSidebarItem = ({
 }: MoreOptionsSidebarItemProps) => {
   const theme = useTheme();
   const menuItemHoverColor = Color(theme.contextMenuBg).lighten(0.3);
+  const menuItemActiveColor = Color(theme.contextMenuBg).darken(0.3);
 
   return (
     <StyledMenuItem
       hoverColor={menuItemHoverColor}
+      activeColor={menuItemActiveColor}
       hover={hover}
       onClick={onClick}
     >
