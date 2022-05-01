@@ -13,3 +13,4 @@ export { default as WinCloseIcon } from './WinCloseIcon';
 export { default as WinMaximizeIcon } from './WinMaximizeIcon';
 export { default as WinMinimizeIcon } from './WinMinimizeIcon';
 export { default as WinRestoreIcon } from './WinRestoreIcon';
+export { default as ModalExitIcon } from './ModalExitIcon';

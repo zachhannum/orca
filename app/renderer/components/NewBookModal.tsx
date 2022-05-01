@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import Modal from 'react-modal';
-import styled from 'styled-components';
-import { TextField, Button } from '../controls';
+import styled, { useTheme } from 'styled-components';
+import { TextField, Button, IconButton } from '../controls';
+import { ModalExitIcon } from '../icons';
 
 const StyledModalTitle = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ type NewBookModalProps = {
 };
 
 const NewBookModal = ({ isOpen, onRequestClose }: NewBookModalProps) => {
+  const theme = useTheme();
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,9 +59,15 @@ const NewBookModal = ({ isOpen, onRequestClose }: NewBookModalProps) => {
     >
       <div>
         <StyledModalTitle>
-          <div />
+          <div style={{ width: '12px' }} />
           <div>New Book</div>
-          <div>Close</div>
+          <IconButton
+            onClick={onRequestClose}
+            iconSize="12px"
+            foregroundColor={theme.modalFgText}
+          >
+            <ModalExitIcon />
+          </IconButton>
         </StyledModalTitle>
         <form ref={formRef} onSubmit={handleSubmit}>
           <StyledModalContent>
