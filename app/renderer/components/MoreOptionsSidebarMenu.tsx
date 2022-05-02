@@ -81,6 +81,10 @@ const MoreOptionsSidebarMenu = () => {
             iconElement={<OpenBookIcon />}
             rightElement={<span>⌘O</span>}
             label="Open Book"
+            onClick={() => {
+              menuRef.current?.close();
+              window.projectApi.openProject();
+            }}
           />
           <MoreOptionsSidebarItem
             iconElement={<PreviewIcon />}

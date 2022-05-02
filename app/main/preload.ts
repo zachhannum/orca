@@ -37,6 +37,9 @@ contextBridge.exposeInMainWorld('windowApi', {
 });
 
 contextBridge.exposeInMainWorld('projectApi', {
+  openProject: () => {
+    ipcRenderer.send('openProject');
+  },
   createProject: (bookDetails: BookDetails) => {
     ipcRenderer.send('createProject', bookDetails);
   },
