@@ -4,6 +4,8 @@ import type { Project, ProjectContent } from '../../../types/types';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
+  projectPath: string;
+  setProjectPath: (val: string) => void;
   setIsProjectOpen: (val: boolean) => void;
   setBookTitle: (val: string) => void;
   setBookSubTitle: (val: string) => void;
@@ -25,6 +27,10 @@ const createProjectSlice = (
   isProjectOpen: false,
   setIsProjectOpen: (val: boolean) => {
     set(() => ({ isProjectOpen: val }));
+  },
+  projectPath: '',
+  setProjectPath: (val: string) => {
+    set(() => ({ projectPath: val }));
   },
   bookTitle: '',
   setBookTitle: (val: string) => {

@@ -15,6 +15,7 @@ import {
 } from '../icons';
 import icon from '../../../assets/icon.png';
 import useStore from '../store/useStore';
+import SaveIcon from '../icons/SaveIcon';
 
 const StyledPopupDiv = styled.div`
   width: 180px;
@@ -84,6 +85,32 @@ const MoreOptionsSidebarMenu = () => {
             onClick={() => {
               menuRef.current?.close();
               window.projectApi.openProject();
+            }}
+          />
+          <MoreOptionsSidebarItem
+            hover
+            iconElement={<SaveIcon />}
+            rightElement={<span>⌘S</span>}
+            label="Save Book"
+            onClick={() => {
+              menuRef.current?.close();
+              const projectContents = {
+                bookTitle: useStore.getState().bookTitle,
+                bookSubTitle: useStore.getState().bookSubTitle,
+                authorName: useStore.getState().authorName,
+                seriesName: useStore.getState().seriesName,
+                ISBN: useStore.getState().ISBN,
+                language: useStore.getState().language,
+                publisher: useStore.getState().publisher,
+                frontMatter: useStore.getState().frontMatter,
+                mainContent: useStore.getState().mainContent,
+                backMatter: useStore.getState().backMatter,
+              };
+              const savePath = useStore.getState().projectPath;
+              window.projectApi.saveProject({
+                projectContent: projectContents,
+                filePath: savePath,
+              });
             }}
           />
           <MoreOptionsSidebarItem

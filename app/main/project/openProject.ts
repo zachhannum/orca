@@ -6,7 +6,10 @@ const openProject = (mainWindow: BrowserWindow, projectPath: string) => {
     if (err) {
       console.log(err);
     } else {
-      mainWindow.webContents.send('openProject', JSON.parse(data.toString()));
+      mainWindow.webContents.send('openProject', {
+        projectContent: JSON.parse(data.toString()),
+        filePath: projectPath,
+      });
     }
   });
 };

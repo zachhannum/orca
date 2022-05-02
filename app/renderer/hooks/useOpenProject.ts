@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import useStore from '../store/useStore';
-import type { Project } from '../../types/types';
+import type { ProjectData } from '../../types/types';
 
 const useOpenProject = () => {
   const setIsProjectOpen = useStore((state) => state.setIsProjectOpen);
+  const setProjectPath = useStore((state) => state.setProjectPath);
   const setBookTitle = useStore((state) => state.setBookTitle);
   const setBookSubTitle = useStore((state) => state.setBookSubTitle);
   const setAuthorName = useStore((state) => state.setAuthorName);
@@ -16,7 +17,8 @@ const useOpenProject = () => {
   const setBackMatter = useStore((state) => state.setBackMatter);
 
   useEffect(() => {
-    window.projectApi.onOpenProject((projectContent: Project) => {
+    window.projectApi.onOpenProject((projectData: ProjectData) => {
+      const { projectContent, filePath } = projectData;
       setBookTitle(projectContent.bookTitle);
       setBookSubTitle(projectContent.bookSubTitle);
       setAuthorName(projectContent.authorName);
@@ -28,6 +30,7 @@ const useOpenProject = () => {
       setMainContent(projectContent.mainContent);
       setBackMatter(projectContent.backMatter);
       setIsProjectOpen(true);
+      setProjectPath(filePath);
     });
   });
 };

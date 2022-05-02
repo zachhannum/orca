@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import type { BookDetails, Project } from '../types/types';
+import type { BookDetails, Project, ProjectData } from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
@@ -40,9 +40,12 @@ contextBridge.exposeInMainWorld('projectApi', {
   openProject: () => {
     ipcRenderer.send('openProject');
   },
+  saveProject: (projectData: ProjectData) => {
+    ipcRenderer.send('saveProject', projectData);
+  },
   createProject: (bookDetails: BookDetails) => {
     ipcRenderer.send('createProject', bookDetails);
   },
-  onOpenProject: (func: (projectContent: Project) => void) =>
+  onOpenProject: (func: (projectData: ProjectData) => void) =>
     ipcRenderer.on('openProject', (_event, arg) => func(arg)),
 });

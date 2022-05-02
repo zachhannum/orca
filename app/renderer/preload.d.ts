@@ -1,4 +1,4 @@
-import type { BookDetails, Project } from '../types/types';
+import type { BookDetails, Project, ProjectData } from '../types/types';
 
 export interface WindowApi {
   os: () => string;
@@ -7,9 +7,10 @@ export interface WindowApi {
   minimize: () => void;
 }
 export interface ProjectApi {
+  saveProject: (projectData: ProjectData) => void;
   openProject: () => void;
   createProject: (bookDetails: BookDetails) => void;
-  onOpenProject: (func: (projectContent: Project) => void) => void;
+  onOpenProject: (func: (projectData: ProjectData) => void) => void;
 }
 declare global {
   interface Window {
