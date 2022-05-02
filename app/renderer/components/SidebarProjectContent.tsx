@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Color from 'color';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
 
@@ -23,7 +24,7 @@ const StyledContentBlock = styled.div`
   gap: 5px;
 `;
 
-const StyledBookTitle = styled.div`
+const StyledTitle = styled.div`
   color: ${(p) => p.theme.sidebarFgText};
   font-weight: 500; //semi-bold
   font-size: 1.1em;
@@ -36,6 +37,19 @@ const StyledAuthorName = styled.div`
 `;
 
 const StyledSidebarP = styled.p`
+  color: ${(p) => p.theme.sidebarFgText};
+  font-size: 0.9em;
+`;
+
+const StyledAnchor = styled.a`
+  cursor: pointer;
+  color: ${(p) => p.theme.buttonPrimaryBg};
+  &:hover {
+    color: ${(p) => Color(p.theme.buttonPrimaryBg).darken(0.1)};
+  }
+`;
+
+const StyledSidebarPSecondary = styled.p`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
   font-size: 0.9em;
 `;
@@ -44,19 +58,44 @@ const SidebarProjectContent = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const bookTitle = useStore((state) => state.bookTitle);
   const authorName = useStore((state) => state.authorName);
+  const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
   return (
     <StyledSidebarProjectContent>
-      {isProjectOpen && (
+      {isProjectOpen ? (
         <>
           <StyledTitleBlock>
-            <StyledBookTitle>{bookTitle}</StyledBookTitle>
+            <StyledTitle>{bookTitle}</StyledTitle>
             <StyledAuthorName>{authorName}</StyledAuthorName>
           </StyledTitleBlock>
           <StyledContentBlock>
-            <StyledSidebarP>
+            <StyledSidebarPSecondary>
               You don&rsquo;t have any content yet.
-            </StyledSidebarP>
+            </StyledSidebarPSecondary>
             <Button label="Add a Section" onClick={() => {}} />
+          </StyledContentBlock>
+        </>
+      ) : (
+        <>
+          <StyledTitle>No Project Open</StyledTitle>
+          <StyledContentBlock>
+            <StyledSidebarP>
+              You haven&rsquo;t opened a project yet.
+            </StyledSidebarP>
+            <Button
+              label="Open Project"
+              onClick={window.projectApi.openProject}
+            />
+            <StyledSidebarP>Or start a new project.</StyledSidebarP>
+            <Button
+              label="New Project"
+              onClick={() => {
+                setNewBookModalOpen(true);
+              }}
+            />
+            <StyledSidebarP>
+              To learn more about how to use Calamus, you can always check out
+              our <StyledAnchor>help pages</StyledAnchor>.
+            </StyledSidebarP>
           </StyledContentBlock>
         </>
       )}
