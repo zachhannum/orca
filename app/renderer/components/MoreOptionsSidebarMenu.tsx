@@ -106,7 +106,11 @@ const MoreOptionsSidebarMenu = () => {
                 mainContent: useStore.getState().mainContent,
                 backMatter: useStore.getState().backMatter,
               };
-              window.projectApi.saveProject(projectContents);
+              const savePath = useStore.getState().projectPath;
+              window.projectApi.saveProject({
+                projectContent: projectContents,
+                filePath: savePath,
+              });
             }}
           />
           <MoreOptionsSidebarItem

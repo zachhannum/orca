@@ -20,3 +20,8 @@ export type Project = {
   mainContent: ProjectContent[];
   backMatter: ProjectContent[];
 };
+
+export type ProjectData = {
+  projectContent: Project;
+  filePath: string;
+};

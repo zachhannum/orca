@@ -1,18 +1,13 @@
 import fs from 'fs';
-import type { Project } from '../../types/types';
+import type { ProjectData } from '../../types/types';
 
-const saveProject = (projectContent: Project) => {
-  fs.writeFile(
-    savePath,
-    JSON.stringify(getProjectTemplate(bookDetails)),
-    (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        openProject(mainWindow, savePath);
-      }
+const saveProject = (projectData: ProjectData) => {
+  const { projectContent, filePath } = projectData;
+  fs.writeFile(filePath, JSON.stringify(projectContent), (err) => {
+    if (err) {
+      console.log(err);
     }
-  );
+  });
 };
 
 export default saveProject;
