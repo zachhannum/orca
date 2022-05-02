@@ -7,6 +7,14 @@ const GlobalStyles = createGlobalStyle`
     backdrop-filter: blur(100px);
     border-radius: 20px;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.5);
+    transform: translate(0px, -50px);
+    transition: transform 200ms ease-in-out;
+  }
+  .ModalAfterOpen {
+    transform: translate(0px);
+  }
+  .ModalBeforeClose {
+    transform: translate(0px);
   }
   .Overlay {
     position: fixed;
@@ -19,6 +27,16 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     align-items: center;
     align-content: center;
+    transition: opacity 200ms ease-in-out;
+    opacity: 0;
+
+  }
+  .OverlayAfterOpen{
+      opacity: 1;
+  }
+
+  .OverlayBeforeClose{
+      opacity: 0;
   }
   .ReactModalPortal {
     position: absolute;

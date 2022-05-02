@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Modal from 'react-modal';
-import styled, { useTheme } from 'styled-components';
+import styled, { useTheme, keyframes } from 'styled-components';
 import { TextField, Button, IconButton } from '../controls';
 import { ModalExitIcon } from '../icons';
 
@@ -54,8 +54,17 @@ const NewBookModal = ({ isOpen, onRequestClose }: NewBookModalProps) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="Modal"
-      overlayClassName="Overlay"
+      className={{
+        base: 'Modal',
+        afterOpen: 'ModalAfterOpen',
+        beforeClose: 'ModalBeforeClose',
+      }}
+      overlayClassName={{
+        base: 'Overlay',
+        afterOpen: 'OverlayAfterOpen',
+        beforeClose: 'OverlayBeforeClose',
+      }}
+      closeTimeoutMS={200}
     >
       <div>
         <StyledModalTitle>
