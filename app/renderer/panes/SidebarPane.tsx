@@ -1,11 +1,17 @@
 import styled, { useTheme, css } from 'styled-components';
+import Color from 'color';
 import {
   MoreOptionsSidebarMenu,
   Pane,
   SidebarProjectContent,
 } from '../components';
 import { IconButton } from '../controls';
-import { SidebarOpenIcon, SidebarClosedIcon } from '../icons';
+import {
+  SidebarOpenIcon,
+  SidebarClosedIcon,
+  HelpIcon,
+  SettingsIcon,
+} from '../icons';
 import { useToggle } from '../hooks';
 import useStore from '../store/useStore';
 
@@ -19,6 +25,35 @@ const SidebarTopContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+`;
+
+const SidebarBottomContainer = styled.div`
+  display: flex;
+  padding: 30px;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const SidebarBottomItem = styled.span`
+  display: flex;
+  align-items: center;
+  align-content: center;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
+  path {
+    fill: ${(p) => p.theme.sidebarFgTextSecondary};
+  }
+  &:hover {
+    color: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2)};
+    path {
+      fill: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2)};
+    }
+  }
+  gap: 12px;
 `;
 
 const paneStyleMixin = css`
@@ -70,6 +105,16 @@ const SidebarPane = () => {
         </SidebarTopContainer>
         <SidebarProjectContent />
       </div>
+      <SidebarBottomContainer>
+        <SidebarBottomItem>
+          <HelpIcon size="15px" />
+          <span>Feedback</span>
+        </SidebarBottomItem>
+        <SidebarBottomItem>
+          <SettingsIcon size="15px" />
+          <span>Settings</span>
+        </SidebarBottomItem>
+      </SidebarBottomContainer>
     </Pane>
   );
 };

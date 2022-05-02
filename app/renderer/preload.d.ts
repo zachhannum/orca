@@ -7,6 +7,7 @@ export interface WindowApi {
   minimize: () => void;
 }
 export interface ProjectApi {
+  saveProject: (projectContent: Project) => void;
   openProject: () => void;
   createProject: (bookDetails: BookDetails) => void;
   onOpenProject: (func: (projectContent: Project) => void) => void;
