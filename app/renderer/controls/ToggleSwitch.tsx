@@ -6,15 +6,17 @@ type ToggleSwitchProps = {
   defaultValue?: boolean;
   altColor?: boolean;
   onChange?: (value: boolean) => void;
+  disabled?: boolean;
 };
 
 type StyledToggleBaseProps = {
   type: string;
   enabled: boolean;
+  disabled: boolean;
 };
 
 const StyledToggleBase = styled.div<StyledToggleBaseProps>`
-  cursor: pointer;
+  cursor: ${(p) => (p.disabled ? 'auto' : 'pointer')};
   height: 15px;
   width: 28px;
   display: flex;
@@ -26,6 +28,7 @@ const StyledToggleBase = styled.div<StyledToggleBaseProps>`
   overflow: hidden;
   user-select: none;
   transition: all 100ms ease-in-out;
+  opacity: ${(p) => (p.disabled ? '0.5' : '1')};
 `;
 
 type StyledToggleThumbProps = {
@@ -68,26 +71,32 @@ const StyledToggleThumb = styled.div<StyledToggleThumbProps>`
 const ToggleSwitch = ({
   defaultValue,
   altColor,
+  disabled = false,
   onChange,
 }: ToggleSwitchProps) => {
   const [enabled, toggleValue] = useToggle(defaultValue);
   const [animate, setAnimate] = useState(false);
   const isMount = useIsMount();
   useEffect(() => {
-    if (!isMount) {
+    if (!isMount && !disabled) {
       setAnimate(true);
       if (onChange) onChange(enabled);
       setTimeout(() => {
         setAnimate(false);
       }, 300);
     }
-  }, [enabled, onChange, isMount]);
+  }, [enabled, onChange, isMount, disabled]);
+
+  const handleToggleClicked = () => {
+    if (!disabled) toggleValue();
+  };
 
   return (
     <StyledToggleBase
       enabled={enabled}
+      disabled={disabled}
       type={altColor ? 'alt' : 'default'}
-      onClick={toggleValue}
+      onClick={handleToggleClicked}
     >
       <StyledToggleThumb
         animate={animate}
@@ -101,6 +110,7 @@ const ToggleSwitch = ({
 ToggleSwitch.defaultProps = {
   defaultValue: false,
   altColor: false,
+  disabled: false,
   onChange: () => {},
 };
 
