@@ -33,13 +33,14 @@ const SidebarBottomContainer = styled.div`
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
+  gap: 10px;
 `;
 
 const SidebarBottomItem = styled.span`
   display: flex;
   align-items: center;
   align-content: center;
-  font-size: 0.9em;
+  font-size: 0.8em;
   font-weight: 600;
   cursor: pointer;
   user-select: none;
