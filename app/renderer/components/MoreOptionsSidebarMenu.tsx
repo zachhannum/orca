@@ -40,6 +40,7 @@ const MoreOptionsSidebarMenu = () => {
   const theme = useTheme();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const menuRef = useRef<PopupActions | null>(null);
+  const isProjectOpen = useStore((state) => state.isProjectOpen);
   const previewEnabled = useStore((state) => state.previewEnabled);
   const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
@@ -120,6 +121,7 @@ const MoreOptionsSidebarMenu = () => {
                 altColor
                 onChange={setPreviewEnabled}
                 defaultValue={previewEnabled}
+                disabled={!isProjectOpen}
               />
             }
             label="Preview"

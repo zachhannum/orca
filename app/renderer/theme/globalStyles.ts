@@ -5,7 +5,7 @@ const GlobalStyles = createGlobalStyle`
     :focus { outline: none; }
     background-color: ${(p) => p.theme.contextMenuBg};
     backdrop-filter: blur(100px);
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.5);
     transform: translate(0px, -50px);
     transition: transform 200ms ease-in-out;
