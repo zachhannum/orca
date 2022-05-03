@@ -9,9 +9,7 @@ const getProjectTemplate = (bookDetails: BookDetails): Project => {
     ISBN: '',
     language: '',
     publisher: '',
-    frontMatter: [],
-    mainContent: [],
-    backMatter: [],
+    content: []
   };
 };
 

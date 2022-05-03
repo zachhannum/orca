@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import useStore from '../store/useStore';
 import { Button } from '../controls';
-import { addNewSection } from '../utils/project';
+import { addNewSection } from '../utils/projectUtils';
 import SidebarProjectSectionItem from './SidebarProjectSectionItem';
 
 const StyledSidebarPSecondary = styled.p`
@@ -18,14 +18,10 @@ const SectionsContainer = styled.div`
 `;
 
 const SidebarProjectSections = () => {
-  const frontMatter = useStore((state) => state.frontMatter);
-  const mainContent = useStore((state) => state.mainContent);
-  const backMatter = useStore((state) => state.backMatter);
+  const content = useStore((state) => state.content);
   return (
     <>
-      {frontMatter.length === 0 &&
-      mainContent.length === 0 &&
-      backMatter.length === 0 ? (
+      {content.length === 0 ? (
         <>
           <StyledSidebarPSecondary>
             You don&rsquo;t have any content yet.
@@ -35,7 +31,7 @@ const SidebarProjectSections = () => {
       ) : (
         <>
           <SectionsContainer>
-            {mainContent.map((content) => (
+            {content.map((content) => (
               <SidebarProjectSectionItem
                 key={content.name}
                 value={content.name}

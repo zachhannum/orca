@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Modal from 'react-modal';
-import styled, { useTheme, keyframes } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { TextField, Button, IconButton } from '../controls';
 import { ModalExitIcon } from '../icons';
 

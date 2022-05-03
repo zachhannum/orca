@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import type { ProjectData } from '../../types/types';
+import type { ProjectData } from 'types/types';
 
 const saveProject = (projectData: ProjectData) => {
   const { projectContent, folderPath, fileName } = projectData;

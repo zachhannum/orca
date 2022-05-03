@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import { updateSectionName } from '../utils/project';
+import { updateSectionName } from '../utils/projectUtils';
 
 const StyledItem = styled.div`
   cursor: pointer;

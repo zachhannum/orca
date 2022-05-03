@@ -1,4 +1,4 @@
-import type { BookDetails, Project, ProjectData } from '../types/types';
+import type { BookDetails, ProjectData } from 'types/types';
 
 export interface WindowApi {
   os: () => string;

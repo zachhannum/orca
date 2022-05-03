@@ -1,7 +1,7 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
 import type { CalamusState } from '../useStore';
-import type { Project, ProjectContent } from '../../../types/types';
+import type { Project, SectionData } from 'types/types';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
@@ -17,11 +17,9 @@ export interface ProjectSlice extends Project {
   setISBN: (val: string) => void;
   setLanguage: (val: string) => void;
   setPublisher: (val: string) => void;
-  setFrontMatter: (val: ProjectContent[]) => void;
-  setMainContent: (val: ProjectContent[]) => void;
-  addMainContent: (val: ProjectContent) => void;
-  changeMainContent: (oldName: string, val: ProjectContent) => void;
-  setBackMatter: (val: ProjectContent[]) => void;
+  setContentArray: (val: SectionData[]) => void;
+  updateOrAddSection: (val: SectionData) => void;
+  changeSectionName: (oldName: string, val: SectionData) => void;
 }
 
 const createProjectSlice = (
@@ -69,31 +67,25 @@ const createProjectSlice = (
   setPublisher: (val: string) => {
     set(() => ({ publisher: val }));
   },
-  frontMatter: [],
-  mainContent: [],
-  backMatter: [],
-  setFrontMatter: (val: ProjectContent[]) => {
-    set(() => ({ frontMatter: val }));
+  content: [],
+  setContentArray: (val: SectionData[]) => {
+    set(() => ({ content: val }));
   },
-  setMainContent: (val: ProjectContent[]) => {
-    set(() => ({ mainContent: val }));
-  },
-  addMainContent: (val: ProjectContent) =>
+  updateOrAddSection: (val: SectionData) =>
     set(
       produce((state: CalamusState) => {
-        state.mainContent.push(val);
+        state.content.push(val);
       })
     ),
-  changeMainContent: (oldName: string, val: ProjectContent) =>
+  changeSectionName: (oldName: string, val: SectionData) =>
     set(
       produce((state: CalamusState) => {
-        const i = state.mainContent.findIndex((v) => v.name === oldName);
-        state.mainContent[i] = val;
+        const i = state.content.findIndex(
+          (v: SectionData) => v.name === oldName
+        );
+        state.content[i] = val;
       })
     ),
-  setBackMatter: (val: ProjectContent[]) => {
-    set(() => ({ backMatter: val }));
-  },
 });
 
 export default createProjectSlice;
