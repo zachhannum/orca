@@ -261,5 +261,8 @@
     },
     "resolutions": {
         "styled-components": "5.3.5"
+    },
+    "electronmon": {
+      "patterns": ["!test_projects/**"]
     }
 }

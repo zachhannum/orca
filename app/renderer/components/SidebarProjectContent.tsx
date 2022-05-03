@@ -11,6 +11,7 @@ const StyledSidebarProjectContent = styled.div`
   padding: 30px;
   box-sizing: border-box;
   gap: 20px;
+  flex-grow: 1;
 `;
 
 const StyledTitleBlock = styled.div`
@@ -23,6 +24,7 @@ const StyledContentBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex-grow: 1;
 `;
 
 const StyledTitle = styled.div`
