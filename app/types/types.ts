@@ -5,7 +5,7 @@ export type BookDetails = {
 };
 
 export type ProjectContent = {
-  path: string;
+  name: string;
 };
 
 export type Project = {
@@ -21,7 +21,20 @@ export type Project = {
   backMatter: ProjectContent[];
 };
 
+export enum SectionType {
+  frontmatter = 'frontmatter',
+  maincontent = 'maincontent',
+  backmatter = 'backmatter',
+}
+
 export type ProjectData = {
   projectContent: Project;
-  filePath: string;
+  folderPath: string;
+  fileName: string;
+};
+
+export type SectionData = {
+  name: string;
+  content: string;
+  type: SectionType;
 };

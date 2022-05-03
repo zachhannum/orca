@@ -4,7 +4,8 @@ import type { ProjectData } from '../../types/types';
 
 const useOpenProject = () => {
   const setIsProjectOpen = useStore((state) => state.setIsProjectOpen);
-  const setProjectPath = useStore((state) => state.setProjectPath);
+  const setProjectFolder = useStore((state) => state.setProjectFolder);
+  const setProjectFileName = useStore((state) => state.setProjectFileName);
   const setBookTitle = useStore((state) => state.setBookTitle);
   const setBookSubTitle = useStore((state) => state.setBookSubTitle);
   const setAuthorName = useStore((state) => state.setAuthorName);
@@ -18,7 +19,9 @@ const useOpenProject = () => {
 
   useEffect(() => {
     window.projectApi.onOpenProject((projectData: ProjectData) => {
-      const { projectContent, filePath } = projectData;
+      const { projectContent, folderPath, fileName } = projectData;
+      setProjectFolder(folderPath);
+      setProjectFileName(fileName);
       setBookTitle(projectContent.bookTitle);
       setBookSubTitle(projectContent.bookSubTitle);
       setAuthorName(projectContent.authorName);
@@ -30,7 +33,6 @@ const useOpenProject = () => {
       setMainContent(projectContent.mainContent);
       setBackMatter(projectContent.backMatter);
       setIsProjectOpen(true);
-      setProjectPath(filePath);
     });
   });
 };

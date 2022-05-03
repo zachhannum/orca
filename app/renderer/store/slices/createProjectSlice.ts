@@ -1,11 +1,14 @@
 import { GetState, SetState } from 'zustand';
+import { produce } from 'immer';
 import type { CalamusState } from '../useStore';
 import type { Project, ProjectContent } from '../../../types/types';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
-  projectPath: string;
-  setProjectPath: (val: string) => void;
+  projectFolder: string;
+  setProjectFolder: (val: string) => void;
+  projectFileName: string;
+  setProjectFileName: (val: string) => void;
   setIsProjectOpen: (val: boolean) => void;
   setBookTitle: (val: string) => void;
   setBookSubTitle: (val: string) => void;
@@ -16,6 +19,8 @@ export interface ProjectSlice extends Project {
   setPublisher: (val: string) => void;
   setFrontMatter: (val: ProjectContent[]) => void;
   setMainContent: (val: ProjectContent[]) => void;
+  addMainContent: (val: ProjectContent) => void;
+  changeMainContent: (oldName: string, val: ProjectContent) => void;
   setBackMatter: (val: ProjectContent[]) => void;
 }
 
@@ -28,9 +33,13 @@ const createProjectSlice = (
   setIsProjectOpen: (val: boolean) => {
     set(() => ({ isProjectOpen: val }));
   },
-  projectPath: '',
-  setProjectPath: (val: string) => {
-    set(() => ({ projectPath: val }));
+  projectFolder: '',
+  setProjectFolder: (val: string) => {
+    set(() => ({ projectFolder: val }));
+  },
+  projectFileName: '',
+  setProjectFileName: (val: string) => {
+    set(() => ({ projectFileName: val }));
   },
   bookTitle: '',
   setBookTitle: (val: string) => {
@@ -60,13 +69,28 @@ const createProjectSlice = (
   setPublisher: (val: string) => {
     set(() => ({ publisher: val }));
   },
-  content: [],
+  frontMatter: [],
+  mainContent: [],
+  backMatter: [],
   setFrontMatter: (val: ProjectContent[]) => {
     set(() => ({ frontMatter: val }));
   },
   setMainContent: (val: ProjectContent[]) => {
     set(() => ({ mainContent: val }));
   },
+  addMainContent: (val: ProjectContent) =>
+    set(
+      produce((state: CalamusState) => {
+        state.mainContent.push(val);
+      })
+    ),
+  changeMainContent: (oldName: string, val: ProjectContent) =>
+    set(
+      produce((state: CalamusState) => {
+        const i = state.mainContent.findIndex((v) => v.name === oldName);
+        state.mainContent[i] = val;
+      })
+    ),
   setBackMatter: (val: ProjectContent[]) => {
     set(() => ({ backMatter: val }));
   },
