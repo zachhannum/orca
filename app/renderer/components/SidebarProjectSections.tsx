@@ -1,13 +1,23 @@
 import styled, { css } from 'styled-components';
 import useStore from '../store/useStore';
-import { Button } from '../controls';
+import { IconButton } from '../controls';
+import { PlusIcon } from '../icons';
 import { addNewSection } from '../utils/projectUtils';
 import SidebarProjectSectionItem from './SidebarProjectSectionItem';
 
 const StyledSidebarPSecondary = styled.p`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
   font-size: 0.9em;
-  flex-grow: 1;
+`;
+
+const SectionHeader = styled.div`
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10px;
+  align-items: center;
+  gap: 10px;
 `;
 
 const SectionsContainer = styled.div`
@@ -52,6 +62,12 @@ const SidebarProjectSections = () => {
   const content = useStore((state) => state.content);
   return (
     <>
+      <SectionHeader>
+        <span>Content</span>
+        <IconButton iconSize="13px" onClick={addNewSection}>
+          <PlusIcon />
+        </IconButton>
+      </SectionHeader>
       {content.length === 0 ? (
         <>
           <StyledSidebarPSecondary>
@@ -70,8 +86,6 @@ const SidebarProjectSections = () => {
           </SectionsContainer>
         </>
       )}
-      <div />
-      <Button label="Add a Section" onClick={addNewSection} />
     </>
   );
 };
