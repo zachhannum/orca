@@ -24,11 +24,12 @@ const SidebarTopContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  z-index: 100;
 `;
 
 const SidebarBottomContainer = styled.div`
   display: flex;
-  padding: 10px 30px 30px 30px;
+  padding: 10px 20px 20px 20px;
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;

@@ -8,7 +8,7 @@ const StyledSidebarProjectContent = styled.div`
   display: flex;
   user-select: none;
   flex-direction: column;
-  padding: 30px;
+  padding: 20px;
   box-sizing: border-box;
   gap: 20px;
   flex-grow: 1;

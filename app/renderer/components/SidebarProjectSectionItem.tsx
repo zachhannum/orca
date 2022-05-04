@@ -1,31 +1,53 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import Color from 'color';
 import { updateSectionName } from '../utils/projectUtils';
 
 const StyledItem = styled.div`
-  cursor: pointer;
+  cursor: ${(p) => (p.contentEditable ? 'text' : 'pointer')};
   color: ${(p) => p.theme.sidebarFgText};
+  font-size: 0.9em;
+  width: 95%;
+  box-sizing: border-box;
   padding: 3px 6px;
+  border-radius: 5px;
+  &:hover {
+    background-color: ${(p) =>
+      p.contentEditable
+        ? Color(p.theme.sidebarBg).darken(0.2)
+        : Color(p.theme.sidebarBg).lighten(0.3)};
+  }
   ${(p) =>
     p.contentEditable &&
     css`
-      background-color: ${p.theme.mainBg};
-      border-radius: 5px;
+      background-color: ${(p) => Color(p.theme.sidebarBg).darken(0.2)};
       :focus {
         outline: none;
       }
     `}
+  transition: background-color 100ms ease-in-out;
 `;
 
 type SidebarProjectSectionItemProps = {
   value: string;
+  addingNew: boolean;
 };
 
 const SidebarProjectSectionItem = ({
   value,
+  addingNew,
 }: SidebarProjectSectionItemProps) => {
   const [isEditable, setIsEditable] = useState(false);
   const itemRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (addingNew) {
+      setIsEditable(true);
+      itemRef.current?.scrollTo({ behavior: 'smooth' });
+      setTimeout(() => {
+        itemRef.current?.focus();
+      });
+    }
+  }, []);
   const handleDoubleClick = () => {
     setIsEditable(true);
     setTimeout(() => {
@@ -42,6 +64,10 @@ const SidebarProjectSectionItem = ({
     if (event.code === 'Enter') {
       event.preventDefault();
       handleBlur();
+    } else if (event.code === 'Escape') {
+      event.preventDefault();
+      if (itemRef.current) itemRef.current.innerText = value;
+      setIsEditable(false);
     }
   };
   return (
