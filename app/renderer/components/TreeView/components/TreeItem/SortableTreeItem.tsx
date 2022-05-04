@@ -1,9 +1,8 @@
-import React, {CSSProperties} from 'react';
+import {CSSProperties} from 'react';
 import {AnimateLayoutChanges, useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 
 import {TreeItem, Props as TreeItemProps} from './TreeItem';
-import {iOS} from '../../utilities';
 
 interface Props extends TreeItemProps {
   id: string;
@@ -38,7 +37,6 @@ export function SortableTreeItem({id, depth, ...props}: Props) {
       style={style}
       depth={depth}
       ghost={isDragging}
-      disableSelection={iOS}
       disableInteraction={isSorting}
       handleProps={{
         ...attributes,

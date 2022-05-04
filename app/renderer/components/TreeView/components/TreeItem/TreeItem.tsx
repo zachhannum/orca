@@ -1,8 +1,111 @@
-import React, {forwardRef, HTMLAttributes} from 'react';
-import classNames from 'classnames';
+import React, { forwardRef, HTMLAttributes } from 'react';
+import styled, { css } from 'styled-components';
+import Color from 'color';
+import { IconButton } from 'renderer/controls';
+import { PlusIcon } from 'renderer/icons';
 
-import {Action, Handle, Remove} from '../../components';
-import styles from './TreeItem.module.css';
+type StyledTreeItemWrapperProps = {
+  clone?: boolean;
+  ghost?: boolean;
+  disableSelection?: boolean;
+  disableInteraction?: boolean;
+};
+
+const StyledTreeItemWrapper = styled.li<StyledTreeItemWrapperProps>`
+  list-style: none;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  padding-left: var(--spacing);
+  width: 100%;
+  padding-right: 5px;
+  ${(p) =>
+    p.clone &&
+    css`
+      display: inline-block;
+      pointer-events: none;
+      padding: 0;
+      margin-left: 10px;
+      margin-top: 5px;
+    `}
+`;
+
+type StyledTreeItemProps = {
+  clone?: boolean;
+  ghost?: boolean;
+  disableSelection?: boolean;
+  disableInteraction?: boolean;
+  contentEditable?: boolean;
+};
+
+const StyledTreeItem = styled.div<StyledTreeItemProps>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 3px 6px;
+  color: ${(p) => p.theme.sidebarFgText};
+  box-sizing: border-box;
+  border-radius: 5px;
+
+  ${(p) =>
+    p.clone &&
+    css`
+      margin-top: 20px;
+      --vertical-padding: 5px;
+      padding-right: 24px;
+      border-radius: 4px;
+    `}
+
+  ${(p) =>
+    p.ghost &&
+    css`
+      position: relative;
+      padding: 0;
+      height: 3px;
+      margin-left: 10px;
+      background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+      > * {
+        /* Items are hidden using height and opacity to retain focus */
+        opacity: 0;
+        height: 0;
+      }
+    `}
+
+  ${(p) =>
+    !p.disableInteraction &&
+    css`
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${p.contentEditable
+          ? Color(p.theme.sidebarBg).darken(0.2)
+          : Color(p.theme.sidebarBg).lighten(0.3)};
+      }
+    `}
+`;
+
+const StyledText = styled.span`
+  flex-grow: 1;
+  padding-left: 0.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const StyledCount = styled.span`
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #2389ff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+`;
 
 export interface Props extends HTMLAttributes<HTMLLIElement> {
   childCount?: number;
@@ -44,15 +147,12 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ref
   ) => {
     return (
-      <li
-        className={classNames(
-          styles.Wrapper,
-          clone && styles.clone,
-          ghost && styles.ghost,
-          indicator && styles.indicator,
-          disableSelection && styles.disableSelection,
-          disableInteraction && styles.disableInteraction
-        )}
+      <StyledTreeItemWrapper
+        clone={clone}
+        ghost={ghost}
+        disableSelection={disableSelection}
+        disableInteraction={disableInteraction}
+        contentEditable={false}
         ref={wrapperRef}
         style={
           {
@@ -61,26 +161,25 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
       >
-        <div className={styles.TreeItem} ref={ref} style={style}>
-          <Handle {...handleProps} />
+        <StyledTreeItem
+          ref={ref}
+          style={style}
+          clone={clone}
+          ghost={ghost}
+          disableSelection={disableSelection}
+          disableInteraction={disableInteraction}
+        >
           {onCollapse && (
-            <Action
-              onClick={onCollapse}
-              className={classNames(
-                styles.Collapse,
-                collapsed && styles.collapsed
-              )}
-            >
-              {collapseIcon}
-            </Action>
+            <IconButton onClick={onCollapse} iconSize="15px">
+              <PlusIcon />
+            </IconButton>
           )}
-          <span className={styles.Text}>{value}</span>
-          {!clone && onRemove && <Remove onClick={onRemove} />}
+          <StyledText {...handleProps}>{value}</StyledText>
           {clone && childCount && childCount > 1 ? (
-            <span className={styles.Count}>{childCount}</span>
+            <StyledCount>{childCount}</StyledCount>
           ) : null}
-        </div>
-      </li>
+        </StyledTreeItem>
+      </StyledTreeItemWrapper>
     );
   }
 );

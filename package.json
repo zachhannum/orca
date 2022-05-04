@@ -223,7 +223,6 @@
         "@openfonts/crimson-pro_latin": "^1.44.3",
         "@openfonts/poppins_latin": "^1.44.5",
         "@udecode/plate": "^10.6.3",
-        "classnames": "^2.3.1",
         "color": "^4.2.3",
         "electron-debug": "^3.2.0",
         "electron-log": "^4.4.6",

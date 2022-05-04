@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {
   Announcements,
@@ -52,6 +52,15 @@ const initialItems: TreeItems = [
     ],
   },
   {
+    id: 'Gods',
+    children: [
+      {id: 'Thor', children: []},
+      {id: 'Loki', children: []},
+      {id: 'Odin', children: []},
+      {id: 'Apollo', children: []},
+    ],
+  },
+  {
     id: 'About Us',
     children: [],
   },
@@ -86,8 +95,8 @@ interface Props {
 export function SortableTree({
   collapsible,
   defaultItems = initialItems,
-  indicator,
-  indentationWidth = 50,
+  indicator = true,
+  indentationWidth = 20,
   removable,
 }: Props) {
   const [items, setItems] = useState(() => defaultItems);
@@ -249,9 +258,7 @@ export function SortableTree({
 
     if (projected && over) {
       const {depth, parentId} = projected;
-      const clonedItems: FlattenedItem[] = JSON.parse(
-        JSON.stringify(flattenTree(items))
-      );
+      const clonedItems: FlattenedItem[] = flattenTree(items);
       const overIndex = clonedItems.findIndex(({id}) => id === over.id);
       const activeIndex = clonedItems.findIndex(({id}) => id === active.id);
       const activeTreeItem = clonedItems[activeIndex];
