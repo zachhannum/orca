@@ -29,7 +29,7 @@ const GlobalStyles = createGlobalStyle`
     align-content: center;
     transition: opacity 200ms ease-in-out;
     opacity: 0;
-
+    z-index: 10;
   }
   .OverlayAfterOpen{
       opacity: 1;

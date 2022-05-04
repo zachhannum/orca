@@ -5,7 +5,7 @@ import useStore from '../store/useStore';
 import { IconButton } from '../controls';
 import { NewFileIcon, NewFolderIcon } from '../icons';
 import { addNewSection } from '../utils/projectUtils';
-import SidebarProjectSectionItem from './SidebarProjectSectionItem';
+import { SortableTree, SidebarProjectSectionItem } from '../components';
 
 const StyledSidebarPSecondary = styled.p`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
@@ -111,13 +111,14 @@ const SidebarProjectSections = () => {
       ) : (
         <>
           <SectionsContainer>
-            {content.map((content) => (
+            <SortableTree collapsible />
+            {/* {content.map((content) => (
               <SidebarProjectSectionItem
                 key={content.name}
                 value={content.name}
                 addingNew={addingNewSections}
               />
-            ))}
+            ))} */}
           </SectionsContainer>
         </>
       )}

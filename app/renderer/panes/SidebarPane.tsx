@@ -4,6 +4,7 @@ import {
   MoreOptionsSidebarMenu,
   Pane,
   SidebarProjectContent,
+  SortableTree,
 } from '../components';
 import { IconButton } from '../controls';
 import {
@@ -24,7 +25,7 @@ const SidebarTopContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  z-index: 100;
+  z-index: 2;
 `;
 
 const SidebarBottomContainer = styled.div`
