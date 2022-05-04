@@ -1,11 +1,14 @@
 import { GetState, SetState } from 'zustand';
+import { produce } from 'immer';
 import type { CalamusState } from '../useStore';
-import type { Project, ProjectContent } from '../../../types/types';
+import type { Project, SectionData } from 'types/types';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
-  projectPath: string;
-  setProjectPath: (val: string) => void;
+  projectFolder: string;
+  setProjectFolder: (val: string) => void;
+  projectFileName: string;
+  setProjectFileName: (val: string) => void;
   setIsProjectOpen: (val: boolean) => void;
   setBookTitle: (val: string) => void;
   setBookSubTitle: (val: string) => void;
@@ -14,9 +17,9 @@ export interface ProjectSlice extends Project {
   setISBN: (val: string) => void;
   setLanguage: (val: string) => void;
   setPublisher: (val: string) => void;
-  setFrontMatter: (val: ProjectContent[]) => void;
-  setMainContent: (val: ProjectContent[]) => void;
-  setBackMatter: (val: ProjectContent[]) => void;
+  setContentArray: (val: SectionData[]) => void;
+  updateOrAddSection: (val: SectionData) => void;
+  changeSectionName: (oldName: string, val: SectionData) => void;
 }
 
 const createProjectSlice = (
@@ -28,9 +31,13 @@ const createProjectSlice = (
   setIsProjectOpen: (val: boolean) => {
     set(() => ({ isProjectOpen: val }));
   },
-  projectPath: '',
-  setProjectPath: (val: string) => {
-    set(() => ({ projectPath: val }));
+  projectFolder: '',
+  setProjectFolder: (val: string) => {
+    set(() => ({ projectFolder: val }));
+  },
+  projectFileName: '',
+  setProjectFileName: (val: string) => {
+    set(() => ({ projectFileName: val }));
   },
   bookTitle: '',
   setBookTitle: (val: string) => {
@@ -61,15 +68,24 @@ const createProjectSlice = (
     set(() => ({ publisher: val }));
   },
   content: [],
-  setFrontMatter: (val: ProjectContent[]) => {
-    set(() => ({ frontMatter: val }));
+  setContentArray: (val: SectionData[]) => {
+    set(() => ({ content: val }));
   },
-  setMainContent: (val: ProjectContent[]) => {
-    set(() => ({ mainContent: val }));
-  },
-  setBackMatter: (val: ProjectContent[]) => {
-    set(() => ({ backMatter: val }));
-  },
+  updateOrAddSection: (val: SectionData) =>
+    set(
+      produce((state: CalamusState) => {
+        state.content.push(val);
+      })
+    ),
+  changeSectionName: (oldName: string, val: SectionData) =>
+    set(
+      produce((state: CalamusState) => {
+        const i = state.content.findIndex(
+          (v: SectionData) => v.name === oldName
+        );
+        state.content[i] = val;
+      })
+    ),
 });
 
 export default createProjectSlice;

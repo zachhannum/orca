@@ -1,5 +1,6 @@
 import type { BrowserWindow } from 'electron';
 import fs from 'fs';
+import path from 'path';
 
 const openProject = (mainWindow: BrowserWindow, projectPath: string) => {
   fs.readFile(projectPath, (err, data) => {
@@ -8,7 +9,8 @@ const openProject = (mainWindow: BrowserWindow, projectPath: string) => {
     } else {
       mainWindow.webContents.send('openProject', {
         projectContent: JSON.parse(data.toString()),
-        filePath: projectPath,
+        folderPath: path.dirname(projectPath),
+        fileName: path.basename(projectPath),
       });
     }
   });

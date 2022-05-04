@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import Color from 'color';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
+import SidebarProjectSections from './SidebarProjectSections';
 
 const StyledSidebarProjectContent = styled.div`
   display: flex;
   user-select: none;
   flex-direction: column;
-  padding: 30px;
+  padding: 20px;
   box-sizing: border-box;
   gap: 20px;
+  flex-grow: 1;
 `;
 
 const StyledTitleBlock = styled.div`
@@ -22,6 +24,7 @@ const StyledContentBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex-grow: 1;
 `;
 
 const StyledTitle = styled.div`
@@ -49,11 +52,6 @@ const StyledAnchor = styled.a`
   }
 `;
 
-const StyledSidebarPSecondary = styled.p`
-  color: ${(p) => p.theme.sidebarFgTextSecondary};
-  font-size: 0.9em;
-`;
-
 const SidebarProjectContent = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const bookTitle = useStore((state) => state.bookTitle);
@@ -68,10 +66,7 @@ const SidebarProjectContent = () => {
             <StyledAuthorName>{authorName}</StyledAuthorName>
           </StyledTitleBlock>
           <StyledContentBlock>
-            <StyledSidebarPSecondary>
-              You don&rsquo;t have any content yet.
-            </StyledSidebarPSecondary>
-            <Button label="Add a Section" onClick={() => {}} />
+            <SidebarProjectSections />
           </StyledContentBlock>
         </>
       ) : (

@@ -4,7 +4,8 @@ import type { ProjectData } from '../../types/types';
 
 const useOpenProject = () => {
   const setIsProjectOpen = useStore((state) => state.setIsProjectOpen);
-  const setProjectPath = useStore((state) => state.setProjectPath);
+  const setProjectFolder = useStore((state) => state.setProjectFolder);
+  const setProjectFileName = useStore((state) => state.setProjectFileName);
   const setBookTitle = useStore((state) => state.setBookTitle);
   const setBookSubTitle = useStore((state) => state.setBookSubTitle);
   const setAuthorName = useStore((state) => state.setAuthorName);
@@ -12,13 +13,13 @@ const useOpenProject = () => {
   const setISBN = useStore((state) => state.setISBN);
   const setLanguage = useStore((state) => state.setLanguage);
   const setPublisher = useStore((state) => state.setPublisher);
-  const setFrontMatter = useStore((state) => state.setFrontMatter);
-  const setMainContent = useStore((state) => state.setMainContent);
-  const setBackMatter = useStore((state) => state.setBackMatter);
+  const setContentArray = useStore((state) => state.setContentArray);
 
   useEffect(() => {
     window.projectApi.onOpenProject((projectData: ProjectData) => {
-      const { projectContent, filePath } = projectData;
+      const { projectContent, folderPath, fileName } = projectData;
+      setProjectFolder(folderPath);
+      setProjectFileName(fileName);
       setBookTitle(projectContent.bookTitle);
       setBookSubTitle(projectContent.bookSubTitle);
       setAuthorName(projectContent.authorName);
@@ -26,11 +27,8 @@ const useOpenProject = () => {
       setISBN(projectContent.ISBN);
       setLanguage(projectContent.language);
       setPublisher(projectContent.publisher);
-      setFrontMatter(projectContent.frontMatter);
-      setMainContent(projectContent.mainContent);
-      setBackMatter(projectContent.backMatter);
+      setContentArray(projectContent.content);
       setIsProjectOpen(true);
-      setProjectPath(filePath);
     });
   });
 };

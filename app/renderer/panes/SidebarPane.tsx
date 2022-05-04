@@ -13,7 +13,6 @@ import {
   SettingsIcon,
 } from '../icons';
 import { useToggle } from '../hooks';
-import useStore from '../store/useStore';
 
 const SidebarTopContainer = styled.div`
   display: flex;
@@ -25,11 +24,12 @@ const SidebarTopContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  z-index: 100;
 `;
 
 const SidebarBottomContainer = styled.div`
   display: flex;
-  padding: 30px;
+  padding: 10px 20px 20px 20px;
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
@@ -80,7 +80,6 @@ const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
 const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
-  const bookTitle = useStore((state) => state.bookTitle);
 
   return (
     <Pane
@@ -89,23 +88,21 @@ const SidebarPane = () => {
       backgroundColor={theme.sidebarBg}
       styleMixin={paneStyleMixin}
     >
-      <div>
-        <SidebarTopContainer>
-          <div /* placeholder */ />
-          <SidebarToggleButtonDiv open={open}>
-            <IconButton
-              iconSize="20px"
-              foregroundColor={theme.sidebarIconFg}
-              backgroundColor={theme.sidebarIconBg}
-              onClick={toggleOpen}
-            >
-              {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
-            </IconButton>
-            <MoreOptionsSidebarMenu />
-          </SidebarToggleButtonDiv>
-        </SidebarTopContainer>
-        <SidebarProjectContent />
-      </div>
+      <SidebarTopContainer>
+        <div /* placeholder */ />
+        <SidebarToggleButtonDiv open={open}>
+          <IconButton
+            iconSize="20px"
+            foregroundColor={theme.sidebarIconFg}
+            backgroundColor={theme.sidebarIconBg}
+            onClick={toggleOpen}
+          >
+            {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}
+          </IconButton>
+          <MoreOptionsSidebarMenu />
+        </SidebarToggleButtonDiv>
+      </SidebarTopContainer>
+      <SidebarProjectContent />
       <SidebarBottomContainer>
         <SidebarBottomItem>
           <HelpIcon size="15px" />

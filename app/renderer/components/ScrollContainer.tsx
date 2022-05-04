@@ -1,11 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-type ScrollerProps = {
-  win32: boolean;
-};
 
-const Scroller = styled.div<ScrollerProps>`
+const Scroller = styled.div`
   overflow-y: overlay;
   height: 100%;
   width: calc(100% - 125px);
@@ -17,27 +14,35 @@ const Scroller = styled.div<ScrollerProps>`
   padding-right: 50px;
   padding-left: 75px;
 
-  ${(p) =>
-    p.win32 &&
-    css`
-      background-color: rgba(0, 0, 0, 0);
-      -webkit-background-clip: text;
-      transition: background-color 0.8s;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.15);
-      }
-      ::-webkit-scrollbar {
-        width: 12px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        display: none;
-      }
-      ::-webkit-scrollbar-thumb {
-        background-color: inherit;
-      }
-    `}
+  mask-image: linear-gradient(to top, transparent, black),
+    linear-gradient(to left, transparent 17px, black 17px);
+  mask-size: 100% 20000px;
+  mask-position: left bottom;
+  -webkit-mask-image: linear-gradient(to top, transparent, black),
+    linear-gradient(to left, transparent 17px, black 17px);
+  -webkit-mask-size: 100% 20000px;
+  -webkit-mask-position: left bottom;
+  transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    /* display: none; */
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: inherit;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  &:hover {
+    -webkit-mask-position: left top;
+  }
+  ${window.windowApi.os() === 'darwin' &&
+  css`
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+    }
+  `}
 `;
 
 const Padding = styled.div`
@@ -50,10 +55,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-const platform = window.windowApi.os();
 
 const ScrollContainer = ({ children }: Props) => (
-  <Scroller win32={platform === 'win32'}>
+  <Scroller>
     <Padding>{children}</Padding>
   </Scroller>
 );

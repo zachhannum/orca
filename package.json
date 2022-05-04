@@ -93,9 +93,9 @@
             "repo": "calamus"
         },
         "fileAssociations": {
-          "ext": "cala",
-          "name": "Calamus Project File",
-          "role": "Editor"
+            "ext": "cala",
+            "name": "Calamus Project File",
+            "role": "Editor"
         }
     },
     "repository": {
@@ -226,6 +226,7 @@
         "electron-log": "^4.4.6",
         "electron-updater": "^4.6.5",
         "history": "^5.3.0",
+        "immer": "^9.0.12",
         "pagedjs": "^0.2.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
@@ -260,5 +261,8 @@
     },
     "resolutions": {
         "styled-components": "5.3.5"
+    },
+    "electronmon": {
+      "patterns": ["!test_projects/**"]
     }
 }

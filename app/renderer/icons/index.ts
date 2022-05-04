@@ -16,3 +16,6 @@ export { default as WinRestoreIcon } from './WinRestoreIcon';
 export { default as ModalExitIcon } from './ModalExitIcon';
 export { default as SaveIcon } from './SaveIcon';
 export { default as SettingsIcon } from './SettingsIcon';
+export { default as PlusIcon } from './PlusIcon';
+export { default as NewFileIcon } from './NewFileIcon';
+export { default as NewFolderIcon } from './NewFolderIcon';

@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import type { BookDetails, Project, ProjectData } from '../types/types';
+import type { BookDetails, ProjectData } from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
