@@ -9,6 +9,8 @@ import styled, { css } from 'styled-components';
 import Color from 'color';
 import { IconButton } from 'renderer/controls';
 import { PlusIcon } from 'renderer/icons';
+import { updateSectionName } from 'renderer/utils/projectUtils';
+import useStore from 'renderer/store/useStore';
 
 type StyledTreeItemWrapperProps = {
   clone?: boolean;
@@ -49,6 +51,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   padding: 3px 6px;
   color: ${(p) =>
     p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
+  font-weight: ${(p) => p.canHaveChildren ? '600' : '400'};
   box-sizing: border-box;
   border-radius: 5px;
 
@@ -148,23 +151,23 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       setIsEditable(true);
       setTimeout(() => {
         textRef.current?.focus();
-      }, 10);
+      });
     };
     const handleBlur = () => {
       setIsEditable(false);
-
-      // const newValue = textRef.current?.innerText;
-      // if (newValue) updateSectionName(value, newValue);
+      const newValue = textRef.current?.innerText;
+      if (newValue) updateSectionName(value, newValue);
     };
-    // useEffect(() => {
-    //   if (addingNew) {
-    //     setIsEditable(true);
-    //     textRef.current?.scrollTo({ behavior: 'smooth' });
-    //     setTimeout(() => {
-    //       textRef.current?.focus();
-    //     });
-    //   }
-    // }, []);
+    useEffect(() => {
+      const { addingSections } = useStore.getState();
+      if (addingSections) {
+        setIsEditable(true);
+        textRef.current?.scrollTo({ behavior: 'smooth' });
+        setTimeout(() => {
+          textRef.current?.focus();
+        });
+      }
+    }, []);
     const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
       if (event.code === 'Enter') {
         event.preventDefault();

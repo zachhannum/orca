@@ -4,7 +4,6 @@ import {
   MoreOptionsSidebarMenu,
   Pane,
   SidebarProjectContent,
-  SortableTree,
 } from '../components';
 import { IconButton } from '../controls';
 import {
@@ -85,7 +84,7 @@ const SidebarPane = () => {
   return (
     <Pane
       enabled={open}
-      defaultWidth="300px"
+      defaultWidth="250px"
       backgroundColor={theme.sidebarBg}
       styleMixin={paneStyleMixin}
     >

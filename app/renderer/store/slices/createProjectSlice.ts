@@ -1,7 +1,8 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
+import { changeItemId } from '../../components/TreeView/utilities';
 import type { CalamusState } from '../useStore';
-import type { Project, SectionData } from 'types/types';
+import type { Project, Section } from 'types/types';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
@@ -17,9 +18,11 @@ export interface ProjectSlice extends Project {
   setISBN: (val: string) => void;
   setLanguage: (val: string) => void;
   setPublisher: (val: string) => void;
-  setContentArray: (val: SectionData[]) => void;
-  updateOrAddSection: (val: SectionData) => void;
-  changeSectionName: (oldName: string, val: SectionData) => void;
+  setContentArray: (val: Section[]) => void;
+  updateOrAddSection: (val: Section) => void;
+  addingSections: boolean;
+  setAddingSections: (val: boolean) => void;
+  changeSectionName: (oldName: string, newName: string) => void;
 }
 
 const createProjectSlice = (
@@ -68,24 +71,20 @@ const createProjectSlice = (
     set(() => ({ publisher: val }));
   },
   content: [],
-  setContentArray: (val: SectionData[]) => {
+  setContentArray: (val: Section[]) => {
     set(() => ({ content: val }));
   },
-  updateOrAddSection: (val: SectionData) =>
+  updateOrAddSection: (val: Section) =>
     set(
       produce((state: CalamusState) => {
         state.content.push(val);
       })
     ),
-  changeSectionName: (oldName: string, val: SectionData) =>
-    set(
-      produce((state: CalamusState) => {
-        const i = state.content.findIndex(
-          (v: SectionData) => v.name === oldName
-        );
-        state.content[i] = val;
-      })
-    ),
+  addingSections: false,
+  setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),
+  changeSectionName: (oldName: string, newName: string) => {
+    set((state) => ({ content: changeItemId(state.content, oldName, newName)}))
+  },
 });
 
 export default createProjectSlice;
