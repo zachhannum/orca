@@ -4,7 +4,6 @@ import {
   Announcements,
   DndContext,
   closestCenter,
-  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -34,7 +33,6 @@ import {
   setProperty,
 } from './utilities';
 import type {FlattenedItem, SensorContext, TreeItems} from './types';
-import {sortableTreeKeyboardCoordinates} from './keyboardCoordinates';
 import {SortableTreeItem} from './components';
 
 const initialItems: TreeItems = [
@@ -140,19 +138,13 @@ export function SortableTree({
     items: flattenedItems,
     offset: offsetLeft,
   });
-  const [coordinateGetter] = useState(() =>
-    sortableTreeKeyboardCoordinates(sensorContext, indentationWidth)
-  );
   const sensors = useSensors(
     useSensor(PointerSensor,
       {
         activationConstraint: {
           distance: 10,
         }
-      }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter,
-    })
+      })
   );
 
   const sortedIds = useMemo(() => flattenedItems.map(({id}) => id), [
@@ -200,7 +192,7 @@ export function SortableTree({
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(({id, children, collapsed, depth}) => (
+        {flattenedItems.map(({id, children, canHaveChildren, collapsed, depth}) => (
           <SortableTreeItem
             key={id}
             id={id}
@@ -209,6 +201,7 @@ export function SortableTree({
             indentationWidth={indentationWidth}
             indicator={indicator}
             collapsed={Boolean(collapsed && children.length)}
+            canHaveChildren={canHaveChildren}
             onCollapse={
               collapsible && children.length
                 ? () => handleCollapse(id)
@@ -220,16 +213,16 @@ export function SortableTree({
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimation}
-            modifiers={indicator ? [adjustTranslate] : undefined}
+            // modifiers={indicator ? [adjustTranslate] : undefined}
           >
             {activeId && activeItem ? (
               <SortableTreeItem
                 id={activeId}
                 depth={activeItem.depth}
                 clone
-                childCount={getChildCount(items, activeId) + 1}
                 value={activeId}
                 indentationWidth={indentationWidth}
+                canHaveChildren={activeItem.canHaveChildren}
               />
             ) : null}
           </DragOverlay>,

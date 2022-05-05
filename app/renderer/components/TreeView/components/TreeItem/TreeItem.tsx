@@ -27,11 +27,8 @@ const StyledTreeItemWrapper = styled.li<StyledTreeItemWrapperProps>`
   ${(p) =>
     p.clone &&
     css`
-      display: inline-block;
       pointer-events: none;
       padding: 0;
-      margin-left: 10px;
-      margin-top: 5px;
     `}
 `;
 
@@ -41,43 +38,34 @@ type StyledTreeItemProps = {
   disableSelection?: boolean;
   disableInteraction?: boolean;
   isEditable?: boolean;
+  canHaveChildren?: boolean;
 };
 
 const StyledTreeItem = styled.div<StyledTreeItemProps>`
   position: relative;
+  margin-right: 7px;
   display: flex;
   align-items: center;
   padding: 3px 6px;
-  color: ${(p) => p.theme.sidebarFgText};
+  color: ${(p) =>
+    p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
   box-sizing: border-box;
   border-radius: 5px;
 
   ${(p) =>
-    p.clone &&
-    css`
-      margin-top: 20px;
-      --vertical-padding: 5px;
-      padding-right: 24px;
-      border-radius: 4px;
-    `}
-
-  ${(p) =>
     p.ghost &&
     css`
-      position: relative;
-      padding: 0;
-      height: 3px;
       margin-left: 10px;
       background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
       > * {
         /* Items are hidden using height and opacity to retain focus */
         opacity: 0;
-        height: 0;
       }
     `}
 
   ${(p) =>
     !p.disableInteraction &&
+    !p.clone &&
     css`
       cursor: pointer;
 
@@ -89,11 +77,18 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     `}
 
     ${(p) =>
+    p.clone &&
+    css`
+      background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3)};
+    `}
+
+    ${(p) =>
     p.isEditable &&
     css`
       cursor: text;
       background-color: ${(p) => Color(p.theme.sidebarBg).darken(0.2)};
     `}
+    transition: background-color 100ms ease-in-out;
 `;
 
 const StyledText = styled.span`
@@ -108,7 +103,6 @@ const StyledText = styled.span`
 `;
 
 export interface Props extends HTMLAttributes<HTMLLIElement> {
-  childCount?: number;
   clone?: boolean;
   collapsed?: boolean;
   depth: number;
@@ -119,6 +113,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   indicator?: boolean;
   indentationWidth: number;
   value: string;
+  canHaveChildren: boolean;
   onCollapse?(): void;
   onRemove?(): void;
   wrapperRef?(node: HTMLLIElement): void;
@@ -127,7 +122,6 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
-      childCount,
       clone,
       depth,
       disableSelection,
@@ -141,6 +135,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       onRemove,
       style,
       value,
+      canHaveChildren,
       wrapperRef,
       ...props
     },
@@ -198,20 +193,22 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         style={
           {
             '--spacing': `${indentationWidth * depth}px`,
+            ...style,
           } as React.CSSProperties
         }
         {...props}
       >
         <StyledTreeItem
           ref={ref}
-          style={style}
+          // style={style}
           clone={clone}
           ghost={ghost}
           disableSelection={disableSelection}
           disableInteraction={disableInteraction}
           isEditable={isEditable}
+          canHaveChildren={canHaveChildren}
         >
-          {onCollapse && (
+          {canHaveChildren && (
             <IconButton onClick={onCollapse} iconSize="15px">
               <PlusIcon />
             </IconButton>
