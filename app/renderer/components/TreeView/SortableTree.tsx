@@ -41,34 +41,39 @@ const initialItems: TreeItems = [
   {
     id: 'Home',
     children: [],
+    canHaveChildren: true
   },
   {
     id: 'Collections',
+    canHaveChildren: true,
     children: [
-      {id: 'Spring', children: []},
-      {id: 'Summer', children: []},
-      {id: 'Fall', children: []},
-      {id: 'Winter', children: []},
+      {id: 'Spring', children: [], canHaveChildren: false},
+      {id: 'Summer', children: [], canHaveChildren: false},
+      {id: 'Fall', children: [], canHaveChildren: false},
+      {id: 'Winter', children: [], canHaveChildren: false},
     ],
   },
   {
     id: 'Gods',
+    canHaveChildren: true,
     children: [
-      {id: 'Thor', children: []},
-      {id: 'Loki', children: []},
-      {id: 'Odin', children: []},
-      {id: 'Apollo', children: []},
+      {id: 'Thor', children: [], canHaveChildren: false},
+      {id: 'Loki', children: [], canHaveChildren: false},
+      {id: 'Odin', children: [], canHaveChildren: false},
+      {id: 'Apollo', children: [], canHaveChildren: false},
     ],
   },
   {
     id: 'About Us',
     children: [],
+    canHaveChildren: false
   },
   {
     id: 'My Account',
+    canHaveChildren: true,
     children: [
-      {id: 'Addresses', children: []},
-      {id: 'Order History', children: []},
+      {id: 'Addresses', children: [], canHaveChildren: false},
+      {id: 'Order History', children: [], canHaveChildren: false},
     ],
   },
 ];
@@ -274,6 +279,7 @@ export function SortableTree({
       const newItems = buildTree(sortedItems);
 
       setItems(newItems);
+      console.log(newItems);
     }
   }
 

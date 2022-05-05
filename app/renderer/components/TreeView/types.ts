@@ -2,6 +2,7 @@ import type {MutableRefObject} from 'react';
 
 export interface TreeItem {
   id: string;
+  canHaveChildren: boolean;
   children: TreeItem[];
   collapsed?: boolean;
 }
