@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLAttributes } from 'react';
+import React, { forwardRef, HTMLAttributes, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
 import { IconButton } from 'renderer/controls';
@@ -34,7 +34,7 @@ type StyledTreeItemProps = {
   ghost?: boolean;
   disableSelection?: boolean;
   disableInteraction?: boolean;
-  contentEditable?: boolean;
+  isEditable?: boolean;
 };
 
 const StyledTreeItem = styled.div<StyledTreeItemProps>`
@@ -45,6 +45,12 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   color: ${(p) => p.theme.sidebarFgText};
   box-sizing: border-box;
   border-radius: 5px;
+
+  ${(p) =>
+    p.contentEditable &&
+    css`
+      background-color: ${(p) => Color(p.theme.sidebarBg).darken(0.2)};
+    `}
 
   ${(p) =>
     p.clone &&
@@ -76,7 +82,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       cursor: pointer;
 
       &:hover {
-        background-color: ${p.contentEditable
+        background-color: ${p.isEditable
           ? Color(p.theme.sidebarBg).darken(0.2)
           : Color(p.theme.sidebarBg).lighten(0.3)};
       }
@@ -89,6 +95,9 @@ const StyledText = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  :focus {
+        outline: none;
+      }
 `;
 
 const StyledCount = styled.span`
@@ -146,13 +155,19 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
+    const [isEditable, setIsEditable] = useState(false);
+    const handleDoubleClick = () => {
+      setIsEditable(true);
+      setTimeout(() => {
+        // itemRef.current?.focus();
+      }, 10);
+    };
     return (
       <StyledTreeItemWrapper
         clone={clone}
         ghost={ghost}
         disableSelection={disableSelection}
         disableInteraction={disableInteraction}
-        contentEditable={false}
         ref={wrapperRef}
         style={
           {
@@ -168,13 +183,16 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           ghost={ghost}
           disableSelection={disableSelection}
           disableInteraction={disableInteraction}
+          isEditable={isEditable}
         >
           {onCollapse && (
             <IconButton onClick={onCollapse} iconSize="15px">
               <PlusIcon />
             </IconButton>
           )}
-          <StyledText {...handleProps}>{value}</StyledText>
+          <StyledText {...handleProps} onDoubleClick={handleDoubleClick} contentEditable={isEditable}>
+            {value}
+          </StyledText>
           {clone && childCount && childCount > 1 ? (
             <StyledCount>{childCount}</StyledCount>
           ) : null}
