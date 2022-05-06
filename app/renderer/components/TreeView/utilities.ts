@@ -167,7 +167,8 @@ export function changeItemId(items: Sections, id: string, newId: string) {
   const newItems = [] as Sections;
   for(const item of items) {
     if(item.id === id) {
-      item.id = newId;
+      newItems.push({...item, id: newId});
+      continue;
     }
     if(item.children.length) {
       item.children = changeItemId(item.children, id, newId);

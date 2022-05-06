@@ -51,7 +51,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   padding: 3px 6px;
   color: ${(p) =>
     p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
-  font-weight: ${(p) => p.canHaveChildren ? '600' : '400'};
+  font-weight: ${(p) => (p.canHaveChildren ? '600' : '400')};
   box-sizing: border-box;
   border-radius: 5px;
 
@@ -146,11 +146,23 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
   ) => {
     const [isEditable, setIsEditable] = useState(false);
     const [dragProps, setDragProps] = useState({ ...handleProps });
-    const textRef = useRef<HTMLSpanElement>();
+    const textRef = useRef<HTMLSpanElement>(null);
+    const handleEdit = () => {
+      textRef.current?.focus();
+        var range = document.createRange();
+        if (textRef.current) {
+          range.selectNodeContents(textRef.current);
+          var sel = window.getSelection();
+          if (sel) {
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+        }
+    }
     const handleDoubleClick = () => {
       setIsEditable(true);
       setTimeout(() => {
-        textRef.current?.focus();
+        handleEdit();
       });
     };
     const handleBlur = () => {
@@ -164,14 +176,14 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         setIsEditable(true);
         textRef.current?.scrollTo({ behavior: 'smooth' });
         setTimeout(() => {
-          textRef.current?.focus();
+          handleEdit();
         });
       }
     }, []);
     const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
       if (event.code === 'Enter') {
         event.preventDefault();
-        handleBlur();
+        setIsEditable(false);
       } else if (event.code === 'Escape') {
         event.preventDefault();
         if (textRef.current) textRef.current.innerText = value;
@@ -180,11 +192,11 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     };
     useEffect(() => {
       if (isEditable) {
-        setDragProps({});
+        setDragProps(undefined);
       } else {
         setDragProps({ ...handleProps });
       }
-    });
+    }, [isEditable]);
 
     return (
       <StyledTreeItemWrapper
@@ -203,13 +215,13 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       >
         <StyledTreeItem
           ref={ref}
-          // style={style}
           clone={clone}
           ghost={ghost}
           disableSelection={disableSelection}
           disableInteraction={disableInteraction}
           isEditable={isEditable}
           canHaveChildren={canHaveChildren}
+          {...dragProps}
         >
           {canHaveChildren && (
             <IconButton onClick={onCollapse} iconSize="15px">
@@ -217,10 +229,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             </IconButton>
           )}
           <StyledText
-            {...dragProps}
             onDoubleClick={handleDoubleClick}
             contentEditable={isEditable}
-            disabled={isEditable}
             suppressContentEditableWarning
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}

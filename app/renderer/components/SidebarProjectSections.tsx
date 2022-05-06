@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import Color from 'color';
 import useStore from '../store/useStore';

@@ -27,9 +27,7 @@ const updateSectionName = (oldName: string, newName: string) => {
   if (oldName !== newName) {
     const { content, changeSectionName } = useStore.getState();
     const section = findItemDeep(content, oldName);
-    console.log(`Attempting to update ${oldName} to ${newName}`);
     if (section) {
-      console.log(`updating name to ${newName}`);
       changeSectionName(oldName, newName);
     }
   }
