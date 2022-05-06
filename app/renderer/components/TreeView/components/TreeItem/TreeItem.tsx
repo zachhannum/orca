@@ -5,10 +5,10 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 import Color from 'color';
 import { IconButton } from 'renderer/controls';
-import { PlusIcon } from 'renderer/icons';
+import { FolderOpenIcon, FolderClosedIcon } from 'renderer/icons';
 import { updateSectionName } from 'renderer/utils/projectUtils';
 import useStore from 'renderer/store/useStore';
 
@@ -122,6 +122,18 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   wrapperRef?(node: HTMLLIElement): void;
 }
 
+type StyledFolderIconProps = {
+  collapsed?: boolean;
+};
+const StyledFolderIcon = styled(FolderOpenIcon)<StyledFolderIconProps>`
+  ${(p) =>
+    p.collapsed &&
+    css`
+      transform: rotate(-90deg);
+    `}
+  transition: transform 200ms ease-in-out;
+`;
+
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
@@ -147,18 +159,26 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const [isEditable, setIsEditable] = useState(false);
     const [dragProps, setDragProps] = useState({ ...handleProps });
     const textRef = useRef<HTMLSpanElement>(null);
+    const theme = useTheme();
     const handleEdit = () => {
       textRef.current?.focus();
-        var range = document.createRange();
-        if (textRef.current) {
-          range.selectNodeContents(textRef.current);
-          var sel = window.getSelection();
-          if (sel) {
-            sel.removeAllRanges();
-            sel.addRange(range);
-          }
+      var range = document.createRange();
+      if (textRef.current) {
+        range.selectNodeContents(textRef.current);
+        var sel = window.getSelection();
+        if (sel) {
+          sel.removeAllRanges();
+          sel.addRange(range);
         }
-    }
+      }
+    };
+    const handleClick = () => {
+      if (canHaveChildren) {
+        if (onCollapse) onCollapse();
+      } else {
+        //todo, show content in Writer
+      }
+    };
     const handleDoubleClick = () => {
       setIsEditable(true);
       setTimeout(() => {
@@ -212,6 +232,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           } as React.CSSProperties
         }
         {...props}
+        onClick={handleClick}
       >
         <StyledTreeItem
           ref={ref}
@@ -224,9 +245,13 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {...dragProps}
         >
           {canHaveChildren && (
-            <IconButton onClick={onCollapse} iconSize="15px">
-              <PlusIcon />
-            </IconButton>
+            <>
+              <StyledFolderIcon
+                collapsed={collapsed}
+                size="15px"
+                color={theme.sidebarFgTextSecondary}
+              />
+            </>
           )}
           <StyledText
             onDoubleClick={handleDoubleClick}

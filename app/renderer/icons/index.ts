@@ -19,3 +19,5 @@ export { default as SettingsIcon } from './SettingsIcon';
 export { default as PlusIcon } from './PlusIcon';
 export { default as NewFileIcon } from './NewFileIcon';
 export { default as NewFolderIcon } from './NewFolderIcon';
+export { default as FolderOpenIcon } from './FolderOpenIcon';
+export { default as FolderClosedIcon } from './FolderClosedIcon';
