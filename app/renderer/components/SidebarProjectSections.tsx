@@ -5,7 +5,7 @@ import useStore from '../store/useStore';
 import { IconButton } from '../controls';
 import { NewFileIcon, NewFolderIcon } from '../icons';
 import { addNewSection, addNewFolder } from '../utils/projectUtils';
-import { SortableTree } from '../components';
+import { SectionContextMenu, SortableTree } from '../components';
 
 const StyledSidebarPSecondary = styled.p`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
@@ -112,6 +112,7 @@ const SidebarProjectSections = () => {
           <SectionsContainer>
             <SortableTree items={content} onItemsSorted={setContentArray} />
           </SectionsContainer>
+          <SectionContextMenu/>
         </>
       )}
     </>
