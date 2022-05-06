@@ -184,18 +184,23 @@ export function setProperty<T extends keyof Section>(
   property: T,
   setter: (value: Section[T]) => Section[T]
 ) {
+  const newItems = [] as Sections;
   for (const item of items) {
     if (item.id === id) {
-      item[property] = setter(item[property]);
+
+      let newItem = {...item};
+      newItem[property] = setter(newItem[property]);
+      newItems.push(newItem);
       continue;
     }
 
     if (item.children.length) {
       item.children = setProperty(item.children, id, property, setter);
     }
+    newItems.push(item);
   }
 
-  return [...items];
+  return newItems;
 }
 
 function countChildren(items: Sections, count = 0): number {

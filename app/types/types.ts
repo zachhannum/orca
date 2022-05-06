@@ -53,6 +53,7 @@ export type SectionContextMenuEventData = {
   x: number;
   y: number;
 };
-export type SectionContextMenuCloseEventData = {
+export type SectionContextMenuClosedEventData = {
   id: string;
+  rename: boolean;
 }

@@ -25,7 +25,6 @@ type StyledTreeItemWrapperProps = {
 
 const StyledTreeItemWrapper = styled.li<StyledTreeItemWrapperProps>`
   list-style: none;
-  font-size: 0.9em;
   box-sizing: border-box;
   padding-left: var(--spacing);
   width: 100%;
@@ -56,6 +55,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   padding: 3px 6px;
   color: ${(p) =>
     p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
+  font-size: ${(p) => (p.canHaveChildren ? '1em' : '0.9em')};
   font-weight: ${(p) => (p.canHaveChildren ? '600' : '400')};
   box-sizing: border-box;
   border-radius: 5px;
@@ -171,8 +171,16 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const theme = useTheme();
 
     const handleContextClosed = (event: CustomEventInit) => {
-      const { id } = event.detail as SectionContextMenuClosedEventData;
-      if (id === value) setContextOpen(false);
+      const { id, rename } = event.detail as SectionContextMenuClosedEventData;
+      if (id === value) {
+        setContextOpen(false);
+        if (rename) {
+          setIsEditable(true);
+          setTimeout(() => {
+            handleEdit();
+          });
+        }
+      }
     };
 
     const handleOpenContext = (event: React.MouseEvent<HTMLLIElement>) => {
@@ -201,6 +209,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
     const handleClick = () => {
+    console.log(`handling click, ${canHaveChildren}`);
       if (canHaveChildren) {
         if (onCollapse) onCollapse();
       } else {

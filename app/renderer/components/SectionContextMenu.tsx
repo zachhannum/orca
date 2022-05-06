@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, useTheme } from 'styled-components';
 import Color from 'color';
 import useStore from '../store/useStore';
-import { findItemDeep } from './TreeView/utilities';
+import { findItemDeep, removeItem } from './TreeView/utilities';
+import {
+  SectionDeleteIcon,
+  SectionDuplicateIcon,
+  SectionRenameIcon,
+  SectionOpenIcon,
+} from 'renderer/icons';
 import {
   Section,
   SectionContextMenuEvent,
@@ -31,6 +37,7 @@ const StyledContextMenu = styled.div<StyledContextMenuProps>`
   border-radius: 10px;
   padding: 5px;
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -39,15 +46,20 @@ const StyledContextMenu = styled.div<StyledContextMenuProps>`
 
 const StyledContextMenuItem = styled.div`
   user-select: none;
+  box-sizing: border-box;
   cursor: pointer;
   display: flex;
+  gap: 10px;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-between;
   align-items: center;
+  align-content: center;
+  justify-content: flex-start;
+  text-align: center;
   padding: 5px;
   border-radius: 5px;
   font-size: 0.9em;
+  width: 100%;
 
   color: ${(p) => p.theme.mainFgTextSecondary};
 
@@ -66,6 +78,8 @@ const SectionContextMenu = () => {
   const [id, setId] = useState('');
   const [isFolder, setIsFolder] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [renameSelected, setRenameSelected] = useState(false);
+  const theme = useTheme();
   const root = useRef<HTMLDivElement>(null);
   const invisibleTimeout = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
@@ -147,16 +161,15 @@ const SectionContextMenu = () => {
   }, [showMenu, setShowMenu]);
 
   useEffect(() => {
-    console.log(showMenu);
     if (!showMenu && id !== '') {
       const contextClosedEvent = new CustomEvent(
         SectionContextMenuClosedEvent,
         {
-          detail: { id: id },
+          detail: { id: id, rename: renameSelected },
         }
       );
-      console.log('Dispatching context closed event');
       document.dispatchEvent(contextClosedEvent);
+      setRenameSelected(false);
     }
   }, [showMenu, id]);
 
@@ -170,6 +183,21 @@ const SectionContextMenu = () => {
     }
   }, [showMenu]);
 
+  /* Menu Item handlers */
+  const handleRename = () => {
+    setRenameSelected(true);
+  };
+
+  const handleDelete = () => {
+    const { content, setContentArray } = useStore.getState();
+    setContentArray(removeItem(content, id));
+  };
+
+  const itemIconProps = {
+    size: '15px',
+    color: theme.mainFgTextSecondary,
+  };
+
   return (
     <div ref={root} style={{ position: 'fixed' }}>
       {visible && (
@@ -180,12 +208,22 @@ const SectionContextMenu = () => {
                 console.log('Clicked!');
               }}
             >
-              Open in Editor
+              <SectionOpenIcon {...itemIconProps} />
+              <span>Open in Editor</span>
             </StyledContextMenuItem>
           )}
-          <StyledContextMenuItem>Rename</StyledContextMenuItem>
-          <StyledContextMenuItem>Duplicate</StyledContextMenuItem>
-          <StyledContextMenuItem>Delete</StyledContextMenuItem>
+          <StyledContextMenuItem onClick={handleRename}>
+            <SectionRenameIcon {...itemIconProps} />
+            Rename
+          </StyledContextMenuItem>
+          <StyledContextMenuItem>
+            <SectionDuplicateIcon {...itemIconProps} />
+            Duplicate
+          </StyledContextMenuItem>
+          <StyledContextMenuItem onClick={handleDelete}>
+            <SectionDeleteIcon {...itemIconProps} />
+            Delete
+          </StyledContextMenuItem>
         </StyledContextMenu>
       )}
     </div>
