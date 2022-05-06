@@ -7,10 +7,14 @@ import React, {
 } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import Color from 'color';
-import { IconButton } from 'renderer/controls';
-import { FolderOpenIcon, FolderClosedIcon } from 'renderer/icons';
+import { FolderOpenIcon } from 'renderer/icons';
 import { updateSectionName } from 'renderer/utils/projectUtils';
 import useStore from 'renderer/store/useStore';
+import {
+  SectionContextMenuClosedEvent,
+  SectionContextMenuClosedEventData,
+  SectionContextMenuEvent,
+} from 'types/types';
 
 type StyledTreeItemWrapperProps = {
   clone?: boolean;
@@ -21,7 +25,6 @@ type StyledTreeItemWrapperProps = {
 
 const StyledTreeItemWrapper = styled.li<StyledTreeItemWrapperProps>`
   list-style: none;
-  font-size: 0.9em;
   box-sizing: border-box;
   padding-left: var(--spacing);
   width: 100%;
@@ -40,6 +43,7 @@ type StyledTreeItemProps = {
   disableSelection?: boolean;
   disableInteraction?: boolean;
   isEditable?: boolean;
+  contextOpen?: boolean;
   canHaveChildren?: boolean;
 };
 
@@ -51,6 +55,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   padding: 3px 6px;
   color: ${(p) =>
     p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
+  font-size: ${(p) => (p.canHaveChildren ? '1em' : '0.9em')};
   font-weight: ${(p) => (p.canHaveChildren ? '600' : '400')};
   box-sizing: border-box;
   border-radius: 5px;
@@ -71,7 +76,10 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     !p.clone &&
     css`
       cursor: pointer;
-
+      ${p.contextOpen &&
+      css`
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+      `}
       &:hover {
         background-color: ${p.isEditable
           ? Color(p.theme.sidebarBg).darken(0.2)
@@ -157,9 +165,37 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ref
   ) => {
     const [isEditable, setIsEditable] = useState(false);
+    const [contextOpen, setContextOpen] = useState(false);
     const [dragProps, setDragProps] = useState({ ...handleProps });
     const textRef = useRef<HTMLSpanElement>(null);
     const theme = useTheme();
+
+    const handleContextClosed = (event: CustomEventInit) => {
+      const { id, rename } = event.detail as SectionContextMenuClosedEventData;
+      if (id === value) {
+        setContextOpen(false);
+        if (rename) {
+          setIsEditable(true);
+          setTimeout(() => {
+            handleEdit();
+          });
+        }
+      }
+    };
+
+    const handleOpenContext = (event: React.MouseEvent<HTMLLIElement>) => {
+      event.preventDefault();
+      setContextOpen(true);
+      const contextEvent = new CustomEvent(SectionContextMenuEvent, {
+        detail: { id: value, x: event.clientX, y: event.clientY },
+      });
+      document.addEventListener(
+        SectionContextMenuClosedEvent,
+        handleContextClosed
+      );
+      document.dispatchEvent(contextEvent);
+    };
+
     const handleEdit = () => {
       textRef.current?.focus();
       var range = document.createRange();
@@ -173,17 +209,12 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
     const handleClick = () => {
+    console.log(`handling click, ${canHaveChildren}`);
       if (canHaveChildren) {
         if (onCollapse) onCollapse();
       } else {
         //todo, show content in Writer
       }
-    };
-    const handleDoubleClick = () => {
-      setIsEditable(true);
-      setTimeout(() => {
-        handleEdit();
-      });
     };
     const handleBlur = () => {
       setIsEditable(false);
@@ -233,6 +264,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
         onClick={handleClick}
+        onContextMenu={handleOpenContext}
       >
         <StyledTreeItem
           ref={ref}
@@ -242,6 +274,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           disableInteraction={disableInteraction}
           isEditable={isEditable}
           canHaveChildren={canHaveChildren}
+          contextOpen={contextOpen}
           {...dragProps}
         >
           {canHaveChildren && (
@@ -254,7 +287,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             </>
           )}
           <StyledText
-            onDoubleClick={handleDoubleClick}
+            // onDoubleClick={handleDoubleClick}
             contentEditable={isEditable}
             suppressContentEditableWarning
             onBlur={handleBlur}

@@ -253,6 +253,7 @@ export function SortableTree({
   }
 
   function handleCollapse(id: string) {
+    console.log("handling collapse");
     onItemsSorted(
       setProperty(items, id, 'collapsed', (value) => {
         return !value;

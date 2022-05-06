@@ -21,3 +21,7 @@ export { default as NewFileIcon } from './NewFileIcon';
 export { default as NewFolderIcon } from './NewFolderIcon';
 export { default as FolderOpenIcon } from './FolderOpenIcon';
 export { default as FolderClosedIcon } from './FolderClosedIcon';
+export { default as SectionDeleteIcon } from './SectionDeleteIcon';
+export { default as SectionDuplicateIcon } from './SectionDuplicateIcon';
+export { default as SectionOpenIcon } from './SectionOpenIcon';
+export { default as SectionRenameIcon } from './SectionRenameIcon';

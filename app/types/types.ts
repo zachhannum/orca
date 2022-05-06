@@ -43,3 +43,17 @@ export type ProjectData = {
   folderPath: string;
   fileName: string;
 };
+
+/* Context Menu event types */
+export const SectionContextMenuEvent = 'section-context-menu-event';
+export const SectionContextMenuClosedEvent = 'section-context-menu-closed-event';
+/* Event Data for Context Menu Events */
+export type SectionContextMenuEventData = {
+  id: string;
+  x: number;
+  y: number;
+};
+export type SectionContextMenuClosedEventData = {
+  id: string;
+  rename: boolean;
+}
