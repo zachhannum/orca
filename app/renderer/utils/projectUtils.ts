@@ -1,5 +1,6 @@
-import { SectionType } from 'types/types';
+import { Section, SectionType } from 'types/types';
 import useStore from '../store/useStore';
+import { findItemDeep } from '../components/TreeView/utilities';
 
 const saveProject = () => {
   const projectContents = {
@@ -14,6 +15,7 @@ const saveProject = () => {
   };
   const folderPath = useStore.getState().projectFolder;
   const fileName = useStore.getState().projectFileName;
+  console.log(projectContents);
   window.projectApi.saveProject({
     projectContent: projectContents,
     folderPath,
@@ -24,35 +26,40 @@ const saveProject = () => {
 const updateSectionName = (oldName: string, newName: string) => {
   if (oldName !== newName) {
     const { content, changeSectionName } = useStore.getState();
-    const section = content.find((s) => s.name === oldName);
+    const section = findItemDeep(content, oldName);
     if (section) {
-      console.log(`updating name to ${newName}`);
-      const newSection = { ...section, name: newName}
-      changeSectionName(oldName, newSection);
-      const updatedContent = useStore.getState().content;
-      updatedContent.forEach((section) => {
-        console.log(section.name);
-      });
+      changeSectionName(oldName, newName);
     }
   }
 };
 
-const addNewSection = () => {
+const addNewSection = (type: SectionType = SectionType.maincontent) => {
+  const { content, setAddingSections } = useStore.getState();
+  setAddingSections(true);
   const defaultNameBase = 'Untitled';
-  const { content } = useStore.getState();
   let i = 1;
   let name = defaultNameBase;
   // eslint-disable-next-line @typescript-eslint/no-loop-func
-  while (content.find((p) => p.name === name) !== undefined) {
+  while (findItemDeep(content, name) !== undefined) {
     name = `${defaultNameBase}${i}`;
     i += 1;
   }
   const { updateOrAddSection } = useStore.getState();
   updateOrAddSection({
-    name,
+    id: name,
     content: '',
-    type: SectionType.maincontent,
+    type: type,
+    canHaveChildren: type === SectionType.folder ? true : false,
+    collapsed: false,
+    children: [],
   });
+  setTimeout(() => {
+    setAddingSections(false);
+  }, 10);
 };
 
-export { saveProject, updateSectionName, addNewSection };
+const addNewFolder = () => {
+  addNewSection(SectionType.folder);
+};
+
+export { saveProject, updateSectionName, addNewSection, addNewFolder };

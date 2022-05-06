@@ -24,7 +24,7 @@ const SidebarTopContainer = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  z-index: 100;
+  z-index: 2;
 `;
 
 const SidebarBottomContainer = styled.div`
@@ -84,7 +84,7 @@ const SidebarPane = () => {
   return (
     <Pane
       enabled={open}
-      defaultWidth="300px"
+      defaultWidth="250px"
       backgroundColor={theme.sidebarBg}
       styleMixin={paneStyleMixin}
     >

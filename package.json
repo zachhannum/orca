@@ -218,6 +218,8 @@
         "webpack-merge": "^5.8.0"
     },
     "dependencies": {
+        "@dnd-kit/core": "^5.0.3",
+        "@dnd-kit/sortable": "^6.0.1",
         "@openfonts/crimson-pro_latin": "^1.44.3",
         "@openfonts/poppins_latin": "^1.44.5",
         "@udecode/plate": "^10.6.3",
@@ -263,6 +265,8 @@
         "styled-components": "5.3.5"
     },
     "electronmon": {
-      "patterns": ["!test_projects/**"]
+        "patterns": [
+            "!test_projects/**"
+        ]
     }
 }

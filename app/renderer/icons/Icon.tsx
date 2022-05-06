@@ -14,9 +14,15 @@ const StyledSvg = styled.svg<IconProps>`
   }
 `;
 
-const Icon = ({ size, color, shapeRendering, children }: IconProps) => {
+const Icon = ({
+  size,
+  color,
+  shapeRendering,
+  children,
+  ...props
+}: IconProps) => {
   return (
-    <IconDiv size={size}>
+    <IconDiv size={size} {...props}>
       <StyledSvg
         color={color}
         height="100%"

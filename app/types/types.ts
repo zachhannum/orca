@@ -10,14 +10,20 @@ export enum SectionType {
   frontmatter = 'frontmatter',
   maincontent = 'maincontent',
   backmatter = 'backmatter',
+  folder = 'folder',
 }
 
-/* SectionData is a data structure that represents section content in a project */
-export type SectionData = {
-  name: string;
+/* Section is a data structure that represents section content in a project */
+export type Section = {
+  id: string;
   content: string;
   type: SectionType;
+  canHaveChildren: boolean;
+  children: Section[];
+  collapsed?: boolean;
 };
+
+export type Sections = Section[];
 
 /* Project is a data structure that mirrors the high level structure of project files */
 export type Project = {
@@ -28,7 +34,7 @@ export type Project = {
   ISBN: string;
   language: string;
   publisher: string;
-  content: SectionData[];
+  content: Sections;
 };
 
 /* ProjectData is used for passing Project data structures to and from main for saving/opening projects */

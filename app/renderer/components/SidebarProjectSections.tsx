@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import Color from 'color';
 import useStore from '../store/useStore';
 import { IconButton } from '../controls';
 import { NewFileIcon, NewFolderIcon } from '../icons';
-import { addNewSection } from '../utils/projectUtils';
-import SidebarProjectSectionItem from './SidebarProjectSectionItem';
+import { addNewSection, addNewFolder } from '../utils/projectUtils';
+import { SortableTree } from '../components';
 
 const StyledSidebarPSecondary = styled.p`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
@@ -73,8 +73,9 @@ const SectionsContainer = styled.div`
 
 const SidebarProjectSections = () => {
   const content = useStore((state) => state.content);
+  const setContentArray = useStore((state) => state.setContentArray);
   const theme = useTheme();
-  const [addingNewSections, setAddingNewSections] = useState(false);
+
   return (
     <>
       <SectionHeader>
@@ -83,11 +84,7 @@ const SidebarProjectSections = () => {
           <IconButton
             iconSize="17px"
             onClick={() => {
-              setAddingNewSections(true);
               addNewSection();
-              setTimeout(() => {
-                setAddingNewSections(false);
-              }, 10);
             }}
             foregroundColor={theme.sidebarFgTextSecondary}
           >
@@ -95,7 +92,9 @@ const SidebarProjectSections = () => {
           </IconButton>
           <IconButton
             iconSize="17px"
-            onClick={() => {}}
+            onClick={() => {
+              addNewFolder();
+            }}
             foregroundColor={theme.sidebarFgTextSecondary}
           >
             <NewFolderIcon />
@@ -111,13 +110,7 @@ const SidebarProjectSections = () => {
       ) : (
         <>
           <SectionsContainer>
-            {content.map((content) => (
-              <SidebarProjectSectionItem
-                key={content.name}
-                value={content.name}
-                addingNew={addingNewSections}
-              />
-            ))}
+            <SortableTree items={content} onItemsSorted={setContentArray} />
           </SectionsContainer>
         </>
       )}

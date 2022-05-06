@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Color from 'color';
 import { Writer } from '../components';
 import useStore from '../store/useStore';
 
@@ -23,7 +24,7 @@ const NoProjectDiv = styled.div`
   height: 100%;
   width: 100%;
   user-select: none;
-  color: ${(p) => p.theme.sidebarFgTextSecondary};
+  color: ${(p) => Color(p.theme.mainBg).lighten(0.7)};
 `;
 
 const NoProjectTitle = styled.span`
