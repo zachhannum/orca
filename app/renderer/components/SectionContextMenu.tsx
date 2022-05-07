@@ -129,7 +129,7 @@ const SectionContextMenu = () => {
     };
 
     const handleClick = (event) => {
-      const wasOutside = !(event.target.contains === root);
+      const wasOutside = !(root.current?.contains(event.target));
       if (wasOutside && showMenu) setShowMenu(false);
     };
 
@@ -186,11 +186,14 @@ const SectionContextMenu = () => {
   /* Menu Item handlers */
   const handleRename = () => {
     setRenameSelected(true);
+    setShowMenu(false);
   };
 
   const handleDelete = () => {
     const { content, setContentArray } = useStore.getState();
+    console.log(content);
     setContentArray(removeItem(content, id));
+    setShowMenu(false);
   };
 
   const itemIconProps = {

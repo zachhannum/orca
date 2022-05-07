@@ -147,16 +147,17 @@ export function findItemDeep(
 export function removeItem(items: Sections, id: string) {
   const newItems = [] as Sections;
 
-  for (const item of items) {
+  for (let item of items) {
+
     if (item.id === id) {
       continue;
     }
-
+    let newItem = {...item};
     if (item.children.length) {
-      item.children = removeItem(item.children, id);
+      newItem.children = removeItem(item.children, id);
     }
 
-    newItems.push(item);
+    newItems.push(newItem);
   }
 
   return newItems;
@@ -165,7 +166,7 @@ export function removeItem(items: Sections, id: string) {
 
 export function changeItemId(items: Sections, id: string, newId: string) {
   const newItems = [] as Sections;
-  for(const item of items) {
+  for(let item of items) {
     if(item.id === id) {
       newItems.push({...item, id: newId});
       continue;
@@ -185,7 +186,7 @@ export function setProperty<T extends keyof Section>(
   setter: (value: Section[T]) => Section[T]
 ) {
   const newItems = [] as Sections;
-  for (const item of items) {
+  for (let item of items) {
     if (item.id === id) {
 
       let newItem = {...item};
