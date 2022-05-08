@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { Writer } from '../components';
+import { BasicWriter, Writer } from '../components';
 import useStore from '../store/useStore';
 
 const MainContent = styled.div`
@@ -58,7 +58,7 @@ const MainPane = () => {
   return (
     <MainContent>
       {isProjectOpen ? (
-        <Writer />
+        <BasicWriter />
       ) : (
         <NoProjectDiv>
           <NoProjectTitle>Calamus</NoProjectTitle>

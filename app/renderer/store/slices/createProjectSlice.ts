@@ -23,6 +23,8 @@ export interface ProjectSlice extends Project {
   addingSections: boolean;
   setAddingSections: (val: boolean) => void;
   changeSectionName: (oldName: string, newName: string) => void;
+  activeSectionId: string;
+  setActiveSectionId: (id: string) => void;
 }
 
 const createProjectSlice = (
@@ -83,7 +85,13 @@ const createProjectSlice = (
   addingSections: false,
   setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),
   changeSectionName: (oldName: string, newName: string) => {
-    set((state) => ({ content: changeItemId(state.content, oldName, newName)}))
+    set((state) => ({
+      content: changeItemId(state.content, oldName, newName),
+    }));
+  },
+  activeSectionId: '',
+  setActiveSectionId: (id: string) => {
+    set(() => ({ activeSectionId: id }));
   },
 });
 

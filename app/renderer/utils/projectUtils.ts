@@ -47,7 +47,7 @@ const addNewSection = (type: SectionType = SectionType.maincontent) => {
   const { updateOrAddSection } = useStore.getState();
   updateOrAddSection({
     id: name,
-    content: '',
+    content: 'Hello world!',
     type: type,
     canHaveChildren: type === SectionType.folder ? true : false,
     collapsed: false,

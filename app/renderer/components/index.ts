@@ -5,5 +5,6 @@ export { default as ScrollContainer } from './ScrollContainer';
 export { default as PagedRenderer } from './PagedRenderer';
 export { default as Pane } from './Pane';
 export { default as Writer } from './Writer';
+export { default as BasicWriter } from './BasicWriter';
 export { SortableTree } from './TreeView/SortableTree';
 export {default as SectionContextMenu} from './SectionContextMenu';

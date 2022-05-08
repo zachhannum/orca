@@ -209,10 +209,12 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
     const handleClick = () => {
-    console.log(`handling click, ${canHaveChildren}`);
       if (canHaveChildren) {
         if (onCollapse) onCollapse();
       } else {
+        console.log(value);
+        const { setActiveSectionId } = useStore.getState();
+        setActiveSectionId(value);
         //todo, show content in Writer
       }
     };
