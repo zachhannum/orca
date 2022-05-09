@@ -6,6 +6,10 @@ export interface AppSlice {
   setPreviewEnabled: (val: boolean) => void;
   newBookModalOpen: boolean;
   setNewBookModalOpen: (val: boolean) => void;
+  animatingCollapseRefCount: number;
+  incrementAnimatingCollapseRefCount: () => void;
+  decrementAnimatingCollapseRefCount: () => void;
+  resetAnimatingCollapseRefCount: () => void;
 }
 
 const createAppSlice = (
@@ -21,6 +25,25 @@ const createAppSlice = (
   setNewBookModalOpen: (val: boolean) => {
     set(() => ({
       newBookModalOpen: val,
+    }));
+  },
+  animatingCollapseRefCount: 0,
+  incrementAnimatingCollapseRefCount: () => {
+    set((state) => ({
+      animatingCollapseRefCount: state.animatingCollapseRefCount + 1,
+    }));
+  },
+  decrementAnimatingCollapseRefCount: () => {
+    set((state) => ({
+      animatingCollapseRefCount: Math.max(
+        state.animatingCollapseRefCount - 1,
+        0
+      ),
+    }));
+  },
+  resetAnimatingCollapseRefCount: () => {
+    set(() => ({
+      animatingCollapseRefCount: 0,
     }));
   },
 });

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Announcements,
@@ -15,7 +15,6 @@ import {
   MeasuringStrategy,
   DropAnimation,
   defaultDropAnimation,
-  Modifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -27,7 +26,6 @@ import {
   buildTree,
   flattenTree,
   getProjection,
-  getChildCount,
   removeItem,
   removeChildrenOf,
   setProperty,
@@ -35,6 +33,7 @@ import {
 import type { FlattenedItem, SensorContext } from './types';
 import { Sections } from 'types/types';
 import { SortableTreeItem } from './components';
+import useStore from 'renderer/store/useStore';
 
 const measuring = {
   droppable: {
@@ -62,7 +61,6 @@ export function SortableTree({
   indentationWidth = 20,
   removable,
 }: Props) {
-  // const [items, setItems] = useState(() => defaultItems);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
   const [offsetLeft, setOffsetLeft] = useState(0);
@@ -114,6 +112,29 @@ export function SortableTree({
     ? flattenedItems.find(({ id }) => id === activeId)
     : null;
 
+  const animateOnCollapseRefCount = useStore(
+    (state) => state.animatingCollapseRefCount
+  );
+  const [animateInFromCollapseStartIdx, setAnimateInFromCollapseStartIdx] =
+    useState(-1);
+  const [animateInFromCollapseEndIdx, setAnimateInFromCollapseEndIdx] =
+    useState(-1);
+  useEffect(() => {
+    if (animateOnCollapseRefCount === 0) {
+      setAnimateInFromCollapseStartIdx(-1);
+      setAnimateInFromCollapseEndIdx(-1);
+    }
+  }, [animateOnCollapseRefCount]);
+  const isIndexBetweenStartAndEndAnimationIdx = useCallback(
+    (val: number) => {
+      return (
+        val > animateInFromCollapseStartIdx &&
+        val <= animateInFromCollapseEndIdx
+      );
+    },
+    [animateInFromCollapseEndIdx, animateInFromCollapseStartIdx]
+  );
+
   useEffect(() => {
     sensorContext.current = {
       items: flattenedItems,
@@ -153,18 +174,22 @@ export function SortableTree({
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
         {flattenedItems.map(
-          ({ id, children, canHaveChildren, collapsed, depth }) => (
+          ({ id, canHaveChildren, collapsed, depth }, index) => (
             <SortableTreeItem
               key={id}
               id={id}
+              animateIndex={
+                isIndexBetweenStartAndEndAnimationIdx(index) ? index - animateInFromCollapseStartIdx : 0
+              }
+              animateIn={isIndexBetweenStartAndEndAnimationIdx(index)}
               value={id}
               depth={id === activeId && projected ? projected.depth : depth}
               indentationWidth={indentationWidth}
               indicator={indicator}
-              collapsed={Boolean(collapsed && children.length)}
+              collapsed={Boolean(collapsed && canHaveChildren)}
               canHaveChildren={canHaveChildren}
               onCollapse={
-                children.length ? () => handleCollapse(id) : undefined
+                canHaveChildren ? () => handleCollapse(id) : undefined
               }
               onRemove={removable ? () => handleRemove(id) : undefined}
             />
@@ -178,6 +203,8 @@ export function SortableTree({
             {activeId && activeItem ? (
               <SortableTreeItem
                 id={activeId}
+                animateIndex={-1}
+                animateIn={false}
                 depth={activeItem.depth}
                 clone
                 value={activeId}
@@ -253,7 +280,18 @@ export function SortableTree({
   }
 
   function handleCollapse(id: string) {
-    console.log("handling collapse");
+    const item = flattenedItems.find((item) => item.id === id);
+    if (item?.collapsed) {
+      const startIdx = flattenedItems.findIndex((item) => item.id === id);
+      const endIdx = startIdx + item.children.length;
+      setAnimateInFromCollapseStartIdx(startIdx);
+      setAnimateInFromCollapseEndIdx(endIdx);
+    } else {
+      //fallback in case item is collapsed before animation finishes
+      setAnimateInFromCollapseStartIdx(-1);
+      setAnimateInFromCollapseEndIdx(-1);
+      useStore.getState().resetAnimatingCollapseRefCount();
+    }
     onItemsSorted(
       setProperty(items, id, 'collapsed', (value) => {
         return !value;
@@ -282,7 +320,7 @@ export function SortableTree({
         }
       }
 
-      const clonedItems: FlattenedItem[] =flattenTree(items);
+      const clonedItems: FlattenedItem[] = flattenTree(items);
       const overIndex = clonedItems.findIndex(({ id }) => id === overId);
       const activeIndex = clonedItems.findIndex(({ id }) => id === activeId);
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);

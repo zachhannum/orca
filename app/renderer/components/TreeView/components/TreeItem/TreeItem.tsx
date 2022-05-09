@@ -5,7 +5,7 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import styled, { css, useTheme } from 'styled-components';
+import styled, { css, keyframes, useTheme } from 'styled-components';
 import Color from 'color';
 import { FolderOpenIcon } from 'renderer/icons';
 import { updateSectionName } from 'renderer/utils/projectUtils';
@@ -16,11 +16,22 @@ import {
   SectionContextMenuEvent,
 } from 'types/types';
 
+const animateInFromCollapseKeframes = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 type StyledTreeItemWrapperProps = {
   clone?: boolean;
   ghost?: boolean;
   disableSelection?: boolean;
   disableInteraction?: boolean;
+  animateInDelay?: number;
+  animateIn?: boolean;
 };
 
 const StyledTreeItemWrapper = styled.li<StyledTreeItemWrapperProps>`
@@ -34,6 +45,16 @@ const StyledTreeItemWrapper = styled.li<StyledTreeItemWrapperProps>`
     css`
       pointer-events: none;
       padding: 0;
+    `}
+
+  ${(p) =>
+    !p.disableInteraction &&
+    !p.clone &&
+    p.animateIn &&
+    css`
+      animation: ${animateInFromCollapseKeframes} 100ms ease-in-out;
+      animation-delay: ${p.animateInDelay}ms;
+      animation-fill-mode: backwards;
     `}
 `;
 
@@ -130,6 +151,8 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   indentationWidth: number;
   value: string;
   canHaveChildren: boolean;
+  animateIndex: number;
+  animateIn: boolean;
   onCollapse?(): void;
   onRemove?(): void;
   wrapperRef?(node: HTMLLIElement): void;
@@ -151,6 +174,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
       clone,
+      animateIndex,
+      animateIn,
       depth,
       disableSelection,
       disableInteraction,
@@ -173,6 +198,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const [isEditable, setIsEditable] = useState(false);
     const [contextOpen, setContextOpen] = useState(false);
     const [dragProps, setDragProps] = useState({ ...handleProps });
+    const thisWrapperRef = useRef<HTMLLIElement | null>(null);
     const textRef = useRef<HTMLSpanElement>(null);
     const theme = useTheme();
 
@@ -257,13 +283,45 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     }, [isEditable]);
 
+    useEffect(() => {
+      if (animateIn) {
+        handleAnimationStart();
+        if (thisWrapperRef.current) {
+          thisWrapperRef.current.addEventListener(
+            'animationcancel',
+            handleAnimationEnd
+          );
+        }
+      } else {
+        thisWrapperRef.current?.removeEventListener(
+          'animationcancel',
+          handleAnimationEnd
+        );
+      }
+    }, [animateIn]);
+
+    const handleAnimationStart = () => {
+      const { incrementAnimatingCollapseRefCount } = useStore.getState();
+      incrementAnimatingCollapseRefCount();
+    };
+
+    const handleAnimationEnd = () => {
+      const { decrementAnimatingCollapseRefCount } = useStore.getState();
+      decrementAnimatingCollapseRefCount();
+    };
+
     return (
       <StyledTreeItemWrapper
         clone={clone}
         ghost={ghost}
         disableSelection={disableSelection}
         disableInteraction={disableInteraction}
-        ref={wrapperRef}
+        ref={(el) => {
+          if (el && wrapperRef) {
+            wrapperRef(el);
+            thisWrapperRef.current = el;
+          }
+        }}
         style={
           {
             '--spacing': `${indentationWidth * depth}px`,
@@ -273,6 +331,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         {...props}
         onClick={handleClick}
         onContextMenu={handleOpenContext}
+        animateInDelay={animateIndex * 5}
+        animateIn={animateIn}
+        onAnimationEnd={handleAnimationEnd}
       >
         <StyledTreeItem
           ref={ref}
