@@ -5,14 +5,26 @@ import useStore from '../store/useStore';
 
 const MainContent = styled.div`
   --top-padding: calc(
-    env(titlebar-area-height, var(--fallback-title-bar-height)) + 20px
+    env(titlebar-area-height, var(--fallback-title-bar-height)) + 10px
   );
-  padding-top: var(--top-padding);
+  margin-top: calc(var(--top-padding));
   flex-grow: 1;
   flex-shrink: 1000;
   height: calc(100% - var(--top-padding));
   color: ${(p) => p.theme.mainFgText};
   background-color: ${(p) => p.theme.mainBg};
+`;
+
+const SectionTitle = styled.div`
+  height: var(--top-padding);
+  color: ${(p) => p.theme.mainFgTextSecondary};
+  margin-top: calc(-1 * var(--top-padding));
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+  font-weight: 600;
+  line-height: var(--top-padding);
+  user-select: none;
 `;
 
 const NoProjectDiv = styled.div`
@@ -55,10 +67,14 @@ const NoProjectHotkey = styled.div`
 
 const MainPane = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
+  const activeSectionId = useStore((state) => state.activeSectionId);
   return (
     <MainContent>
-      {isProjectOpen ? (
-        <BasicWriter />
+      {isProjectOpen && activeSectionId !== '' ? (
+        <>
+          <SectionTitle>{activeSectionId}</SectionTitle>
+          <BasicWriter />
+        </>
       ) : (
         <NoProjectDiv>
           <NoProjectTitle>Calamus</NoProjectTitle>
