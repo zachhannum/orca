@@ -46,9 +46,9 @@ const Scroller = styled.div`
 `;
 
 const Padding = styled.div`
-  max-width: 700px;
-  padding-top: 10vh;
-  padding-bottom: 10vh;
+  max-width: 500px;
+  height: 100%;
+  width: 100%;
 `;
 
 type Props = {

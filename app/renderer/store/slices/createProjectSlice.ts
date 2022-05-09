@@ -1,6 +1,7 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
-import { changeItemId } from '../../components/TreeView/utilities';
+import { History } from 'slate-history';
+import { changeItemId, updateSectionContentDeep } from '../../components/TreeView/utilities';
 import type { CalamusState } from '../useStore';
 import type { Project, Section } from 'types/types';
 
@@ -19,10 +20,15 @@ export interface ProjectSlice extends Project {
   setLanguage: (val: string) => void;
   setPublisher: (val: string) => void;
   setContentArray: (val: Section[]) => void;
-  updateOrAddSection: (val: Section) => void;
+  updateSectionContent: (id: string, newContent: string) => void;
+  addNewSection: (val: Section) => void;
   addingSections: boolean;
   setAddingSections: (val: boolean) => void;
-  changeSectionName: (oldName: string, newName: string) => void;
+  activeSectionId: string;
+  setActiveSectionId: (id: string) => void;
+  sectionHistory: Map<string, History>;
+  setSectionHistory: (id: string, history: any) => void;
+  removeSectionHistory: (id: string) => void;
 }
 
 const createProjectSlice = (
@@ -74,7 +80,10 @@ const createProjectSlice = (
   setContentArray: (val: Section[]) => {
     set(() => ({ content: val }));
   },
-  updateOrAddSection: (val: Section) =>
+  updateSectionContent: (id: string, newContent: string) => {
+    set((state) => ({ content: updateSectionContentDeep(state.content, id, newContent)}));
+  },
+  addNewSection: (val: Section) =>
     set(
       produce((state: CalamusState) => {
         state.content.push(val);
@@ -82,9 +91,25 @@ const createProjectSlice = (
     ),
   addingSections: false,
   setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),
-  changeSectionName: (oldName: string, newName: string) => {
-    set((state) => ({ content: changeItemId(state.content, oldName, newName)}))
+  activeSectionId: '',
+  setActiveSectionId: (id: string) => {
+    set(() => ({ activeSectionId: id }));
   },
+  sectionHistory: new Map<string, History>(),
+  setSectionHistory: (id: string, history: History) =>
+  set(
+    produce((state: CalamusState) => {
+      const newHistory = JSON.parse(JSON.stringify(history));
+      state.sectionHistory.set(id, newHistory);
+    })
+  ),
+  removeSectionHistory: (id: string) =>
+  set(
+    produce((state: CalamusState) => {
+      state.sectionHistory.delete(id);
+    })
+  ),
+
 });
 
 export default createProjectSlice;

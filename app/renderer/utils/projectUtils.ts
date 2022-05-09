@@ -1,6 +1,6 @@
 import { Section, SectionType } from 'types/types';
 import useStore from '../store/useStore';
-import { findItemDeep } from '../components/TreeView/utilities';
+import { findItemDeep, changeItemId } from '../components/TreeView/utilities';
 
 const saveProject = () => {
   const projectContents = {
@@ -23,14 +23,27 @@ const saveProject = () => {
   });
 };
 
-const updateSectionName = (oldName: string, newName: string) => {
+const updateSectionName = (oldName: string, newName: string): boolean => {
   if (oldName !== newName) {
-    const { content, changeSectionName } = useStore.getState();
+    const { content, setContentArray } = useStore.getState();
     const section = findItemDeep(content, oldName);
     if (section) {
-      changeSectionName(oldName, newName);
+      const { success, items } = changeItemId(content, oldName, newName);
+      if (success) {
+        setContentArray(items);
+        const {sectionHistory} = useStore.getState();
+        if(sectionHistory.has(oldName)) {
+          useStore.getState().setSectionHistory(newName, sectionHistory.get(oldName));
+          useStore.getState().removeSectionHistory(oldName);
+        }
+        if(useStore.getState().activeSectionId === oldName) {
+          useStore.getState().setActiveSectionId(newName);
+        }
+      }
+      return success;
     }
   }
+  return false;
 };
 
 const addNewSection = (type: SectionType = SectionType.maincontent) => {
@@ -44,8 +57,8 @@ const addNewSection = (type: SectionType = SectionType.maincontent) => {
     name = `${defaultNameBase}${i}`;
     i += 1;
   }
-  const { updateOrAddSection } = useStore.getState();
-  updateOrAddSection({
+  const { addNewSection } = useStore.getState();
+  addNewSection({
     id: name,
     content: '',
     type: type,
