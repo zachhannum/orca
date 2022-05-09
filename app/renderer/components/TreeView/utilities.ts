@@ -148,11 +148,10 @@ export function removeItem(items: Sections, id: string) {
   const newItems = [] as Sections;
 
   for (let item of items) {
-
     if (item.id === id) {
       continue;
     }
-    let newItem = {...item};
+    let newItem = { ...item };
     if (item.children.length) {
       newItem.children = removeItem(item.children, id);
     }
@@ -163,38 +162,56 @@ export function removeItem(items: Sections, id: string) {
   return newItems;
 }
 
-export const updateSectionContentDeep = (content: Sections, id: string, newContent: string) : Sections => {
+export const updateSectionContentDeep = (
+  content: Sections,
+  id: string,
+  newContent: string
+): Sections => {
   const newItems = [] as Sections;
-  for(let item of content) {
-    if(item.id === id) {
-      newItems.push({...item, content: newContent});
+  for (let item of content) {
+    if (item.id === id) {
+      newItems.push({ ...item, content: newContent });
       continue;
     }
-    let newItem = {...item};
-    if(item.children.length) {
-      newItem.children = updateSectionContentDeep(item.children, id, newContent);
+    let newItem = { ...item };
+    if (item.children.length) {
+      newItem.children = updateSectionContentDeep(
+        item.children,
+        id,
+        newContent
+      );
     }
     newItems.push(newItem);
   }
 
   return newItems;
-}
+};
 
-
-export function changeItemId(items: Sections, id: string, newId: string) {
+export const changeItemId = (
+  items: Sections,
+  id: string,
+  newId: string
+): { success: boolean; items: Sections } => {
+  if (findItemDeep(items, newId)) {
+    return {
+      success: false,
+      items,
+    };
+  }
   const newItems = [] as Sections;
-  for(let item of items) {
-    if(item.id === id) {
-      newItems.push({...item, id: newId});
+  for (let item of items) {
+    if (item.id === id) {
+      newItems.push({ ...item, id: newId });
       continue;
     }
-    if(item.children.length) {
-      item.children = changeItemId(item.children, id, newId);
+    if (item.children.length) {
+      const { items } = changeItemId(item.children, id, newId);
+      item.children = items;
     }
     newItems.push(item);
   }
-  return newItems;
-}
+  return { success: true, items: newItems };
+};
 
 export function setProperty<T extends keyof Section>(
   items: Sections,
@@ -205,8 +222,7 @@ export function setProperty<T extends keyof Section>(
   const newItems = [] as Sections;
   for (let item of items) {
     if (item.id === id) {
-
-      let newItem = {...item};
+      let newItem = { ...item };
       newItem[property] = setter(newItem[property]);
       newItems.push(newItem);
       continue;

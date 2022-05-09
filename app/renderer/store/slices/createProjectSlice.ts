@@ -24,11 +24,11 @@ export interface ProjectSlice extends Project {
   addNewSection: (val: Section) => void;
   addingSections: boolean;
   setAddingSections: (val: boolean) => void;
-  changeSectionName: (oldName: string, newName: string) => void;
   activeSectionId: string;
   setActiveSectionId: (id: string) => void;
   sectionHistory: Map<string, History>;
   setSectionHistory: (id: string, history: any) => void;
+  removeSectionHistory: (id: string) => void;
 }
 
 const createProjectSlice = (
@@ -91,11 +91,6 @@ const createProjectSlice = (
     ),
   addingSections: false,
   setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),
-  changeSectionName: (oldName: string, newName: string) => {
-    set((state) => ({
-      content: changeItemId(state.content, oldName, newName),
-    }));
-  },
   activeSectionId: '',
   setActiveSectionId: (id: string) => {
     set(() => ({ activeSectionId: id }));
@@ -104,8 +99,14 @@ const createProjectSlice = (
   setSectionHistory: (id: string, history: History) =>
   set(
     produce((state: CalamusState) => {
-      const newHistory = JSON.parse(JSON.stringify(history));;
+      const newHistory = JSON.parse(JSON.stringify(history));
       state.sectionHistory.set(id, newHistory);
+    })
+  ),
+  removeSectionHistory: (id: string) =>
+  set(
+    produce((state: CalamusState) => {
+      state.sectionHistory.delete(id);
     })
   ),
 

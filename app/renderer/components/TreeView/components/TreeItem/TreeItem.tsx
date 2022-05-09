@@ -253,7 +253,12 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const handleBlur = () => {
       setIsEditable(false);
       const newValue = textRef.current?.innerText;
-      if (newValue) updateSectionName(value, newValue);
+      if (newValue) {
+        const success = updateSectionName(value, newValue);
+        if(!success) {
+          if (textRef.current) textRef.current.innerText = value;
+        }
+      }
     };
     useEffect(() => {
       const { addingSections } = useStore.getState();
