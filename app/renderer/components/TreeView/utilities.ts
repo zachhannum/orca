@@ -163,6 +163,23 @@ export function removeItem(items: Sections, id: string) {
   return newItems;
 }
 
+export const updateSectionContentDeep = (content: Sections, id: string, newContent: string) : Sections => {
+  const newItems = [] as Sections;
+  for(let item of content) {
+    if(item.id === id) {
+      newItems.push({...item, content: newContent});
+      continue;
+    }
+    let newItem = {...item};
+    if(item.children.length) {
+      newItem.children = updateSectionContentDeep(item.children, id, newContent);
+    }
+    newItems.push(newItem);
+  }
+
+  return newItems;
+}
+
 
 export function changeItemId(items: Sections, id: string, newId: string) {
   const newItems = [] as Sections;

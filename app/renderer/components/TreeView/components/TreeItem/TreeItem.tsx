@@ -43,6 +43,7 @@ type StyledTreeItemProps = {
   disableSelection?: boolean;
   disableInteraction?: boolean;
   isEditable?: boolean;
+  isActiveInEditor?: boolean;
   contextOpen?: boolean;
   canHaveChildren?: boolean;
 };
@@ -77,6 +78,10 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     css`
       cursor: pointer;
       ${p.contextOpen &&
+      css`
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+      `}
+      ${p.isActiveInEditor &&
       css`
         background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
       `}
@@ -164,6 +169,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
+    const activeSectionId = useStore((state) => state.activeSectionId);
     const [isEditable, setIsEditable] = useState(false);
     const [contextOpen, setContextOpen] = useState(false);
     const [dragProps, setDragProps] = useState({ ...handleProps });
@@ -275,6 +281,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           disableSelection={disableSelection}
           disableInteraction={disableInteraction}
           isEditable={isEditable}
+          isActiveInEditor={activeSectionId === value}
           canHaveChildren={canHaveChildren}
           contextOpen={contextOpen}
           {...dragProps}

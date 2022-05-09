@@ -1,84 +1,110 @@
-import { useEffect } from 'react';
-import { Plate, PlateProvider, usePlateEditorRef } from '@udecode/plate';
-import { Transforms, Editor } from 'slate';
+import { useEffect, useState, CSSProperties } from 'react';
+import {
+  Plate,
+  PlateProvider,
+  usePlateEditorRef,
+  createPlugins,
+} from '@udecode/plate';
+import { ReactEditor } from 'slate-react';
 import ScrollContainer from './ScrollContainer';
 import useStore from 'renderer/store/useStore';
-import { deserializePlainText } from '../writer/serialize';
+import {
+  deserializePlainText,
+  serializePlainText,
+  createDeserializePlainTextPlugin,
+} from '../writer/serialize';
 import { findItemDeep } from './TreeView/utilities';
 
-const editorId = '1';
+const blankEditorValue = [
+  {
+    type: 'p',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+];
 
 const BasicWriterComp = () => {
   const editableProps = {
     style: {
       width: '100%',
-    },
+      minHeight: '100%',
+      boxSizing: 'border-box',
+      paddingBottom: '10vh',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1em',
+    } as CSSProperties,
     spellCheck: false,
+    autoFocus: true,
   };
-
   const activeSectionId = useStore((state) => state.activeSectionId);
+  const [initialValue, setInitialValue] = useState(blankEditorValue);
+  const [editorId, setEditorId] = useState('');
   const editor = usePlateEditorRef();
 
-  // const plugins = createPlugins(
-  //   [
-  //     createParagraphPlugin(),
-  //     createBlockquotePlugin(),
-  //     createHeadingPlugin(),
-  //     createBoldPlugin(),
-  //     createItalicPlugin(),
-  //     createUnderlinePlugin(),
-  //     createStrikethroughPlugin(),
-  //     createCodePlugin(),
-  //     createAutoformatPlugin(autoFormatPluginOptions),
-  //     createExitBreakPlugin(exitBreakPluginOptions),
-  //     createDeserializeMdPlugin(),
-  //     createResetNodePlugin(resetNodePluginOptions),
-  //     createSoftBreakPlugin(softBreakPluginOptions),
-  //   ],
-  //   {
-  //     components: withStyledPlaceholders(createPlateUI(plateUiOverrides)),
-  //   }
-  // );
+  const plugins = createPlugins([createDeserializePlainTextPlugin()]);
+
+  useEffect(() => {
+    if (editor) {
+      const { sectionHistory } = useStore.getState();
+      const history = sectionHistory?.get(activeSectionId);
+      if (history) {
+        editor.history = JSON.parse(JSON.stringify(history));
+      }
+      ReactEditor.focus(editor);
+    }
+  });
 
   useEffect(() => {
     if (activeSectionId != '') {
-      console.log(activeSectionId);
       const { content } = useStore.getState();
       const sectionContent = findItemDeep(content, activeSectionId)?.content;
-      console.log(sectionContent);
       if (sectionContent) {
-        console.log('yes');
         const nodes = deserializePlainText(sectionContent);
-        Transforms.select(editor, []);
-        editor.children = nodes;
+        if (nodes.length) {
+          setInitialValue(nodes);
+        }
+      } else {
+        setInitialValue(blankEditorValue);
       }
+      setEditorId(activeSectionId);
     }
-  });
+  }, [activeSectionId]);
+
+  const handleChange = () => {
+    if (activeSectionId != '') {
+      const { setSectionHistory } = useStore.getState();
+      const { updateSectionContent } = useStore.getState();
+      setSectionHistory(activeSectionId, editor.history);
+      updateSectionContent(
+        activeSectionId,
+        serializePlainText(editor.children)
+      );
+    }
+  };
 
   return (
     <ScrollContainer>
       <Plate
+        key={editorId}
         id={editorId}
+        plugins={plugins}
         editableProps={editableProps}
-        // plugins={plugins}
-        initialValue={[
-          {
-            type: 'p',
-            children: [
-              {
-                text: '',
-              },
-            ],
-          },
-        ]}
+        onChange={handleChange}
+        initialValue={initialValue}
       />
     </ScrollContainer>
   );
 };
 
 const BasicWriter = () => {
+  const activeSectionId = useStore((state) => state.activeSectionId);
+
   return (
-    <PlateProvider id={editorId}>
+    <PlateProvider id={activeSectionId}>
       <BasicWriterComp />
     </PlateProvider>
   );

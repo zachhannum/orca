@@ -44,10 +44,10 @@ const addNewSection = (type: SectionType = SectionType.maincontent) => {
     name = `${defaultNameBase}${i}`;
     i += 1;
   }
-  const { updateOrAddSection } = useStore.getState();
-  updateOrAddSection({
+  const { addNewSection } = useStore.getState();
+  addNewSection({
     id: name,
-    content: 'Hello world!',
+    content: '',
     type: type,
     canHaveChildren: type === SectionType.folder ? true : false,
     collapsed: false,
