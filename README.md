@@ -11,6 +11,8 @@
   [![Release](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml)
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
+
+  <img src="assets/5_10_2022_app_preview.png" alt="preview"/>
   
 </div>
   
