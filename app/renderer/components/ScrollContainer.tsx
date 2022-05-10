@@ -6,11 +6,6 @@ const Scroller = styled.div`
   overflow-y: overlay;
   height: 100%;
   width: calc(100% - 125px);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  align-content: center;
-  justify-content: flex-start;
   padding-right: 50px;
   padding-left: 75px;
 
@@ -45,12 +40,6 @@ const Scroller = styled.div`
   `}
 `;
 
-const Padding = styled.div`
-  max-width: 500px;
-  height: 100%;
-  width: 100%;
-`;
-
 type Props = {
   children: React.ReactNode;
 };
@@ -58,7 +47,7 @@ type Props = {
 
 const ScrollContainer = ({ children }: Props) => (
   <Scroller>
-    <Padding>{children}</Padding>
+    {children}
   </Scroller>
 );
 

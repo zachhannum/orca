@@ -30,8 +30,11 @@ const BasicWriterComp = () => {
   const editableProps = {
     style: {
       width: '100%',
+      margin: 'auto',
+      maxWidth: '650px',
       minHeight: '100%',
       boxSizing: 'border-box',
+      paddingTop: '10vh',
       paddingBottom: '10vh',
       display: 'flex',
       flexDirection: 'column',

@@ -204,11 +204,12 @@ export const changeItemId = (
       newItems.push({ ...item, id: newId });
       continue;
     }
+    let newItem = {...item};
     if (item.children.length) {
       const { items } = changeItemId(item.children, id, newId);
-      item.children = items;
+      newItem.children = items;
     }
-    newItems.push(item);
+    newItems.push(newItem);
   }
   return { success: true, items: newItems };
 };
