@@ -2,20 +2,6 @@ import React from 'react';
 import Color from 'color';
 import styled, { css } from 'styled-components';
 
-type IconButtonProps = {
-  height?: string;
-  width?: string;
-  iconSize?: string;
-  foregroundColor?: string;
-  backgroundColor?: string;
-  colorAdjustment?: number;
-  scaleOnHover?: boolean;
-  onlyShowBackgroundOnHover?: boolean;
-  roundCorners?: boolean;
-  onClick?: () => void;
-  children: React.ReactElement;
-};
-
 type IconAnchorProps = {
   height?: string;
   width?: string;
@@ -78,48 +64,76 @@ const IconAnchor = styled.a<IconAnchorProps>`
   }
 `;
 
-const IconButton = ({
-  height,
-  width,
-  iconSize,
-  foregroundColor,
-  backgroundColor,
-  colorAdjustment,
-  scaleOnHover,
-  onlyShowBackgroundOnHover,
-  roundCorners,
-  onClick = () => {},
-  children,
-}: IconButtonProps) => {
-  const hoverForegroundColor = Color(foregroundColor).lighten(colorAdjustment);
-  const hoverBackgroundColor = Color(backgroundColor).lighten(colorAdjustment);
-  const activeForegroundColor = Color(foregroundColor).darken(colorAdjustment);
-  const activeBackgroundColor = Color(backgroundColor).darken(colorAdjustment);
-
-  return (
-    <IconAnchor
-      height={height}
-      width={width}
-      iconSize={iconSize}
-      onClick={onClick}
-      foregroundColor={foregroundColor}
-      hoverForegroundColor={hoverForegroundColor}
-      backgroundColor={backgroundColor}
-      hoverBackgroundColor={hoverBackgroundColor}
-      activeForegroundColor={activeForegroundColor}
-      activeBackgroundColor={activeBackgroundColor}
-      scaleOnHover={scaleOnHover}
-      roundCorners={roundCorners}
-      onlyShowBackgroundOnHover={onlyShowBackgroundOnHover}
-    >
-      {React.cloneElement(children, {
-        size: iconSize,
-      })}
-    </IconAnchor>
-  );
+type IconButtonProps = {
+  height?: string;
+  width?: string;
+  iconSize?: string;
+  foregroundColor?: string;
+  backgroundColor?: string;
+  colorAdjustment?: number;
+  scaleOnHover?: boolean;
+  onlyShowBackgroundOnHover?: boolean;
+  roundCorners?: boolean;
+  onClick?: () => void;
+  children: React.ReactElement;
 };
 
+const IconButton = React.forwardRef<
+  HTMLAnchorElement,
+  IconButtonProps
+>(
+  (
+    {
+      height,
+      width,
+      iconSize,
+      foregroundColor,
+      backgroundColor,
+      colorAdjustment,
+      scaleOnHover,
+      onlyShowBackgroundOnHover,
+      roundCorners,
+      onClick = () => {},
+      children,
+    },
+    ref
+  ) => {
+    const hoverForegroundColor =
+      Color(foregroundColor).lighten(colorAdjustment);
+    const hoverBackgroundColor =
+      Color(backgroundColor).lighten(colorAdjustment);
+    const activeForegroundColor =
+      Color(foregroundColor).darken(colorAdjustment);
+    const activeBackgroundColor =
+      Color(backgroundColor).darken(colorAdjustment);
+
+    return (
+      <IconAnchor
+        height={height}
+        width={width}
+        iconSize={iconSize}
+        onClick={onClick}
+        foregroundColor={foregroundColor}
+        hoverForegroundColor={hoverForegroundColor}
+        backgroundColor={backgroundColor}
+        hoverBackgroundColor={hoverBackgroundColor}
+        activeForegroundColor={activeForegroundColor}
+        activeBackgroundColor={activeBackgroundColor}
+        scaleOnHover={scaleOnHover}
+        roundCorners={roundCorners}
+        onlyShowBackgroundOnHover={onlyShowBackgroundOnHover}
+        ref={ref}
+      >
+        {React.cloneElement(children, {
+          size: iconSize,
+        })}
+      </IconAnchor>
+    );
+  }
+);
+
 IconButton.defaultProps = {
+  ref: undefined,
   height: undefined,
   width: undefined,
   iconSize: '40px',

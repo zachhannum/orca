@@ -4209,10 +4209,10 @@ electron-localshortcut@^3.1.0:
     keyboardevent-from-electron-accelerator "^2.0.0"
     keyboardevents-areequal "^0.2.1"
 
-electron-log@^4.4.6:
-  version "4.4.6"
-  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-4.4.6.tgz#e7824fc725370384f6edaaac0480c423e570dc69"
-  integrity sha512-nirYgRdY+F+vclr8ijdwy2vW03IzFpDHTaKNWu76dEN21Y76+smcES5knS7cgHUUB0qNLOi8vZO36taakjbSXA==
+electron-log@^4.4.7:
+  version "4.4.7"
+  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-4.4.7.tgz#d55b7232c019521694c3503d2109e5a49cb49dd0"
+  integrity sha512-uFZQdgevOp9Fn5lDOrJMU/bmmYxDLZitbIHJM7VXN+cpB59ZnPt1FQL4bOf/Dl2gaIMPYJEfXx38GvJma5iV6A==
 
 electron-notarize@^1.2.1:
   version "1.2.1"
@@ -8596,11 +8596,6 @@ react@^18.0.0:
   integrity sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A==
   dependencies:
     loose-envify "^1.1.0"
-
-reactjs-popup@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/reactjs-popup/-/reactjs-popup-2.0.5.tgz#588a74966bb126699429d739948e3448d7771eac"
-  integrity sha512-b5hv9a6aGsHEHXFAgPO5s1Jw1eSkopueyUVxQewGdLgqk2eW0IVXZrPRpHR629YcgIpC2oxtX8OOZ8a7bQJbxA==
 
 read-config-file@6.2.0:
   version "6.2.0"
