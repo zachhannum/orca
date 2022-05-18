@@ -1,8 +1,7 @@
-import { useRef } from 'react';
-import Popup from 'reactjs-popup';
-import { PopupActions } from 'reactjs-popup/dist/types';
+import { useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import MoreOptionsSidebarItem from './MoreOptionsSidebarItem';
+import { MoreOptionsSidebarItem, ContextMenu } from '../components';
+import type { Position } from './ContextMenu';
 import { IconButton, ToggleSwitch } from '../controls';
 import {
   ExitIcon,
@@ -12,23 +11,11 @@ import {
   OpenBookIcon,
   PreviewIcon,
   UpdateIcon,
-  SaveIcon
+  SaveIcon,
 } from '../icons';
 import icon from '../../../assets/icon.png';
 import useStore from '../store/useStore';
-import { saveProject } from '../utils/projectUtils'; 
-
-const StyledPopupDiv = styled.div`
-  width: 180px;
-  background-color: ${(p) => p.theme.contextMenuBg};
-  backdrop-filter: blur(40px);
-  border-radius: 10px;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-`;
+import { saveProject } from '../utils/projectUtils';
 
 const StyledMenuDivider = styled.div`
   height: 2px;
@@ -39,43 +26,54 @@ const StyledMenuDivider = styled.div`
 
 const MoreOptionsSidebarMenu = () => {
   const theme = useTheme();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const menuRef = useRef<PopupActions | null>(null);
+  const [showMenu, setShowMenu] = useState(false);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const previewEnabled = useStore((state) => state.previewEnabled);
   const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+
+  const getMenuPosition = (): Position => {
+    return {
+      x: buttonRef.current
+        ? buttonRef.current.getBoundingClientRect().right
+        : 0,
+      y: buttonRef.current
+        ? buttonRef.current.getBoundingClientRect().bottom
+        : 0,
+    };
+  };
+
   return (
-    <div>
-      <Popup
-        ref={menuRef}
-        trigger={
-          // This is for sure hacky using the div since IconButton does not support ref. Should fix in the future
-          <div>
-            <IconButton
-              iconSize="20px"
-              foregroundColor={theme.sidebarIconFg}
-              backgroundColor="transparent"
-              onClick={() => {}} // Do nothing since Popup is using the <div> click. We just need IconButton for the visuals.
-            >
-              <MoreVerticalIcon />
-            </IconButton>
-          </div>
-        }
-        position={['bottom left']}
-        closeOnDocumentClick
-        arrow={false}
-        offsetX={10}
-        offsetY={10}
+    <>
+      <IconButton
+        ref={buttonRef}
+        iconSize="20px"
+        foregroundColor={theme.sidebarIconFg}
+        backgroundColor="transparent"
+        onClick={() => {
+          setMenuPosition(getMenuPosition());
+          setShowMenu(!showMenu);
+        }}
       >
-        <StyledPopupDiv>
+        <MoreVerticalIcon />
+      </IconButton>
+      <ContextMenu
+        showMenu={showMenu}
+        onCloseMenu={() => {
+          setShowMenu(false);
+        }}
+        position={menuPosition}
+      >
+        <div style={{ width: '180px' }}>
           <MoreOptionsSidebarItem
             hover
             iconElement={<NewBookIcon />}
             rightElement={<span>⌘N</span>}
             label="New Book"
             onClick={() => {
-              menuRef.current?.close();
+              setShowMenu(false);
               setNewBookModalOpen(true);
             }}
           />
@@ -85,7 +83,7 @@ const MoreOptionsSidebarMenu = () => {
             rightElement={<span>⌘O</span>}
             label="Open Book"
             onClick={() => {
-              menuRef.current?.close();
+              setShowMenu(false);
               window.projectApi.openProject();
             }}
           />
@@ -95,7 +93,7 @@ const MoreOptionsSidebarMenu = () => {
             rightElement={<span>⌘S</span>}
             label="Save Book"
             onClick={() => {
-              menuRef.current?.close();
+              setShowMenu(false);
               saveProject();
             }}
           />
@@ -133,9 +131,9 @@ const MoreOptionsSidebarMenu = () => {
             iconColorOverride={theme.contextMenuExit}
             label="Exit"
           />
-        </StyledPopupDiv>
-      </Popup>
-    </div>
+        </div>
+      </ContextMenu>
+    </>
   );
 };
 

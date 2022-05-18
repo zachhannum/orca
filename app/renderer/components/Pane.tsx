@@ -52,10 +52,12 @@ const StyledResizer = styled.div<StyledResizerProps>`
   &:hover {
     width: 10px;
     background-color: ${(p) => p.hoverColor};
+    z-index: 2;
   }
   &:active {
     width: 10px;
     background-color: ${(p) => p.hoverColor};
+    z-index: 2;
   }
   transition: background-color 100ms ease-in-out, width 100ms ease-in-out;
 `;

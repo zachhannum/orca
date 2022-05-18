@@ -102,15 +102,24 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       css`
         background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
       `}
+      &:hover {
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+      }
       ${p.isActiveInEditor &&
       css`
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+        background-color: ${Color(p.theme.buttonPrimaryBg)};
+        &:hover {
+          background-color: ${Color(p.theme.buttonPrimaryBg)};
+        }
       `}
-      &:hover {
-        background-color: ${p.isEditable
-          ? Color(p.theme.sidebarBg).darken(0.2)
-          : Color(p.theme.sidebarBg).lighten(0.3)};
-      }
+      ${p.isEditable &&
+      css`
+        cursor: text;
+        background-color: ${Color(p.theme.sidebarBg).darken(0.2)};
+        &:hover {
+          background-color: ${Color(p.theme.sidebarBg).darken(0.2)}};
+        }
+      `}
     `}
 
     ${(p) =>
@@ -119,12 +128,6 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3)};
     `}
 
-    ${(p) =>
-    p.isEditable &&
-    css`
-      cursor: text;
-      background-color: ${(p) => Color(p.theme.sidebarBg).darken(0.2)};
-    `}
     transition: background-color 100ms ease-in-out;
 `;
 
@@ -247,7 +250,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         console.log(value);
         const { setActiveSectionId } = useStore.getState();
         setActiveSectionId(value);
-        //todo, show content in Writer
       }
     };
     const handleBlur = () => {
@@ -255,7 +257,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       const newValue = textRef.current?.innerText;
       if (newValue) {
         const success = updateSectionName(value, newValue);
-        if(!success) {
+        if (!success) {
           if (textRef.current) textRef.current.innerText = value;
         }
       }
