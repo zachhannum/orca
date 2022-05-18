@@ -23,14 +23,18 @@ type StyledContextMenuProps = {
 const onOpenKeyframes = keyframes`
  from {
    opacity: 0;
+   transform: scale(.7);
  }
  to {
    opacity: 1;
+   transform: scale(1);
  }
 `;
 
 const StyledContextMenu = styled.div<StyledContextMenuProps>`
   opacity: ${(p) => (p.show ? '1' : '0')};
+  transform-origin: top left;
+  transform: ${(p) => (p.show ? 'scale(1)' : 'scale(.7)')};
   animation: ${onOpenKeyframes} 100ms ease-in-out alternate;
   background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.2)};
   backdrop-filter: blur(40px);
@@ -41,7 +45,7 @@ const StyledContextMenu = styled.div<StyledContextMenuProps>`
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: opacity 100ms ease-in-out;
+  transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
 `;
 
 const StyledContextMenuItem = styled.div`
@@ -129,7 +133,7 @@ const SectionContextMenu = () => {
     };
 
     const handleClick = (event) => {
-      const wasOutside = !(root.current?.contains(event.target));
+      const wasOutside = !root.current?.contains(event.target);
       if (wasOutside && showMenu) setShowMenu(false);
     };
 
@@ -202,7 +206,7 @@ const SectionContextMenu = () => {
   };
 
   return (
-    <div ref={root} style={{ position: 'fixed' }}>
+    <div ref={root} style={{ position: 'fixed', zIndex: '5' }}>
       {visible && (
         <StyledContextMenu show={showMenu}>
           {!isFolder && (
