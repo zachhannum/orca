@@ -3,6 +3,11 @@ import styled, { keyframes } from 'styled-components';
 import Color from 'color';
 import { useOnWheel, useOnClickOutside } from '../hooks';
 
+const StyledRoot = styled.div`
+  position: fixed;
+  z-index: 5;
+`;
+
 type StyledContextMenuProps = {
   show?: boolean;
 };
@@ -30,7 +35,7 @@ const StyledContextMenu = styled.div<StyledContextMenuProps>`
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
+  transition: opacity 100ms ease-out, transform 100ms ease-out;
 `;
 
 export type Position = {
@@ -42,6 +47,7 @@ type ContextMenuProps = {
   showMenu: boolean;
   onCloseMenu: () => void;
   position: Position;
+  center?: boolean;
   children?: React.ReactNode;
 };
 
@@ -50,6 +56,7 @@ const ContextMenu = ({
   onCloseMenu,
   position,
   children,
+  center = false,
 }: ContextMenuProps) => {
   const [visible, setVisible] = useState(false);
   const root = useRef<HTMLDivElement>(null);
@@ -64,54 +71,78 @@ const ContextMenu = ({
     onCloseMenu();
   });
 
+  const setPosition = () => {
+    const rootDiv = root.current;
+    const menuRefDiv = menuRef.current;
+    let { x, y } = position;
+    if (menuRefDiv && rootDiv) {
+      const screenW = window.innerWidth;
+      const screenH = window.innerHeight;
+      const rootW = menuRefDiv.offsetWidth;
+      const rootH = menuRefDiv.offsetHeight;
+      let screenPadding = 20;
+      if (center) {
+        screenPadding = 0;
+      }
+      const right = screenW - x - screenPadding > rootW;
+      const left = !right;
+      const top = screenH - y - screenPadding > rootH;
+      const bottom = !top;
+      let transformOriginX = '';
+      let transformOriginY = '';
+      if (right) {
+        if (center) {
+          x = Math.max(2, x - rootW / 2);
+          transformOriginX = 'center';
+        } else {
+          transformOriginX = 'left';
+        }
+        rootDiv.style.left = `${x}px`;
+      }
+
+      if (left) {
+        if (center) {
+          x = Math.min(screenW - 2, x + rootW / 2);
+          transformOriginX = 'center';
+        }
+        rootDiv.style.left = `${x - rootW}px`;
+        transformOriginX = 'right';
+      }
+
+      if (top) {
+        rootDiv.style.top = `${y}px`;
+        transformOriginY = 'top';
+      }
+
+      if (bottom) {
+        rootDiv.style.top = `${y - rootH}px`;
+        transformOriginY = 'bottom';
+      }
+      if (menuRef.current)
+        menuRef.current.style.transformOrigin = `${transformOriginY} ${transformOriginX}`;
+    }
+  };
+
   useEffect(() => {
     if (showMenu) {
-      const rootDiv = root.current;
-      const { x, y } = position;
+      setPosition();
+    }
+  }, [position]);
+
+  useEffect(() => {
+    if (showMenu) {
       if (invisibleTimeout.current) {
         clearTimeout(invisibleTimeout.current);
       }
       setTimeout(() => {
-        if (rootDiv) {
-          const clickX = x;
-          const clickY = y;
-          const screenW = window.innerWidth;
-          const screenH = window.innerHeight;
-          const rootW = rootDiv.offsetWidth;
-          const rootH = rootDiv.offsetHeight;
-          const screenPadding = 20;
-
-          const right = screenW - clickX - screenPadding > rootW;
-          const left = !right;
-          const top = screenH - clickY - screenPadding > rootH;
-          const bottom = !top;
-          let transformOriginX = '';
-          let transformOriginY = '';
-          if (right) {
-            rootDiv.style.left = `${clickX}px`;
-            transformOriginX = 'left';
-          }
-
-          if (left) {
-            rootDiv.style.left = `${clickX - rootW}px`;
-            transformOriginX = 'right';
-          }
-
-          if (top) {
-            rootDiv.style.top = `${clickY}px`;
-            transformOriginY = 'top';
-          }
-
-          if (bottom) {
-            rootDiv.style.top = `${clickY - rootH}px`;
-            transformOriginY = 'bottom';
-          }
-          if (menuRef.current)
-            menuRef.current.style.transformOrigin = `${transformOriginY} ${transformOriginX}`;
-        }
+        setPosition();
       }, 10);
+      setTimeout(() => {
+        if (root.current) root.current.style.transition = 'all 100ms ease-out';
+      }, 100);
       setVisible(true);
     } else {
+      if (root.current) root.current.style.transition = 'unset';
       invisibleTimeout.current = setTimeout(() => {
         setVisible(false);
       }, 100);
@@ -119,13 +150,13 @@ const ContextMenu = ({
   }, [showMenu]);
 
   return (
-    <div ref={root} style={{ position: 'fixed', zIndex: '5' }}>
+    <StyledRoot ref={root}>
       {visible && (
         <StyledContextMenu ref={menuRef} show={showMenu}>
           {children}
         </StyledContextMenu>
       )}
-    </div>
+    </StyledRoot>
   );
 };
 

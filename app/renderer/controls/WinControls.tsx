@@ -1,5 +1,6 @@
+import { RefObject, useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { useIsWindowMaxized } from '../hooks';
+import { useIsWindowMaxized, useIsHovering } from '../hooks';
 import IconButton from './IconButton';
 import {
   WinCloseIcon,
@@ -7,6 +8,8 @@ import {
   WinMinimizeIcon,
   WinRestoreIcon,
 } from '../icons';
+import { ContextMenu, TooltipText } from '../components';
+import { getContextMenuPosition } from '../utils/menuUtils';
 
 const StyledWinControls = styled.div`
   display: flex;
@@ -22,6 +25,43 @@ const StyledWinControls = styled.div`
 const WinControls = () => {
   const theme = useTheme();
   const maximized = useIsWindowMaxized();
+  const minimizeButtonRef = useRef<HTMLAnchorElement | null>(null);
+  const isHoveringMinimize = useIsHovering(minimizeButtonRef);
+  const maximizeButtonRef = useRef<HTMLAnchorElement | null>(null);
+  const isHoveringMaximize = useIsHovering(maximizeButtonRef);
+  const closeButtonRef = useRef<HTMLAnchorElement | null>(null);
+  const isHoveringClose = useIsHovering(closeButtonRef);
+  const [tooltipText, setTooltipText] = useState('');
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+  const calculateAndSetTooltipPosition = (ref: RefObject<HTMLAnchorElement | null>) => {
+    if (ref.current) {
+      const { x, y } = getContextMenuPosition(
+        ref.current,
+        'center',
+        'bottom'
+      );
+      setTooltipPosition({ x, y: y + 5 });
+    }
+  }
+
+  useEffect(() => {
+    if (isHoveringMinimize) {
+      setTooltipText('Minimize');
+      calculateAndSetTooltipPosition(minimizeButtonRef);
+    }
+    if (isHoveringMaximize) {
+      setTooltipText(maximized ? 'Restore Down' : 'Maximize');
+      calculateAndSetTooltipPosition(maximizeButtonRef);
+    }
+    if (isHoveringClose) {
+      setTooltipText('Close Window');
+      calculateAndSetTooltipPosition(closeButtonRef);
+    }
+    setShowTooltip(isHoveringMinimize || isHoveringMaximize || isHoveringClose);
+  }, [isHoveringMinimize, isHoveringMaximize, isHoveringClose]);
+
   const buttonConfig = {
     iconSize: '12px',
     height: '25px',
@@ -36,10 +76,18 @@ const WinControls = () => {
   };
   return (
     <StyledWinControls>
-      <IconButton {...buttonConfig} onClick={window.windowApi.minimize}>
+      <IconButton
+        {...buttonConfig}
+        onClick={window.windowApi.minimize}
+        ref={minimizeButtonRef}
+      >
         <WinMinimizeIcon {...iconConfig} />
       </IconButton>
-      <IconButton {...buttonConfig} onClick={window.windowApi.toggleMaximized}>
+      <IconButton
+        {...buttonConfig}
+        onClick={window.windowApi.toggleMaximized}
+        ref={maximizeButtonRef}
+      >
         {maximized ? (
           <WinRestoreIcon {...iconConfig} />
         ) : (
@@ -50,9 +98,20 @@ const WinControls = () => {
         {...buttonConfig}
         backgroundColor={theme.contextMenuExit}
         onClick={window.windowApi.closeWindow}
+        ref={closeButtonRef}
       >
         <WinCloseIcon {...iconConfig} />
       </IconButton>
+      <ContextMenu
+        showMenu={showTooltip}
+        position={tooltipPosition}
+        onCloseMenu={() => {
+          setShowTooltip(false);
+        }}
+        center
+      >
+        <TooltipText>{tooltipText}</TooltipText>
+      </ContextMenu>
     </StyledWinControls>
   );
 };

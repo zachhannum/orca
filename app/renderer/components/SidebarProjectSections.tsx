@@ -1,11 +1,18 @@
-import { useEffect } from 'react';
+import { useRef, useState, useEffect, RefObject } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import Color from 'color';
 import useStore from '../store/useStore';
 import { IconButton } from '../controls';
 import { NewFileIcon, NewFolderIcon } from '../icons';
 import { addNewSection, addNewFolder } from '../utils/projectUtils';
-import { SectionContextMenu, SortableTree } from '../components';
+import {
+  SectionContextMenu,
+  SortableTree,
+  ContextMenu,
+  TooltipText,
+} from '../components';
+import { useIsHovering } from '../hooks';
+import { getContextMenuPosition } from '../utils/menuUtils';
 
 const StyledSidebarPSecondary = styled.p`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
@@ -75,6 +82,33 @@ const SidebarProjectSections = () => {
   const content = useStore((state) => state.content);
   const setContentArray = useStore((state) => state.setContentArray);
   const theme = useTheme();
+  const newFileButtonRef = useRef<HTMLAnchorElement | null>(null);
+  const newFolderButtonRef = useRef<HTMLAnchorElement | null>(null);
+  const isHoveringOnNewFileButton = useIsHovering(newFileButtonRef);
+  const isHoveringOnNewFolderButton = useIsHovering(newFolderButtonRef);
+  const [tooltipText, setTooltipText] = useState('');
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+  const calculateAndSetTooltipPosition = (
+    ref: RefObject<HTMLAnchorElement | null>
+  ) => {
+    if (ref.current) {
+      const { x, y } = getContextMenuPosition(ref.current, 'center', 'bottom');
+      setTooltipPosition({ x, y: y + 5 });
+    }
+  };
+
+  useEffect(() => {
+    if (isHoveringOnNewFileButton) {
+      setTooltipText('New Section');
+      calculateAndSetTooltipPosition(newFileButtonRef);
+    } else if (isHoveringOnNewFolderButton) {
+      setTooltipText('New Folder');
+      calculateAndSetTooltipPosition(newFolderButtonRef);
+    }
+    setShowTooltip(isHoveringOnNewFileButton || isHoveringOnNewFolderButton);
+  }, [isHoveringOnNewFileButton, isHoveringOnNewFolderButton]);
 
   return (
     <>
@@ -82,6 +116,7 @@ const SidebarProjectSections = () => {
         <span>Content</span>
         <ContentIcons>
           <IconButton
+            ref={newFileButtonRef}
             iconSize="17px"
             onClick={() => {
               addNewSection();
@@ -91,6 +126,7 @@ const SidebarProjectSections = () => {
             <NewFileIcon />
           </IconButton>
           <IconButton
+            ref={newFolderButtonRef}
             iconSize="17px"
             onClick={() => {
               addNewFolder();
@@ -99,6 +135,16 @@ const SidebarProjectSections = () => {
           >
             <NewFolderIcon />
           </IconButton>
+          <ContextMenu
+            showMenu={showTooltip}
+            position={tooltipPosition}
+            onCloseMenu={() => {
+              setShowTooltip(false);
+            }}
+            center
+          >
+            <TooltipText>{tooltipText}</TooltipText>
+          </ContextMenu>
         </ContentIcons>
       </SectionHeader>
       {content.length === 0 ? (
@@ -112,7 +158,7 @@ const SidebarProjectSections = () => {
           <SectionsContainer>
             <SortableTree items={content} onItemsSorted={setContentArray} />
           </SectionsContainer>
-          <SectionContextMenu/>
+          <SectionContextMenu />
         </>
       )}
     </>
