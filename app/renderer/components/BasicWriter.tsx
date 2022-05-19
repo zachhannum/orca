@@ -14,6 +14,7 @@ import {
   createDeserializePlainTextPlugin,
 } from '../writer/serialize';
 import { findItemDeep } from './TreeView/utilities';
+import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
 
 const blankEditorValue = [
   {
@@ -48,7 +49,10 @@ const BasicWriterComp = () => {
   const [editorId, setEditorId] = useState('');
   const editor = usePlateEditorRef();
 
-  const plugins = createPlugins([createDeserializePlainTextPlugin()]);
+  const plugins = createPlugins([
+    createDeserializePlainTextPlugin(),
+    createMarkdownDecoratePlugin(),
+  ]);
 
   useEffect(() => {
     if (editor) {

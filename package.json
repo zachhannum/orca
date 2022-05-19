@@ -234,11 +234,13 @@
         "react-dom": "^18.0.0",
         "react-modal": "^3.15.1",
         "react-router-dom": "^6.3.0",
+        "remark-parse": "^10.0.1",
         "slate": "^0.77.0",
         "slate-history": "^0.66.0",
         "slate-hyperscript": "^0.77.0",
         "slate-react": "^0.77.0",
         "styled-components": "^5.3.5",
+        "unified": "^10.1.2",
         "zustand": "^4.0.0-rc.0"
     },
     "devEngines": {
