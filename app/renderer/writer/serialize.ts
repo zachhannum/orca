@@ -6,17 +6,27 @@ type BasicElement = { type: string; children: BasicText[] };
 type BasicText = { text: string; bold?: true };
 
 export const deserializePlainText = (str: string): BasicElement[] => {
-  let nodes = str.split(/\r\n|\r|\n/).map((s: string) => {
-    return {
+  return [
+    {
       type: 'paragraph',
       children: [
         {
-          text: s.replace('"', '"'),
+          text: str.replace('"', '"'),
         },
       ],
-    };
-  });
-  return nodes;
+    },
+  ];
+  // let nodes = str.split(/\r\n|\r|\n/).map((s: string) => {
+  //   return {
+  //     type: 'paragraph',
+  //     children: [
+  //       {
+  //         text: s.replace('"', '"'),
+  //       },
+  //     ],
+  //   };
+  // });
+  // return nodes;
 };
 
 export const deserializePlainTextStripExtraNewlines = (

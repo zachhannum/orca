@@ -15,6 +15,7 @@ import {
 } from '../writer/serialize';
 import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
+import {PreviewLeaf} from '../writer/PreviewLeaf';
 
 const blankEditorValue = [
   {
@@ -37,12 +38,10 @@ const BasicWriterComp = () => {
       boxSizing: 'border-box',
       paddingTop: '10vh',
       paddingBottom: '10vh',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '1em',
     } as CSSProperties,
     spellCheck: false,
     autoFocus: true,
+    renderLeaf: PreviewLeaf,
   };
   const activeSectionId = useStore((state) => state.activeSectionId);
   const [initialValue, setInitialValue] = useState(blankEditorValue);
