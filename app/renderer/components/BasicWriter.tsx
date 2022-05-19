@@ -5,6 +5,7 @@ import {
   usePlateEditorRef,
   createPlugins,
 } from '@udecode/plate';
+import { EditableProps } from 'slate-react/dist/components/editable';
 import { ReactEditor } from 'slate-react';
 import ScrollContainer from './ScrollContainer';
 import useStore from 'renderer/store/useStore';
@@ -15,7 +16,8 @@ import {
 } from '../writer/serialize';
 import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
-import {PreviewLeaf} from '../writer/PreviewLeaf';
+import { createSoftBreakPlugin } from '../writer/createSoftBreakPlugin';
+import { PreviewLeaf } from '../writer/PreviewLeaf';
 
 const blankEditorValue = [
   {
@@ -42,7 +44,7 @@ const BasicWriterComp = () => {
     spellCheck: false,
     autoFocus: true,
     renderLeaf: PreviewLeaf,
-  };
+  } as EditableProps;
   const activeSectionId = useStore((state) => state.activeSectionId);
   const [initialValue, setInitialValue] = useState(blankEditorValue);
   const [editorId, setEditorId] = useState('');
@@ -51,6 +53,7 @@ const BasicWriterComp = () => {
   const plugins = createPlugins([
     createDeserializePlainTextPlugin(),
     createMarkdownDecoratePlugin(),
+    createSoftBreakPlugin(),
   ]);
 
   useEffect(() => {

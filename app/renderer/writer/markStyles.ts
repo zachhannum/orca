@@ -1,11 +1,11 @@
 import { css } from 'styled-components';
 import { StyledLeafProps } from './PreviewLeaf';
 
-export const emphasis = css`
+export const Emphasis = css`
   font-style: italic;
 `;
 
-export const emphasisMarkup = css<StyledLeafProps>`
+export const EmphasisMarkup = css<StyledLeafProps>`
   ${(p) =>
     p.hideMarkup &&
     css`
@@ -14,11 +14,11 @@ export const emphasisMarkup = css<StyledLeafProps>`
   color: ${(p) => p.theme.buttonPrimaryBg};
 `;
 
-export const strong = css`
+export const Strong = css`
   font-weight: 700;
 `;
 
-export const strongMarkup = css<StyledLeafProps>`
+export const StrongMarkup = css<StyledLeafProps>`
   ${(p) =>
     p.hideMarkup &&
     css`

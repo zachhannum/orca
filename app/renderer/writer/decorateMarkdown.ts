@@ -23,8 +23,26 @@ const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
       return 'both';
     case 'strong':
       return 'both';
+    case 'blockquote':
+      return 'before';
   }
   return 'both';
+};
+
+const getChildrenOffsets = (remarkNode: RemarkNode) => {
+  if (remarkNode.children && remarkNode.children.length > 0) {
+    const remarkChildren = remarkNode.children;
+    return {
+      childStartOffset: remarkChildren[0].position.start.offset,
+      childEndOffset:
+        remarkChildren[remarkChildren.length - 1].position.end.offset,
+    };
+  } else {
+    return {
+      childStartOffset: remarkNode.position.start.offset,
+      childEndOffset: remarkNode.position.end.offset,
+    };
+  }
 };
 
 const decorateTree = (
@@ -34,64 +52,63 @@ const decorateTree = (
   editorSelection: BaseSelection | null
 ): { childStartOffset: number; childEndOffset: number } => {
   remarkNodes.forEach((remarkNode) => {
+    let hideMarkup = true;
     if (remarkNode.type !== 'text') {
       console.log(remarkNode.type);
-      ranges.push({
-        [remarkNode.type]: true,
-        depth: remarkNode.depth,
-        anchor: { path, offset: remarkNode.position.start.offset },
-        focus: { path, offset: remarkNode.position.end.offset },
-      });
-    }
-    if (remarkNode.children) {
-      const { childStartOffset, childEndOffset } = decorateTree(
-        remarkNode.children,
-        ranges,
-        path,
-        editorSelection
-      );
-      const nodeStartOffset = remarkNode.position.start.offset;
-      const nodeEndOffset = remarkNode.position.end.offset;
-      let hideMarkup = true;
-      /* Check if node path intersects with editor selection and remove markup hide */
-      if (editorSelection) {
-        const nodePath = {
-          anchor: {
-            path,
-            offset: remarkNode.position.start.offset,
-          },
-          focus: {
-            path,
-            offset: remarkNode.position.end.offset,
-          },
-        } as Range;
-        if (Range.includes(nodePath, editorSelection)) {
-          hideMarkup = false;
+      if (remarkNode.children) {
+        const { childStartOffset, childEndOffset } =
+          getChildrenOffsets(remarkNode);
+        const nodeStartOffset = remarkNode.position.start.offset;
+        const nodeEndOffset = remarkNode.position.end.offset;
+        /* Check if node path intersects with editor selection and remove markup hide */
+        if (editorSelection) {
+          const nodePath = {
+            anchor: {
+              path,
+              offset: remarkNode.position.start.offset,
+            },
+            focus: {
+              path,
+              offset: remarkNode.position.end.offset,
+            },
+          } as Range;
+          if (Range.includes(nodePath, editorSelection)) {
+            hideMarkup = false;
+          }
         }
-      }
-      /* Push decorations for hiding markup */
-      const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
-      if (
-        childStartOffset > nodeStartOffset &&
-        (syntaxLocation === 'before' || syntaxLocation === 'both')
-      ) {
+        /* Push node type */
         ranges.push({
-          [`${remarkNode.type}Markup`]: true,
+          [remarkNode.type]: true,
           hideMarkup: hideMarkup,
-          anchor: { path, offset: nodeStartOffset },
-          focus: { path, offset: childStartOffset },
+          depth: remarkNode.depth,
+          anchor: { path, offset: remarkNode.position.start.offset },
+          focus: { path, offset: remarkNode.position.end.offset },
         });
-      }
-      if (
-        nodeEndOffset > childEndOffset &&
-        (syntaxLocation === 'after' || syntaxLocation === 'both')
-      ) {
-        ranges.push({
-          [`${remarkNode.type}Markup`]: true,
-          hideMarkup: hideMarkup,
-          anchor: { path, offset: childEndOffset },
-          focus: { path, offset: nodeEndOffset },
-        });
+        /* Push decorations for markup */
+        const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
+        if (
+          childStartOffset > nodeStartOffset &&
+          (syntaxLocation === 'before' || syntaxLocation === 'both')
+        ) {
+          ranges.push({
+            [`${remarkNode.type}Markup`]: true,
+            hideMarkup: hideMarkup,
+            anchor: { path, offset: nodeStartOffset },
+            focus: { path, offset: childStartOffset },
+          });
+        }
+        if (
+          nodeEndOffset > childEndOffset &&
+          (syntaxLocation === 'after' || syntaxLocation === 'both')
+        ) {
+          ranges.push({
+            [`${remarkNode.type}Markup`]: true,
+            hideMarkup: hideMarkup,
+            anchor: { path, offset: childEndOffset },
+            focus: { path, offset: nodeEndOffset },
+          });
+        }
+        decorateTree(remarkNode.children, ranges, path, editorSelection);
       }
     }
   });

@@ -1,11 +1,12 @@
 import { css } from 'styled-components';
 import { StyledLeafProps } from './PreviewLeaf';
-export const Heading1Style = css`
-  font-size: 2em;
+
+export const Heading = css`
+  font-size: 1.8em;
   font-weight: 700;
 `;
 
-export const HeadingMarkupStyle = css<StyledLeafProps>`
+export const HeadingMarkup = css<StyledLeafProps>`
   ${(p) =>
     p.hideMarkup &&
     css`
@@ -26,9 +27,4 @@ export const HeadingMarkupStyle = css<StyledLeafProps>`
       font-weight: 500;
     `}
   color: ${(p) => p.theme.buttonPrimaryBg};
-`;
-
-export const HeadingStyle = css`
-  font-size: 1.8em;
-  font-weight: 700;
 `;
