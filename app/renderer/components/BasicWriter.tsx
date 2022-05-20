@@ -15,6 +15,7 @@ import {
   deserializePlainText,
   serializePlainText,
   createDeserializePlainTextPlugin,
+  BasicElement,
 } from '../writer/serialize';
 import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
@@ -31,7 +32,7 @@ const blankEditorValue = [
       },
     ],
   },
-];
+] as BasicElement[];
 
 const BasicWriterComp = () => {
   const editableProps = {
@@ -89,10 +90,7 @@ const BasicWriterComp = () => {
 
   const [selectionPath, setSelectionPath] = useState<Path | null>(null);
 
-  const setBlockMarkup = useCallback(() => {}, [selectionPath]);
-
   useEffect(() => {
-    console.log(selectionPath);
     if (selectionPath) {
       HistoryEditor.withoutSaving(editor, () => {
         Transforms.setNodes(

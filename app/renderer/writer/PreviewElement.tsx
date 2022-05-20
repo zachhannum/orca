@@ -1,4 +1,3 @@
-import { StyledProps } from '@udecode/plate';
 import { RenderElementProps } from 'slate-react';
 import styled, {css} from 'styled-components';
 import { BasicElement } from '../writer/serialize';
@@ -17,7 +16,7 @@ ${(p) => p.element.type === 'blockquote' && p.element.hideMarkup && css`
 
 
 export const PreviewElement = (props: PreviewRenderElementProps) => {
-  const { children, element } = props;
+  const { children } = props;
 
   return (
     <StyledElement {...props}>

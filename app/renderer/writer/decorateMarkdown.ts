@@ -44,7 +44,6 @@ const decorateTree = (
   remarkNodes.forEach((remarkNode) => {
     let hideMarkup = true;
     if (remarkNode.type !== 'text') {
-      console.log(remarkNode.type);
       if (remarkNode.children) {
         const { childStartOffset, childEndOffset } =
           getChildrenOffsets(remarkNode);

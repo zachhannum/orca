@@ -141,17 +141,6 @@ export const deserializePlainText = (str: string): BasicElement[] => {
     console.log(nodes);
     return nodes;
   } else return [];
-  // let nodes = str.split(/\r\n|\r|\n/).map((s: string) => {
-  //   return {
-  //     type: 'paragraph',
-  //     children: [
-  //       {
-  //         text: s.replace('"', '"'),
-  //       },
-  //     ],
-  //   };
-  // });
-  // return nodes;
 };
 
 export const deserializePlainTextStripExtraNewlines = (
