@@ -1,4 +1,4 @@
-import { useEffect, useState, CSSProperties } from 'react';
+import { useEffect, useState, useCallback, CSSProperties } from 'react';
 import {
   Plate,
   PlateProvider,
@@ -6,6 +6,8 @@ import {
   createPlugins,
 } from '@udecode/plate';
 import { EditableProps } from 'slate-react/dist/components/editable';
+import { Editor, Transforms, Path } from 'slate';
+import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
 import ScrollContainer from './ScrollContainer';
 import useStore from 'renderer/store/useStore';
@@ -18,6 +20,7 @@ import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
 import { createSoftBreakPlugin } from '../writer/createSoftBreakPlugin';
 import { PreviewLeaf } from '../writer/PreviewLeaf';
+import { PreviewElement } from '../writer/PreviewElement';
 
 const blankEditorValue = [
   {
@@ -44,6 +47,7 @@ const BasicWriterComp = () => {
     spellCheck: false,
     autoFocus: true,
     renderLeaf: PreviewLeaf,
+    renderElement: PreviewElement,
   } as EditableProps;
   const activeSectionId = useStore((state) => state.activeSectionId);
   const [initialValue, setInitialValue] = useState(blankEditorValue);
@@ -83,7 +87,40 @@ const BasicWriterComp = () => {
     }
   }, [activeSectionId]);
 
+  const [selectionPath, setSelectionPath] = useState<Path | null>(null);
+
+  const setBlockMarkup = useCallback(() => {}, [selectionPath]);
+
+  useEffect(() => {
+    console.log(selectionPath);
+    if (selectionPath) {
+      HistoryEditor.withoutSaving(editor, () => {
+        Transforms.setNodes(
+          editor,
+          { hideMarkup: true },
+          {
+            at: [],
+            match: (n) => Editor.isBlock(editor, n) && n.hideMarkup === false,
+          }
+        );
+        Transforms.setNodes(
+          editor,
+          { hideMarkup: false },
+          {
+            at: selectionPath,
+            match: (n) => Editor.isBlock(editor, n) && n.type === 'blockquote',
+          }
+        );
+      });
+    }
+  }, [selectionPath]);
+
   const handleChange = () => {
+    console.log(editor.children);
+    if (editor.selection) {
+      if (editor.selection.anchor.path !== selectionPath)
+        setSelectionPath(editor.selection.anchor.path);
+    }
     if (activeSectionId != '') {
       const { setSectionHistory } = useStore.getState();
       const { updateSectionContent } = useStore.getState();

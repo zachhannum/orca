@@ -1,8 +1,13 @@
 import { css } from 'styled-components';
 import { StyledLeafProps } from './PreviewLeaf';
 
-export const Heading = css`
-  font-size: 1.8em;
+export const Heading = css<StyledLeafProps>`
+  font-size: 2em;
+  ${(p) =>
+    p.depth &&
+    css`
+      font-size: ${1.2 + .8 / p.depth}em;
+    `}
   font-weight: 700;
 `;
 
@@ -14,7 +19,7 @@ export const HeadingMarkup = css<StyledLeafProps>`
       visibility: hidden;
       ${p.depth &&
       css`
-        margin-left: ${-4 - p.depth}ch;
+        margin-left: ${-1 - p.depth}ch;
       `}
       &::after {
         visibility: visible;

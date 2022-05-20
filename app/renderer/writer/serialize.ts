@@ -1,21 +1,146 @@
 import { createPluginFactory } from '@udecode/plate-core';
 import { Node } from 'slate';
 import type { Descendant } from 'slate';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import type { RemarkNode } from './remark';
+import { BaseEditor } from 'slate';
+import { ReactEditor } from 'slate-react';
+import { HistoryEditor } from 'slate-history';
 
-type BasicElement = { type: string; children: BasicText[] };
-type BasicText = { text: string; bold?: true };
+export interface BasicElement {
+  type: string;
+  hideMarkup: boolean;
+  depth: number;
+  children: BasicElement[] | BasicText[];
+};
+export interface BasicText { text: string; bold?: true };
+
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: BaseEditor & ReactEditor & HistoryEditor
+    Element: BasicElement
+    Text: BasicText
+  }
+}
+
+const parseBlockquote = (
+  str: string,
+  remarkChildren: RemarkNode[],
+  startOffset = 0,
+  depth = 1
+): { nodes: BasicElement[]; offset: number } => {
+  let blockNodeChildren = [] as BasicElement[];
+  remarkChildren.forEach((remarkNode) => {
+    if (remarkNode.children && remarkNode.type === 'blockquote') {
+      depth += 1;
+      const { nodes, offset } = parseBlockquote(
+        str,
+        remarkNode.children,
+        startOffset,
+        depth
+      );
+      blockNodeChildren.push({
+        type: 'blockquote',
+        depth,
+        hideMarkup: true,
+        children: nodes,
+      });
+      depth -= 1;
+    } else {
+      blockNodeChildren.push({
+        type: remarkNode.type,
+        depth,
+        hideMarkup: true,
+        children: [
+          {
+            text: str.slice(startOffset, remarkNode.position.end.offset),
+          },
+        ],
+      });
+    }
+    startOffset = remarkNode.position.end.offset + 1;
+  });
+  return { nodes: blockNodeChildren, offset: startOffset };
+};
+
+const parseRemark = (
+  str: string,
+  remarkChildren: RemarkNode[],
+  nodes: BasicElement[],
+  startOffset = 0
+): BasicElement[] => {
+  remarkChildren.forEach((remarkNode) => {
+    if (remarkNode.type === 'blockquote' && remarkNode.children) {
+      /* Trim leading content and push separately */
+      const blockQuoteStart = str.indexOf('>', startOffset);
+      nodes.push({
+        type: 'paragraph',
+        depth: 0,
+        hideMarkup: true,
+        children: [
+          {
+            text: str.slice(startOffset, blockQuoteStart - 1),
+          },
+        ],
+      });
+      startOffset = blockQuoteStart;
+      const { nodes: blockNodes, offset: blockOffset } = parseBlockquote(
+        str,
+        remarkNode.children,
+        startOffset
+      );
+      nodes.push({
+        type: 'blockquote',
+        depth: 1,
+        hideMarkup: true,
+        children: blockNodes
+      })
+      startOffset = blockOffset + 1;
+    } else {
+      if (remarkNode.position.start.offset > startOffset) {
+        nodes.push({
+          type: 'paragraph',
+          depth: 0,
+          hideMarkup: true,
+          children: [
+            {
+              text: str.slice(
+                startOffset + 1,
+                remarkNode.position.start.offset
+              ),
+            },
+          ],
+        });
+      }
+      nodes.push({
+        type: 'paragraph',
+        depth: 0,
+        hideMarkup: true,
+        children: [
+          {
+            text: str.slice(
+              remarkNode.position.start.offset,
+              remarkNode.position.end.offset
+            ),
+          },
+        ],
+      });
+      startOffset = remarkNode.position.end.offset + 1;
+    }
+  });
+  return nodes;
+};
 
 export const deserializePlainText = (str: string): BasicElement[] => {
-  return [
-    {
-      type: 'paragraph',
-      children: [
-        {
-          text: str.replace('"', '"'),
-        },
-      ],
-    },
-  ];
+  const remark = unified().use(remarkParse).parse(str) as RemarkNode;
+  if (remark.children) {
+    console.log(str);
+    console.log(remark);
+    const nodes = parseRemark(str, remark.children, []);
+    console.log(nodes);
+    return nodes;
+  } else return [];
   // let nodes = str.split(/\r\n|\r|\n/).map((s: string) => {
   //   return {
   //     type: 'paragraph',

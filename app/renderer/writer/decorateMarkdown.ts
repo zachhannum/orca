@@ -2,17 +2,7 @@ import { isText, PlateEditor } from '@udecode/plate-core';
 import { Range, BaseSelection } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-
-type RemarkNode = {
-  type: string;
-  position: {
-    end: { column: number; line: number; offset: number };
-    start: { column: number; line: number; offset: number };
-  };
-  children?: RemarkNode[];
-  value?: string;
-  depth?: number;
-};
+import type {RemarkNode} from './remark';
 
 type SyntaxLocation = 'before' | 'after' | 'both';
 const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
@@ -127,8 +117,7 @@ const decorateTree = (
 export const decorateMarkdown =
   <T = {}>(editor: PlateEditor<T>) =>
   ([node, path]) => {
-    console.log('Decorating nodes:');
-    console.log(node);
+    // return [];
     const ranges: any[] = [];
 
     if (!isText(node)) {
@@ -136,8 +125,6 @@ export const decorateMarkdown =
     }
 
     const remark = unified().use(remarkParse).parse(node.text) as RemarkNode;
-    console.log('Parsed remark AST:');
-    console.log(remark);
     if (remark.children)
       decorateTree(remark.children, ranges, path, editor.selection);
     return ranges;
