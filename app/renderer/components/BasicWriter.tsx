@@ -116,6 +116,7 @@ const BasicWriterComp = () => {
   }, [selectionPath]);
 
   const handleChange = () => {
+    console.log(editor.children);
     if (editor.selection) {
       if (editor.selection.anchor.path !== selectionPath)
         setSelectionPath(editor.selection.anchor.path);

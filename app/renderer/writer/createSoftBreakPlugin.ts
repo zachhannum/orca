@@ -1,9 +1,7 @@
 import {
   createPluginFactory,
   PlateEditor,
-  HandlerReturnType,
 } from '@udecode/plate-core';
-import { Transforms, Editor } from 'slate';
 
 export const createSoftBreakPlugin = createPluginFactory({
   key: 'softBreakPlugin',

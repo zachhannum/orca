@@ -34,7 +34,7 @@ const parseBlockquote = (
   depth = 1
 ): { nodes: BasicElement[]; offset: number } => {
   let blockNodeChildren = [] as BasicElement[];
-  if(remarkChildren.length === 0) {
+  if (remarkChildren.length === 0) {
     blockNodeChildren.push({
       type: 'paragraph',
       depth,
@@ -157,21 +157,56 @@ const parseRemark = (
 export const deserializePlainText = (str: string): BasicElement[] => {
   const remark = unified().use(remarkParse).parse(str) as RemarkNode;
   if (remark.children?.length) {
+    let nodes = [] as BasicElement[];
     console.log(str);
     console.log(remark);
-    const nodes = parseRemark(str, remark.children, []);
+    if (remark.children[0].position.start.offset > 0) {
+      nodes.push({
+        type: 'paragraph',
+        depth: 0,
+        hideMarkup: true,
+        children: [
+          {
+            text: str.slice(0, remark.children[0].position.start.offset - 1),
+          },
+        ],
+      });
+    }
+    nodes = nodes.concat(parseRemark(str, remark.children, []));
+    if (
+      remark.children[remark.children.length - 1].position.end.offset + 1 <
+      str.length
+    ) {
+      nodes.push({
+        type: 'paragraph',
+        depth: 0,
+        hideMarkup: true,
+        children: [
+          {
+            text: str.slice(
+              remark.children[remark.children.length - 1].position.end.offset +
+                1,
+              str.length - 2
+            ),
+          },
+        ],
+      });
+    }
     console.log(nodes);
     return nodes;
-  } else return [{
-    type: 'paragraph',
-    depth: 0,
-    hideMarkup: true,
-    children: [
+  } else
+    return [
       {
-        text: str
+        type: 'paragraph',
+        depth: 0,
+        hideMarkup: true,
+        children: [
+          {
+            text: '',
+          },
+        ],
       },
-    ],
-  }];
+    ];
 };
 
 export const deserializePlainTextStripExtraNewlines = (

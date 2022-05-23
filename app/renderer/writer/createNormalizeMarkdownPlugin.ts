@@ -1,5 +1,5 @@
 import { createPluginFactory, PlateEditor } from '@udecode/plate-core';
-import { Transforms, Editor } from 'slate';
+import { Transforms, Editor, Path } from 'slate';
 import {
   BasicElement,
   BasicText,
@@ -52,7 +52,7 @@ export const createNormalizeMarkdownPlugin = createPluginFactory({
           console.log(currentNode);
           console.log('To:');
           console.log(nodes);
-          Transforms.delete(editor, { at: currentPath });
+          Transforms.removeNodes(editor, { at: currentPath });
           Transforms.insertNodes(editor, nodes, { at: currentPath, select: true });
           return;
         }
