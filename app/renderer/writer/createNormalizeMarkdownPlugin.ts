@@ -53,7 +53,7 @@ export const createNormalizeMarkdownPlugin = createPluginFactory({
           console.log('To:');
           console.log(nodes);
           Transforms.delete(editor, { at: currentPath });
-          Transforms.insertNodes(editor, nodes, { at: currentPath });
+          Transforms.insertNodes(editor, nodes, { at: currentPath, select: true });
           return;
         }
       }

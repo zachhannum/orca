@@ -29,17 +29,31 @@ declare module 'slate' {
 const parseBlockquote = (
   str: string,
   remarkChildren: RemarkNode[],
-  startOffset = 0,
+  startOffset: number,
+  endOffset: number,
   depth = 1
 ): { nodes: BasicElement[]; offset: number } => {
   let blockNodeChildren = [] as BasicElement[];
+  if(remarkChildren.length === 0) {
+    blockNodeChildren.push({
+      type: 'paragraph',
+      depth,
+      hideMarkup: true,
+      children: [
+        {
+          text: str.slice(startOffset, endOffset),
+        },
+      ],
+    });
+  }
   remarkChildren.forEach((remarkNode) => {
     if (remarkNode.children && remarkNode.type === 'blockquote') {
       depth += 1;
-      const { nodes, offset } = parseBlockquote(
+      const { nodes } = parseBlockquote(
         str,
         remarkNode.children,
         startOffset,
+        remarkNode.position.end.offset,
         depth
       );
       blockNodeChildren.push({
@@ -95,7 +109,8 @@ const parseRemark = (
       const { nodes: blockNodes, offset: blockOffset } = parseBlockquote(
         str,
         remarkNode.children,
-        startOffset
+        startOffset,
+        remarkNode.position.end.offset
       );
       nodes.push({
         type: 'blockquote',
@@ -141,13 +156,22 @@ const parseRemark = (
 
 export const deserializePlainText = (str: string): BasicElement[] => {
   const remark = unified().use(remarkParse).parse(str) as RemarkNode;
-  if (remark.children) {
+  if (remark.children?.length) {
     console.log(str);
     console.log(remark);
     const nodes = parseRemark(str, remark.children, []);
     console.log(nodes);
     return nodes;
-  } else return [];
+  } else return [{
+    type: 'paragraph',
+    depth: 0,
+    hideMarkup: true,
+    children: [
+      {
+        text: str
+      },
+    ],
+  }];
 };
 
 export const deserializePlainTextStripExtraNewlines = (
