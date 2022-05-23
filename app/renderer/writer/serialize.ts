@@ -1,6 +1,5 @@
 import { createPluginFactory } from '@udecode/plate-core';
-import { Node } from 'slate';
-import type { Descendant } from 'slate';
+import { Editor, Node, Path } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import type { RemarkNode } from './remark';
@@ -13,14 +12,17 @@ export interface BasicElement {
   hideMarkup: boolean;
   depth: number;
   children: BasicElement[] | BasicText[];
-};
-export interface BasicText { text: string; bold?: true };
+}
+export interface BasicText {
+  text: string;
+  bold?: true;
+}
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: BaseEditor & ReactEditor & HistoryEditor
-    Element: BasicElement
-    Text: BasicText
+    Editor: BaseEditor & ReactEditor & HistoryEditor;
+    Element: BasicElement;
+    Text: BasicText;
   }
 }
 
@@ -72,19 +74,24 @@ const parseRemark = (
 ): BasicElement[] => {
   remarkChildren.forEach((remarkNode) => {
     if (remarkNode.type === 'blockquote' && remarkNode.children) {
-      /* Trim leading content and push separately */
+      /* Trim leading content and push separately if contains a newline*/
       const blockQuoteStart = str.indexOf('>', startOffset);
-      nodes.push({
-        type: 'paragraph',
-        depth: 0,
-        hideMarkup: true,
-        children: [
-          {
-            text: str.slice(startOffset, blockQuoteStart - 1),
-          },
-        ],
-      });
-      startOffset = blockQuoteStart;
+      if (blockQuoteStart > 0) {
+        const leadingContent = str.slice(startOffset, blockQuoteStart);
+        if (leadingContent.indexOf('\n')) {
+          nodes.push({
+            type: 'paragraph',
+            depth: 0,
+            hideMarkup: true,
+            children: [
+              {
+                text: str.slice(startOffset, blockQuoteStart - 1),
+              },
+            ],
+          });
+        }
+        startOffset = blockQuoteStart;
+      }
       const { nodes: blockNodes, offset: blockOffset } = parseBlockquote(
         str,
         remarkNode.children,
@@ -94,8 +101,8 @@ const parseRemark = (
         type: 'blockquote',
         depth: 1,
         hideMarkup: true,
-        children: blockNodes
-      })
+        children: blockNodes,
+      });
       startOffset = blockOffset + 1;
     } else {
       if (remarkNode.position.start.offset > startOffset) {
@@ -165,11 +172,21 @@ export const deserializePlainTextStripExtraNewlines = (
 
   console.log(`deserialize ${endTime - startTime} milliseconds`);
 
-  return nodes;
+  return [];
 };
 
-export const serializePlainText = (nodes: Descendant[]): string => {
-  const text = nodes.map((n) => Node.string(n)).join('\n');
+export const serializePlainText = (editor: Editor, path: Path = []): string => {
+  let text = '';
+  const leafNodes = Editor.nodes(editor, {
+    mode: 'lowest',
+    at: path,
+  });
+  let leafNode = leafNodes.next();
+  while (!leafNode.done) {
+    const leaf = leafNode.value[0] as BasicText;
+    text += leaf.text + '\n';
+    leafNode = leafNodes.next();
+  }
   return text;
 };
 

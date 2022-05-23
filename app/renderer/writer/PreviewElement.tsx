@@ -1,5 +1,5 @@
 import { RenderElementProps } from 'slate-react';
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 import { BasicElement } from '../writer/serialize';
 
 export interface PreviewRenderElementProps extends RenderElementProps {
@@ -7,20 +7,21 @@ export interface PreviewRenderElementProps extends RenderElementProps {
 }
 
 const StyledElement = styled.div<PreviewRenderElementProps>`
-${(p) => p.element.type === 'blockquote' && p.element.hideMarkup && css`
-  border-left: 2px solid white;
-  padding-left: 10px;
-`}
+  ${(p) =>
+    p.element.type === 'blockquote' &&
+    css`
+      border-left: 2px solid ${(p) => p.theme.buttonPrimaryBg};
+      padding-left: 10px;
+      margin-left: 10px;
+      ${p.element.hideMarkup &&
+      css`
+        border-color: ${p.theme.mainFgTextSecondary};
+      `}
+    `}
 `;
-
-
 
 export const PreviewElement = (props: PreviewRenderElementProps) => {
   const { children } = props;
 
-  return (
-    <StyledElement {...props}>
-      {children}
-    </StyledElement>
-  );
+  return <StyledElement {...props}>{children}</StyledElement>;
 };

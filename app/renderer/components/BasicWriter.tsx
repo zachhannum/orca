@@ -20,6 +20,7 @@ import {
 import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
 import { createSoftBreakPlugin } from '../writer/createSoftBreakPlugin';
+import { createNormalizeMarkdownPlugin } from '../writer/createNormalizeMarkdownPlugin';
 import { PreviewLeaf } from '../writer/PreviewLeaf';
 import { PreviewElement } from '../writer/PreviewElement';
 
@@ -59,6 +60,7 @@ const BasicWriterComp = () => {
     createDeserializePlainTextPlugin(),
     createMarkdownDecoratePlugin(),
     createSoftBreakPlugin(),
+    createNormalizeMarkdownPlugin(),
   ]);
 
   useEffect(() => {
@@ -114,7 +116,6 @@ const BasicWriterComp = () => {
   }, [selectionPath]);
 
   const handleChange = () => {
-    console.log(editor.children);
     if (editor.selection) {
       if (editor.selection.anchor.path !== selectionPath)
         setSelectionPath(editor.selection.anchor.path);
@@ -125,7 +126,7 @@ const BasicWriterComp = () => {
       setSectionHistory(activeSectionId, editor.history);
       updateSectionContent(
         activeSectionId,
-        serializePlainText(editor.children)
+        serializePlainText(editor)
       );
     }
   };

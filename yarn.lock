@@ -745,10 +745,20 @@
   resolved "https://registry.yarnpkg.com/@openfonts/crimson-pro_latin/-/crimson-pro_latin-1.44.3.tgz#c1e4c2328f955adc712d627b4e0250c23c854a41"
   integrity sha512-IbKcGFuanEsHY5QZHYNTIaEYn1xDY6lLp0GUjFZqxHjPMn1BZJgcLBQZ1rhUGLCFQPXcApMhLe6NRKO81lNrwA==
 
+"@openfonts/fira-code_latin@^1.44.8":
+  version "1.44.8"
+  resolved "https://registry.yarnpkg.com/@openfonts/fira-code_latin/-/fira-code_latin-1.44.8.tgz#9c6e8c75e3c27e4b7cb964ba81115ad47a0cc6c3"
+  integrity sha512-74mTNhRY0KS2XVqApKQUfuu8ev/NScejwRgzFDx8xyVDHT6VV+hdTiKFFPCURmhX9VwNJKJ/iTKeF9r/cL+fMQ==
+
 "@openfonts/poppins_latin@^1.44.5":
   version "1.44.5"
   resolved "https://registry.yarnpkg.com/@openfonts/poppins_latin/-/poppins_latin-1.44.5.tgz#fd9b9518e27b22bd0b8bc5961005ba86f8c1f03a"
   integrity sha512-8eqUr3D4WgrlbrBH8oNCLfyIk8Z3naAtINb8aRET5o+cneZSQuit4L07BZ9F7cST1Ww02wLBmc+LNLJ1XLxong==
+
+"@openfonts/roboto-mono_latin@^1.44.1":
+  version "1.44.1"
+  resolved "https://registry.yarnpkg.com/@openfonts/roboto-mono_latin/-/roboto-mono_latin-1.44.1.tgz#b3d0438f971c7af7b5f2237e0c0023c103b34056"
+  integrity sha512-yXKP7yWmo1SM7YAWm0ofE8MwnpR1qViDcdorEr+a/4AkGZxXX+/NzRqAAXnuSQjMpAPaKE/US0ubsdjmowZOgA==
 
 "@pmmmwh/react-refresh-webpack-plugin@0.5.5":
   version "0.5.5"

@@ -11,7 +11,7 @@ export const EmphasisMarkup = css<StyledLeafProps>`
     css`
       display: none;
     `}
-  color: ${(p) => p.theme.buttonPrimaryBg};
+  color: ${(p) => p.theme.buttonPrimaryBg} !important;
 `;
 
 export const Strong = css`
@@ -24,5 +24,5 @@ export const StrongMarkup = css<StyledLeafProps>`
     css`
       display: none;
     `}
-  color: ${(p) => p.theme.buttonPrimaryBg};
+  color: ${(p) => p.theme.buttonPrimaryBg} !important;
 `;

@@ -6,5 +6,10 @@ export const BlockQuote = css<StyledLeafProps>`
 `;
 
 export const BlockQuoteMarkupStyle = css<StyledLeafProps>`
+  ${(p) =>
+    p.hideMarkup &&
+    css`
+      display: none;
+    `}
   color: ${(p) => p.theme.buttonPrimaryBg};
 `;

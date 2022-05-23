@@ -6,7 +6,7 @@ export const Heading = css<StyledLeafProps>`
   ${(p) =>
     p.depth &&
     css`
-      font-size: ${1.2 + .8 / p.depth}em;
+      font-size: ${1.2 + 0.8 / p.depth}em;
     `}
   font-weight: 700;
 `;
@@ -15,12 +15,21 @@ export const HeadingMarkup = css<StyledLeafProps>`
   ${(p) =>
     p.hideMarkup &&
     css`
-      font-family: 'Consolas';
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 500;
       visibility: hidden;
       ${p.depth &&
+      p.blockquote &&
       css`
         margin-left: ${-1 - p.depth}ch;
       `}
+
+      ${p.depth &&
+      !p.blockquote &&
+      css`
+        margin-left: ${-4 - p.depth}ch;
+      `}
+
       &::after {
         visibility: visible;
         ${p.depth &&
@@ -29,7 +38,6 @@ export const HeadingMarkup = css<StyledLeafProps>`
         `}
       }
       font-size: 1em;
-      font-weight: 500;
     `}
-  color: ${(p) => p.theme.buttonPrimaryBg};
+  color: ${(p) => p.theme.buttonPrimaryBg} !important;
 `;
