@@ -44,16 +44,21 @@ export const createNormalizeMarkdownPlugin = createPluginFactory({
     const { normalizeNode } = editor;
 
     editor.normalizeNode = ([currentNode, currentPath]) => {
-      if (Editor.isBlock(editor, currentNode) && currentPath.length === 1) {
+      if (Editor.isEditor(currentNode)) {
         const nodeStr = serializePlainText(editor, currentPath);
         const nodes = deserializePlainText(nodeStr);
-        if (!compareTypes([currentNode], nodes)) {
-          console.log('New Markdown detected, transforming node:');
-          console.log(currentNode);
-          console.log('To:');
-          console.log(nodes);
-          Transforms.removeNodes(editor, { at: currentPath });
-          Transforms.insertNodes(editor, nodes, { at: currentPath, select: true });
+        console.log("Normalize markdown, comparing:");
+        console.log(currentNode.children);
+        console.log("To:");
+        console.log(nodes);
+        if (!compareTypes(currentNode.children as BasicElement[], nodes)) {
+          console.log('New Markdown detected, transforming node');
+          for(let i = 0; i < editor.children.length; i++) {
+            Transforms.removeNodes(editor, { at: [i] });
+          }
+          Transforms.insertNodes(editor, nodes, { at: [0]});
+          Transforms.deselect(editor);
+          Transforms.select(editor, currentPath);
           return;
         }
       }

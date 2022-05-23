@@ -7,15 +7,17 @@ import { BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 
+export type ChildNode = BasicElement | BasicText;
+
 export interface BasicElement {
   type: string;
+  blockquote?: boolean;
   hideMarkup: boolean;
   depth: number;
-  children: BasicElement[] | BasicText[];
+  children: ChildNode[];
 }
 export interface BasicText {
   text: string;
-  bold?: true;
 }
 
 declare module 'slate' {
@@ -26,6 +28,40 @@ declare module 'slate' {
   }
 }
 
+const pushText = (nodes: BasicElement[], text: string, depth = 0) => {
+  console.log({ text: text });
+  console.log(nodes);
+  const lastNodeIndex = nodes.length - 1;
+  if (nodes.length && nodes[lastNodeIndex].type === 'paragraph') {
+    if (nodes[lastNodeIndex].children.length) {
+      const lastText = (
+        nodes[lastNodeIndex].children[
+          nodes[lastNodeIndex].children.length - 1
+        ] as BasicText
+      ).text;
+      nodes[lastNodeIndex].children[nodes[lastNodeIndex].children.length - 1] =
+        {
+          text: lastText.concat(text),
+        };
+    } else {
+      nodes[lastNodeIndex].children.push({
+        text,
+      });
+    }
+  } else {
+    nodes.push({
+      type: 'paragraph',
+      depth,
+      hideMarkup: true,
+      children: [
+        {
+          text,
+        },
+      ],
+    });
+  }
+};
+
 const parseBlockquote = (
   str: string,
   remarkChildren: RemarkNode[],
@@ -35,16 +71,7 @@ const parseBlockquote = (
 ): { nodes: BasicElement[]; offset: number } => {
   let blockNodeChildren = [] as BasicElement[];
   if (remarkChildren.length === 0) {
-    blockNodeChildren.push({
-      type: 'paragraph',
-      depth,
-      hideMarkup: true,
-      children: [
-        {
-          text: str.slice(startOffset, endOffset),
-        },
-      ],
-    });
+    pushText(blockNodeChildren, str.slice(startOffset, endOffset), depth);
   }
   remarkChildren.forEach((remarkNode) => {
     if (remarkNode.children && remarkNode.type === 'blockquote') {
@@ -64,16 +91,11 @@ const parseBlockquote = (
       });
       depth -= 1;
     } else {
-      blockNodeChildren.push({
-        type: remarkNode.type,
-        depth,
-        hideMarkup: true,
-        children: [
-          {
-            text: str.slice(startOffset, remarkNode.position.end.offset),
-          },
-        ],
-      });
+      pushText(
+        blockNodeChildren,
+        str.slice(startOffset, remarkNode.position.end.offset),
+        depth
+      );
     }
     startOffset = remarkNode.position.end.offset + 1;
   });
@@ -87,25 +109,20 @@ const parseRemark = (
   startOffset = 0
 ): BasicElement[] => {
   remarkChildren.forEach((remarkNode) => {
+    if (remarkNode.position.start.offset > startOffset) {
+      pushText(nodes, str.slice(startOffset, remarkNode.position.start.offset));
+      startOffset = remarkNode.position.start.offset;
+    }
     if (remarkNode.type === 'blockquote' && remarkNode.children) {
       /* Trim leading content and push separately if contains a newline*/
-      const blockQuoteStart = str.indexOf('>', startOffset);
-      if (blockQuoteStart > 0) {
-        const leadingContent = str.slice(startOffset, blockQuoteStart);
-        if (leadingContent.indexOf('\n')) {
-          nodes.push({
-            type: 'paragraph',
-            depth: 0,
-            hideMarkup: true,
-            children: [
-              {
-                text: str.slice(startOffset, blockQuoteStart - 1),
-              },
-            ],
-          });
-        }
-        startOffset = blockQuoteStart;
-      }
+      // const blockQuoteStart = str.indexOf('>', startOffset);
+      // if (blockQuoteStart > 0) {
+      //   const leadingContent = str.slice(startOffset, blockQuoteStart);
+      //   if (leadingContent.indexOf('\n')) {
+      //     pushText(nodes, str.slice(startOffset, blockQuoteStart - 1));
+      //   }
+      //   startOffset = blockQuoteStart;
+      // }
       const { nodes: blockNodes, offset: blockOffset } = parseBlockquote(
         str,
         remarkNode.children,
@@ -120,93 +137,65 @@ const parseRemark = (
       });
       startOffset = blockOffset + 1;
     } else {
-      if (remarkNode.position.start.offset > startOffset) {
-        nodes.push({
-          type: 'paragraph',
-          depth: 0,
-          hideMarkup: true,
-          children: [
-            {
-              text: str.slice(
-                startOffset + 1,
-                remarkNode.position.start.offset
-              ),
-            },
-          ],
-        });
-      }
-      nodes.push({
-        type: 'paragraph',
-        depth: 0,
-        hideMarkup: true,
-        children: [
-          {
-            text: str.slice(
-              remarkNode.position.start.offset,
-              remarkNode.position.end.offset
-            ),
-          },
-        ],
-      });
-      startOffset = remarkNode.position.end.offset + 1;
+      pushText(
+        nodes,
+        str.slice(
+          remarkNode.position.start.offset,
+          remarkNode.position.end.offset
+        )
+      );
+      startOffset = remarkNode.position.end.offset;
     }
   });
   return nodes;
 };
 
 export const deserializePlainText = (str: string): BasicElement[] => {
-  const remark = unified().use(remarkParse).parse(str) as RemarkNode;
-  if (remark.children?.length) {
-    let nodes = [] as BasicElement[];
-    console.log(str);
-    console.log(remark);
-    if (remark.children[0].position.start.offset > 0) {
-      nodes.push({
-        type: 'paragraph',
-        depth: 0,
-        hideMarkup: true,
-        children: [
-          {
-            text: str.slice(0, remark.children[0].position.start.offset - 1),
-          },
-        ],
-      });
-    }
-    nodes = nodes.concat(parseRemark(str, remark.children, []));
-    if (
-      remark.children[remark.children.length - 1].position.end.offset + 1 <
-      str.length
-    ) {
-      nodes.push({
-        type: 'paragraph',
-        depth: 0,
-        hideMarkup: true,
-        children: [
-          {
-            text: str.slice(
-              remark.children[remark.children.length - 1].position.end.offset +
-                1,
-              str.length - 2
-            ),
-          },
-        ],
-      });
-    }
-    console.log(nodes);
-    return nodes;
-  } else
-    return [
-      {
-        type: 'paragraph',
-        depth: 0,
-        hideMarkup: true,
-        children: [
-          {
-            text: '',
-          },
-        ],
-      },
-    ];
+  return str.split(/\r\n|\r|\n/).map((text) => {
+    return {
+      type: 'paragraph',
+      depth: 0,
+      hideMarkup: true,
+      children: [{
+        text
+      }],
+    };
+  });
+  // const remark = unified().use(remarkParse).parse(str) as RemarkNode;
+  // if (remark.children?.length) {
+  //   let nodes = [] as BasicElement[];
+  //   console.log(str);
+  //   console.log(remark);
+  //   if (remark.children[0].position.start.offset > 0) {
+  //     pushText(nodes, str.slice(0, remark.children[0].position.start.offset));
+  //   }
+  //   nodes = nodes.concat(parseRemark(str, remark.children, []));
+  //   if (
+  //     remark.children[remark.children.length - 1].position.end.offset + 1 <
+  //     str.length
+  //   ) {
+  //     pushText(
+  //       nodes,
+  //       str.slice(
+  //         remark.children[remark.children.length - 1].position.end.offset + 1
+  //       )
+  //     );
+  //   }
+  //   console.log(nodes);
+  //   return nodes;
+  // } else
+  //   return [
+  //     {
+  //       type: 'paragraph',
+  //       depth: 0,
+  //       hideMarkup: true,
+  //       children: [
+  //         {
+  //           text: '',
+  //         },
+  //       ],
+  //     },
+  //   ];
 };
 
 export const deserializePlainTextStripExtraNewlines = (

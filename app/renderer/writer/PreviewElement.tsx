@@ -6,22 +6,45 @@ export interface PreviewRenderElementProps extends RenderElementProps {
   element: BasicElement;
 }
 
-const StyledElement = styled.div<PreviewRenderElementProps>`
+type StyledBlockquoteProps = {
+  hideMarkup: boolean;
+};
+const StyledBlockquote = styled.span<StyledBlockquoteProps>`
+  border-left: 2px solid ${(p) => p.theme.buttonPrimaryBg};
+  padding-left: 10px;
+  margin-left: 10px;
   ${(p) =>
-    p.element.type === 'blockquote' &&
+    p.hideMarkup &&
     css`
-      border-left: 2px solid ${(p) => p.theme.buttonPrimaryBg};
-      padding-left: 10px;
-      margin-left: 10px;
-      ${p.element.hideMarkup &&
-      css`
-        border-color: ${p.theme.mainFgTextSecondary};
-      `}
+      border-color: ${p.theme.mainFgTextSecondary};
     `}
 `;
 
-export const PreviewElement = (props: PreviewRenderElementProps) => {
-  const { children } = props;
+const StyledElement = styled.div<PreviewRenderElementProps>`
+  /* display: flex; */
+  /* flex-direction: row; */
+`;
 
-  return <StyledElement {...props}>{children}</StyledElement>;
+export const PreviewElement = (props: PreviewRenderElementProps) => {
+  const { children, element } = props;
+
+  const blockQuotes = Array.from({ length: element.depth }).map(
+    (item, index) => (
+      <StyledBlockquote
+        key={index}
+        hideMarkup={element.hideMarkup}
+        contentEditable={false}
+      />
+    )
+  );
+  return (
+    <>
+      <StyledElement {...props}>
+        <>
+          {element.blockquote && blockQuotes}
+          {children}
+        </>
+      </StyledElement>
+    </>
+  );
 };

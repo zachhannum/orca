@@ -21,6 +21,7 @@ import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
 import { createSoftBreakPlugin } from '../writer/createSoftBreakPlugin';
 import { createNormalizeMarkdownPlugin } from '../writer/createNormalizeMarkdownPlugin';
+import { createSetBlockTypesPlugin } from 'renderer/writer/createSetBlockTypes';
 import { PreviewLeaf } from '../writer/PreviewLeaf';
 import { PreviewElement } from '../writer/PreviewElement';
 
@@ -59,8 +60,9 @@ const BasicWriterComp = () => {
   const plugins = createPlugins([
     createDeserializePlainTextPlugin(),
     createMarkdownDecoratePlugin(),
-    createSoftBreakPlugin(),
-    createNormalizeMarkdownPlugin(),
+    // createSoftBreakPlugin(),
+    // createNormalizeMarkdownPlugin(),
+    createSetBlockTypesPlugin(),
   ]);
 
   useEffect(() => {

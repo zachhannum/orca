@@ -1,8 +1,10 @@
-import { isText, PlateEditor } from '@udecode/plate-core';
-import { Range, BaseSelection } from 'slate';
+import { HistoryEditor } from 'slate-history';
+import { PlateEditor } from '@udecode/plate-core';
+import { Editor, Range, BaseSelection, Transforms } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import type {RemarkNode} from './remark';
+import type { RemarkNode } from './remark';
+import { serializePlainText } from './serialize';
 
 type SyntaxLocation = 'before' | 'after' | 'both';
 const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
@@ -23,44 +25,49 @@ const getChildrenOffsets = (remarkNode: RemarkNode) => {
   if (remarkNode.children && remarkNode.children.length > 0) {
     const remarkChildren = remarkNode.children;
     return {
-      childStartOffset: remarkChildren[0].position.start.offset,
+      childStartOffset: remarkChildren[0].position.start.column - 1,
       childEndOffset:
-        remarkChildren[remarkChildren.length - 1].position.end.offset,
+        remarkChildren[remarkChildren.length - 1].position.end.column - 1,
     };
   } else {
     return {
-      childStartOffset: remarkNode.position.start.offset,
-      childEndOffset: remarkNode.position.end.offset,
+      childStartOffset: remarkNode.position.start.column - 1,
+      childEndOffset: remarkNode.position.end.column - 1,
     };
   }
 };
 
-const decorateTree = (
+const decorateTree = <T = {}>(
+  editor: PlateEditor<T>,
   remarkNodes: RemarkNode[],
   ranges: any[],
-  path: any,
-  editorSelection: BaseSelection | null
-): { childStartOffset: number; childEndOffset: number } => {
+  editorSelection: BaseSelection | null,
+  depth = 1
+) => {
   remarkNodes.forEach((remarkNode) => {
     let hideMarkup = true;
+    const pathStart = [remarkNode.position.start.line - 1];
+    const pathEnd = [remarkNode.position.end.line - 1];
+    const nodeStartOffset = remarkNode.position.start.column - 1;
+    const nodeEndOffset = remarkNode.position.end.column - 1;
+    const nodePath = {
+      anchor: {
+        path: pathStart,
+        offset: nodeStartOffset,
+      },
+      focus: {
+        path: pathEnd,
+        offset: nodeEndOffset,
+      },
+    } as Range;
     if (remarkNode.type !== 'text') {
       if (remarkNode.children) {
         const { childStartOffset, childEndOffset } =
           getChildrenOffsets(remarkNode);
-        const nodeStartOffset = remarkNode.position.start.offset;
-        const nodeEndOffset = remarkNode.position.end.offset;
+
         /* Check if node path intersects with editor selection and remove markup hide */
+
         if (editorSelection) {
-          const nodePath = {
-            anchor: {
-              path,
-              offset: remarkNode.position.start.offset,
-            },
-            focus: {
-              path,
-              offset: remarkNode.position.end.offset,
-            },
-          } as Range;
           if (Range.includes(nodePath, editorSelection)) {
             hideMarkup = false;
           }
@@ -70,8 +77,8 @@ const decorateTree = (
           [remarkNode.type]: true,
           hideMarkup: hideMarkup,
           depth: remarkNode.depth,
-          anchor: { path, offset: remarkNode.position.start.offset },
-          focus: { path, offset: remarkNode.position.end.offset },
+          anchor: { path: pathStart, offset: nodeStartOffset },
+          focus: { path: pathEnd, offset: nodeEndOffset },
         });
         /* Push decorations for markup */
         const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
@@ -82,8 +89,8 @@ const decorateTree = (
           ranges.push({
             [`${remarkNode.type}Markup`]: true,
             hideMarkup: hideMarkup,
-            anchor: { path, offset: nodeStartOffset },
-            focus: { path, offset: childStartOffset },
+            anchor: { path: pathStart, offset: nodeStartOffset },
+            focus: { path: pathStart, offset: childStartOffset },
           });
         }
         if (
@@ -93,21 +100,46 @@ const decorateTree = (
           ranges.push({
             [`${remarkNode.type}Markup`]: true,
             hideMarkup: hideMarkup,
-            anchor: { path, offset: childEndOffset },
-            focus: { path, offset: nodeEndOffset },
+            anchor: { path: pathEnd, offset: childEndOffset },
+            focus: { path: pathEnd, offset: nodeEndOffset },
           });
         }
-        decorateTree(remarkNode.children, ranges, path, editorSelection);
+
+        /* Set Element Node types */
+        // Editor.withoutNormalizing(editor, () => {
+        //   if (depth === 1) {
+        //     Transforms.setNodes(
+        //       editor,
+        //       { type: remarkNode.type },
+        //       { at: nodePath, match: (n) => Editor.isBlock(editor, n) }
+        //     );
+        //   }
+        // });
+        decorateTree(
+          editor,
+          remarkNode.children,
+          ranges,
+          editorSelection,
+          depth + 1
+        );
       }
+    } else {
+      // console.log(`Updating depth to ${depth - 1}`);
+      // console.log(nodePath);
+      // Transforms.setNodes(
+      //   editor,
+      //   { depth: depth - 1 },
+      //   { at: nodePath, match: (n) => Editor.isBlock(editor, n) }
+      // );
     }
   });
-  const totalStartOffset = remarkNodes.length
-    ? remarkNodes[0].position.start.offset
-    : 0;
-  const totalEndOffset = remarkNodes.length
-    ? remarkNodes[remarkNodes.length - 1].position.end.offset
-    : 0;
-  return { childStartOffset: totalStartOffset, childEndOffset: totalEndOffset };
+  // const totalStartOffset = remarkNodes.length
+  //   ? remarkNodes[0].position.start.offset
+  //   : 0;
+  // const totalEndOffset = remarkNodes.length
+  //   ? remarkNodes[remarkNodes.length - 1].position.end.offset
+  //   : 0;
+  // return { childStartOffset: totalStartOffset, childEndOffset: totalEndOffset };
 };
 
 /**
@@ -115,16 +147,19 @@ const decorateTree = (
  */
 export const decorateMarkdown =
   <T = {}>(editor: PlateEditor<T>) =>
-  ([node, path]) => {
+  ([node, _path]) => {
     // return [];
     const ranges: any[] = [];
 
-    if (!isText(node)) {
+    if (!Editor.isEditor(node)) {
       return ranges;
     }
 
-    const remark = unified().use(remarkParse).parse(node.text) as RemarkNode;
+    const remark = unified()
+      .use(remarkParse)
+      .parse(serializePlainText(editor)) as RemarkNode;
+    console.log(remark);
     if (remark.children)
-      decorateTree(remark.children, ranges, path, editor.selection);
+      decorateTree(editor, remark.children, ranges, editor.selection);
     return ranges;
   };
