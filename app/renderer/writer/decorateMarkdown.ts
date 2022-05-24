@@ -20,6 +20,29 @@ const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
   return 'both';
 };
 
+const decorateInlineBlockquoteMarkup = (
+  ranges: any[],
+  remarkType: string,
+  hideMarkup: boolean,
+  str: string,
+  pathOffset: number,
+) => {
+  str.split('\n').map((line, index) => {
+    let offset = 0;
+    for (offset; offset < line.length; offset++) {
+      if (!(line.charAt(offset) === ' ') && !(line.charAt(offset) === '>')) {
+        break;
+      }
+    }
+    ranges.push({
+      [`${remarkType}Markup`]: true,
+      hideMarkup: hideMarkup,
+      anchor: { path: [pathOffset + index], offset: 0 },
+      focus: { path: [pathOffset + index], offset},
+    });
+  });
+};
+
 const getChildrenOffsets = (remarkNode: RemarkNode) => {
   if (remarkNode.children && remarkNode.children.length > 0) {
     const remarkChildren = remarkNode.children;
@@ -38,6 +61,7 @@ const getChildrenOffsets = (remarkNode: RemarkNode) => {
 
 const decorateTree = <T = {}>(
   editor: PlateEditor<T>,
+  editorString: string,
   remarkNodes: RemarkNode[],
   ranges: any[],
   editorSelection: BaseSelection | null,
@@ -47,7 +71,10 @@ const decorateTree = <T = {}>(
     let hideMarkup = true;
     const pathStart = [remarkNode.position.start.line - 1];
     const pathEnd = [remarkNode.position.end.line - 1];
-    const nodeStartOffset = remarkNode.position.start.column - 1;
+    const nodeStartOffset =
+      remarkNode.type === 'blockquote'
+        ? 0
+        : remarkNode.position.start.column - 1;
     const nodeEndOffset = remarkNode.position.end.column - 1;
     const nodePath = {
       anchor: {
@@ -79,31 +106,47 @@ const decorateTree = <T = {}>(
           focus: { path: pathEnd, offset: nodeEndOffset },
         });
         /* Push decorations for markup */
-        const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
-        if (
-          childStartOffset > nodeStartOffset &&
-          (syntaxLocation === 'before' || syntaxLocation === 'both')
-        ) {
-          ranges.push({
-            [`${remarkNode.type}Markup`]: true,
-            hideMarkup: hideMarkup,
-            anchor: { path: pathStart, offset: nodeStartOffset },
-            focus: { path: pathStart, offset: childStartOffset },
-          });
-        }
-        if (
-          nodeEndOffset > childEndOffset &&
-          (syntaxLocation === 'after' || syntaxLocation === 'both')
-        ) {
-          ranges.push({
-            [`${remarkNode.type}Markup`]: true,
-            hideMarkup: hideMarkup,
-            anchor: { path: pathEnd, offset: childEndOffset },
-            focus: { path: pathEnd, offset: nodeEndOffset },
-          });
+        if (remarkNode.type === 'blockquote') {
+          decorateInlineBlockquoteMarkup(
+            ranges,
+            remarkNode.type,
+            hideMarkup,
+            editorString.slice(
+              remarkNode.position.start.offset -
+                remarkNode.position.start.column +
+                1,
+              remarkNode.position.end.offset
+            ),
+            pathStart[0]
+          );
+        } else {
+          const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
+          if (
+            childStartOffset > nodeStartOffset &&
+            (syntaxLocation === 'before' || syntaxLocation === 'both')
+          ) {
+            ranges.push({
+              [`${remarkNode.type}Markup`]: true,
+              hideMarkup: hideMarkup,
+              anchor: { path: pathStart, offset: nodeStartOffset },
+              focus: { path: pathStart, offset: childStartOffset },
+            });
+          }
+          if (
+            nodeEndOffset > childEndOffset &&
+            (syntaxLocation === 'after' || syntaxLocation === 'both')
+          ) {
+            ranges.push({
+              [`${remarkNode.type}Markup`]: true,
+              hideMarkup: hideMarkup,
+              anchor: { path: pathEnd, offset: childEndOffset },
+              focus: { path: pathEnd, offset: nodeEndOffset },
+            });
+          }
         }
         decorateTree(
           editor,
+          editorString,
           remarkNode.children,
           ranges,
           editorSelection,
@@ -126,12 +169,16 @@ export const decorateMarkdown =
     if (!Editor.isEditor(node)) {
       return ranges;
     }
-
-    const remark = unified()
-      .use(remarkParse)
-      .parse(serializePlainText(editor)) as RemarkNode;
+    const editorString = serializePlainText(editor);
+    const remark = unified().use(remarkParse).parse(editorString) as RemarkNode;
     console.log(remark);
     if (remark.children)
-      decorateTree(editor, remark.children, ranges, editor.selection);
+      decorateTree(
+        editor,
+        editorString,
+        remark.children,
+        ranges,
+        editor.selection
+      );
     return ranges;
   };

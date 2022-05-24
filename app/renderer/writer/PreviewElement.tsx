@@ -1,6 +1,5 @@
 import { RenderElementProps } from 'slate-react';
 import styled, { css } from 'styled-components';
-import Color from 'color';
 import { BasicElement } from '../writer/serialize';
 
 export interface PreviewRenderElementProps extends RenderElementProps {
@@ -11,21 +10,17 @@ type StyledBlockquoteProps = {
   hideMarkup: boolean;
 };
 const StyledBlockquote = styled.div<StyledBlockquoteProps>`
-  border-left: 3px solid ${(p) => p.theme.mainFgTextSecondary};
+  border-left: 3px solid ${(p) => p.theme.buttonPrimaryBg};
   padding-left: 20px;
-  ${(p) =>
-    !p.hideMarkup &&
-    css`
-      border-color: ${p.theme.buttonPrimaryBg};
-    `}
 `;
 
 const StyledElement = styled.div<PreviewRenderElementProps>`
-  display: flex;
-  flex-direction: row;
-  ${(p) => p.element.blockquote && css`
-    background-color: ${Color(p.theme.mainBg).darken(.2)};
-  `}
+  ${(p) =>
+    p.element.blockquote &&
+    css`
+      display: flex;
+      flex-direction: row;
+    `}
 `;
 
 export const PreviewElement = (props: PreviewRenderElementProps) => {

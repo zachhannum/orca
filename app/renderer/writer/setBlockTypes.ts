@@ -10,7 +10,10 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
     if (remarkNode.children) {
       const pathStart = [remarkNode.position.start.line - 1];
       const pathEnd = [remarkNode.position.end.line - 1];
-      const nodeStartOffset = remarkNode.position.start.column - 1;
+      const nodeStartOffset =
+        remarkNode.type === 'blockquote'
+          ? 0
+          : remarkNode.position.start.column - 1;
       const nodeEndOffset = remarkNode.position.end.column - 1;
       const nodePath = {
         anchor: {
