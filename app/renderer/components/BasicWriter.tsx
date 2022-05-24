@@ -55,6 +55,7 @@ const BasicWriterComp = () => {
   const activeSectionId = useStore((state) => state.activeSectionId);
   const [initialValue, setInitialValue] = useState(blankEditorValue);
   const [editorId, setEditorId] = useState('');
+  const [initialize, setInitialize] = useState(true);
   const editor = usePlateEditorRef();
 
   const plugins = createPlugins([
@@ -63,16 +64,21 @@ const BasicWriterComp = () => {
   ]);
 
   useEffect(() => {
-    if (editor) {
+    if (editor && initialize) {
+      console.log('Initializing editor state');
       const { sectionHistory } = useStore.getState();
       const history = sectionHistory?.get(activeSectionId);
       if (history) {
         editor.history = JSON.parse(JSON.stringify(history));
       }
-      ReactEditor.focus(editor);
       setBlockTypes(editor);
+      ReactEditor.focus(editor);
+      setInitialize(false);
+    } else {
+      setInitialize(true);
+      console.log('Editor de-initialized');
     }
-  });
+  }, [editor]);
 
   useEffect(() => {
     if (activeSectionId != '') {
@@ -90,40 +96,17 @@ const BasicWriterComp = () => {
     }
   }, [activeSectionId]);
 
-  const [selectionPath, setSelectionPath] = useState<Path | null>(null);
-
-  useEffect(() => {
-    if (selectionPath) {
-      HistoryEditor.withoutSaving(editor, () => {
-        Transforms.setNodes(
-          editor,
-          { hideMarkup: true },
-          {
-            at: [],
-            match: (n) => Editor.isBlock(editor, n) && n.hideMarkup === false,
-          }
-        );
-        Transforms.setNodes(
-          editor,
-          { hideMarkup: false },
-          {
-            at: selectionPath,
-            match: (n) => Editor.isBlock(editor, n) && n.type === 'blockquote',
-          }
-        );
-      });
-    }
-  }, [selectionPath]);
-
   const handleChange = () => {
-    console.log(editor.children);
-    if (editor.selection) {
+    console.log(editor.operations);
+    let updateBlockTypes = false;
       if (
-        JSON.stringify(editor.selection.anchor.path) !==
-        JSON.stringify(selectionPath)
-      )
-        setSelectionPath(editor.selection.anchor.path);
-    }
+        editor.operations.some(op => 'set_selection' === op.type)
+      ) {
+        console.log('Selection changed');
+        console.log("set update block types true");
+        updateBlockTypes = true;
+      }
+
     if (activeSectionId != '') {
       const { content } = useStore.getState();
       const { setSectionHistory } = useStore.getState();
@@ -133,9 +116,11 @@ const BasicWriterComp = () => {
       const editorText = serializePlainText(editor);
       if (sectionContent && editorText !== sectionContent) {
         updateSectionContent(activeSectionId, editorText);
-        setBlockTypes(editor);
+        console.log("set update block types true");
+        updateBlockTypes = true;
       }
     }
+    if(updateBlockTypes) setBlockTypes(editor);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { Editor, Range, Transforms } from 'slate';
+import { Editor, Path, Range, Transforms } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import type { RemarkNode } from './remark';
@@ -24,13 +24,23 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
       } as Range;
 
       if (remarkNode.type === 'blockquote') {
-        console.log('Setting blockquote true at');
-        console.log(nodePath);
+        let hideMarkup = true;
+        if (editor.selection) {
+          if (Range.includes(nodePath, editor.selection)) {
+            console.log('showing markup at:');
+            console.log(nodePath);
+            hideMarkup = false;
+          } else {
+            console.log('hiding markup at:');
+            console.log(nodePath);
+          }
+        }
         Transforms.setNodes(
           editor,
-          { blockquote: true, depth },
+          { blockquote: true, depth, hideMarkup },
           { at: nodePath, match: (n) => Editor.isBlock(editor, n) }
         );
+        console.log(editor.children);
       }
 
       decorateTree(
@@ -52,7 +62,7 @@ export const setBlockTypes = (editor: Editor) => {
     Editor.withoutNormalizing(editor, () => {
       Transforms.setNodes(
         editor,
-        { blockquote: false },
+        { blockquote: false, hideMarkup: true },
         { at: [], match: (n) => Editor.isBlock(editor, n) }
       );
       if (remark.children) decorateTree(editor, remark.children);

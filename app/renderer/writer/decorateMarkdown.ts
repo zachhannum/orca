@@ -65,7 +65,6 @@ const decorateTree = <T = {}>(
           getChildrenOffsets(remarkNode);
 
         /* Check if node path intersects with editor selection and remove markup hide */
-
         if (editorSelection) {
           if (Range.includes(nodePath, editorSelection)) {
             hideMarkup = false;
