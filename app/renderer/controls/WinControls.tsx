@@ -63,7 +63,7 @@ const WinControls = () => {
   }, [isHoveringMinimize, isHoveringMaximize, isHoveringClose]);
 
   const buttonConfig = {
-    iconSize: '12px',
+    iconSize: '10px',
     height: '25px',
     width: '40px',
     roundCorners: false,

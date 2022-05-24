@@ -9,7 +9,7 @@ export interface PreviewRenderElementProps extends RenderElementProps {
 type StyledBlockquoteProps = {
   hideMarkup: boolean;
 };
-const StyledBlockquote = styled.span<StyledBlockquoteProps>`
+const StyledBlockquote = styled.div<StyledBlockquoteProps>`
   border-left: 2px solid ${(p) => p.theme.buttonPrimaryBg};
   padding-left: 10px;
   margin-left: 10px;
@@ -21,8 +21,8 @@ const StyledBlockquote = styled.span<StyledBlockquoteProps>`
 `;
 
 const StyledElement = styled.div<PreviewRenderElementProps>`
-  /* display: flex; */
-  /* flex-direction: row; */
+  display: flex;
+  flex-direction: row;
 `;
 
 export const PreviewElement = (props: PreviewRenderElementProps) => {

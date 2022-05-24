@@ -21,7 +21,7 @@ import { findItemDeep } from './TreeView/utilities';
 import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
 import { createSoftBreakPlugin } from '../writer/createSoftBreakPlugin';
 import { createNormalizeMarkdownPlugin } from '../writer/createNormalizeMarkdownPlugin';
-import { createSetBlockTypesPlugin } from 'renderer/writer/createSetBlockTypes';
+import { setBlockTypes } from '../writer/setBlockTypes';
 import { PreviewLeaf } from '../writer/PreviewLeaf';
 import { PreviewElement } from '../writer/PreviewElement';
 
@@ -60,9 +60,6 @@ const BasicWriterComp = () => {
   const plugins = createPlugins([
     createDeserializePlainTextPlugin(),
     createMarkdownDecoratePlugin(),
-    // createSoftBreakPlugin(),
-    // createNormalizeMarkdownPlugin(),
-    createSetBlockTypesPlugin(),
   ]);
 
   useEffect(() => {
@@ -73,6 +70,7 @@ const BasicWriterComp = () => {
         editor.history = JSON.parse(JSON.stringify(history));
       }
       ReactEditor.focus(editor);
+      setBlockTypes(editor);
     }
   });
 
@@ -120,17 +118,23 @@ const BasicWriterComp = () => {
   const handleChange = () => {
     console.log(editor.children);
     if (editor.selection) {
-      if (editor.selection.anchor.path !== selectionPath)
+      if (
+        JSON.stringify(editor.selection.anchor.path) !==
+        JSON.stringify(selectionPath)
+      )
         setSelectionPath(editor.selection.anchor.path);
     }
     if (activeSectionId != '') {
+      const { content } = useStore.getState();
       const { setSectionHistory } = useStore.getState();
       const { updateSectionContent } = useStore.getState();
+      const sectionContent = findItemDeep(content, activeSectionId)?.content;
       setSectionHistory(activeSectionId, editor.history);
-      updateSectionContent(
-        activeSectionId,
-        serializePlainText(editor)
-      );
+      const editorText = serializePlainText(editor);
+      if (sectionContent && editorText !== sectionContent) {
+        updateSectionContent(activeSectionId, editorText);
+        setBlockTypes(editor);
+      }
     }
   };
 

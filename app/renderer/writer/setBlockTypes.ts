@@ -1,9 +1,9 @@
-import { createPluginFactory, PlateEditor } from '@udecode/plate-core';
-import { Editor, Range, BaseSelection, Transforms } from 'slate';
+import { Editor, Range, Transforms } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import type { RemarkNode } from './remark';
 import { serializePlainText } from './serialize';
+import { HistoryEditor } from 'slate-history';
 
 const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
   remarkNodes.forEach((remarkNode) => {
@@ -24,6 +24,8 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
       } as Range;
 
       if (remarkNode.type === 'blockquote') {
+        console.log('Setting blockquote true at');
+        console.log(nodePath);
         Transforms.setNodes(
           editor,
           { blockquote: true, depth },
@@ -40,20 +42,20 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
   });
 };
 
-export const createSetBlockTypesPlugin = createPluginFactory({
-  key: 'setBlockTypesPlugin',
-  handlers: {
-    onChange:
-      <T = {}>(editor: PlateEditor<T>) =>
-      () => {
-        console.log(editor.children);
-        const remark = unified()
-          .use(remarkParse)
-          .parse(serializePlainText(editor)) as RemarkNode;
-        console.log(remark);
-        Editor.withoutNormalizing(editor, () => {
-          if (remark.children) decorateTree(editor, remark.children);
-        });
-      },
-  },
-});
+export const setBlockTypes = (editor: Editor) => {
+  console.log(editor);
+  const editorText = serializePlainText(editor);
+  console.log(editorText);
+  const remark = unified().use(remarkParse).parse(editorText) as RemarkNode;
+  console.log(remark);
+  HistoryEditor.withoutSaving(editor, () => {
+    Editor.withoutNormalizing(editor, () => {
+      Transforms.setNodes(
+        editor,
+        { blockquote: false },
+        { at: [], match: (n) => Editor.isBlock(editor, n) }
+      );
+      if (remark.children) decorateTree(editor, remark.children);
+    });
+  });
+};

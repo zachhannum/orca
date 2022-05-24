@@ -1,6 +1,5 @@
-import { HistoryEditor } from 'slate-history';
 import { PlateEditor } from '@udecode/plate-core';
-import { Editor, Range, BaseSelection, Transforms } from 'slate';
+import { Editor, Range, BaseSelection } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import type { RemarkNode } from './remark';
@@ -104,17 +103,6 @@ const decorateTree = <T = {}>(
             focus: { path: pathEnd, offset: nodeEndOffset },
           });
         }
-
-        /* Set Element Node types */
-        // Editor.withoutNormalizing(editor, () => {
-        //   if (depth === 1) {
-        //     Transforms.setNodes(
-        //       editor,
-        //       { type: remarkNode.type },
-        //       { at: nodePath, match: (n) => Editor.isBlock(editor, n) }
-        //     );
-        //   }
-        // });
         decorateTree(
           editor,
           remarkNode.children,
@@ -123,23 +111,8 @@ const decorateTree = <T = {}>(
           depth + 1
         );
       }
-    } else {
-      // console.log(`Updating depth to ${depth - 1}`);
-      // console.log(nodePath);
-      // Transforms.setNodes(
-      //   editor,
-      //   { depth: depth - 1 },
-      //   { at: nodePath, match: (n) => Editor.isBlock(editor, n) }
-      // );
     }
   });
-  // const totalStartOffset = remarkNodes.length
-  //   ? remarkNodes[0].position.start.offset
-  //   : 0;
-  // const totalEndOffset = remarkNodes.length
-  //   ? remarkNodes[remarkNodes.length - 1].position.end.offset
-  //   : 0;
-  // return { childStartOffset: totalStartOffset, childEndOffset: totalEndOffset };
 };
 
 /**
