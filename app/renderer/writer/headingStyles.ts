@@ -27,17 +27,25 @@ export const HeadingMarkup = css<StyledLeafProps>`
       ${p.depth &&
       !p.blockquote &&
       css`
-        margin-left: ${-4 - p.depth}ch;
+        margin-left: ${-4 - p.depth - 0.4}ch;
       `}
 
       &::after {
+        display: inline-block;
+        transform: translate(0px, -.4ch);
+        border-radius: 5px;
+        border: 1.5px ${p.theme.buttonPrimaryBg} solid;
         visibility: visible;
+        margin-right: 1ch;
+        padding-left: 0.2ch;
+        padding-right: 0.2ch;
         ${p.depth &&
         css`
-          content: 'h${p.depth} ';
+          content: 'h${p.depth}';
         `}
+        margin-bottom: .2ch;
       }
-      font-size: 1em;
+      font-size: 0.8em;
     `}
   color: ${(p) => p.theme.buttonPrimaryBg} !important;
 `;

@@ -2,13 +2,23 @@ import { StyledProps } from '@udecode/plate';
 import { RenderLeafProps } from 'slate-react';
 import styled from 'styled-components';
 import { Heading, HeadingMarkup } from './headingStyles';
-import { Emphasis, EmphasisMarkup, Strong, StrongMarkup } from './markStyles';
+import {
+  Emphasis,
+  EmphasisMarkup,
+  Strong,
+  StrongMarkup,
+  InlineCode,
+  InlineCodeMarkup,
+} from './markStyles';
 import { BlockQuote, BlockQuoteMarkupStyle } from './blockStyles';
+import { Link, LinkMarkup } from './linkStyles';
 
 export interface StyledLeafProps extends StyledProps {
   hideMarkup?: boolean;
   heading?: boolean;
   depth?: number;
+  markupBefore?: boolean;
+  markupAfter?: boolean;
   headingMarkup?: boolean;
   emphasis?: boolean;
   emphasisMarkup?: boolean;
@@ -16,6 +26,10 @@ export interface StyledLeafProps extends StyledProps {
   strongMarkup?: boolean;
   blockquote?: boolean;
   blockquoteMarkup?: boolean;
+  link?: boolean;
+  linkMarkup?: boolean;
+  inlineCode?: boolean;
+  inlineCodeMarkup?: boolean;
 }
 
 const StyledLeaf = styled.span<StyledLeafProps>`
@@ -27,6 +41,10 @@ const StyledLeaf = styled.span<StyledLeafProps>`
   ${(p) => p.strongMarkup && StrongMarkup}
   ${(p) => p.blockquote && BlockQuote}
   ${(p) => p.blockquoteMarkup && BlockQuoteMarkupStyle}
+  ${(p) => p.link && Link}
+  ${(p) => p.linkMarkup && LinkMarkup}
+  ${(p) => p.inlineCode && InlineCode}
+  ${(p) => p.inlineCodeMarkup && InlineCodeMarkup}
 `;
 
 export const PreviewLeaf = (props: RenderLeafProps) => {

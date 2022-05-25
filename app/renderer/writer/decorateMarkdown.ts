@@ -16,6 +16,10 @@ const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
       return 'both';
     case 'blockquote':
       return 'before';
+    case 'link':
+      return 'both';
+    case 'inlineCode':
+      return 'both';
   }
   return 'both';
 };
@@ -25,7 +29,7 @@ const decorateInlineBlockquoteMarkup = (
   remarkType: string,
   hideMarkup: boolean,
   str: string,
-  pathOffset: number,
+  pathOffset: number
 ) => {
   str.split('\n').map((line, index) => {
     let offset = 0;
@@ -38,7 +42,7 @@ const decorateInlineBlockquoteMarkup = (
       [`${remarkType}Markup`]: true,
       hideMarkup: hideMarkup,
       anchor: { path: [pathOffset + index], offset: 0 },
-      focus: { path: [pathOffset + index], offset},
+      focus: { path: [pathOffset + index], offset },
     });
   });
 };
@@ -52,9 +56,10 @@ const getChildrenOffsets = (remarkNode: RemarkNode) => {
         remarkChildren[remarkChildren.length - 1].position.end.column - 1,
     };
   } else {
+    // By default assume marks are 1 before and 1 after
     return {
-      childStartOffset: remarkNode.position.start.column - 1,
-      childEndOffset: remarkNode.position.end.column - 1,
+      childStartOffset: remarkNode.position.start.column,
+      childEndOffset: remarkNode.position.end.column - 2,
     };
   }
 };
@@ -87,63 +92,69 @@ const decorateTree = <T = {}>(
       },
     } as Range;
     if (remarkNode.type !== 'text') {
-      if (remarkNode.children) {
-        const { childStartOffset, childEndOffset } =
-          getChildrenOffsets(remarkNode);
+      const { childStartOffset, childEndOffset } =
+        getChildrenOffsets(remarkNode);
 
-        /* Check if node path intersects with editor selection and remove markup hide */
-        if (editorSelection) {
-          if (Range.includes(nodePath, editorSelection)) {
-            hideMarkup = false;
-          }
+      /* Check if node path intersects with editor selection and remove markup hide */
+      if (editorSelection) {
+        if (
+          Range.includes(editorSelection, nodePath) ||
+          Range.includes(nodePath, editorSelection)
+        ) {
+          hideMarkup = false;
         }
-        /* Push node type */
-        ranges.push({
-          [remarkNode.type]: true,
-          hideMarkup: hideMarkup,
-          depth: remarkNode.depth,
-          anchor: { path: pathStart, offset: nodeStartOffset },
-          focus: { path: pathEnd, offset: nodeEndOffset },
-        });
-        /* Push decorations for markup */
-        if (remarkNode.type === 'blockquote') {
-          decorateInlineBlockquoteMarkup(
-            ranges,
-            remarkNode.type,
-            hideMarkup,
-            editorString.slice(
-              remarkNode.position.start.offset -
-                remarkNode.position.start.column +
-                1,
-              remarkNode.position.end.offset
-            ),
-            pathStart[0]
-          );
-        } else {
-          const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
-          if (
-            childStartOffset > nodeStartOffset &&
-            (syntaxLocation === 'before' || syntaxLocation === 'both')
-          ) {
-            ranges.push({
-              [`${remarkNode.type}Markup`]: true,
-              hideMarkup: hideMarkup,
-              anchor: { path: pathStart, offset: nodeStartOffset },
-              focus: { path: pathStart, offset: childStartOffset },
-            });
-          }
-          if (
-            nodeEndOffset > childEndOffset &&
-            (syntaxLocation === 'after' || syntaxLocation === 'both')
-          ) {
-            ranges.push({
-              [`${remarkNode.type}Markup`]: true,
-              hideMarkup: hideMarkup,
-              anchor: { path: pathEnd, offset: childEndOffset },
-              focus: { path: pathEnd, offset: nodeEndOffset },
-            });
-          }
+      }
+      /* Push node type */
+      console.log(remarkNode.type);
+      ranges.push({
+        [remarkNode.type]: true,
+        hideMarkup: hideMarkup,
+        depth: remarkNode.depth,
+        anchor: { path: pathStart, offset: nodeStartOffset },
+        focus: { path: pathEnd, offset: nodeEndOffset },
+      });
+      /* Push decorations for markup */
+      if (remarkNode.type === 'blockquote') {
+        decorateInlineBlockquoteMarkup(
+          ranges,
+          remarkNode.type,
+          hideMarkup,
+          editorString.slice(
+            remarkNode.position.start.offset -
+              remarkNode.position.start.column +
+              1,
+            remarkNode.position.end.offset
+          ),
+          pathStart[0]
+        );
+      } else {
+        const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
+        if (
+          childStartOffset > nodeStartOffset &&
+          (syntaxLocation === 'before' || syntaxLocation === 'both')
+        ) {
+          ranges.push({
+            [`${remarkNode.type}Markup`]: true,
+            hideMarkup: hideMarkup,
+            markupBefore: true,
+            anchor: { path: pathStart, offset: nodeStartOffset },
+            focus: { path: pathStart, offset: childStartOffset },
+          });
         }
+        if (
+          nodeEndOffset > childEndOffset &&
+          (syntaxLocation === 'after' || syntaxLocation === 'both')
+        ) {
+          ranges.push({
+            [`${remarkNode.type}Markup`]: true,
+            hideMarkup: hideMarkup,
+            markupAfter: true,
+            anchor: { path: pathEnd, offset: childEndOffset },
+            focus: { path: pathEnd, offset: nodeEndOffset },
+          });
+        }
+      }
+      if (remarkNode.children) {
         decorateTree(
           editor,
           editorString,

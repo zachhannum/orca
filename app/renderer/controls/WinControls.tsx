@@ -63,7 +63,7 @@ const WinControls = () => {
   }, [isHoveringMinimize, isHoveringMaximize, isHoveringClose]);
 
   const buttonConfig = {
-    iconSize: '10px',
+    iconSize: '8px',
     height: '25px',
     width: '40px',
     roundCorners: false,
@@ -72,7 +72,7 @@ const WinControls = () => {
     foregroundColor: theme.mainFgTextSecondary,
   };
   const iconConfig = {
-    shapeRendering: 'crispEdges',
+    // shapeRendering: 'crispEdges',
   };
   return (
     <StyledWinControls>

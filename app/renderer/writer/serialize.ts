@@ -156,9 +156,11 @@ export const deserializePlainText = (str: string): BasicElement[] => {
       type: 'paragraph',
       depth: 0,
       hideMarkup: true,
-      children: [{
-        text
-      }],
+      children: [
+        {
+          text,
+        },
+      ],
     };
   });
   // const remark = unified().use(remarkParse).parse(str) as RemarkNode;
@@ -230,10 +232,16 @@ export const serializePlainText = (editor: Editor, path: Path = []): string => {
     at: path,
   });
   let leafNode = leafNodes.next();
-  while (!leafNode.done) {
-    const leaf = leafNode.value[0] as BasicText;
-    text += leaf.text + '\n';
+  let leaf = leafNode.value[0] as BasicText;
+  text += leaf.text;
+  while (1) {
     leafNode = leafNodes.next();
+    if (leafNode.done) {
+      break;
+    } else {
+      leaf = leafNode.value[0] as BasicText;
+      text += '\n' + leaf.text;
+    }
   }
   return text;
 };

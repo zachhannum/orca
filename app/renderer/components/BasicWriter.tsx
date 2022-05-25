@@ -97,30 +97,32 @@ const BasicWriterComp = () => {
   }, [activeSectionId]);
 
   const handleChange = () => {
-    console.log(editor.operations);
-    let updateBlockTypes = false;
-      if (
-        editor.operations.some(op => 'set_selection' === op.type)
-      ) {
+    if (editor) {
+      console.log(editor.operations);
+      let updateBlockTypes = false;
+      if (editor.operations.some((op) => 'set_selection' === op.type)) {
         console.log('Selection changed');
-        console.log("set update block types true");
+        console.log('set update block types true');
         updateBlockTypes = true;
       }
 
-    if (activeSectionId != '') {
-      const { content } = useStore.getState();
-      const { setSectionHistory } = useStore.getState();
-      const { updateSectionContent } = useStore.getState();
-      const sectionContent = findItemDeep(content, activeSectionId)?.content;
-      setSectionHistory(activeSectionId, editor.history);
-      const editorText = serializePlainText(editor);
-      if (sectionContent && editorText !== sectionContent) {
-        updateSectionContent(activeSectionId, editorText);
-        console.log("set update block types true");
-        updateBlockTypes = true;
+      if (activeSectionId != '') {
+        const { content } = useStore.getState();
+        const { setSectionHistory } = useStore.getState();
+        const { updateSectionContent } = useStore.getState();
+        const sectionContent = findItemDeep(content, activeSectionId)?.content;
+        setSectionHistory(activeSectionId, editor.history);
+        const editorText = serializePlainText(editor);
+        console.log('section content');
+        console.log(sectionContent);
+        if (editorText !== sectionContent) {
+          updateSectionContent(activeSectionId, editorText);
+          console.log('set update block types true');
+          updateBlockTypes = true;
+        }
       }
+      if (updateBlockTypes) setBlockTypes(editor);
     }
-    if(updateBlockTypes) setBlockTypes(editor);
   };
 
   return (
