@@ -18,6 +18,25 @@ export interface BasicElement {
 }
 export interface BasicText {
   text: string;
+  hideMarkup?: boolean;
+  heading?: boolean;
+  depth?: number;
+  markupBefore?: boolean;
+  markupAfter?: boolean;
+  headingMarkup?: boolean;
+  emphasis?: boolean;
+  emphasisMarkup?: boolean;
+  strong?: boolean;
+  strongMarkup?: boolean;
+  blockquote?: boolean;
+  blockquoteMarkup?: boolean;
+  link?: boolean;
+  linkMarkup?: boolean;
+  inlineCode?: boolean;
+  inlineCodeMarkup?: boolean;
+  thematicBreak?: boolean;
+  image?: boolean;
+  imageUrl?: string;
 }
 
 declare module 'slate' {

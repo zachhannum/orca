@@ -92,8 +92,7 @@ const decorateTree = <T = {}>(
       },
     } as Range;
     if (remarkNode.type !== 'text') {
-      let { childStartOffset, childEndOffset } =
-        getChildrenOffsets(remarkNode);
+      let { childStartOffset, childEndOffset } = getChildrenOffsets(remarkNode);
 
       /* Check if node path intersects with editor selection and remove markup hide */
       if (editorSelection) {
@@ -109,6 +108,7 @@ const decorateTree = <T = {}>(
       ranges.push({
         [remarkNode.type]: true,
         hideMarkup: hideMarkup,
+        imageUrl: remarkNode.type === 'image' ? remarkNode.url : undefined,
         depth: remarkNode.depth,
         anchor: { path: pathStart, offset: nodeStartOffset },
         focus: { path: pathEnd, offset: nodeEndOffset },
@@ -130,7 +130,7 @@ const decorateTree = <T = {}>(
         );
       } else {
         const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
-        if(remarkNode.type === 'inlineCode') {
+        if (remarkNode.type === 'inlineCode') {
           childStartOffset += 1;
           childEndOffset -= 1;
         }
@@ -159,6 +159,7 @@ const decorateTree = <T = {}>(
           });
         }
       }
+
       if (remarkNode.children) {
         decorateTree(
           editor,

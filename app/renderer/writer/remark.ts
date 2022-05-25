@@ -7,4 +7,5 @@ export type RemarkNode = {
   children?: RemarkNode[];
   value?: string;
   depth?: number;
+  url?: string;
 };

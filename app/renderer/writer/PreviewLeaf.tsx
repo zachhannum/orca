@@ -1,6 +1,6 @@
-import { StyledProps } from '@udecode/plate';
 import { RenderLeafProps } from 'slate-react';
 import styled from 'styled-components';
+import { BasicText } from './serialize';
 import { Heading, HeadingMarkup } from './headingStyles';
 import {
   Emphasis,
@@ -10,28 +10,15 @@ import {
   InlineCode,
   InlineCodeMarkup,
 } from './markStyles';
-import { BlockQuote, BlockQuoteMarkup, HorizontalRuleMarkup } from './blockStyles';
+import {
+  BlockQuote,
+  BlockQuoteMarkup,
+  HorizontalRuleMarkup,
+} from './blockStyles';
 import { Link, LinkMarkup } from './linkStyles';
+import { Image } from './imageStyles';
 
-export interface StyledLeafProps extends StyledProps {
-  hideMarkup?: boolean;
-  heading?: boolean;
-  depth?: number;
-  markupBefore?: boolean;
-  markupAfter?: boolean;
-  headingMarkup?: boolean;
-  emphasis?: boolean;
-  emphasisMarkup?: boolean;
-  strong?: boolean;
-  strongMarkup?: boolean;
-  blockquote?: boolean;
-  blockquoteMarkup?: boolean;
-  link?: boolean;
-  linkMarkup?: boolean;
-  inlineCode?: boolean;
-  inlineCodeMarkup?: boolean;
-  thematicBreak?: boolean;
-}
+export type StyledLeafProps = BasicText;
 
 const StyledLeaf = styled.span<StyledLeafProps>`
   ${(p) => p.heading && Heading}
@@ -47,14 +34,20 @@ const StyledLeaf = styled.span<StyledLeafProps>`
   ${(p) => p.inlineCode && InlineCode}
   ${(p) => p.inlineCodeMarkup && InlineCodeMarkup}
   ${(p) => p.thematicBreak && HorizontalRuleMarkup}
+  ${(p) => p.image && Image}
 `;
 
 export const PreviewLeaf = (props: RenderLeafProps) => {
   const { children, attributes, leaf } = props;
 
   return (
-    <StyledLeaf {...attributes} {...leaf}>
-      {children}
-    </StyledLeaf>
+    <>
+      <StyledLeaf {...attributes} {...leaf}>
+        {children}
+      </StyledLeaf>
+      {leaf.image && leaf.hideMarkup && (
+        <img src={leaf.imageUrl} />
+      )}
+    </>
   );
 };
