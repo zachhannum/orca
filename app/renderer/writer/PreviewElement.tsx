@@ -1,5 +1,6 @@
 import { RenderElementProps } from 'slate-react';
 import styled, { css } from 'styled-components';
+import Color from 'color';
 import { BasicElement } from '../writer/serialize';
 
 export interface PreviewRenderElementProps extends RenderElementProps {
@@ -20,6 +21,30 @@ const StyledElement = styled.div<PreviewRenderElementProps>`
     css`
       display: flex;
       flex-direction: row;
+    `}
+
+  ${(p) =>
+    p.element.code &&
+    css`
+      background-color: ${Color(p.theme.mainBg).darken(0.2)};
+      font-family: 'Roboto Mono', monospace;
+      padding-left: 5px;
+      padding-right: 5px;
+    `}
+
+    ${(p) =>
+    p.element.code &&
+    p.element.firstOfBlock &&
+    css`
+      padding-top: 5px;
+      border-radius: 5px 5px 0px 0px;
+    `}
+      ${(p) =>
+    p.element.code &&
+    p.element.lastOfBlock &&
+    css`
+      padding-bottom: 5px;
+      border-radius: 0px 0px 5px 5px;
     `}
 `;
 

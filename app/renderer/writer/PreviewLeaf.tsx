@@ -14,9 +14,12 @@ import {
   BlockQuote,
   BlockQuoteMarkup,
   HorizontalRuleMarkup,
+  Code,
+  CodeMarkup,
 } from './blockStyles';
 import { Link, LinkMarkup } from './linkStyles';
 import { Image } from './imageStyles';
+import { ListItem, ListItemMarkup, ListItemBullet } from './listStyles';
 
 export type StyledLeafProps = BasicText;
 
@@ -35,6 +38,10 @@ const StyledLeaf = styled.span<StyledLeafProps>`
   ${(p) => p.inlineCodeMarkup && InlineCodeMarkup}
   ${(p) => p.thematicBreak && HorizontalRuleMarkup}
   ${(p) => p.image && Image}
+  ${(p) => p.code && Code}
+  ${(p) => p.codeMarkup && CodeMarkup}
+  ${(p) => p.listItem && ListItem}
+  ${(p) => p.listItemMarkup && ListItemMarkup}
 `;
 
 export const PreviewLeaf = (props: RenderLeafProps) => {
@@ -42,12 +49,15 @@ export const PreviewLeaf = (props: RenderLeafProps) => {
 
   return (
     <>
+      {leaf.listItemMarkup && leaf.hideMarkup && (
+        <ListItemBullet {...leaf} contentEditable={false}>
+          •{' '}
+        </ListItemBullet>
+      )}
       <StyledLeaf {...attributes} {...leaf}>
         {children}
       </StyledLeaf>
-      {leaf.image && leaf.hideMarkup && (
-        <img src={leaf.imageUrl} />
-      )}
+      {leaf.image && leaf.hideMarkup && <img src={leaf.imageUrl} />}
     </>
   );
 };

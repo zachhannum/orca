@@ -35,3 +35,15 @@ export const HorizontalRuleMarkup = css<StyledLeafProps>`
           color: ${(p) => p.theme.buttonPrimaryBg};
         `}
 `;
+
+export const Code = css<StyledLeafProps>``;
+
+export const CodeMarkup = css<StyledLeafProps>`
+  color: ${(p) => p.theme.buttonPrimaryBg};
+  ${(p) =>
+    p.hideMarkup &&
+    css`
+      opacity: 0;
+    `};
+  transition: opacity 200ms ease-out;
+`;

@@ -12,6 +12,9 @@ export type ChildNode = BasicElement | BasicText;
 export interface BasicElement {
   type: string;
   blockquote?: boolean;
+  code?: boolean;
+  firstOfBlock?: boolean;
+  lastOfBlock?: boolean;
   hideMarkup: boolean;
   depth: number;
   children: ChildNode[];
@@ -37,6 +40,10 @@ export interface BasicText {
   thematicBreak?: boolean;
   image?: boolean;
   imageUrl?: string;
+  code?: boolean;
+  codeMarkup?: boolean;
+  listItem?: boolean;
+  listItemMarkup?: boolean;
 }
 
 declare module 'slate' {

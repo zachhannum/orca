@@ -20,6 +20,8 @@ const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
       return 'both';
     case 'inlineCode':
       return 'both';
+    case 'code':
+      return 'both';
   }
   return 'both';
 };
@@ -133,6 +135,10 @@ const decorateTree = <T = {}>(
         if (remarkNode.type === 'inlineCode') {
           childStartOffset += 1;
           childEndOffset -= 1;
+        }
+        if(remarkNode.type === 'code') {
+          childStartOffset += 3;
+          childEndOffset -= 3;
         }
         if (
           childStartOffset > nodeStartOffset &&
