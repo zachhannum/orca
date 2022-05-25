@@ -47,12 +47,7 @@ export const createNormalizeMarkdownPlugin = createPluginFactory({
       if (Editor.isEditor(currentNode)) {
         const nodeStr = serializePlainText(editor, currentPath);
         const nodes = deserializePlainText(nodeStr);
-        console.log("Normalize markdown, comparing:");
-        console.log(currentNode.children);
-        console.log("To:");
-        console.log(nodes);
         if (!compareTypes(currentNode.children as BasicElement[], nodes)) {
-          console.log('New Markdown detected, transforming node');
           for(let i = 0; i < editor.children.length; i++) {
             Transforms.removeNodes(editor, { at: [i] });
           }

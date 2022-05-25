@@ -65,7 +65,6 @@ const BasicWriterComp = () => {
 
   useEffect(() => {
     if (editor && initialize) {
-      console.log('Initializing editor state');
       const { sectionHistory } = useStore.getState();
       const history = sectionHistory?.get(activeSectionId);
       if (history) {
@@ -76,7 +75,6 @@ const BasicWriterComp = () => {
       setInitialize(false);
     } else {
       setInitialize(true);
-      console.log('Editor de-initialized');
     }
   }, [editor]);
 
@@ -98,11 +96,8 @@ const BasicWriterComp = () => {
 
   const handleChange = () => {
     if (editor) {
-      console.log(editor.operations);
       let updateBlockTypes = false;
       if (editor.operations.some((op) => 'set_selection' === op.type)) {
-        console.log('Selection changed');
-        console.log('set update block types true');
         updateBlockTypes = true;
       }
 
@@ -113,11 +108,8 @@ const BasicWriterComp = () => {
         const sectionContent = findItemDeep(content, activeSectionId)?.content;
         setSectionHistory(activeSectionId, editor.history);
         const editorText = serializePlainText(editor);
-        console.log('section content');
-        console.log(sectionContent);
         if (editorText !== sectionContent) {
           updateSectionContent(activeSectionId, editorText);
-          console.log('set update block types true');
           updateBlockTypes = true;
         }
       }

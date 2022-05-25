@@ -51,17 +51,12 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
           offset: nodeEndOffset,
         },
       } as Range;
-      console.log(remarkNode.type);
 
       let hideMarkup = true;
       if (editor.selection) {
         if (Range.includes(nodePath, editor.selection)) {
-          console.log('showing markup at:');
-          console.log(nodePath);
           hideMarkup = false;
         } else {
-          console.log('hiding markup at:');
-          console.log(nodePath);
         }
       }
       Transforms.setNodes(
@@ -79,7 +74,6 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
         { lastOfBlock: true },
         { at: lastOfBlockPath, match: (n) => Editor.isBlock(editor, n) }
       );
-      console.log(editor.children);
     }
     if (remarkNode.children) {
       decorateTree(
@@ -92,11 +86,9 @@ const decorateTree = (editor: Editor, remarkNodes: RemarkNode[], depth = 1) => {
 };
 
 export const setBlockTypes = (editor: Editor) => {
-  console.log(editor);
+  console.log("Setting block types");
   const editorText = serializePlainText(editor);
-  console.log(editorText);
   const remark = unified().use(remarkParse).parse(editorText) as RemarkNode;
-  console.log(remark);
   HistoryEditor.withoutSaving(editor, () => {
     Editor.withoutNormalizing(editor, () => {
       Transforms.setNodes(

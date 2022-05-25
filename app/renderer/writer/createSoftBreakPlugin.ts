@@ -10,7 +10,6 @@ export const createSoftBreakPlugin = createPluginFactory({
       <T = {}>(editor: PlateEditor<T>) =>
       (event: React.KeyboardEvent) => {
         if (event.code === 'Enter') {
-          console.log('Inserting Soft Break');
           event.preventDefault();
           event.stopPropagation();
           editor.insertText('\n');

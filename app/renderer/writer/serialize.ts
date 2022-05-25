@@ -55,8 +55,6 @@ declare module 'slate' {
 }
 
 const pushText = (nodes: BasicElement[], text: string, depth = 0) => {
-  console.log({ text: text });
-  console.log(nodes);
   const lastNodeIndex = nodes.length - 1;
   if (nodes.length && nodes[lastNodeIndex].type === 'paragraph') {
     if (nodes[lastNodeIndex].children.length) {
@@ -189,41 +187,6 @@ export const deserializePlainText = (str: string): BasicElement[] => {
       ],
     };
   });
-  // const remark = unified().use(remarkParse).parse(str) as RemarkNode;
-  // if (remark.children?.length) {
-  //   let nodes = [] as BasicElement[];
-  //   console.log(str);
-  //   console.log(remark);
-  //   if (remark.children[0].position.start.offset > 0) {
-  //     pushText(nodes, str.slice(0, remark.children[0].position.start.offset));
-  //   }
-  //   nodes = nodes.concat(parseRemark(str, remark.children, []));
-  //   if (
-  //     remark.children[remark.children.length - 1].position.end.offset + 1 <
-  //     str.length
-  //   ) {
-  //     pushText(
-  //       nodes,
-  //       str.slice(
-  //         remark.children[remark.children.length - 1].position.end.offset + 1
-  //       )
-  //     );
-  //   }
-  //   console.log(nodes);
-  //   return nodes;
-  // } else
-  //   return [
-  //     {
-  //       type: 'paragraph',
-  //       depth: 0,
-  //       hideMarkup: true,
-  //       children: [
-  //         {
-  //           text: '',
-  //         },
-  //       ],
-  //     },
-  //   ];
 };
 
 export const deserializePlainTextStripExtraNewlines = (

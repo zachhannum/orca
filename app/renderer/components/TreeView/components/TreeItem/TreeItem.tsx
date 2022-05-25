@@ -247,7 +247,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       if (canHaveChildren) {
         if (onCollapse) onCollapse();
       } else {
-        console.log(value);
         const { setActiveSectionId } = useStore.getState();
         setActiveSectionId(value);
       }

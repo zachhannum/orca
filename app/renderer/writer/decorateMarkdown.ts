@@ -4,6 +4,8 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import type { RemarkNode } from './remark';
 import { serializePlainText } from './serialize';
+import { Parser } from 'commonmark';
+import { fromMarkdown } from 'mdast-util-from-markdown';
 
 type SyntaxLocation = 'before' | 'after' | 'both';
 const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
@@ -106,7 +108,6 @@ const decorateTree = <T = {}>(
         }
       }
       /* Push node type */
-      console.log(remarkNode.type);
       ranges.push({
         [remarkNode.type]: true,
         hideMarkup: hideMarkup,
@@ -136,7 +137,7 @@ const decorateTree = <T = {}>(
           childStartOffset += 1;
           childEndOffset -= 1;
         }
-        if(remarkNode.type === 'code') {
+        if (remarkNode.type === 'code') {
           childStartOffset += 3;
           childEndOffset -= 3;
         }
@@ -192,9 +193,29 @@ export const decorateMarkdown =
     if (!Editor.isEditor(node)) {
       return ranges;
     }
+    console.log(editor);
+    console.log('Setting decorations');
+    let startTime = performance.now();
     const editorString = serializePlainText(editor);
+    let endTime = performance.now();
+    console.log(`Deserialize took ${endTime - startTime} milliseconds`);
+    startTime = performance.now();
     const remark = unified().use(remarkParse).parse(editorString) as RemarkNode;
-    console.log(remark);
+    endTime = performance.now();
+    console.log(`Remark parse took ${endTime - startTime} milliseconds`);
+    startTime = performance.now();
+    const parser = new Parser();
+    const commonMark = parser.parse(editorString);
+    endTime = performance.now();
+    console.log(`Commonmark parse took ${endTime - startTime} milliseconds`);
+    console.log(commonMark);
+    startTime = performance.now();
+    const mdast = fromMarkdown(editorString);
+    endTime = performance.now();
+    console.log(
+      `mdast-util-from-markdown took ${endTime - startTime} milliseconds`
+    );
+    startTime = performance.now();
     if (remark.children)
       decorateTree(
         editor,
@@ -203,5 +224,7 @@ export const decorateMarkdown =
         ranges,
         editor.selection
       );
+    endTime = performance.now();
+    console.log(`Tree decoration took ${endTime - startTime} milliseconds`);
     return ranges;
   };
