@@ -10,7 +10,7 @@ import {
   InlineCode,
   InlineCodeMarkup,
 } from './markStyles';
-import { BlockQuote, BlockQuoteMarkupStyle } from './blockStyles';
+import { BlockQuote, BlockQuoteMarkup, HorizontalRuleMarkup } from './blockStyles';
 import { Link, LinkMarkup } from './linkStyles';
 
 export interface StyledLeafProps extends StyledProps {
@@ -30,6 +30,7 @@ export interface StyledLeafProps extends StyledProps {
   linkMarkup?: boolean;
   inlineCode?: boolean;
   inlineCodeMarkup?: boolean;
+  thematicBreak?: boolean;
 }
 
 const StyledLeaf = styled.span<StyledLeafProps>`
@@ -40,11 +41,12 @@ const StyledLeaf = styled.span<StyledLeafProps>`
   ${(p) => p.strong && Strong}
   ${(p) => p.strongMarkup && StrongMarkup}
   ${(p) => p.blockquote && BlockQuote}
-  ${(p) => p.blockquoteMarkup && BlockQuoteMarkupStyle}
+  ${(p) => p.blockquoteMarkup && BlockQuoteMarkup}
   ${(p) => p.link && Link}
   ${(p) => p.linkMarkup && LinkMarkup}
   ${(p) => p.inlineCode && InlineCode}
   ${(p) => p.inlineCodeMarkup && InlineCodeMarkup}
+  ${(p) => p.thematicBreak && HorizontalRuleMarkup}
 `;
 
 export const PreviewLeaf = (props: RenderLeafProps) => {

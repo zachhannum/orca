@@ -58,8 +58,8 @@ const getChildrenOffsets = (remarkNode: RemarkNode) => {
   } else {
     // By default assume marks are 1 before and 1 after
     return {
-      childStartOffset: remarkNode.position.start.column,
-      childEndOffset: remarkNode.position.end.column - 2,
+      childStartOffset: remarkNode.position.start.column - 1,
+      childEndOffset: remarkNode.position.end.column - 1,
     };
   }
 };
@@ -92,7 +92,7 @@ const decorateTree = <T = {}>(
       },
     } as Range;
     if (remarkNode.type !== 'text') {
-      const { childStartOffset, childEndOffset } =
+      let { childStartOffset, childEndOffset } =
         getChildrenOffsets(remarkNode);
 
       /* Check if node path intersects with editor selection and remove markup hide */
@@ -113,6 +113,7 @@ const decorateTree = <T = {}>(
         anchor: { path: pathStart, offset: nodeStartOffset },
         focus: { path: pathEnd, offset: nodeEndOffset },
       });
+      /* Skip children and Markup for thematic break, use regular type for styling */
       /* Push decorations for markup */
       if (remarkNode.type === 'blockquote') {
         decorateInlineBlockquoteMarkup(
@@ -129,6 +130,10 @@ const decorateTree = <T = {}>(
         );
       } else {
         const syntaxLocation = getMarkupTypeSyntaxLocation(remarkNode.type);
+        if(remarkNode.type === 'inlineCode') {
+          childStartOffset += 1;
+          childEndOffset -= 1;
+        }
         if (
           childStartOffset > nodeStartOffset &&
           (syntaxLocation === 'before' || syntaxLocation === 'both')

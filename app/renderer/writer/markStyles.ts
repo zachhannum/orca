@@ -36,6 +36,8 @@ export const InlineCode = css<StyledLeafProps>`
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: ${(p) => Color(p.theme.mainBg).darken(0.2)};
+  box-sizing: border-box;
+  display: inline-block;
 `;
 
 export const InlineCodeMarkup = css<StyledLeafProps>`
