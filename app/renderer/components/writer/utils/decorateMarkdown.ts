@@ -194,11 +194,11 @@ export const decorateMarkdown = (
   editorText: string,
   remark: RemarkNode | null,
   node: Node,
-  _path: Path,
+  path: Path,
 ) => {
   const ranges: any[] = [];
 
-  if (!Text.isText(node)) {
+  if (!Editor.isEditor(node)) {
     return ranges;
   }
   if (remark && remark.children)
