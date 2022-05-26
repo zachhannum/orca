@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { StyledLeafProps } from './PreviewLeaf';
+import { StyledLeafProps } from '../PreviewLeaf';
 
 export const ListItem = css<StyledLeafProps>``;
 

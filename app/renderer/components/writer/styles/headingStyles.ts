@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { StyledLeafProps } from './PreviewLeaf';
+import { StyledLeafProps } from '../PreviewLeaf';
 
 export const Heading = css<StyledLeafProps>`
   font-size: 2em;

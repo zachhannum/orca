@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { StyledLeafProps } from './PreviewLeaf';
+import { StyledLeafProps } from '../PreviewLeaf';
 import Color from 'color';
 
 export const Emphasis = css`

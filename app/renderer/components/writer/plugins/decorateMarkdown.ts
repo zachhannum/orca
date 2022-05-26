@@ -2,10 +2,8 @@ import { PlateEditor } from '@udecode/plate-core';
 import { Editor, Range, BaseSelection } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import type { RemarkNode } from './remark';
-import { serializePlainText } from './serialize';
-import { Parser } from 'commonmark';
-import { fromMarkdown } from 'mdast-util-from-markdown';
+import type { RemarkNode } from '../types';
+import { serializePlainText } from '../utils/serialize';
 
 type SyntaxLocation = 'before' | 'after' | 'both';
 const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
@@ -197,24 +195,9 @@ export const decorateMarkdown =
     console.log('Setting decorations');
     let startTime = performance.now();
     const editorString = serializePlainText(editor);
-    let endTime = performance.now();
-    console.log(`Deserialize took ${endTime - startTime} milliseconds`);
-    startTime = performance.now();
     const remark = unified().use(remarkParse).parse(editorString) as RemarkNode;
-    endTime = performance.now();
+    let endTime = performance.now();
     console.log(`Remark parse took ${endTime - startTime} milliseconds`);
-    startTime = performance.now();
-    const parser = new Parser();
-    const commonMark = parser.parse(editorString);
-    endTime = performance.now();
-    console.log(`Commonmark parse took ${endTime - startTime} milliseconds`);
-    console.log(commonMark);
-    startTime = performance.now();
-    const mdast = fromMarkdown(editorString);
-    endTime = performance.now();
-    console.log(
-      `mdast-util-from-markdown took ${endTime - startTime} milliseconds`
-    );
     startTime = performance.now();
     if (remark.children)
       decorateTree(

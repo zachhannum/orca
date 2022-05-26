@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { BasicWriter, Writer } from '../components';
+import { BasicWriter } from '../components/writer';
 import useStore from '../store/useStore';
 
 const MainContent = styled.div`

@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { StyledLeafProps } from './PreviewLeaf';
+import { StyledLeafProps } from '../PreviewLeaf';
 
 export const BlockQuote = css<StyledLeafProps>`
   color: ${(p) => p.theme.mainFgTextSecondary};
@@ -23,6 +23,7 @@ export const HorizontalRuleMarkup = css<StyledLeafProps>`
           display: block;
           &::before {
             visibility: visible;
+            content: '';
             height: 50%;
             position: absolute;
             border-top: 2px ${p.theme.buttonPrimaryBg} solid;

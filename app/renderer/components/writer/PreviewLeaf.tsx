@@ -1,7 +1,7 @@
 import { RenderLeafProps } from 'slate-react';
 import styled from 'styled-components';
-import { BasicText } from './serialize';
-import { Heading, HeadingMarkup } from './headingStyles';
+import { BasicText } from './types';
+import { Heading, HeadingMarkup } from './styles/headingStyles';
 import {
   Emphasis,
   EmphasisMarkup,
@@ -9,17 +9,17 @@ import {
   StrongMarkup,
   InlineCode,
   InlineCodeMarkup,
-} from './markStyles';
+} from './styles/markStyles';
 import {
   BlockQuote,
   BlockQuoteMarkup,
   HorizontalRuleMarkup,
   Code,
   CodeMarkup,
-} from './blockStyles';
-import { Link, LinkMarkup } from './linkStyles';
-import { Image } from './imageStyles';
-import { ListItem, ListItemMarkup, ListItemBullet } from './listStyles';
+} from './styles/blockStyles';
+import { Link, LinkMarkup } from './styles/linkStyles';
+import { Image } from './styles/imageStyles';
+import { ListItem, ListItemMarkup, ListItemBullet } from './styles/listStyles';
 
 export type StyledLeafProps = BasicText;
 
@@ -44,7 +44,7 @@ const StyledLeaf = styled.span<StyledLeafProps>`
   ${(p) => p.listItemMarkup && ListItemMarkup}
 `;
 
-export const PreviewLeaf = (props: RenderLeafProps) => {
+const PreviewLeaf = (props: RenderLeafProps) => {
   const { children, attributes, leaf } = props;
 
   return (
@@ -61,3 +61,5 @@ export const PreviewLeaf = (props: RenderLeafProps) => {
     </>
   );
 };
+
+export default PreviewLeaf;

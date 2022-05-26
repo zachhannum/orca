@@ -1,7 +1,7 @@
-import { Editor, Path, Range, Transforms } from 'slate';
+import { Editor, Range, Transforms } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import type { RemarkNode } from './remark';
+import type { RemarkNode } from '../types';
 import { serializePlainText } from './serialize';
 import { HistoryEditor } from 'slate-history';
 

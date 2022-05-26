@@ -1,7 +1,7 @@
 import { RenderElementProps } from 'slate-react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
-import { BasicElement } from '../writer/serialize';
+import { BasicElement } from './types';
 
 export interface PreviewRenderElementProps extends RenderElementProps {
   element: BasicElement;
@@ -48,7 +48,7 @@ const StyledElement = styled.div<PreviewRenderElementProps>`
     `}
 `;
 
-export const PreviewElement = (props: PreviewRenderElementProps) => {
+const PreviewElement = (props: PreviewRenderElementProps) => {
   const { children, element } = props;
 
   const blockQuotes = Array.from({ length: element.depth }).map(
@@ -71,3 +71,5 @@ export const PreviewElement = (props: PreviewRenderElementProps) => {
     </>
   );
 };
+
+export default PreviewElement;

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, CSSProperties } from 'react';
+import { useEffect, useState, CSSProperties } from 'react';
 import {
   Plate,
   PlateProvider,
@@ -6,24 +6,18 @@ import {
   createPlugins,
 } from '@udecode/plate';
 import { EditableProps } from 'slate-react/dist/components/editable';
-import { Editor, Transforms, Path } from 'slate';
-import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
-import ScrollContainer from './ScrollContainer';
+import ScrollContainer from '../ScrollContainer';
 import useStore from 'renderer/store/useStore';
 import {
   deserializePlainText,
   serializePlainText,
-  createDeserializePlainTextPlugin,
-  BasicElement,
-} from '../writer/serialize';
-import { findItemDeep } from './TreeView/utilities';
-import { createMarkdownDecoratePlugin } from '../writer/createMarkdownDecoratePlugin';
-import { createSoftBreakPlugin } from '../writer/createSoftBreakPlugin';
-import { createNormalizeMarkdownPlugin } from '../writer/createNormalizeMarkdownPlugin';
-import { setBlockTypes } from '../writer/setBlockTypes';
-import { PreviewLeaf } from '../writer/PreviewLeaf';
-import { PreviewElement } from '../writer/PreviewElement';
+} from './utils/serialize';
+import { findItemDeep } from '../TreeView/utilities';
+import { createMarkdownDecoratePlugin } from './plugins/createMarkdownDecoratePlugin';
+import { setBlockTypes } from './utils/setBlockTypes';
+import { PreviewLeaf, PreviewElement } from '../writer';
+import { BasicElement } from './types';
 
 const blankEditorValue = [
   {
@@ -59,10 +53,10 @@ const BasicWriterComp = () => {
   const editor = usePlateEditorRef();
 
   const plugins = createPlugins([
-    createDeserializePlainTextPlugin(),
     createMarkdownDecoratePlugin(),
   ]);
 
+  /* Initialize Editor */
   useEffect(() => {
     if (editor && initialize) {
       const { sectionHistory } = useStore.getState();
@@ -78,6 +72,7 @@ const BasicWriterComp = () => {
     }
   }, [editor]);
 
+  /* Set Active Section Id */
   useEffect(() => {
     if (activeSectionId != '') {
       const { content } = useStore.getState();
