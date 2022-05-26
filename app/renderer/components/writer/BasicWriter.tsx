@@ -1,4 +1,4 @@
-import { useEffect, useState, CSSProperties } from 'react';
+import { useEffect, useState, CSSProperties, useCallback, useRef } from 'react';
 import {
   Plate,
   PlateProvider,
@@ -7,17 +7,17 @@ import {
 } from '@udecode/plate';
 import { EditableProps } from 'slate-react/dist/components/editable';
 import { ReactEditor } from 'slate-react';
+import { Node, NodeEntry, BaseRange } from 'slate';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
 import ScrollContainer from '../ScrollContainer';
 import useStore from 'renderer/store/useStore';
-import {
-  deserializePlainText,
-  serializePlainText,
-} from './utils/serialize';
+import { deserializePlainText, serializePlainText } from './utils/serialize';
 import { findItemDeep } from '../TreeView/utilities';
-import { createMarkdownDecoratePlugin } from './plugins/createMarkdownDecoratePlugin';
 import { setBlockTypes } from './utils/setBlockTypes';
+import { decorateMarkdown } from './utils/decorateMarkdown';
 import { PreviewLeaf, PreviewElement } from '../writer';
-import { BasicElement } from './types';
+import { BasicElement, RemarkNode } from './types';
 
 const blankEditorValue = [
   {
@@ -31,21 +31,6 @@ const blankEditorValue = [
 ] as BasicElement[];
 
 const BasicWriterComp = () => {
-  const editableProps = {
-    style: {
-      width: '100%',
-      margin: 'auto',
-      maxWidth: '650px',
-      minHeight: '100%',
-      boxSizing: 'border-box',
-      paddingTop: '10vh',
-      paddingBottom: '10vh',
-    } as CSSProperties,
-    spellCheck: false,
-    autoFocus: true,
-    renderLeaf: PreviewLeaf,
-    renderElement: PreviewElement,
-  } as EditableProps;
   const activeSectionId = useStore((state) => state.activeSectionId);
   const [initialValue, setInitialValue] = useState(blankEditorValue);
   const [editorId, setEditorId] = useState('');
@@ -53,7 +38,7 @@ const BasicWriterComp = () => {
   const editor = usePlateEditorRef();
 
   const plugins = createPlugins([
-    createMarkdownDecoratePlugin(),
+    // createMarkdownDecoratePlugin(),
   ]);
 
   /* Initialize Editor */
@@ -64,7 +49,8 @@ const BasicWriterComp = () => {
       if (history) {
         editor.history = JSON.parse(JSON.stringify(history));
       }
-      setBlockTypes(editor);
+      updateRemark();
+      // setBlockTypes(editor);
       ReactEditor.focus(editor);
       setInitialize(false);
     } else {
@@ -89,13 +75,68 @@ const BasicWriterComp = () => {
     }
   }, [activeSectionId]);
 
+  const editorSelectionRef = useRef<BaseRange | null>(null);
+  const remarkAstRef = useRef<RemarkNode | null>(null);
+  const editorTextRef = useRef<string>('');
+
+  const updateRemark = () => {
+    const editorString = serializePlainText(editor);
+    let startTime = performance.now();
+    const remark = unified().use(remarkParse).parse(editorString) as RemarkNode;
+    let endTime = performance.now();
+    console.log(`Remark parse took ${endTime - startTime} milliseconds`);
+    editorTextRef.current = editorString;
+    remarkAstRef.current = remark;
+  };
+
+  const decorate = useCallback(
+    ([node, path]: NodeEntry<Node>) => {
+      return decorateMarkdown(
+        editorSelectionRef.current,
+        editorTextRef.current,
+        remarkAstRef.current,
+        node,
+        path
+      );
+    },
+    []
+  );
+
+  const editableProps = {
+    style: {
+      width: '100%',
+      margin: 'auto',
+      maxWidth: '650px',
+      minHeight: '100%',
+      boxSizing: 'border-box',
+      paddingTop: '10vh',
+      paddingBottom: '10vh',
+    } as CSSProperties,
+    spellCheck: false,
+    autoFocus: true,
+    renderLeaf: PreviewLeaf,
+    renderElement: PreviewElement,
+    decorate: decorate,
+  } as EditableProps;
+
   const handleChange = () => {
     if (editor) {
+      if (editor.operations.length) {
+        // console.log(editor.selection);
+        // console.log(editor.operations);
+      }
       let updateBlockTypes = false;
       if (editor.operations.some((op) => 'set_selection' === op.type)) {
+        editorSelectionRef.current = editor.selection;
         updateBlockTypes = true;
       }
-
+      if (
+        editor.operations.some(
+          (op) => 'insert_text' === op.type || 'remove_text' === op.type
+        )
+      ) {
+        updateRemark();
+      }
       if (activeSectionId != '') {
         const { content } = useStore.getState();
         const { setSectionHistory } = useStore.getState();
@@ -108,7 +149,7 @@ const BasicWriterComp = () => {
           updateBlockTypes = true;
         }
       }
-      if (updateBlockTypes) setBlockTypes(editor);
+      // if (updateBlockTypes) setBlockTypes(editor);
     }
   };
 

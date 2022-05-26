@@ -1,9 +1,18 @@
 import { PlateEditor } from '@udecode/plate-core';
-import { Editor, Range, BaseSelection } from 'slate';
+import {
+  Text,
+  Range,
+  BaseSelection,
+  Editor,
+  BaseRange,
+  Node,
+  NodeEntry,
+  Path,
+} from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import type { RemarkNode } from '../types';
-import { serializePlainText } from '../utils/serialize';
+import type { RemarkNode, ChildNode, BasicElement, BasicText } from '../types';
+import { serializePlainText } from './serialize';
 
 type SyntaxLocation = 'before' | 'after' | 'both';
 const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
@@ -66,8 +75,7 @@ const getChildrenOffsets = (remarkNode: RemarkNode) => {
   }
 };
 
-const decorateTree = <T = {}>(
-  editor: PlateEditor<T>,
+const decorateTree = (
   editorString: string,
   remarkNodes: RemarkNode[],
   ranges: any[],
@@ -93,7 +101,7 @@ const decorateTree = <T = {}>(
         offset: nodeEndOffset,
       },
     } as Range;
-    if (remarkNode.type !== 'text') {
+    if (remarkNode.type !== 'text' && remarkNode.type !== 'paragraph') {
       let { childStartOffset, childEndOffset } = getChildrenOffsets(remarkNode);
 
       /* Check if node path intersects with editor selection and remove markup hide */
@@ -164,17 +172,16 @@ const decorateTree = <T = {}>(
           });
         }
       }
+    }
 
-      if (remarkNode.children) {
-        decorateTree(
-          editor,
-          editorString,
-          remarkNode.children,
-          ranges,
-          editorSelection,
-          depth + 1
-        );
-      }
+    if (remarkNode.children) {
+      decorateTree(
+        editorString,
+        remarkNode.children,
+        ranges,
+        editorSelection,
+        depth + 1
+      );
     }
   });
 };
@@ -182,32 +189,19 @@ const decorateTree = <T = {}>(
 /**
  * Decorate texts with markdown preview.
  */
-export const decorateMarkdown =
-  <T = {}>(editor: PlateEditor<T>) =>
-  ([node, _path]) => {
-    // return [];
-    const ranges: any[] = [];
+export const decorateMarkdown = (
+  editorSelection: BaseRange | null,
+  editorText: string,
+  remark: RemarkNode | null,
+  node: Node,
+  _path: Path,
+) => {
+  const ranges: any[] = [];
 
-    if (!Editor.isEditor(node)) {
-      return ranges;
-    }
-    console.log(editor);
-    console.log('Setting decorations');
-    let startTime = performance.now();
-    const editorString = serializePlainText(editor);
-    const remark = unified().use(remarkParse).parse(editorString) as RemarkNode;
-    let endTime = performance.now();
-    console.log(`Remark parse took ${endTime - startTime} milliseconds`);
-    startTime = performance.now();
-    if (remark.children)
-      decorateTree(
-        editor,
-        editorString,
-        remark.children,
-        ranges,
-        editor.selection
-      );
-    endTime = performance.now();
-    console.log(`Tree decoration took ${endTime - startTime} milliseconds`);
+  if (!Text.isText(node)) {
     return ranges;
-  };
+  }
+  if (remark && remark.children)
+   decorateTree(editorText, remark.children, ranges, editorSelection);
+  return ranges;
+};
