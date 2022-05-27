@@ -31,13 +31,11 @@ export const StrongMarkup = css<StyledLeafProps>`
 export const InlineCode = css<StyledLeafProps>`
   ${(p) => p.hideMarkup && css`
     border-radius: 5px;
-    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
   `}
-  padding-top: 5px;
-  padding-bottom: 5px;
   background-color: ${(p) => Color(p.theme.mainBg).darken(0.2)};
   box-sizing: border-box;
-  display: inline-block;
 `;
 
 export const InlineCodeMarkup = css<StyledLeafProps>`

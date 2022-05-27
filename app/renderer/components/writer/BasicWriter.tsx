@@ -1,4 +1,11 @@
-import { useEffect, useState, CSSProperties, useCallback, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  CSSProperties,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 import {
   Plate,
   PlateProvider,
@@ -10,6 +17,7 @@ import { ReactEditor } from 'slate-react';
 import { Node, NodeEntry, BaseRange, Text } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
+import { throttle, debounce } from 'lodash';
 import ScrollContainer from '../ScrollContainer';
 import useStore from 'renderer/store/useStore';
 import { deserializePlainText, serializePlainText } from './utils/serialize';
@@ -80,17 +88,24 @@ const BasicWriterComp = () => {
   const editorSelectionRef = useRef<BaseRange | null>(null);
   const remarkAstRef = useRef<RemarkNode | null>(null);
   const editorTextRef = useRef<string>('');
-  const markdownDecorationsRef = useRef<Map<number, any[]>>(
-    new Map<number, any[]>()
-  );
+  const [markdownDecorations, setMarkdownDecorations] = useState<
+    Map<number, any[]>
+  >(new Map<number, any[]>());
 
   const updateDecorations = () => {
-    markdownDecorationsRef.current = decorateMarkdown(
-      editorSelectionRef.current,
-      editorTextRef.current,
-      remarkAstRef.current
+    setMarkdownDecorations(
+      decorateMarkdown(
+        editorSelectionRef.current,
+        editorTextRef.current,
+        remarkAstRef.current
+      )
     );
   };
+
+  const updateDecorationsDebounce = useMemo(
+    () => debounce(updateDecorations, 50, { leading: true, trailing: true }),
+    []
+  );
 
   const updateEditorText = (text: string) => {
     editorTextRef.current = text;
@@ -105,19 +120,25 @@ const BasicWriterComp = () => {
     editorTextRef.current = editorString;
     remarkAstRef.current = remark;
     console.log(remark);
+    updateDecorations();
   };
+
+  const updateRemarkDebounce = useMemo(
+    () => debounce(updateRemark, 50, { leading: true, trailing: true }),
+    []
+  );
 
   const decorate = useCallback(
     ([node, path]: NodeEntry<Node>) => {
       if (!Text.isText(node)) {
         return [];
       } else {
-        let decorations = markdownDecorationsRef.current.get(path[0]);
+        let decorations = markdownDecorations.get(path[0]);
         if (decorations) return decorations;
         else return [];
       }
     },
-    [markdownDecorationsRef]
+    [markdownDecorations]
   );
 
   const editableProps = {
@@ -141,14 +162,15 @@ const BasicWriterComp = () => {
     if (editor) {
       let updateBlockTypes = false;
       editorSelectionRef.current = editor.selection;
+      if(editor.operations.length) console.log(editor.operations);
       if (editor.operations.some((op) => 'set_selection' === op.type)) {
         updateBlockTypes = true;
-        updateDecorations();
+        updateDecorationsDebounce();
       }
       if (editor.operations.some((op) => 'set_selection' !== op.type)) {
         updateEditorText(serializePlainText(editor));
-        updateRemark();
-        updateDecorations();
+        updateDecorationsDebounce();
+        updateRemarkDebounce();
       }
       if (activeSectionId != '') {
         const { content } = useStore.getState();

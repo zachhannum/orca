@@ -37,7 +37,7 @@ const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
   return 'both';
 };
 
-const isIgnoreType = (type: string) => {;
+const isIgnoreType = (type: string) => {
   return IgnoreTypes.includes(type);
 };
 
@@ -134,17 +134,45 @@ const decorateTree = (
         }
       }
       /* Push node type */
-      for (let i = pathStart[0]; i <= pathEnd[0]; i++) {
-        addDecoration(ranges, i, {
+      if (pathStart[0] === pathEnd[0]) {
+        addDecoration(ranges, pathStart[0], {
           [remarkNode.type]: true,
           hideMarkup: hideMarkup,
           imageUrl: remarkNode.type === 'image' ? remarkNode.url : undefined,
           depth: remarkNode.depth,
-          anchor: { path: [i], offset: nodeStartOffset },
-          focus: { path: [i], offset: nodeEndOffset },
+          anchor: { path: pathStart, offset: nodeStartOffset },
+          focus: { path: pathStart, offset: nodeEndOffset },
         });
+      } else {
+        let blockStringArray = editorString.slice(
+          remarkNode.position.start.offset -
+            remarkNode.position.start.column +
+            1,
+          remarkNode.position.end.offset
+        ).split('\n');
+        let pos = 0;
+        for (let i = pathStart[0]; i <= pathEnd[0]; i++) {
+          let anchorOffset = nodeStartOffset;
+          let focusOffset = nodeEndOffset;
+          if (i === pathStart[0]) {
+            focusOffset = blockStringArray[pos].length;
+          } else if(i === pathEnd[0]) {
+            anchorOffset = 0;
+          } else {
+            anchorOffset = 0;
+            focusOffset = blockStringArray[pos].length;
+          }
+          addDecoration(ranges, i, {
+            [remarkNode.type]: true,
+            hideMarkup: hideMarkup,
+            imageUrl: remarkNode.type === 'image' ? remarkNode.url : undefined,
+            depth: remarkNode.depth,
+            anchor: { path: [i], offset: anchorOffset },
+            focus: { path: [i], offset: focusOffset },
+          });
+          pos++;
+        }
       }
-      /* Skip children and Markup for thematic break, use regular type for styling */
       /* Push decorations for markup */
       if (remarkNode.type === 'blockquote') {
         decorateInlineBlockquoteMarkup(
@@ -220,6 +248,5 @@ export const decorateMarkdown = (
 
   if (remark && remark.children)
     decorateTree(editorText, remark.children, ranges, editorSelection);
-  console.log(ranges);
   return ranges;
 };
