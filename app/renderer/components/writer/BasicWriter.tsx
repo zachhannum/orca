@@ -7,7 +7,7 @@ import {
 } from '@udecode/plate';
 import { EditableProps } from 'slate-react/dist/components/editable';
 import { ReactEditor } from 'slate-react';
-import { Node, NodeEntry, BaseRange } from 'slate';
+import { Node, NodeEntry, BaseRange, Text } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import ScrollContainer from '../ScrollContainer';
@@ -49,7 +49,6 @@ const BasicWriterComp = () => {
       if (history) {
         editor.history = JSON.parse(JSON.stringify(history));
       }
-      updateRemark();
       // setBlockTypes(editor);
       ReactEditor.focus(editor);
       setInitialize(false);
@@ -68,6 +67,9 @@ const BasicWriterComp = () => {
         if (nodes.length) {
           setInitialValue(nodes);
         }
+        updateEditorText(sectionContent);
+        updateRemark();
+        updateDecorations();
       } else {
         setInitialValue(blankEditorValue);
       }
@@ -78,28 +80,44 @@ const BasicWriterComp = () => {
   const editorSelectionRef = useRef<BaseRange | null>(null);
   const remarkAstRef = useRef<RemarkNode | null>(null);
   const editorTextRef = useRef<string>('');
+  const markdownDecorationsRef = useRef<Map<number, any[]>>(
+    new Map<number, any[]>()
+  );
+
+  const updateDecorations = () => {
+    markdownDecorationsRef.current = decorateMarkdown(
+      editorSelectionRef.current,
+      editorTextRef.current,
+      remarkAstRef.current
+    );
+  };
+
+  const updateEditorText = (text: string) => {
+    editorTextRef.current = text;
+  };
 
   const updateRemark = () => {
-    const editorString = serializePlainText(editor);
+    const editorString = editorTextRef.current;
     let startTime = performance.now();
     const remark = unified().use(remarkParse).parse(editorString) as RemarkNode;
     let endTime = performance.now();
     console.log(`Remark parse took ${endTime - startTime} milliseconds`);
     editorTextRef.current = editorString;
     remarkAstRef.current = remark;
+    console.log(remark);
   };
 
   const decorate = useCallback(
     ([node, path]: NodeEntry<Node>) => {
-      return decorateMarkdown(
-        editorSelectionRef.current,
-        editorTextRef.current,
-        remarkAstRef.current,
-        node,
-        path
-      );
+      if (!Text.isText(node)) {
+        return [];
+      } else {
+        let decorations = markdownDecorationsRef.current.get(path[0]);
+        if (decorations) return decorations;
+        else return [];
+      }
     },
-    []
+    [markdownDecorationsRef]
   );
 
   const editableProps = {
@@ -121,21 +139,16 @@ const BasicWriterComp = () => {
 
   const handleChange = () => {
     if (editor) {
-      if (editor.operations.length) {
-        // console.log(editor.selection);
-        // console.log(editor.operations);
-      }
       let updateBlockTypes = false;
+      editorSelectionRef.current = editor.selection;
       if (editor.operations.some((op) => 'set_selection' === op.type)) {
-        editorSelectionRef.current = editor.selection;
         updateBlockTypes = true;
+        updateDecorations();
       }
-      if (
-        editor.operations.some(
-          (op) => 'insert_text' === op.type || 'remove_text' === op.type
-        )
-      ) {
+      if (editor.operations.some((op) => 'set_selection' !== op.type)) {
+        updateEditorText(serializePlainText(editor));
         updateRemark();
+        updateDecorations();
       }
       if (activeSectionId != '') {
         const { content } = useStore.getState();

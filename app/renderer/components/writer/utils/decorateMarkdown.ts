@@ -14,6 +14,8 @@ import remarkParse from 'remark-parse';
 import type { RemarkNode, ChildNode, BasicElement, BasicText } from '../types';
 import { serializePlainText } from './serialize';
 
+const IgnoreTypes = ['paragraph', 'text', 'break', 'list'];
+
 type SyntaxLocation = 'before' | 'after' | 'both';
 const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
   switch (type) {
@@ -35,8 +37,26 @@ const getMarkupTypeSyntaxLocation = (type: string): SyntaxLocation => {
   return 'both';
 };
 
+const isIgnoreType = (type: string) => {;
+  return IgnoreTypes.includes(type);
+};
+
+const addDecoration = (
+  ranges: Map<number, any[]>,
+  path: number,
+  content: any
+) => {
+  let decorations = ranges.get(path);
+  if (decorations) {
+    decorations.push(content);
+    ranges.set(path, decorations);
+  } else {
+    ranges.set(path, [content]);
+  }
+};
+
 const decorateInlineBlockquoteMarkup = (
-  ranges: any[],
+  ranges: Map<number, any[]>,
   remarkType: string,
   hideMarkup: boolean,
   str: string,
@@ -49,7 +69,7 @@ const decorateInlineBlockquoteMarkup = (
         break;
       }
     }
-    ranges.push({
+    addDecoration(ranges, pathOffset + index, {
       [`${remarkType}Markup`]: true,
       hideMarkup: hideMarkup,
       anchor: { path: [pathOffset + index], offset: 0 },
@@ -78,7 +98,7 @@ const getChildrenOffsets = (remarkNode: RemarkNode) => {
 const decorateTree = (
   editorString: string,
   remarkNodes: RemarkNode[],
-  ranges: any[],
+  ranges: Map<number, any[]>,
   editorSelection: BaseSelection | null,
   depth = 1
 ) => {
@@ -101,7 +121,7 @@ const decorateTree = (
         offset: nodeEndOffset,
       },
     } as Range;
-    if (remarkNode.type !== 'text' && remarkNode.type !== 'paragraph') {
+    if (!isIgnoreType(remarkNode.type)) {
       let { childStartOffset, childEndOffset } = getChildrenOffsets(remarkNode);
 
       /* Check if node path intersects with editor selection and remove markup hide */
@@ -114,14 +134,16 @@ const decorateTree = (
         }
       }
       /* Push node type */
-      ranges.push({
-        [remarkNode.type]: true,
-        hideMarkup: hideMarkup,
-        imageUrl: remarkNode.type === 'image' ? remarkNode.url : undefined,
-        depth: remarkNode.depth,
-        anchor: { path: pathStart, offset: nodeStartOffset },
-        focus: { path: pathEnd, offset: nodeEndOffset },
-      });
+      for (let i = pathStart[0]; i <= pathEnd[0]; i++) {
+        addDecoration(ranges, i, {
+          [remarkNode.type]: true,
+          hideMarkup: hideMarkup,
+          imageUrl: remarkNode.type === 'image' ? remarkNode.url : undefined,
+          depth: remarkNode.depth,
+          anchor: { path: [i], offset: nodeStartOffset },
+          focus: { path: [i], offset: nodeEndOffset },
+        });
+      }
       /* Skip children and Markup for thematic break, use regular type for styling */
       /* Push decorations for markup */
       if (remarkNode.type === 'blockquote') {
@@ -151,7 +173,7 @@ const decorateTree = (
           childStartOffset > nodeStartOffset &&
           (syntaxLocation === 'before' || syntaxLocation === 'both')
         ) {
-          ranges.push({
+          addDecoration(ranges, pathStart[0], {
             [`${remarkNode.type}Markup`]: true,
             hideMarkup: hideMarkup,
             markupBefore: true,
@@ -163,7 +185,7 @@ const decorateTree = (
           nodeEndOffset > childEndOffset &&
           (syntaxLocation === 'after' || syntaxLocation === 'both')
         ) {
-          ranges.push({
+          addDecoration(ranges, pathEnd[0], {
             [`${remarkNode.type}Markup`]: true,
             hideMarkup: hideMarkup,
             markupAfter: true,
@@ -192,16 +214,12 @@ const decorateTree = (
 export const decorateMarkdown = (
   editorSelection: BaseRange | null,
   editorText: string,
-  remark: RemarkNode | null,
-  node: Node,
-  path: Path,
-) => {
-  const ranges: any[] = [];
+  remark: RemarkNode | null
+): Map<number, any[]> => {
+  const ranges: Map<number, any[]> = new Map<number, any>();
 
-  if (!Editor.isEditor(node)) {
-    return ranges;
-  }
   if (remark && remark.children)
-   decorateTree(editorText, remark.children, ranges, editorSelection);
+    decorateTree(editorText, remark.children, ranges, editorSelection);
+  console.log(ranges);
   return ranges;
 };
