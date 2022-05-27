@@ -248,5 +248,6 @@ export const decorateMarkdown = (
 
   if (remark && remark.children)
     decorateTree(editorText, remark.children, ranges, editorSelection);
+  console.log(ranges);
   return ranges;
 };

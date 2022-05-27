@@ -128,18 +128,47 @@ const BasicWriterComp = () => {
     []
   );
 
-  const decorate = useCallback(
-    ([node, path]: NodeEntry<Node>) => {
-      if (!Text.isText(node)) {
-        return [];
-      } else {
-        let decorations = markdownDecorations.get(path[0]);
-        if (decorations) return decorations;
-        else return [];
+
+  const arrayCompare = (arr1: any[], arr2: any[]): boolean => {
+    if (arr1.length !== arr2.length) {
+      return false;
+    } else {
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) return false; //TODO fix comparison here, these are objects
       }
-    },
-    [markdownDecorations]
-  );
+    }
+    return true;
+  };
+  const [oldDecorations, setOldDecorations] = useState<
+  Map<number, any[]>
+>(new Map<number, any[]>());
+  useEffect(() => {
+    console.log(oldDecorations);
+    markdownDecorations.forEach((decorationArray, path) => {
+      let oldDecorationArray = oldDecorations.get(path);
+      if (oldDecorationArray) {
+        if(!arrayCompare(oldDecorationArray, decorationArray)) {
+          console.log(`need to change node decorations at path ${path}`);
+        }
+      } else {
+        console.log(`need to change node decorations at path ${path}`);
+      }
+    });
+    setOldDecorations(markdownDecorations);
+  }, [markdownDecorations]);
+
+  // const decorate = useCallback(
+  //   ([node, path]: NodeEntry<Node>) => {
+  //     if (!Text.isText(node)) {
+  //       return [];
+  //     } else {
+  //       let decorations = markdownDecorations.get(path[0]);
+  //       if (decorations) return decorations;
+  //       else return [];
+  //     }
+  //   },
+  //   [markdownDecorations]
+  // );
 
   const editableProps = {
     style: {
@@ -155,14 +184,14 @@ const BasicWriterComp = () => {
     autoFocus: true,
     renderLeaf: PreviewLeaf,
     renderElement: PreviewElement,
-    decorate: decorate,
+    // decorate: decorate,
   } as EditableProps;
 
   const handleChange = () => {
     if (editor) {
       let updateBlockTypes = false;
       editorSelectionRef.current = editor.selection;
-      if(editor.operations.length) console.log(editor.operations);
+      if (editor.operations.length) console.log(editor.operations);
       if (editor.operations.some((op) => 'set_selection' === op.type)) {
         updateBlockTypes = true;
         updateDecorationsDebounce();
