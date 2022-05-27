@@ -17,7 +17,7 @@ import { ReactEditor } from 'slate-react';
 import { Node, NodeEntry, BaseRange, Text } from 'slate';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import { throttle, debounce } from 'lodash';
+import { throttle, debounce, isEqual } from 'lodash';
 import ScrollContainer from '../ScrollContainer';
 import useStore from 'renderer/store/useStore';
 import { deserializePlainText, serializePlainText } from './utils/serialize';
