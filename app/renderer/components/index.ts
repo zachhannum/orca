@@ -9,3 +9,4 @@ export { SortableTree } from './TreeView/SortableTree';
 export { default as SectionContextMenu } from './SectionContextMenu';
 export { default as ContextMenu } from './ContextMenu';
 export { default as TooltipText} from './TooltipText';
+export { default as Editor} from './codemirror/Editor';
