@@ -8,6 +8,8 @@ import { EditorSelection, Extension } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import { SyntaxNodeRef, TreeCursor } from '@lezer/common';
 
+const hideMarkupTypes = ['HeaderMark', 'QuoteMark', 'EmphasisMark'];
+
 const selectionIntersection = (
   selection: EditorSelection,
   rangeFrom: number,
@@ -27,7 +29,8 @@ const hideMarkdown = (view: EditorView): DecorationSet => {
           console.log(node.node);
         }
         if (
-          node.name === 'HeaderMark' &&
+          hideMarkupTypes.includes(node.name) &&
+          node.node.parent &&
           !selectionIntersection(
             view.state.selection,
             node.node.parent.from,

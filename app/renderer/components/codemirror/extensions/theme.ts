@@ -2,7 +2,7 @@ import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { Extension } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import type { DefaultTheme } from 'styled-components';
-import { headerStyles } from './styles';
+import { headerStyles, markStyles } from './styles';
 const theme = (theme: DefaultTheme): Extension => {
   const baseTheme = EditorView.baseTheme({
     '&.cm-editor': {},
@@ -18,7 +18,7 @@ const theme = (theme: DefaultTheme): Extension => {
   });
 
   const highlighter = syntaxHighlighting(
-    HighlightStyle.define([...headerStyles(theme)])
+    HighlightStyle.define([...headerStyles(theme), ...markStyles(theme)])
   );
 
   return [baseTheme, highlighter];
