@@ -1,12 +1,18 @@
 import { useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import { EditorView } from '@codemirror/view';
+import styled, { useTheme } from 'styled-components';
+import { EditorView, keymap } from '@codemirror/view';
+import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+import { EditorState } from '@codemirror/state';
 import ScrollContainer from '../ScrollContainer';
 import useStore from 'renderer/store/useStore';
 import { findItemDeep } from '../TreeView/utilities';
-import { history } from '@codemirror/history';
-import { defaultHighlightStyle } from '@codemirror/language';
-import { EditorState, TransactionSpec } from '@codemirror/state';
+import {
+  theme,
+  lineWrapping,
+  markdown,
+  updateSectionContent,
+  hideMarkup
+} from './extensions';
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -22,11 +28,30 @@ const Editor = () => {
   const activeSectionId = useStore((state) => state.activeSectionId);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const editorViewRef = useRef<EditorView | null>(null);
+  const styledTheme = useTheme();
 
-  const initEditorView = (txt: string) => {
-    const extensions = [];
+  const newEditorState = (txt: string): EditorState => {
+    const extensions = [
+      theme(styledTheme),
+      lineWrapping(),
+      markdown(),
+      updateSectionContent(activeSectionId),
+      hideMarkup(),
+      history(),
+      keymap.of([...defaultKeymap, ...historyKeymap]),
+    ];
+    return EditorState.create({ doc: txt, extensions });
+  };
+
+  const initEditorState = (editorContent: string): EditorState => {
+    const editorState = newEditorState(editorContent);
+    const { setEditorState } = useStore.getState();
+    setEditorState(activeSectionId, editorState);
+    return editorState;
+  };
+
+  const initEditorView = (editorState: EditorState) => {
     if (editorContainerRef.current) {
-      let editorState = EditorState.create({ doc: txt });
       editorViewRef.current = new EditorView({
         state: editorState,
         parent: editorContainerRef.current,
@@ -42,20 +67,21 @@ const Editor = () => {
       const editorContent = sectionContent === undefined ? '' : sectionContent;
 
       if (editorViewRef.current) {
-        console.log('updating editor state');
-        let updateEditorContentTransaction = {
-          changes: {
-            from: 0,
-            to: editorViewRef.current.state.doc.length,
-            insert: editorContent,
-          }
-        } as TransactionSpec;
-        editorViewRef.current.dispatch(updateEditorContentTransaction);
+        const { editorStateMap } = useStore.getState();
+        const editorState = editorStateMap.get(activeSectionId);
+        if (editorState) {
+          editorViewRef.current.setState(editorState);
+        } else {
+          const editorState = initEditorState(editorContent);
+          editorViewRef.current.setState(editorState);
+        }
       } else {
-        initEditorView(editorContent);
+        const editorState = initEditorState(editorContent);
+        initEditorView(editorState);
       }
     }
   }, [activeSectionId]);
+
   return (
     <ScrollContainer>
       <EditorDiv ref={editorContainerRef} />
