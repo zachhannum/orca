@@ -11,7 +11,9 @@ import {
   lineWrapping,
   markdown,
   updateSectionContent,
-  hideMarkup
+  markdownDecorations,
+  blockquoteDecorations,
+  pasteEventHandler
 } from './extensions';
 
 const EditorDiv = styled.div`
@@ -34,10 +36,12 @@ const Editor = () => {
     const extensions = [
       theme(styledTheme),
       lineWrapping(),
-      markdown(),
       updateSectionContent(activeSectionId),
-      hideMarkup(styledTheme),
+      markdown(),
+      markdownDecorations(styledTheme),
+      blockquoteDecorations(styledTheme),
       history(),
+      pasteEventHandler(),
       keymap.of([...defaultKeymap, ...historyKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });

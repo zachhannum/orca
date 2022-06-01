@@ -7,11 +7,13 @@ import { MarkdownConfig } from '@lezer/markdown';
 export const customTags = {
   inlineCode: Tag.define(),
   codeMark: Tag.define(),
+  headerMark: Tag.define(),
 };
 
 const MarkStylingExtension: MarkdownConfig = {
   props: [
     styleTags({
+      HeaderMark: customTags.headerMark,
       InlineCode: customTags.inlineCode,
       CodeMark: customTags.codeMark,
     }),
