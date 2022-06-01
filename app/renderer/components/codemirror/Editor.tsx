@@ -36,7 +36,7 @@ const Editor = () => {
       lineWrapping(),
       markdown(),
       updateSectionContent(activeSectionId),
-      hideMarkup(),
+      hideMarkup(styledTheme),
       history(),
       keymap.of([...defaultKeymap, ...historyKeymap]),
     ];

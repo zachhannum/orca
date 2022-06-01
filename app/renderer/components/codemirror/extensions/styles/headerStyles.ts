@@ -4,10 +4,6 @@ import { customTags } from '../markdown';
 
 const headerStyles = (theme: DefaultTheme) => [
   {
-    tag: customTags.headerMark,
-    color: theme.buttonPrimaryBg,
-  },
-  {
     tag: tags.heading1,
     fontWeight: '700',
     fontSize: '2em',

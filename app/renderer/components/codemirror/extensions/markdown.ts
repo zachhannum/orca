@@ -5,13 +5,15 @@ import { styleTags, Tag } from '@lezer/highlight';
 import { MarkdownConfig } from '@lezer/markdown';
 
 export const customTags = {
-  headerMark: Tag.define(),
+  inlineCode: Tag.define(),
+  codeMark: Tag.define(),
 };
 
 const MarkStylingExtension: MarkdownConfig = {
   props: [
     styleTags({
-      HeaderMark: customTags.headerMark,
+      InlineCode: customTags.inlineCode,
+      CodeMark: customTags.codeMark,
     }),
   ],
 };
