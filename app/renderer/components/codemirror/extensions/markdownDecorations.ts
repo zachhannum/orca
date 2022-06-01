@@ -94,23 +94,20 @@ const getMarkupRange = (
 ): NodeMarkupRange => {
   if (node.name === 'HeaderMark') {
     return { from: node.from, to: node.to + 1 };
-  } else if (node.name === 'QuoteMark') {
-    const lineFrom = view.state.doc.lineAt(node.node.from).from;
-    if (node.node.nextSibling?.name !== 'QuoteMark') {
-      return { from: lineFrom, to: node.to + 1 };
-    } else {
-      return { from: lineFrom, to: node.to };
-    }
   }
   return { from: node.from, to: node.to };
 };
 
 const selectionIntersection = (
-  selection: EditorSelection,
+  selection: EditorSelection | undefined,
   rangeFrom: number,
   rangeTo: number
 ) => {
-  return selection.main.from <= rangeTo && selection.main.to >= rangeFrom;
+  if (selection) {
+    return selection.main.from <= rangeTo && selection.main.to >= rangeFrom;
+  } else {
+    return false;
+  }
 };
 
 type NodeIntersectionRange = {
@@ -124,7 +121,7 @@ const getIntersectionRange = (
 ): NodeIntersectionRange => {
   if (node.node.parent) {
     if (node.name === 'QuoteMark') {
-      const lineFrom = view.state.doc.lineAt(node.from).from;
+      const lineFrom = view.state.doc.lineAt(node.node.parent.from).from;
       return { from: lineFrom, to: node.node.parent.to };
     }
     return { from: node.node.parent.from, to: node.node.parent.to };
@@ -133,20 +130,19 @@ const getIntersectionRange = (
 };
 
 const decorationMarkdown = (view: EditorView): DecorationSet => {
-  console.log('Decorating markdown');
   let widgets: any = [];
   for (let { from, to } of view.visibleRanges) {
     syntaxTree(view.state).iterate({
       from,
       to,
       enter: (node: SyntaxNodeRef) => {
-        console.log(node.name);
-        console.log(node.node);
+        // console.log(node.name);
+        // console.log(node.node);
         if (hideMarkupTypes.includes(node.name) && node.node.parent) {
           const nodeIntersectionRange = getIntersectionRange(node, view);
           if (
             !selectionIntersection(
-              view.state.selection,
+              view.hasFocus ? view.state.selection : undefined,
               nodeIntersectionRange.from,
               nodeIntersectionRange.to
             )
