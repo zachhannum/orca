@@ -18,16 +18,7 @@ const markStyles = (theme: DefaultTheme) => [
     fontWeight: '700',
   },
   {
-    tag: customTags.inlineCode,
-    backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
-
-  },
-  {
     tag: customTags.codeMark,
-    backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
-    paddingLeft: '5px',
-    paddingRight: '5px',
-    borderRadius: '5px',
     color: theme.buttonPrimaryBg,
   },
   {

@@ -65,13 +65,13 @@ const decorateBlockquotes = (view: EditorView): DecorationSet => {
             const depth = getBlockquoteDepth(node.node);
             widgets.push(
               Decoration.widget({
-                widget: new BlockquoteWidget(`${view.lineBlockAt(from).height}px`, `${(depth) * 20 + 5}px`),
+                widget: new BlockquoteWidget(`${view.lineBlockAt(from).height}px`, `-${(depth) * 20 + 15}px`),
               }).range(from, from)
             );
             widgets.push(
               Decoration.line({
                 attributes: {
-                  'style': `padding-left: ${depth * 20 + 20}px;`
+                  'style': `margin-left: ${depth * 20 + 20}px`
                 },
               }).range(from, from)
             );
@@ -101,8 +101,8 @@ const decorateBlockquotesPlugin = ViewPlugin.define(
   { decorations: (plugin) => plugin.update() }
 );
 
-const blockquoteDecorations = (theme: DefaultTheme): Extension => {
+const blockquote = (theme: DefaultTheme): Extension => {
   return [blockquoteDecorationsBaseTheme(theme), decorateBlockquotesPlugin];
 };
 
-export default blockquoteDecorations;
+export default blockquote;

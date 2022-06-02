@@ -74,18 +74,18 @@ const getNodeDecorations = (
   to: number,
   view: EditorView
 ): Range<Decoration>[] => {
-  let decorations = <Range<Decoration>[]>[];
-  if(node.name === 'HorizontalRule') {
-    decorations.push(Decoration.line({
-      class: 'cm-hr-rule'
-    }).range(from, from));
+  let decorations: Range<Decoration>[] = [];
+  if (node.name === 'HorizontalRule') {
+    decorations.push(
+      Decoration.line({
+        class: 'cm-hr-rule',
+      }).range(from, from)
+    );
   }
   decorations.push(
     Decoration.replace({
       widget: getWidget(node),
-      inclusive: false,
-      block: false,
-    }).range(from, to),
+    }).range(from, to)
   );
   return decorations;
 };
@@ -117,7 +117,7 @@ const getMarkupRange = (
   return { from: node.from, to: node.to };
 };
 
-const selectionIntersection = (
+export const selectionIntersection = (
   selection: EditorSelection | undefined,
   rangeFrom: number,
   rangeTo: number
