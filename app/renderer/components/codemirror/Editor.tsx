@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+import { searchKeymap } from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
 import ScrollContainer from '../ScrollContainer';
 import useStore from 'renderer/store/useStore';
@@ -13,7 +14,8 @@ import {
   updateSectionContent,
   markdownDecorations,
   blockquoteDecorations,
-  pasteEventHandler
+  pasteEventHandler,
+  search,
 } from './extensions';
 
 const EditorDiv = styled.div`
@@ -37,12 +39,13 @@ const Editor = () => {
       theme(styledTheme),
       lineWrapping(),
       updateSectionContent(activeSectionId),
+      search(styledTheme),
       markdown(),
       markdownDecorations(styledTheme),
       blockquoteDecorations(styledTheme),
       history(),
       pasteEventHandler(),
-      keymap.of([...defaultKeymap, ...historyKeymap]),
+      keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });
   };

@@ -8,7 +8,7 @@ const theme = (theme: DefaultTheme): Extension => {
   const baseTheme = EditorView.baseTheme({
     '&.cm-editor': {},
     '&.cm-editor.cm-focused': { outline: 'none' },
-    "&.cm-focused .cm-selectionBackground, ::selection": {
+    '&.cm-focused .cm-selectionBackground, ::selection': {
       backgroundColor: `${Color(theme.mainBg).lighten(0.6)}`,
     },
     '.cm-scroller': {
