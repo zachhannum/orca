@@ -10,7 +10,12 @@ import { syntaxTree } from '@codemirror/language';
 import { SyntaxNodeRef } from '@lezer/common';
 import type { DefaultTheme } from 'styled-components';
 
-const hideMarkupTypes = ['HeaderMark', 'QuoteMark', 'EmphasisMark'];
+const hideMarkupTypes = [
+  'HeaderMark',
+  'QuoteMark',
+  'EmphasisMark',
+  'HorizontalRule',
+];
 
 const hideMarkdownBaseTheme = (theme: DefaultTheme) =>
   EditorView.baseTheme({
@@ -32,6 +37,13 @@ const hideMarkdownBaseTheme = (theme: DefaultTheme) =>
       position: 'absolute',
       top: '50%',
       transform: 'translate(0px, -50%)',
+    },
+    '.cm-hr-rule': {
+      display: 'block',
+      height: '2px',
+      marginTop: '0.5em',
+      marginBottom: '0.5em',
+      backgroundColor: `${theme.buttonPrimaryBg}`,
     },
   });
 
@@ -62,13 +74,20 @@ const getNodeDecorations = (
   to: number,
   view: EditorView
 ): Range<Decoration>[] => {
-  return [
+  let decorations = <Range<Decoration>[]>[];
+  if(node.name === 'HorizontalRule') {
+    decorations.push(Decoration.line({
+      class: 'cm-hr-rule'
+    }).range(from, from));
+  }
+  decorations.push(
     Decoration.replace({
       widget: getWidget(node),
       inclusive: false,
       block: false,
     }).range(from, to),
-  ];
+  );
+  return decorations;
 };
 
 const getWidget = (node: SyntaxNodeRef): WidgetType | undefined => {
@@ -119,6 +138,9 @@ const getIntersectionRange = (
   node: SyntaxNodeRef,
   view: EditorView
 ): NodeIntersectionRange => {
+  if (node.name === 'HorizontalRule') {
+    return { from: node.from, to: node.to };
+  }
   if (node.node.parent) {
     if (node.name === 'QuoteMark') {
       const lineFrom = view.state.doc.lineAt(node.node.parent.from).from;
@@ -129,7 +151,7 @@ const getIntersectionRange = (
   return { from: node.from, to: node.to };
 };
 
-const decorationMarkdown = (view: EditorView): DecorationSet => {
+const updateHideMarkdownDecorations = (view: EditorView): DecorationSet => {
   let widgets: any = [];
   for (let { from, to } of view.visibleRanges) {
     syntaxTree(view.state).iterate({
@@ -161,19 +183,19 @@ const decorationMarkdown = (view: EditorView): DecorationSet => {
   return Decoration.set(widgets, true);
 };
 
-const markdownDecorationsPlugin = ViewPlugin.define(
+const hideMarkdownPlugin = ViewPlugin.define(
   (view: EditorView) => {
     return {
       update: () => {
-        return decorationMarkdown(view);
+        return updateHideMarkdownDecorations(view);
       },
     };
   },
   { decorations: (plugin) => plugin.update() }
 );
 
-const markdownDecorations = (theme: DefaultTheme): Extension => {
-  return [hideMarkdownBaseTheme(theme), markdownDecorationsPlugin];
+const hideMarkdown = (theme: DefaultTheme): Extension => {
+  return [hideMarkdownBaseTheme(theme), hideMarkdownPlugin];
 };
 
-export default markdownDecorations;
+export default hideMarkdown;

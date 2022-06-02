@@ -8,6 +8,7 @@ export const customTags = {
   inlineCode: Tag.define(),
   codeMark: Tag.define(),
   headerMark: Tag.define(),
+  horizontalRule: Tag.define(),
 };
 
 const MarkStylingExtension: MarkdownConfig = {
@@ -16,6 +17,7 @@ const MarkStylingExtension: MarkdownConfig = {
       HeaderMark: customTags.headerMark,
       InlineCode: customTags.inlineCode,
       CodeMark: customTags.codeMark,
+      HorizontalRule: customTags.horizontalRule,
     }),
   ],
 };

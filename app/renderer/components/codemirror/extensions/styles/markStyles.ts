@@ -29,6 +29,11 @@ const markStyles = (theme: DefaultTheme) => [
     paddingRight: '5px',
     borderRadius: '5px',
     color: theme.buttonPrimaryBg,
+  },
+  {
+    tag: customTags.horizontalRule,
+    color: `${theme.buttonPrimaryBg}`,
+    fontFamily: 'Roboto Mono'
   }
 ];
 
