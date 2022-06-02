@@ -1,9 +1,13 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
 import { History } from 'slate-history';
-import { changeItemId, updateSectionContentDeep } from '../../components/TreeView/utilities';
+import {
+  changeItemId,
+  updateSectionContentDeep,
+} from '../../components/TreeView/utilities';
 import type { CalamusState } from '../useStore';
 import type { Project, Section } from 'types/types';
+import { EditorState } from '@codemirror/state';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
@@ -26,9 +30,11 @@ export interface ProjectSlice extends Project {
   setAddingSections: (val: boolean) => void;
   activeSectionId: string;
   setActiveSectionId: (id: string) => void;
-  sectionHistory: Map<string, History>;
+  sectionHistory: Map<string, any>;
   setSectionHistory: (id: string, history: any) => void;
   removeSectionHistory: (id: string) => void;
+  editorStateMap: Map<string, EditorState>;
+  setEditorState: (sectionId: string, editorState: EditorState) => void;
 }
 
 const createProjectSlice = (
@@ -81,7 +87,9 @@ const createProjectSlice = (
     set(() => ({ content: val }));
   },
   updateSectionContent: (id: string, newContent: string) => {
-    set((state) => ({ content: updateSectionContentDeep(state.content, id, newContent)}));
+    set((state) => ({
+      content: updateSectionContentDeep(state.content, id, newContent),
+    }));
   },
   addNewSection: (val: Section) =>
     set(
@@ -97,19 +105,25 @@ const createProjectSlice = (
   },
   sectionHistory: new Map<string, History>(),
   setSectionHistory: (id: string, history: History) =>
-  set(
-    produce((state: CalamusState) => {
-      const newHistory = JSON.parse(JSON.stringify(history));
-      state.sectionHistory.set(id, newHistory);
-    })
-  ),
+    set(
+      produce((state: CalamusState) => {
+        const newHistory = JSON.parse(JSON.stringify(history));
+        state.sectionHistory.set(id, newHistory);
+      })
+    ),
   removeSectionHistory: (id: string) =>
-  set(
-    produce((state: CalamusState) => {
-      state.sectionHistory.delete(id);
-    })
-  ),
-
+    set(
+      produce((state: CalamusState) => {
+        state.sectionHistory.delete(id);
+      })
+    ),
+  editorStateMap: new Map<string, EditorState>(),
+  setEditorState: (sectionId: string, editorState: EditorState) =>
+    set(
+      produce((state: CalamusState) => {
+        state.editorStateMap.set(sectionId, editorState);
+      })
+    ),
 });
 
 export default createProjectSlice;

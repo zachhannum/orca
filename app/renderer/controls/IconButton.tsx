@@ -144,7 +144,6 @@ IconButton.defaultProps = {
   onlyShowBackgroundOnHover: false,
   roundCorners: true,
   onClick: () => {
-    console.log('Icon Button clicked!');
   },
 };
 

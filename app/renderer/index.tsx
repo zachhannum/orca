@@ -2,6 +2,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 require('@openfonts/poppins_latin');
+require('@openfonts/roboto-mono_latin');
+require('@openfonts/fira-code_latin');
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('root')!;

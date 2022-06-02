@@ -12,7 +12,7 @@
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
 
-  <img src="assets/5_10_2022_app_preview.png" alt="preview"/>
+  <img src="assets/6_2_2022_app_preview.png" alt="preview"/>
   
 </div>
   
@@ -134,8 +134,9 @@ To run tests, run the following command
  - [⚡ Electron](https://www.electronjs.org/)
  - [⚛️ React](https://reactjs.org/)
  - [🏗️ Electron React Boilerplate](https://electron-react-boilerplate.js.org/)
- - [📝 Slate](https://docs.slatejs.org/)
+ - [📝 Codemirror](https://codemirror.net/6/)
  - [💅 Styled Components](https://styled-components.com/)
  - [🐻 Zustand](https://github.com/pmndrs/zustand)
  - [📖 pagedjs](https://pagedjs.org/)
-
+ - [🌳 Unified (rehype, remark)](https://unifiedjs.com/)
+ - [👆 dnd kit](https://dndkit.com/)

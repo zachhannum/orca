@@ -100,7 +100,6 @@ const SectionContextMenu = () => {
 
   const handleDelete = () => {
     const { content, setContentArray } = useStore.getState();
-    console.log(content);
     setContentArray(removeItem(content, id));
     setShowMenu(false);
   };
@@ -121,7 +120,6 @@ const SectionContextMenu = () => {
       {!isFolder && (
         <StyledContextMenuItem
           onClick={() => {
-            console.log('Clicked!');
           }}
         >
           <SectionOpenIcon {...itemIconProps} />

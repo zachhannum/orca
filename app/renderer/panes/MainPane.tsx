@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { BasicWriter, Writer } from '../components';
+import { Editor } from '../components';
 import useStore from '../store/useStore';
 
 const MainContent = styled.div`
@@ -73,7 +73,7 @@ const MainPane = () => {
       {isProjectOpen && activeSectionId !== '' ? (
         <>
           <SectionTitle>{activeSectionId}</SectionTitle>
-          <BasicWriter />
+          <Editor />
         </>
       ) : (
         <NoProjectDiv>
