@@ -79,15 +79,16 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       );
       if (navigatePage) {
         navigatePage.style.display = '';
+        console.log(navigatePage);
         navigatePage.scrollIntoView();
         const prevPageElement = pageContainer.querySelector<HTMLElement>(
           `[data-page-number="${prevPage}"]`
         );
         setPage(newPage);
         if (prevPageElement && !overflow) {
-          prevPageElement.style.display = 'none';
+          // prevPageElement.style.display = 'none';
           setPrevPage(newPage);
-          setPageCounterIncrement(newPage);
+          // setPageCounterIncrement(newPage);
         } else if (overflow) {
           setOverflow(false);
         }
@@ -137,16 +138,19 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
           }).toString(),
         });
         await chunker.current.flow(template.content, container);
-        setPage(1);
-        setPageCounterIncrement(1);
-        onPageOverflow(1);
         const paged = container.children[0];
         if (paged) {
-          const pages = paged.children;
-          for (let i = 1; i < pages.length; i += 1) {
-            (pages[i] as HTMLElement).style.display = 'none';
-          }
+          // for (let i = 1; i < pages.length; i += 1) {
+          //   (pages[i] as HTMLElement).style.display = 'none';
+          // }
+          console.log(page);
+          console.log(paged.children.length);
+          // onPageOverflow(Math.min(page, paged.children.length));
+          navigateToPage(Math.min(page, paged.children.length));
         }
+        // setPage(1);
+        // setPageCounterIncrement(1);
+
       }
     }
   };
@@ -166,7 +170,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
 
   const updatePreviewDebounce = useMemo(
     () => debounce(updatePreview, 500, { leading: true, trailing: true }),
-    []
+    [page]
   );
 
   useEffect(() => {
