@@ -1,6 +1,12 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
+import { debounce } from 'lodash';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import { rehypeSection } from '../utils/unified';
 import { baseStylesheet } from '../pagedjs/defaultPageCss';
 import { TestContent } from '../pagedjs/pagedTestContent';
 import { useResizeObserver } from '../hooks';
@@ -50,9 +56,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const printParagraphFontSize = useStore(
     (state) => state.printParagraphFontSize
   );
-  // const setPrintParagraphFontSize = useStore(
-  //   (state) => state.setPrintParagraphFontSize
-  // );
+  const previewContent = useStore((state) => state.previewContent);
   const polisher = useRef<Polisher>(null);
   const chunker = useRef<Chunker>(null);
   const [scale, setScale] = useState(0.5);
@@ -114,10 +118,10 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
 
   useResizeObserver(rendererRef, handleResize);
 
-  const init = async () => {
+  const setPagedContent = async (htmlContent: string) => {
     const template = document.querySelector<HTMLTemplateElement>('#flow');
     if (template) {
-      template.innerHTML = TestContent;
+      template.innerHTML = htmlContent;
       const container = pageContainerRef.current;
 
       if (polisher.current) polisher.current.destroy();
@@ -147,39 +151,33 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
     }
   };
 
-  useEffect(() => {
-    init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [printParagraphFontSize]);
+  const updatePreview = () => {
+    const { previewContent } = useStore.getState();
+    console.log(previewContent);
+    const html = unified()
+      .use(remarkParse)
+      .use(remarkRehype)
+      .use(rehypeSection)
+      .use(rehypeStringify)
+      .processSync(previewContent);
+    console.log(html);
+    setPagedContent(html.value.toString());
+  };
 
-  // const handleFontChange = (increase: boolean) => {
-  //   const newFontSize = increase
-  //     ? printParagraphFontSize + 1
-  //     : printParagraphFontSize - 1;
-  //   setPrintParagraphFontSize(newFontSize);
-  // };
+  const updatePreviewDebounce = useMemo(
+    () => debounce(updatePreview, 500, { leading: true, trailing: true }),
+    []
+  );
+
+  useEffect(() => {
+    updatePreviewDebounce();
+  }, [previewContent]);
 
   return (
     <StyledRenderer ref={rendererRef}>
       <Scaler scale={scale}>
         <PageContainer ref={pageContainerRef} />
       </Scaler>
-      {/* <button
-        type="button"
-        onClick={() => {
-          handleFontChange(true);
-        }}
-      >
-        Font +
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          handleFontChange(false);
-        }}
-      >
-        Font -
-      </button> */}
     </StyledRenderer>
   );
 };

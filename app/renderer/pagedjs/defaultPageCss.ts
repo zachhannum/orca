@@ -18,6 +18,8 @@ const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
       hyphens: auto;
       text-justify: inter-word;
       font-weight: 400;
+      margin: 0px;
+      text-indent: 2em;
     }
     /* Chapter leader */
     .firstPara::first-line {

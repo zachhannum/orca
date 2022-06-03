@@ -11,7 +11,7 @@ const createBookFormatSettingsSlice = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _get: GetState<CalamusState>
 ) => ({
-  printParagraphFontSize: 12,
+  printParagraphFontSize: 14,
   setPrintParagraphFontSize: (val: number) => {
     set(() => ({ printParagraphFontSize: val }));
   },
