@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
 import { debounce } from 'lodash';
 import { unified } from 'unified';
@@ -40,13 +40,33 @@ const PagedStagingContainer = styled.div`
   visibility: hidden;
   position: absolute;
   top: -100000px;
-`
+`;
+
+type StyledLoaderProps = {
+  loading: boolean;
+};
+
+const StyledLoader = styled.div<StyledLoaderProps>`
+  position: absolute;
+  height: var(--pagedjs-height);
+  width: var(--pagedjs-width);
+  ${(p) =>
+    p.loading
+      ? css`
+          background-color: #00000052;
+        `
+      : css`
+          background-color: #0000000;
+        `}
+  transition: background-color 100ms ease-in-out;
+`;
 
 type ScalerProps = {
   scale: number;
 };
 const Scaler = styled.div<ScalerProps>`
   transform: scale(${(p) => p.scale});
+  position: relative;
 `;
 
 type PagedRendererProps = {
@@ -69,6 +89,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const [prevPage, setPrevPage] = useState(1);
   const [page, setPage] = useState(1);
   const [overflow, setOverflow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const setPageCounterIncrement = (pageIncrement: number) => {
     document.documentElement.style.setProperty(
@@ -128,6 +149,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const setPagedContent = async (htmlContent: string) => {
     const template = document.querySelector<HTMLTemplateElement>('#flow');
     if (template) {
+      const loadingTimer = setTimeout(() => setLoading(true), 200);
       template.innerHTML = htmlContent;
       const container = pageContainerRef.current;
       const pagedStage = pagedStageRef.current;
@@ -145,12 +167,15 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
           }).toString(),
         });
         await chunker.current.flow(template.content, pagedStage);
-        if(container) {
-          container.innerHTML = "";
+        if (container) {
+          container.innerHTML = '';
           pagedStage.childNodes.forEach((node) => {
             container.appendChild(node.cloneNode(true));
-          })
+          });
         }
+        setLoading(false);
+        clearTimeout(loadingTimer);
+
         // const paged = container.children[0];
         // if (paged) {
         //   // for (let i = 1; i < pages.length; i += 1) {
@@ -162,8 +187,9 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
         //   navigateToPage(Math.min(page, paged.children.length));
         // }
         // setPage(1);
+        onPageOverflow(1);
+        navigateToPage(1);
         // setPageCounterIncrement(1);
-
       }
     }
   };
@@ -193,9 +219,10 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   return (
     <StyledRenderer ref={rendererRef}>
       <Scaler scale={scale}>
+        <StyledLoader loading={loading} />
         <PageContainer ref={pageContainerRef} />
       </Scaler>
-      <PagedStagingContainer ref={pagedStageRef}/>
+      <PagedStagingContainer ref={pagedStageRef} />
     </StyledRenderer>
   );
 };
