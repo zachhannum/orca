@@ -13,13 +13,17 @@ const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
       text-align: justify;
       line-height: 1.5;
       font-size: ${paragraphFontSize}pt;
-      orphans: 2;
+      orphans: 3;
       widows: 2;
       hyphens: auto;
       text-justify: inter-word;
       font-weight: 400;
       margin: 0px;
       text-indent: 2em;
+    }
+    blockquote p {
+      text-align: left;
+      font-style: italic;
     }
     /* Chapter leader */
     .firstPara::first-line {

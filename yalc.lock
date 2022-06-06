@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "@midnightprioriem/pagedjs": {
+      "signature": "9353280eca68df1ea81e8b8444c961ab",
+      "file": true,
+      "replaced": "file:../pagedjs"
+    }
+  }
+}
