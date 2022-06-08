@@ -24,6 +24,7 @@ const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
     blockquote p {
       text-align: left;
       font-style: italic;
+      text-indent: unset;
     }
     /* Chapter leader */
     .firstPara::first-line {

@@ -89,7 +89,9 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   const [prevPage, setPrevPage] = useState(1);
   const [page, setPage] = useState(1);
   const [overflow, setOverflow] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const loadingTimer = useRef<NodeJS.Timeout | null>(null);
+  const buildingPreview = useRef(false);
 
   const setPageCounterIncrement = (pageIncrement: number) => {
     document.documentElement.style.setProperty(
@@ -98,34 +100,43 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
     );
   };
 
-  const navigateToPage = (newPage: number, _instant = false) => {
+  /* Navigate to new Page */
+  useEffect(() => {
     const pageContainer = pageContainerRef.current;
+    console.log(`navigating to page ${page}`);
     if (pageContainer) {
       const navigatePage = pageContainer.querySelector<HTMLElement>(
-        `[data-page-number="${newPage}"]`
+        `[data-page-number="${page}"]`
       );
       if (navigatePage) {
+        console.log(`page ${page} found.`);
         navigatePage.style.display = '';
-        console.log(navigatePage);
         navigatePage.scrollIntoView();
-        const prevPageElement = pageContainer.querySelector<HTMLElement>(
-          `[data-page-number="${prevPage}"]`
-        );
-        setPage(newPage);
-        if (prevPageElement && !overflow) {
-          // prevPageElement.style.display = 'none';
-          setPrevPage(newPage);
-          // setPageCounterIncrement(newPage);
+        if (prevPage != page) {
+          console.log(
+            `previous page ${prevPage} is different than current page, hiding previous page.`
+          );
+          const prevPageElement = pageContainer.querySelector<HTMLElement>(
+            `[data-page-number="${prevPage}"]`
+          );
+          if (prevPageElement && !overflow) {
+            prevPageElement.style.display = 'none';
+          }
+        }
+        if (!overflow) {
+          setPageCounterIncrement(page);
         } else if (overflow) {
           setOverflow(false);
         }
-      } else if (newPage !== 1) {
+        setPrevPage(page);
+      } else if (page !== 1) {
+        console.log(`Overflow detected, resetting to ${prevPage}`);
         /* There should be always at least one page, so no overflow on page 1 */
         setOverflow(true);
-        onPageOverflow(page);
+        onPageOverflow(prevPage);
       }
     }
-  };
+  }, [page]);
 
   const handleResize = (height: number, width: number) => {
     if (pageContainerRef.current) {
@@ -140,20 +151,20 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   };
 
   useEffect(() => {
-    navigateToPage(pageNumber);
+    console.log(`Controls attempting to set page to ${pageNumber}`);
+    setPage(pageNumber);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber]);
 
-  useResizeObserver(rendererRef, handleResize);
+  useResizeObserver(rendererRef, 100, handleResize);
 
   const setPagedContent = async (htmlContent: string) => {
     const template = document.querySelector<HTMLTemplateElement>('#flow');
     if (template) {
-      const loadingTimer = setTimeout(() => setLoading(true), 200);
       template.innerHTML = htmlContent;
       const container = pageContainerRef.current;
       const pagedStage = pagedStageRef.current;
-
+      console.log('Destroying previous polisher and chunker');
       if (polisher.current) polisher.current.destroy();
       if (chunker.current) chunker.current.destroy();
       polisher.current = new Polisher();
@@ -161,59 +172,72 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       if (polisher.current && chunker.current && pagedStage) {
         polisher.current.setup();
         initializeHandlers(chunker.current, polisher.current);
+        console.log('Adding stylesheet');
         await polisher.current.add({
           '': baseStylesheet({
             paragraphFontSize: printParagraphFontSize,
           }).toString(),
         });
+        console.log('Starting flow...');
         await chunker.current.flow(template.content, pagedStage);
+        console.log(
+          'Flow complete! Copying flowed content to preview container.'
+        );
         if (container) {
           container.innerHTML = '';
           pagedStage.childNodes.forEach((node) => {
             container.appendChild(node.cloneNode(true));
           });
         }
-        setLoading(false);
-        clearTimeout(loadingTimer);
 
-        // const paged = container.children[0];
-        // if (paged) {
-        //   // for (let i = 1; i < pages.length; i += 1) {
-        //   //   (pages[i] as HTMLElement).style.display = 'none';
-        //   // }
-        //   console.log(page);
-        //   console.log(paged.children.length);
-        //   // onPageOverflow(Math.min(page, paged.children.length));
-        //   navigateToPage(Math.min(page, paged.children.length));
-        // }
-        // setPage(1);
-        onPageOverflow(1);
-        navigateToPage(1);
-        // setPageCounterIncrement(1);
+        if (container) {
+          const paged = container.children[0];
+          if (paged) {
+            const pageNum = Math.min(page, paged.children.length);
+            setPage(pageNum);
+            onPageOverflow(pageNum);
+            console.log(
+              `page is ${page}, max page length: ${paged.children.length}, setting page to ${pageNum}`
+            );
+            for (let i = 0; i < paged.children.length; i += 1) {
+              if (i === pageNum - 1) continue;
+              (paged.children[i] as HTMLElement).style.display = 'none';
+            }
+          }
+        }
       }
     }
   };
 
-  const updatePreview = () => {
+  const updatePreview = async () => {
+    buildingPreview.current = true;
+    loadingTimer.current = setTimeout(() => setLoading(true), 200);
     const { previewContent } = useStore.getState();
-    console.log(previewContent);
+    console.log('parsing preview content');
     const html = unified()
       .use(remarkParse)
       .use(remarkRehype)
       .use(rehypeSection)
       .use(rehypeStringify)
       .processSync(previewContent);
-    console.log(html);
-    setPagedContent(html.value.toString());
+    console.log('setting paged content');
+    await setPagedContent(html.value.toString());
+    setLoading(false);
+    if (loadingTimer.current) {
+      clearTimeout(loadingTimer.current);
+    }
+    buildingPreview.current = false;
   };
 
   const updatePreviewDebounce = useMemo(
-    () => debounce(updatePreview, 500, { leading: true, trailing: true }),
+    () => debounce(updatePreview, 500, { trailing: true }),
     [page]
   );
 
   useEffect(() => {
-    updatePreviewDebounce();
+    if (!buildingPreview.current) {
+      updatePreviewDebounce();
+    }
   }, [previewContent]);
 
   return (
