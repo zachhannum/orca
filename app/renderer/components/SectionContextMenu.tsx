@@ -99,8 +99,11 @@ const SectionContextMenu = () => {
   };
 
   const handleDelete = () => {
-    const { content, setContentArray } = useStore.getState();
+    const { content, setContentArray, activeSectionId, setActiveSectionId } = useStore.getState();
     setContentArray(removeItem(content, id));
+    if(id === activeSectionId) {
+      setActiveSectionId('');
+    }
     setShowMenu(false);
   };
 

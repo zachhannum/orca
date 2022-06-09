@@ -107,9 +107,9 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       }
       ${p.isActiveInEditor &&
       css`
-        background-color: ${Color(p.theme.buttonPrimaryBg)};
+        background-color: ${Color(p.theme.buttonPrimaryBg).hsl().string()};
         &:hover {
-          background-color: ${Color(p.theme.buttonPrimaryBg)};
+          background-color: ${Color(p.theme.buttonPrimaryBg).hsl().string()};
         }
       `}
       ${p.isEditable &&
@@ -254,6 +254,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const handleBlur = () => {
       setIsEditable(false);
       const newValue = textRef.current?.innerText;
+      console.log(newValue);
       if (newValue) {
         const success = updateSectionName(value, newValue);
         if (!success) {
@@ -273,8 +274,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     }, []);
     const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
       if (event.code === 'Enter') {
+        console.log("What is happening");
         event.preventDefault();
         setIsEditable(false);
+        handleBlur();
       } else if (event.code === 'Escape') {
         event.preventDefault();
         if (textRef.current) textRef.current.innerText = value;

@@ -30,6 +30,7 @@ export interface ProjectSlice extends Project {
   setPreviewContent: (txt: string) => void;
   editorStateMap: Map<string, EditorState>;
   setEditorState: (sectionId: string, editorState: EditorState) => void;
+  removeEditorState: (sectionId: string) => void;
   clearEditorStateMap: () => void;
 }
 
@@ -108,6 +109,12 @@ const createProjectSlice = (
     set(
       produce((state: CalamusState) => {
         state.editorStateMap.set(sectionId, editorState);
+      })
+    ),
+  removeEditorState: (sectionId: string) =>
+    set(
+      produce((state: CalamusState) => {
+        state.editorStateMap.delete(sectionId);
       })
     ),
   clearEditorStateMap: () => {
