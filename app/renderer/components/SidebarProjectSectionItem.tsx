@@ -14,13 +14,13 @@ const StyledItem = styled.div`
   &:hover {
     background-color: ${(p) =>
       p.contentEditable
-        ? Color(p.theme.sidebarBg).alpha(1).darken(0.6).hex()
-        : Color(p.theme.sidebarBg).alpha(1).lighten(0.8).hex()};
+        ? Color(p.theme.sidebarBg).alpha(1).darken(0.6).hsl().string()
+        : Color(p.theme.sidebarBg).alpha(1).lighten(0.8).hsl().string()};
   }
   ${(p) =>
     p.contentEditable &&
     css`
-      background-color: ${(p) => Color(p.theme.sidebarBg).alpha(1).darken(0.6).hex()};
+      background-color: ${(p) => Color(p.theme.sidebarBg).alpha(1).darken(0.6).hsl().string()};
       :focus {
         outline: none;
       }

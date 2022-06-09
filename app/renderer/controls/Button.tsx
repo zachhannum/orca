@@ -37,8 +37,8 @@ type ButtonProps = {
 
 const Button = ({ label, onClick }: ButtonProps) => {
   const theme = useTheme();
-  const hoverColor = Color(theme.buttonPrimaryBg).lighten(0.05).hex();
-  const activeColor = Color(theme.buttonPrimaryBg).darken(0.05).hex();
+  const hoverColor = Color(theme.buttonPrimaryBg).lighten(0.05).hsl().string();
+  const activeColor = Color(theme.buttonPrimaryBg).darken(0.05).hsl().string();
   return (
     <StyledButton
       hoverBackgroundcolor={hoverColor}

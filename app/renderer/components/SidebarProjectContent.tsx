@@ -48,7 +48,7 @@ const StyledAnchor = styled.a`
   cursor: pointer;
   color: ${(p) => p.theme.buttonPrimaryBg};
   &:hover {
-    color: ${(p) => Color(p.theme.buttonPrimaryBg).darken(0.1).hex()};
+    color: ${(p) => Color(p.theme.buttonPrimaryBg).darken(0.1).hsl().string()};
   }
 `;
 

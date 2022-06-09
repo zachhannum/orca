@@ -60,7 +60,7 @@ const TextField = ({
   const theme = useTheme();
   const hoverBackgroundColor = Color(theme.textInputBg[styleVariant]).lighten(
     0.15
-  ).hex();
+  ).hsl().string();
   return (
     <StyledTextField>
       {label !== undefined && <StyledLabel>{label}</StyledLabel>}

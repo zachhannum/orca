@@ -49,9 +49,9 @@ const SidebarBottomItem = styled.span`
     fill: ${(p) => p.theme.sidebarFgTextSecondary};
   }
   &:hover {
-    color: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hex()};
+    color: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hsl().string()};
     path {
-      fill: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hex()};
+      fill: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hsl().string()};
     }
   }
   gap: 12px;

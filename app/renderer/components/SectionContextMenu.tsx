@@ -39,10 +39,10 @@ const StyledContextMenuItem = styled.div`
   color: ${(p) => p.theme.mainFgTextSecondary};
 
   &:hover {
-    background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.6).hex()};
+    background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.6).hsl().string()};
   }
   &:active {
-    background-color: ${(p) => Color(p.theme.contextMenuBg).darken(0.2).hex()};
+    background-color: ${(p) => Color(p.theme.contextMenuBg).darken(0.2).hsl().string()};
   }
 
   transition: background-color 100ms ease-in-out;
