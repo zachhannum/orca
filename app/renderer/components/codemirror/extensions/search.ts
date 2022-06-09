@@ -7,7 +7,7 @@ import type {DefaultTheme} from 'styled-components';
 const search = (theme: DefaultTheme): Extension => {
   const searchTheme = EditorView.baseTheme({
     '.cm-panels': {
-      backgroundColor: `${Color(theme.contextMenuBg).alpha(1)}`,
+      backgroundColor: `${Color(theme.contextMenuBg).alpha(1).hex()}`,
       borderRadius: '10px 10px 0px 0px',
       boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
       padding: '10px',
@@ -27,12 +27,12 @@ const search = (theme: DefaultTheme): Extension => {
       fontSize: '1em',
       '&:focus': {
         outline: 'none',
-        backgroundColor: `${Color(theme.textInputBg['altTwo']).lighten(0.2)}`,
+        backgroundColor: `${Color(theme.textInputBg['altTwo']).lighten(0.2).hex()}`,
       },
     },
     '.cm-button': {
       all: 'unset',
-      backgroundColor: `${Color(theme.contextMenuBg).lighten(0.3).alpha(1)}`,
+      backgroundColor: `${Color(theme.contextMenuBg).lighten(0.3).alpha(1).hex()}`,
       color: `${theme.buttonPrimaryText}`,
       padding: '0px 5px',
       fontFamily: 'Poppins',
@@ -42,10 +42,10 @@ const search = (theme: DefaultTheme): Extension => {
       transition: 'background-color 200ms ease-in-out',
       cursor: 'pointer',
       '&:hover': {
-        backgroundColor: `${Color(theme.contextMenuBg).lighten(0.5).alpha(1)}`,
+        backgroundColor: `${Color(theme.contextMenuBg).lighten(0.5).alpha(1).hex()}`,
       },
       '&:active': {
-        backgroundColor: `${Color(theme.contextMenuBg).lighten(0.1).alpha(1)}`,
+        backgroundColor: `${Color(theme.contextMenuBg).lighten(0.1).alpha(1).hex()}`,
       },
     },
     '.cm-panel.cm-search label': {
@@ -63,10 +63,10 @@ const search = (theme: DefaultTheme): Extension => {
       color: `${theme.contextMenuFg}`,
       cursor: 'pointer',
       '&:hover': {
-        color: `${Color(theme.contextMenuFg).lighten(0.2)}`,
+        color: `${Color(theme.contextMenuFg).lighten(0.2).hex()}`,
       },
       '&:active': {
-        color: `${Color(theme.contextMenuFg).darken(0.2)}`,
+        color: `${Color(theme.contextMenuFg).darken(0.2).hex()}`,
       },
     },
     '.cm-searchMatch': {

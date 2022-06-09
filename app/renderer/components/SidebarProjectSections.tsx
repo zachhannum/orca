@@ -65,7 +65,7 @@ const SectionsContainer = styled.div`
   }
   ::-webkit-scrollbar-thumb {
     background-color: inherit;
-    background-color: ${(p) => Color(p.theme.sidebarBg).darken(0.1)};
+    background-color: ${(p) => Color(p.theme.sidebarBg).darken(0.1).hex()};
   }
   &:hover {
     -webkit-mask-position: left top;

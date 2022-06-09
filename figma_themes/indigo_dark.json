@@ -1,0 +1,247 @@
+[
+  { "name": "mainBg", "description": "", "color": "rgba(41, 41, 46, 1)" },
+  {
+    "name": "mainFgText",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "mainFgTextSecondary",
+    "description": "",
+    "color": "rgba(207, 207, 222, 1)"
+  },
+  { "name": "sidebarBg", "description": "", "color": "rgba(50, 50, 56, 1)" },
+  {
+    "name": "sidebarFgText",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "sidebarFgTextSecondary",
+    "description": "",
+    "color": "rgba(132, 132, 136, 1)"
+  },
+  { "name": "dropdownBg", "description": "", "color": "rgba(70, 70, 79, 1)" },
+  {
+    "name": "dropdownAltBg",
+    "description": "",
+    "color": "rgba(117, 117, 128, 1)"
+  },
+  {
+    "name": "dropdownText",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "dropdownArrow",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "optionSliderBg",
+    "description": "",
+    "color": "rgba(70, 70, 79, 1)"
+  },
+  {
+    "name": "optionSliderAltBg",
+    "description": "",
+    "color": "rgba(117, 117, 128, 1)"
+  },
+  {
+    "name": "optionSliderFg",
+    "description": "",
+    "color": "rgba(50, 50, 56, 1)"
+  },
+  {
+    "name": "optionSliderAltFg",
+    "description": "",
+    "color": "rgba(78, 78, 87, 1)"
+  },
+  {
+    "name": "optionSliderText",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "buttonPrimaryBg",
+    "description": "",
+    "color": "rgba(96, 96, 255, 1)"
+  },
+  {
+    "name": "buttonPrimaryText",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  { "name": "previewBg", "description": "", "color": "rgba(33, 33, 37, 1)" },
+  {
+    "name": "previewDropdownBg",
+    "description": "",
+    "color": "rgba(41, 41, 46, 1)"
+  },
+  {
+    "name": "previewDropdownText",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "previewArrow",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "checkUnselectedBg",
+    "description": "",
+    "color": "rgba(70, 70, 79, 1)"
+  },
+  {
+    "name": "checkUnselectedAltBg",
+    "description": "",
+    "color": "rgba(117, 117, 128, 1)"
+  },
+  {
+    "name": "checkSelectedBg",
+    "description": "",
+    "color": "rgba(96, 96, 255, 1)"
+  },
+  { "name": "checkFg", "description": "", "color": "rgba(240, 240, 248, 1)" },
+  { "name": "toggleOffBg", "description": "", "color": "rgba(70, 70, 79, 1)" },
+  {
+    "name": "toggleOffAltBg",
+    "description": "",
+    "color": "rgba(117, 117, 128, 1)"
+  },
+  { "name": "toggleOffFg", "description": "", "color": "rgba(50, 50, 56, 1)" },
+  {
+    "name": "toggleOffAltFg",
+    "description": "",
+    "color": "rgba(78, 78, 87, 1)"
+  },
+  { "name": "toggleOnBg", "description": "", "color": "rgba(96, 96, 255, 1)" },
+  {
+    "name": "toggleOnFg",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  { "name": "radioOffBg", "description": "", "color": "rgba(70, 70, 79, 1)" },
+  {
+    "name": "radioOffAltBg",
+    "description": "",
+    "color": "rgba(117, 117, 128, 1)"
+  },
+  { "name": "radioOnBg", "description": "", "color": "rgba(96, 96, 255, 1)" },
+  { "name": "radioOnFg", "description": "", "color": "rgba(240, 240, 248, 1)" },
+  { "name": "radioText", "description": "", "color": "rgba(240, 240, 248, 1)" },
+  {
+    "name": "themeSelectBorder",
+    "description": "",
+    "color": "rgba(96, 96, 255, 1)"
+  },
+  { "name": "textInputBg", "description": "", "color": "rgba(70, 70, 79, 1)" },
+  {
+    "name": "textInputAltBg",
+    "description": "",
+    "color": "rgba(117, 117, 128, 1)"
+  },
+  {
+    "name": "textInputAltTwoBg",
+    "description": "",
+    "color": "rgba(142, 142, 155, 0.5)"
+  },
+  {
+    "name": "textInputPlaceholderFg",
+    "description": "",
+    "color": "rgba(50, 50, 56, 1)"
+  },
+  {
+    "name": "textInputPlaceholderAltFg",
+    "description": "",
+    "color": "rgba(78, 78, 87, 1)"
+  },
+  {
+    "name": "textInputAltTwoFg",
+    "description": "",
+    "color": "rgba(196, 196, 196, 1)"
+  },
+  {
+    "name": "textInputPlaceholderAltTwoFg",
+    "description": "",
+    "color": "rgba(141, 141, 148, 1)"
+  },
+  {
+    "name": "sidebarIconBg",
+    "description": "",
+    "color": "rgba(70, 70, 79, 1)"
+  },
+  {
+    "name": "sidebarIconFg",
+    "description": "",
+    "color": "rgba(132, 132, 136, 1)"
+  },
+  {
+    "name": "chapterTitleDropdownBg",
+    "description": "",
+    "color": "rgba(50, 50, 56, 1)"
+  },
+  {
+    "name": "chapterTitleDropdownInset",
+    "description": "",
+    "color": "rgba(72, 72, 81, 1)"
+  },
+  {
+    "name": "progressBarBg",
+    "description": "",
+    "color": "rgba(107, 107, 120, 1)"
+  },
+  {
+    "name": "progressBarFg",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "contextMenuBg",
+    "description": "",
+    "color": "rgba(70, 70, 79, 0.5)"
+  },
+  {
+    "name": "contextMenuDivider",
+    "description": "",
+    "color": "rgba(99, 99, 111, 1)"
+  },
+  {
+    "name": "contextMenuFg",
+    "description": "",
+    "color": "rgba(240, 240, 248, 1)"
+  },
+  {
+    "name": "contextMenuExit",
+    "description": "",
+    "color": "rgba(255, 85, 74, 1)"
+  },
+  { "name": "searchBg", "description": "", "color": "rgba(41, 41, 46, 1)" },
+  {
+    "name": "searchPlaceholder",
+    "description": "",
+    "color": "rgba(132, 132, 136, 1)"
+  },
+  {
+    "name": "modalFgText",
+    "description": "",
+    "color": "rgba(207, 207, 222, 1)"
+  },
+  {
+    "name": "Logo_Gradient",
+    "description": "",
+    "color": "linear-gradient(90deg, rgba(178, 59, 252, 1) 0%, rgba(0, 209, 255, 1) 100%)"
+  },
+  {
+    "name": "sidebarDividerColor",
+    "description": "",
+    "color": "rgba(0, 0, 0, 0)"
+  },
+  {
+    "name": "sidebarActiveHighlight",
+    "description": "",
+    "color": "rgba(96, 96, 255, 1)"
+  },
+  { "name": "editorMarkup", "description": "", "color": "rgba(96, 96, 255, 1)" }
+]

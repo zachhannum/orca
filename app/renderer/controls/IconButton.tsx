@@ -78,10 +78,7 @@ type IconButtonProps = {
   children: React.ReactElement;
 };
 
-const IconButton = React.forwardRef<
-  HTMLAnchorElement,
-  IconButtonProps
->(
+const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
   (
     {
       height,
@@ -89,7 +86,7 @@ const IconButton = React.forwardRef<
       iconSize,
       foregroundColor,
       backgroundColor,
-      colorAdjustment,
+      colorAdjustment = 0.2,
       scaleOnHover,
       onlyShowBackgroundOnHover,
       roundCorners,
@@ -98,14 +95,18 @@ const IconButton = React.forwardRef<
     },
     ref
   ) => {
-    const hoverForegroundColor =
-      Color(foregroundColor).lighten(colorAdjustment);
-    const hoverBackgroundColor =
-      Color(backgroundColor).lighten(colorAdjustment);
-    const activeForegroundColor =
-      Color(foregroundColor).darken(colorAdjustment);
-    const activeBackgroundColor =
-      Color(backgroundColor).darken(colorAdjustment);
+    const hoverForegroundColor = Color(foregroundColor)
+      .lighten(colorAdjustment)
+      .hex();
+    const hoverBackgroundColor = Color(backgroundColor)
+      .lighten(colorAdjustment)
+      .hex();
+    const activeForegroundColor = Color(foregroundColor)
+      .darken(colorAdjustment)
+      .hex();
+    const activeBackgroundColor = Color(backgroundColor)
+      .darken(colorAdjustment)
+      .hex();
 
     return (
       <IconAnchor
@@ -143,8 +144,7 @@ IconButton.defaultProps = {
   scaleOnHover: false,
   onlyShowBackgroundOnHover: false,
   roundCorners: true,
-  onClick: () => {
-  },
+  onClick: () => {},
 };
 
 export default IconButton;

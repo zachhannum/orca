@@ -63,8 +63,8 @@ const MoreOptionsSidebarItem = ({
   label,
 }: MoreOptionsSidebarItemProps) => {
   const theme = useTheme();
-  const menuItemHoverColor = Color(theme.contextMenuBg).lighten(0.3);
-  const menuItemActiveColor = Color(theme.contextMenuBg).darken(0.3);
+  const menuItemHoverColor = Color(theme.contextMenuBg).lighten(0.6).hex();
+  const menuItemActiveColor = Color(theme.contextMenuBg).darken(0.2).hex();
 
   return (
     <StyledMenuItem

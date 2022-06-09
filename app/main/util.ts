@@ -1,6 +1,7 @@
 /* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
 import { URL } from 'url';
 import path from 'path';
+import { BrowserWindowConstructorOptions } from 'electron';
 
 export let resolveHtmlPath: (htmlFileName: string) => string;
 
@@ -22,9 +23,9 @@ export const getPlatformWindowSettings = () => {
     return {
       titleBarOverlay: {
         color: '#29292E',
-        symbolColor: '#F0F0F8',
       },
-    };
+      vibrancy: 'under-window',
+    } as BrowserWindowConstructorOptions;
   }
-  return {};
+  return { backgroundColor: '#29292E' };
 };

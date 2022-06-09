@@ -82,7 +82,7 @@ const Pane = ({
   styleMixin,
 }: PaneProps) => {
   const [width, setWidth] = useState(defaultWidth);
-  const resizerHoverColor = Color(backgroundColor).lighten(0.5);
+  const resizerHoverColor = Color(backgroundColor).alpha(1).lighten(0.5).hex();
 
   const handleResize = (resizeEvent: React.MouseEvent<HTMLInputElement>) => {
     const startSize = parseInt(width, 10);

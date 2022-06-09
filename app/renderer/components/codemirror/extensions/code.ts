@@ -15,7 +15,7 @@ import { selectionIntersection } from './hideMarkdown';
 const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
   EditorView.baseTheme({
     '.cm-inline-code-hidden': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       paddingLeft: '5px',
       paddingRight: '5px',
       borderRadius: '5px',
@@ -26,7 +26,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       display: 'inline-block',
     },
     '.cm-inline-code-mark-left': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       borderRadius: '5px 0px 0px 5px',
       paddingTop: '3px',
       paddingBottom: '3px',
@@ -36,7 +36,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       display: 'inline-block',
     },
     '.cm-inline-code-mark-right': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       borderRadius: '0px 5px 5px 0px',
       paddingTop: '3px',
       paddingBottom: '3px',
@@ -46,7 +46,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       display: 'inline-block',
     },
     '.cm-inline-code-content': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       fontFamily: 'Roboto Mono',
       paddingTop: '3px',
       paddingBottom: '3px',
@@ -54,7 +54,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       display: 'inline-block',
     },
     '.cm-fenced-code-line-first': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       fontFamily: 'Roboto Mono',
       paddingLeft: '5px',
       paddingRight: '5px',
@@ -63,14 +63,14 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       boxSizing: 'border-box',
     },
     '.cm-fenced-code-line': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       fontFamily: 'Roboto Mono',
       paddingLeft: '5px',
       paddingRight: '5px',
       boxSizing: 'border-box',
     },
     '.cm-fenced-code-line-last': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2)}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.2).hex()}`,
       fontFamily: 'Roboto Mono',
       paddingLeft: '5px',
       paddingRight: '5px',
