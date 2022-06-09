@@ -86,7 +86,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     p.ghost &&
     css`
       margin-left: 10px;
-      background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+      background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hex()};
       > * {
         /* Items are hidden using height and opacity to retain focus */
         opacity: 0;
@@ -100,10 +100,10 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       cursor: pointer;
       ${p.contextOpen &&
       css`
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hex()};
       `}
       &:hover {
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3)};
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hex()};
       }
       ${p.isActiveInEditor &&
       css`
@@ -115,9 +115,9 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       ${p.isEditable &&
       css`
         cursor: text;
-        background-color: ${Color(p.theme.sidebarBg).darken(0.2)};
+        background-color: ${Color(p.theme.sidebarBg).darken(0.2).hex()};
         &:hover {
-          background-color: ${Color(p.theme.sidebarBg).darken(0.2)}};
+          background-color: ${Color(p.theme.sidebarBg).darken(0.2).hex()}};
         }
       `}
     `}
@@ -125,7 +125,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     ${(p) =>
     p.clone &&
     css`
-      background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3)};
+      background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3).hex()};
     `}
 
     transition: background-color 100ms ease-in-out;

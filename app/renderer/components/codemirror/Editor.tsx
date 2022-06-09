@@ -71,10 +71,10 @@ const Editor = () => {
   /* Set Active Section Id */
   useEffect(() => {
     if (activeSectionId != '' && editorContainerRef.current) {
-      const { content } = useStore.getState();
+      const { content, setPreviewContent } = useStore.getState();
       const sectionContent = findItemDeep(content, activeSectionId)?.content;
       const editorContent = sectionContent === undefined ? '' : sectionContent;
-
+      setPreviewContent(editorContent);
       if (editorViewRef.current) {
         const { editorStateMap } = useStore.getState();
         const editorState = editorStateMap.get(activeSectionId);

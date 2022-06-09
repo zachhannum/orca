@@ -1,10 +1,6 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
-import { History } from 'slate-history';
-import {
-  changeItemId,
-  updateSectionContentDeep,
-} from '../../components/TreeView/utilities';
+import { updateSectionContentDeep } from '../../components/TreeView/utilities';
 import type { CalamusState } from '../useStore';
 import type { Project, Section } from 'types/types';
 import { EditorState } from '@codemirror/state';
@@ -30,11 +26,11 @@ export interface ProjectSlice extends Project {
   setAddingSections: (val: boolean) => void;
   activeSectionId: string;
   setActiveSectionId: (id: string) => void;
-  sectionHistory: Map<string, any>;
-  setSectionHistory: (id: string, history: any) => void;
-  removeSectionHistory: (id: string) => void;
+  previewContent: string;
+  setPreviewContent: (txt: string) => void;
   editorStateMap: Map<string, EditorState>;
   setEditorState: (sectionId: string, editorState: EditorState) => void;
+  clearEditorStateMap: () => void;
 }
 
 const createProjectSlice = (
@@ -103,20 +99,10 @@ const createProjectSlice = (
   setActiveSectionId: (id: string) => {
     set(() => ({ activeSectionId: id }));
   },
-  sectionHistory: new Map<string, History>(),
-  setSectionHistory: (id: string, history: History) =>
-    set(
-      produce((state: CalamusState) => {
-        const newHistory = JSON.parse(JSON.stringify(history));
-        state.sectionHistory.set(id, newHistory);
-      })
-    ),
-  removeSectionHistory: (id: string) =>
-    set(
-      produce((state: CalamusState) => {
-        state.sectionHistory.delete(id);
-      })
-    ),
+  previewContent: '',
+  setPreviewContent: (txt: string) => {
+    set(() => ({ previewContent: txt }));
+  },
   editorStateMap: new Map<string, EditorState>(),
   setEditorState: (sectionId: string, editorState: EditorState) =>
     set(
@@ -124,6 +110,9 @@ const createProjectSlice = (
         state.editorStateMap.set(sectionId, editorState);
       })
     ),
+  clearEditorStateMap: () => {
+    set(() => ({ editorStateMap: new Map<string, EditorState>() }));
+  },
 });
 
 export default createProjectSlice;

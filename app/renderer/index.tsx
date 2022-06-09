@@ -1,9 +1,18 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
-require('@openfonts/poppins_latin');
-require('@openfonts/roboto-mono_latin');
-require('@openfonts/fira-code_latin');
+import '@fontsource/crimson-pro/400.css';
+import '@fontsource/crimson-pro/400-italic.css';
+import '@fontsource/crimson-pro/700.css';
+import '@fontsource/crimson-pro/700-italic.css';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/400-italic.css';
+import '@fontsource/poppins/700.css';
+import '@fontsource/poppins/700-italic.css';
+import '@fontsource/roboto-mono/400.css';
+import '@fontsource/roboto-mono/400-italic.css';
+import '@fontsource/roboto-mono/700.css';
+import '@fontsource/roboto-mono/700-italic.css';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('root')!;

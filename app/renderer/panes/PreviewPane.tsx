@@ -47,6 +47,7 @@ const PreviewPane = () => {
       invert
       backgroundColor={theme.previewBg}
       defaultWidth="500px"
+      minWidth={400}
       styleMixin={paneStyleMixin}
     >
       {showPreviewer && (

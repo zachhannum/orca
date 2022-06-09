@@ -33,16 +33,16 @@ const StyledContextMenuItem = styled.div`
   text-align: center;
   padding: 5px;
   border-radius: 5px;
-  font-size: 0.9em;
+  font-size: 0.8em;
   width: 100%;
 
   color: ${(p) => p.theme.mainFgTextSecondary};
 
   &:hover {
-    background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.4)};
+    background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.6).hex()};
   }
   &:active {
-    background-color: ${(p) => Color(p.theme.contextMenuBg).darken(0.4)};
+    background-color: ${(p) => Color(p.theme.contextMenuBg).darken(0.2).hex()};
   }
 
   transition: background-color 100ms ease-in-out;

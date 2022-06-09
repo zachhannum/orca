@@ -96,7 +96,6 @@ const createWindow = async () => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
     titleBarStyle: 'hidden',
-    backgroundColor: '#29292E',
     ...getPlatformWindowSettings(),
   });
 

@@ -7,18 +7,18 @@ const MainContent = styled.div`
   --top-padding: calc(
     env(titlebar-area-height, var(--fallback-title-bar-height)) + 10px
   );
-  margin-top: calc(var(--top-padding));
   flex-grow: 1;
   flex-shrink: 1000;
-  height: calc(100% - var(--top-padding));
+  height: 100vh;
   color: ${(p) => p.theme.mainFgText};
   background-color: ${(p) => p.theme.mainBg};
+  display: flex;
+  flex-direction: column;
 `;
 
 const SectionTitle = styled.div`
   height: var(--top-padding);
   color: ${(p) => p.theme.mainFgTextSecondary};
-  margin-top: calc(-1 * var(--top-padding));
   width: 100%;
   text-align: center;
   font-size: 0.9em;
@@ -36,7 +36,7 @@ const NoProjectDiv = styled.div`
   height: 100%;
   width: 100%;
   user-select: none;
-  color: ${(p) => Color(p.theme.mainBg).lighten(0.7)};
+  color: ${(p) => Color(p.theme.mainBg).lighten(0.7).hex()};
 `;
 
 const NoProjectTitle = styled.span`

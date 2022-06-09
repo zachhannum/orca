@@ -64,6 +64,7 @@ const StyledResizer = styled.div<StyledResizerProps>`
 
 type PaneProps = {
   defaultWidth: string;
+  minWidth: number;
   enabled: boolean;
   backgroundColor: string;
   invert?: boolean;
@@ -73,6 +74,7 @@ type PaneProps = {
 
 const Pane = ({
   defaultWidth,
+  minWidth,
   enabled,
   backgroundColor,
   invert = false,
@@ -80,7 +82,7 @@ const Pane = ({
   styleMixin,
 }: PaneProps) => {
   const [width, setWidth] = useState(defaultWidth);
-  const resizerHoverColor = Color(backgroundColor).lighten(0.5);
+  const resizerHoverColor = Color(backgroundColor).alpha(1).lighten(0.5).hex();
 
   const handleResize = (resizeEvent: React.MouseEvent<HTMLInputElement>) => {
     const startSize = parseInt(width, 10);
@@ -91,7 +93,7 @@ const Pane = ({
         ? startPosition - mouseMoveEvent.pageX
         : -startPosition + mouseMoveEvent.pageX;
       const newWidth = startSize + adjust;
-      if (newWidth >= 100) {
+      if (newWidth >= minWidth) {
         setWidth(`${newWidth}px`);
       }
     };
@@ -123,6 +125,7 @@ const Pane = ({
 };
 
 Pane.defaultProps = {
+  minWidth: 200,
   invert: false,
   children: undefined,
   styleMixin: undefined,
