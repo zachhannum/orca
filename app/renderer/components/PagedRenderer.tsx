@@ -46,21 +46,6 @@ type StyledLoaderProps = {
   loading: boolean;
 };
 
-const StyledLoader = styled.div<StyledLoaderProps>`
-  position: absolute;
-  height: var(--pagedjs-height);
-  width: var(--pagedjs-width);
-  ${(p) =>
-    p.loading
-      ? css`
-          background-color: #00000052;
-        `
-      : css`
-          background-color: #0000000;
-        `}
-  transition: background-color 100ms ease-in-out;
-`;
-
 type ScalerProps = {
   scale: number;
 };
@@ -83,14 +68,13 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
     (state) => state.printParagraphFontSize
   );
   const previewContent = useStore((state) => state.previewContent);
+  const activeSectionId = useStore((state) => state.activeSectionId);
   const polisher = useRef<Polisher>(null);
   const chunker = useRef<Chunker>(null);
   const [scale, setScale] = useState(0.5);
   const [prevPage, setPrevPage] = useState(1);
   const [page, setPage] = useState(1);
   const [overflow, setOverflow] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const loadingTimer = useRef<NodeJS.Timeout | null>(null);
   const buildingPreview = useRef(false);
 
   const setPageCounterIncrement = (pageIncrement: number) => {
@@ -99,6 +83,11 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       `${pageIncrement}`
     );
   };
+
+  useEffect(() => {
+    setPage(1);
+    onPageOverflow(1);
+  }, [activeSectionId]);
 
   /* Navigate to new Page */
   useEffect(() => {
@@ -170,6 +159,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       polisher.current = new Polisher();
       chunker.current = new Chunker();
       if (polisher.current && chunker.current && pagedStage) {
+        pagedStage.style.display = '';
         polisher.current.setup();
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
@@ -183,6 +173,7 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
         console.log(
           'Flow complete! Copying flowed content to preview container.'
         );
+        pagedStage.style.display = 'none';
         if (container) {
           container.innerHTML = '';
           pagedStage.childNodes.forEach((node) => {
@@ -210,23 +201,20 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   };
 
   const updatePreview = async () => {
-    buildingPreview.current = true;
-    loadingTimer.current = setTimeout(() => setLoading(true), 200);
-    const { previewContent } = useStore.getState();
-    console.log('parsing preview content');
-    const html = unified()
-      .use(remarkParse)
-      .use(remarkRehype)
-      .use(rehypeSection)
-      .use(rehypeStringify)
-      .processSync(previewContent);
-    console.log('setting paged content');
-    await setPagedContent(html.value.toString());
-    setLoading(false);
-    if (loadingTimer.current) {
-      clearTimeout(loadingTimer.current);
+    if (!buildingPreview.current) {
+      buildingPreview.current = true;
+      const { previewContent } = useStore.getState();
+      console.log('parsing preview content');
+      const html = unified()
+        .use(remarkParse)
+        .use(remarkRehype)
+        .use(rehypeSection)
+        .use(rehypeStringify)
+        .processSync(previewContent);
+      console.log('setting paged content');
+      await setPagedContent(html.value.toString());
+      buildingPreview.current = false;
     }
-    buildingPreview.current = false;
   };
 
   const updatePreviewDebounce = useMemo(
@@ -235,15 +223,12 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   );
 
   useEffect(() => {
-    if (!buildingPreview.current) {
-      updatePreviewDebounce();
-    }
+    updatePreviewDebounce();
   }, [previewContent]);
 
   return (
     <StyledRenderer ref={rendererRef}>
       <Scaler scale={scale}>
-        <StyledLoader loading={loading} />
         <PageContainer ref={pageContainerRef} />
       </Scaler>
       <PagedStagingContainer ref={pagedStageRef} />
