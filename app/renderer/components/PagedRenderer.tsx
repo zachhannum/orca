@@ -12,7 +12,7 @@ import { useResizeObserver } from '../hooks';
 import useStore from '../store/useStore';
 
 const StyledRenderer = styled.div`
-  height: 70%;
+  height: 100%;
   width: 70%;
   display: flex;
   flex-direction: column;
