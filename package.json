@@ -236,7 +236,6 @@
         "@fontsource/roboto-mono": "^4.5.7",
         "@lezer/common": "^0.16.0",
         "@lezer/highlight": "^0.16.0",
-        "@midnightprioriem/pagedjs": "file:.yalc/@midnightprioriem/pagedjs",
         "color": "^4.2.3",
         "electron-debug": "^3.2.0",
         "electron-log": "^4.4.7",
