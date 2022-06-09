@@ -12,7 +12,8 @@
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
 
-  <img src="assets/6_2_2022_app_preview.png" alt="preview"/>
+  <img width="1391" alt="app" src="https://user-images.githubusercontent.com/6120081/172929435-fa370411-1a5a-4bcf-ad36-3ffc54d09676.png">
+
   
 </div>
   
@@ -34,9 +35,13 @@ Calamus is currently still in pre-alpha stages---not all features are available.
 
 Calamus has what you need to organize and write your next novel. Organize your project into folders and use Markdown to make writing a breeze.
 
+https://user-images.githubusercontent.com/6120081/172926916-38874b37-d46b-4995-8378-2fb09e563f38.mp4
+
 #### 👐 Open Format
 
 Calamus stores all of your project data in a human readable json format. In addition, all book content is written using Markdown, making all of your work truly portable. You can export all of your book's content into markdown files at any time.
+
+https://user-images.githubusercontent.com/6120081/172928356-98c0f824-c98c-47cb-83b2-14ae3df1077b.mp4
 
 ##### .cala Format
 
@@ -74,6 +79,9 @@ The content property contains a JSON array of the `Section` object type, detaile
 
 Calamus is equipped to format your novel for Print and Ebook publication, with pre-made themes and endless customization.
 
+https://user-images.githubusercontent.com/6120081/172929343-21c5411f-2e3e-4b0d-9c42-8e9a98dee466.mp4
+
+https://user-images.githubusercontent.com/6120081/172929360-425be8b4-3f57-43f6-9dd9-4e84905a99ae.mp4
 
 <!-- Installation -->
 ## :gear: Installation
