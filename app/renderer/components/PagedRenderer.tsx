@@ -84,11 +84,6 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
     );
   };
 
-  useEffect(() => {
-    setPage(1);
-    onPageOverflow(1);
-  }, [activeSectionId]);
-
   /* Navigate to new Page */
   useEffect(() => {
     const pageContainer = pageContainerRef.current;
