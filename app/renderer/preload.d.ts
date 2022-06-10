@@ -1,4 +1,4 @@
-import type { BookDetails, ProjectData } from 'types/types';
+import type { BookDetails, ProjectData, PagedBookContents } from 'types/types';
 
 export interface WindowApi {
   os: () => string;
@@ -11,6 +11,10 @@ export interface ProjectApi {
   openProject: () => void;
   createProject: (bookDetails: BookDetails) => void;
   onOpenProject: (func: (projectData: ProjectData) => void) => void;
+}
+export interface PagedApi {
+  generateBookPdf: (pagedBookContents: PagedBookContents) => void;
+  onBookPdfGenerated: (func: (pdfStream: Buffer) => void) => void;
 }
 declare global {
   interface Window {
@@ -26,6 +30,7 @@ declare global {
     };
     windowApi: WindowApi;
     projectApi: ProjectApi;
+    pagedApi: PagedApi;
   }
 }
 

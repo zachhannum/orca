@@ -2,14 +2,10 @@ import { useRef, useEffect, useState, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
 import { debounce } from 'lodash';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import { rehypeSection } from '../utils/unified';
 import { baseStylesheet } from '../pagedjs/defaultPageCss';
 import { useResizeObserver } from '../hooks';
 import useStore from '../store/useStore';
+import { parseChapterContentToHtml } from 'renderer/utils/buildBook';
 
 const StyledRenderer = styled.div`
   height: 100%;
@@ -54,12 +50,12 @@ const Scaler = styled.div<ScalerProps>`
   position: relative;
 `;
 
-type PagedRendererProps = {
+type PagedPreviewerProps = {
   pageNumber: number;
   onPageOverflow: (pageNumber: number) => void;
 };
 
-const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
+const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
   const pagedStageRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<HTMLDivElement>(null);
@@ -200,14 +196,9 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
       buildingPreview.current = true;
       const { previewContent } = useStore.getState();
       console.log('parsing preview content');
-      const html = unified()
-        .use(remarkParse)
-        .use(remarkRehype)
-        .use(rehypeSection)
-        .use(rehypeStringify)
-        .processSync(previewContent);
+      const html = parseChapterContentToHtml(previewContent);
       console.log('setting paged content');
-      await setPagedContent(html.value.toString());
+      await setPagedContent(html);
       buildingPreview.current = false;
     }
   };
@@ -231,4 +222,4 @@ const PagedRenderer = ({ pageNumber, onPageOverflow }: PagedRendererProps) => {
   );
 };
 
-export default PagedRenderer;
+export default PagedPreviewer;

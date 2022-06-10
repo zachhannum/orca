@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled, { useTheme, css } from 'styled-components';
-import { PagedRenderer, Pane } from '../components';
+import { PagedPreviewer, Pane } from '../components';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
 import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
+import { parseBookContentToHtml } from '../utils/buildBook';
+import { useOnBookPdfGenerated } from '../hooks';
+import { baseStylesheet } from '../pagedjs/defaultPageCss';
 
 const paneStyleMixin = css`
   display: flex;
@@ -38,13 +41,14 @@ const StyledButtonsContainer = styled.div`
   align-items: center;
   align-content: center;
   gap: 20px;
-`
+`;
 
 const PreviewPane = () => {
   const previewEnabled = useStore((state) => state.previewEnabled);
   const [page, setPage] = useState(1);
   const theme = useTheme();
   const [showPreviewer, setShowPreviewer] = useState(false);
+  const [isBuildingPdf, setIsBuildingPdf] = useState(false);
   const next = () => {
     setPage(page + 1);
   };
@@ -63,6 +67,21 @@ const PreviewPane = () => {
       }, 300);
     }
   }, [previewEnabled]);
+
+  const handleGeneratePdf = () => {
+    setIsBuildingPdf(true);
+    const html = parseBookContentToHtml();
+    window.pagedApi.generateBookPdf({
+      html,
+      css: baseStylesheet({
+        paragraphFontSize: 11,
+      }).toString(),
+    });
+  };
+
+  useOnBookPdfGenerated(() => {
+    setIsBuildingPdf(false);
+  });
 
   return (
     <Pane
@@ -84,7 +103,7 @@ const PreviewPane = () => {
             >
               <PageLeftIcon />
             </IconButton>
-            <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
+            <PagedPreviewer pageNumber={page} onPageOverflow={setPage} />
             <IconButton
               iconSize="11px"
               foregroundColor={theme.previewArrow}
@@ -95,7 +114,9 @@ const PreviewPane = () => {
             </IconButton>
           </StyledPreviewerContainer>
           <StyledButtonsContainer>
-            <Button loading={true}>Generate PDF</Button>
+            <Button loading={isBuildingPdf} onClick={handleGeneratePdf}>
+              Generate PDF
+            </Button>
             <Button>Generate EPUB</Button>
           </StyledButtonsContainer>
         </>

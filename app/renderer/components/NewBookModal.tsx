@@ -100,11 +100,12 @@ const NewBookModal = ({ isOpen, onRequestClose }: NewBookModalProps) => {
             />
             <div />
             <Button
-              label="Create"
               onClick={() => {
                 formRef.current?.requestSubmit();
               }}
-            />
+            >
+              Create
+            </Button>
           </StyledModalContent>
         </form>
       </div>
