@@ -9,4 +9,8 @@ export const buildBookPdf = async () => {
       paragraphFontSize: 11,
     }).toString(),
   });
+  window.pagedApi.onBookPdfGenerated((buffer: Buffer) => {
+    console.log('book generated!');
+    console.log(buffer);
+  })
 };

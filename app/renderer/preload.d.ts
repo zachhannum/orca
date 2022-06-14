@@ -15,6 +15,7 @@ export interface ProjectApi {
 export interface PagedApi {
   generateBookPdf: (pagedBookContents: PagedBookContents) => void;
   onBookPdfGenerated: (func: (pdfStream: Buffer) => void) => void;
+  pagedRenderComplete: () => void;
 }
 declare global {
   interface Window {

@@ -1,7 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
-import { TestContent } from '../pagedjs/pagedTestContent';
-import { baseStylesheet } from '../pagedjs/defaultPageCss';
+import { PagedBookContents } from 'types/types';
 
 const PagedRenderer = () => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -10,14 +9,19 @@ const PagedRenderer = () => {
   const chunker = useRef<Chunker>(null);
 
   useEffect(() => {
-    setPagedContent(TestContent);
+    console.log("Setting paged content listener");
+    window.electron.ipcRenderer.once('pagedContents', (arg) => {
+      const { html, css } = arg as PagedBookContents;
+      console.log(html);
+      setPagedContent(html, css);
+    });
   }, []);
 
-  const setPagedContent = async (htmlContent: string) => {
+  const setPagedContent = async (html: string, css: string) => {
     const template = document.querySelector<HTMLTemplateElement>('#flow');
     console.log(template);
     if (template) {
-      template.innerHTML = htmlContent;
+      template.innerHTML = html;
       const container = pageContainerRef.current;
       console.log('Destroying previous polisher and chunker');
       if (polisher.current) polisher.current.destroy();
@@ -29,22 +33,17 @@ const PagedRenderer = () => {
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
         await polisher.current.add({
-          '': baseStylesheet({
-            paragraphFontSize: 11,
-          }).toString(),
+          '': css,
         });
         console.log('Starting flow...');
         await chunker.current.flow(template.content, container);
-        console.log(
-          'Flow complete!'
-        );
+        console.log('Flow complete!');
+        window.pagedApi.pagedRenderComplete();
       }
     }
   };
 
-  return (
-    <div ref={pageContainerRef}/>
-  );
+  return <div ref={pageContainerRef} />;
 };
 
 export default PagedRenderer;

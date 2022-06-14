@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('ipc-example', 'ping');
     },
     on(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'window'];
+      const validChannels = ['ipc-example', 'window', 'pagedContents'];
       if (validChannels.includes(channel)) {
         const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
           func(...args);
@@ -24,7 +24,7 @@ contextBridge.exposeInMainWorld('electron', {
       return undefined;
     },
     once(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'window'];
+      const validChannels = ['ipc-example', 'window', 'pagedContents'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (_event, ...args) => func(...args));
@@ -60,4 +60,5 @@ contextBridge.exposeInMainWorld('pagedApi', {
   },
   onBookPdfGenerated: (func: (pdfStream: Buffer) => void) =>
     ipcRenderer.on('pdfGenerated', (_event, arg) => func(arg)),
+  pagedRenderComplete: () => ipcRenderer.send('pagedRenderComplete'),
 });
