@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
 import styled, { useTheme, css } from 'styled-components';
-import { PagedPreviewer, PagedRenderer, Pane } from '../components';
+import { PagedPreviewer, Pane } from '../components';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
 import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
-import { parseBookContentToHtml } from '../utils/buildBook';
+import { buildBookPdf } from '../utils/buildPdf';
 import { useOnBookPdfGenerated } from '../hooks';
-import { baseStylesheet } from '../pagedjs/defaultPageCss';
 
 const paneStyleMixin = css`
   display: flex;
@@ -71,21 +69,7 @@ const PreviewPane = () => {
 
   const handleGeneratePdf = () => {
     setIsBuildingPdf(true);
-    const html = parseBookContentToHtml();
-    window.pagedApi.generateBookPdf({
-      html,
-      css: baseStylesheet({
-        paragraphFontSize: 11,
-      }).toString(),
-    });
-    // renderer process (mainWindow)
-    const childWindow = window.open('', 'modal');
-    if (childWindow) {
-      const container = childWindow?.document.body;
-      const root = createRoot(container);
-      root.render(<PagedRenderer />);
-    }
-
+    buildBookPdf();
     setTimeout(() => {
       setIsBuildingPdf(false);
     }, 100000);
