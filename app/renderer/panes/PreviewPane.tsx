@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import styled, { useTheme, css } from 'styled-components';
-import { PagedPreviewer, Pane } from '../components';
+import { PagedPreviewer, PagedRenderer, Pane } from '../components';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
 import { Test } from '../pagedjs/pagedTestContent';
@@ -77,6 +78,17 @@ const PreviewPane = () => {
         paragraphFontSize: 11,
       }).toString(),
     });
+    // renderer process (mainWindow)
+    const childWindow = window.open('', 'modal');
+    if (childWindow) {
+      const container = childWindow?.document.body;
+      const root = createRoot(container);
+      root.render(<PagedRenderer />);
+    }
+
+    setTimeout(() => {
+      setIsBuildingPdf(false);
+    }, 100000);
   };
 
   useOnBookPdfGenerated(() => {
@@ -117,7 +129,6 @@ const PreviewPane = () => {
             <Button loading={isBuildingPdf} onClick={handleGeneratePdf}>
               Generate PDF
             </Button>
-            <Button>Generate EPUB</Button>
           </StyledButtonsContainer>
         </>
       )}

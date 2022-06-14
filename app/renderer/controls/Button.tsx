@@ -38,7 +38,10 @@ const StyledButton = styled.span<StyledButtonProps>`
     `}
 `;
 
-const StyledLoader = styled.div`
+type StyledLoaderProps = {
+  loading: boolean;
+}
+const StyledLoader = styled.div<StyledLoaderProps>`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -50,6 +53,11 @@ const StyledLoader = styled.div`
   align-items: center;
   justify-content: center;
   align-content: center;
+  opacity: 0;
+  ${(p) => p.loading && css`
+    opacity: 1;
+  `}
+  transition: opacity 100ms ease-in-out;
 `;
 
 type ButtonProps = {
@@ -74,16 +82,14 @@ const Button = ({ children, onClick, loading = false }: ButtonProps) => {
       loading={loading}
     >
       {children}
-      {loading && (
-        <StyledLoader>
+        <StyledLoader loading={loading}>
           <BounceLoader
             loading={loading}
             size={20}
             color={theme.buttonPrimaryText}
-            speedMultiplier={1.5}
+            speedMultiplier={2}
           />
         </StyledLoader>
-      )}
     </StyledButton>
   );
 };

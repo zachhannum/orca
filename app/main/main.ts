@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { getPlatformWindowSettings, resolveHtmlPath } from './util';
 import { setupProjectListeners } from './project';
+import { setupPdfListeners } from './pdf';
 
 export default class AppUpdater {
   constructor() {
@@ -131,7 +132,7 @@ const createWindow = async () => {
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
-    return { action: 'deny' };
+    return { action: 'allow' };
   });
 
   // Remove this if your app does not use auto updates
@@ -139,6 +140,7 @@ const createWindow = async () => {
   new AppUpdater();
 
   setupProjectListeners(mainWindow);
+  setupPdfListeners(mainWindow);
 };
 
 /**
