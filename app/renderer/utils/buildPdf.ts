@@ -6,7 +6,7 @@ export const buildBookPdf = async () => {
   window.pagedApi.generateBookPdf({
     html,
     css: baseStylesheet({
-      paragraphFontSize: 11,
+      paragraphFontSize: 8,
     }).toString(),
   });
   window.pagedApi.onBookPdfGenerated((buffer: Buffer) => {

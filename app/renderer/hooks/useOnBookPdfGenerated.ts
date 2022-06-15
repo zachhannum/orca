@@ -7,7 +7,7 @@ const useOnBookPdfGenerated = (callback: () => void) => {
 
       callback();
     });
-  });
+  }, []);
 };
 
 export default useOnBookPdfGenerated;

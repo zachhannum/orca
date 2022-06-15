@@ -70,9 +70,6 @@ const PreviewPane = () => {
   const handleGeneratePdf = () => {
     setIsBuildingPdf(true);
     buildBookPdf();
-    setTimeout(() => {
-      setIsBuildingPdf(false);
-    }, 100000);
   };
 
   useOnBookPdfGenerated(() => {
