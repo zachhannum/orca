@@ -12,8 +12,8 @@ import {
   PreviewIcon,
   UpdateIcon,
   SaveIcon,
+  InfoIcon,
 } from '../icons';
-import icon from '../../../assets/icon.png';
 import useStore from '../store/useStore';
 import { saveProject } from '../utils/projectUtils';
 
@@ -122,7 +122,7 @@ const MoreOptionsSidebarMenu = () => {
           />
           <MoreOptionsSidebarItem
             hover
-            iconElement={<img width="10px" alt="icon" src={icon} />}
+            iconElement={<InfoIcon />}
             label="About"
           />
           <MoreOptionsSidebarItem

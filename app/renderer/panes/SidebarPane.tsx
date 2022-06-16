@@ -19,8 +19,8 @@ const SidebarTopContainer = styled.div`
   padding-top: calc(
     env(titlebar-area-height, var(--fallback-title-bar-height)) + 20px
   );
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -71,6 +71,7 @@ type SidebarToggleButtonDivProps = {
 const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
   display: flex;
   flex-direction: row;
+  align-items: center;
   height: 100%;
   gap: 10px;
   margin-right: ${(props) => (props.open ? '0px' : '-100px')};
@@ -92,9 +93,8 @@ const SidebarPane = () => {
         <div /* placeholder */ />
         <SidebarToggleButtonDiv open={open}>
           <IconButton
-            iconSize="20px"
+            iconSize="22px"
             foregroundColor={theme.sidebarIconFg}
-            backgroundColor={theme.sidebarIconBg}
             onClick={toggleOpen}
           >
             {open ? <SidebarOpenIcon /> : <SidebarClosedIcon />}

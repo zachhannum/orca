@@ -79,7 +79,7 @@ const MoreOptionsSidebarItem = ({
             iconColorOverride !== undefined
               ? iconColorOverride
               : theme.mainFgTextSecondary,
-          size: '10px',
+          size: '12px',
         })}
         <span>{label}</span>
       </StyledMenuItemIconDesc>
