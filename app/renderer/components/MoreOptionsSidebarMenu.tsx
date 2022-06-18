@@ -13,6 +13,7 @@ import {
   UpdateIcon,
   SaveIcon,
   InfoIcon,
+  GenerateBookIcon,
 } from '../icons';
 import useStore from '../store/useStore';
 import { saveProject } from '../utils/projectUtils';
@@ -29,9 +30,11 @@ const MoreOptionsSidebarMenu = () => {
   const [showMenu, setShowMenu] = useState(false);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const isProjectOpen = useStore((state) => state.isProjectOpen);
+  const activeSectionId = useStore((state) => state.activeSectionId);
   const previewEnabled = useStore((state) => state.previewEnabled);
   const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
+  const setGenerateBookModalOpen = useStore((state) => state.setGenerateBookModalOpen);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
   const getMenuPosition = (): Position => {
@@ -87,28 +90,45 @@ const MoreOptionsSidebarMenu = () => {
               window.projectApi.openProject();
             }}
           />
-          <MoreOptionsSidebarItem
-            hover
-            iconElement={<SaveIcon />}
-            rightElement={<span>⌘S</span>}
-            label="Save Book"
-            onClick={() => {
-              setShowMenu(false);
-              saveProject();
-            }}
-          />
-          <MoreOptionsSidebarItem
-            iconElement={<PreviewIcon />}
-            rightElement={
-              <ToggleSwitch
-                altColor
-                onChange={setPreviewEnabled}
-                defaultValue={previewEnabled}
-                disabled={!isProjectOpen}
+          {isProjectOpen && (
+            <>
+              <MoreOptionsSidebarItem
+                hover
+                iconElement={<SaveIcon />}
+                rightElement={<span>⌘S</span>}
+                label="Save Book"
+                onClick={() => {
+                  if (isProjectOpen) {
+                    setShowMenu(false);
+                    saveProject();
+                  }
+                }}
               />
-            }
-            label="Preview"
-          />
+              <MoreOptionsSidebarItem
+                hover
+                iconElement={<GenerateBookIcon />}
+                rightElement={<span>⌘G</span>}
+                label="Generate Book"
+                onClick={() => {
+                  setShowMenu(false);
+                  setGenerateBookModalOpen(true);
+                }}
+              />
+              <MoreOptionsSidebarItem
+                iconElement={<PreviewIcon />}
+                rightElement={
+                  <ToggleSwitch
+                    altColor
+                    onChange={setPreviewEnabled}
+                    defaultValue={previewEnabled}
+                    disabled={activeSectionId === ""}
+                  />
+                }
+                label="Preview"
+              />
+            </>
+          )}
+
           <StyledMenuDivider />
           <MoreOptionsSidebarItem
             hover

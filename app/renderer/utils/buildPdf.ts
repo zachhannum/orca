@@ -1,13 +1,16 @@
 import { baseStylesheet } from 'renderer/pagedjs/defaultPageCss';
 import { parseBookContentToHtml } from './buildBook';
+import useStore from '../store/useStore';
 
 export const buildBookPdf = async () => {
   const html = parseBookContentToHtml();
+  const {bookTitle} = useStore.getState();
   window.pagedApi.generateBookPdf({
     html,
     css: baseStylesheet({
-      paragraphFontSize: 8,
+      paragraphFontSize: 11,
     }).toString(),
+    title: bookTitle
   });
   window.pagedApi.onBookPdfGenerated((buffer: Buffer) => {
     console.log('book generated!');

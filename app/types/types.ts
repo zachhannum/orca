@@ -62,4 +62,5 @@ export type SectionContextMenuClosedEventData = {
 export type PagedBookContents = {
   html: string;
   css: string;
+  title: string;
 }

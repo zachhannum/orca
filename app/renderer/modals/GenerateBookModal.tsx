@@ -1,9 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
 import type { ModalProps } from './Modal';
-import { TextField, Button } from '../controls';
+import { Button } from '../controls';
 import { buildBookPdf } from 'renderer/utils/buildPdf';
+import { useOnBookPdfGenerated } from 'renderer/hooks';
 
 const StyledModalContent = styled.div`
   display: flex;
@@ -17,8 +18,13 @@ const StyledModalContent = styled.div`
 `;
 
 const GenerateBookModal = (props: ModalProps) => {
-  const { onRequestClose } = props;
   const formRef = useRef<HTMLFormElement>(null);
+  const [isBuildingPdf, setIsBuildingPdf] = useState(false);
+
+  useOnBookPdfGenerated(() => {
+    setIsBuildingPdf(false);
+  })
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -26,16 +32,16 @@ const GenerateBookModal = (props: ModalProps) => {
       author: { value: string };
       series: { value: string };
     };
+    setIsBuildingPdf(true);
     buildBookPdf();
-    onRequestClose();
   };
   return (
     <Modal {...props}>
       <form ref={formRef} onSubmit={handleSubmit}>
         <StyledModalContent>
-
           <div />
           <Button
+            loading={isBuildingPdf}
             onClick={() => {
               formRef.current?.requestSubmit();
             }}

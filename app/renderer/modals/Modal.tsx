@@ -18,12 +18,13 @@ const StyledModalTitle = styled.div`
 ReactModal.setAppElement('#root');
 
 export type ModalProps = {
+  title: string;
   isOpen: boolean;
   onRequestClose: () => void;
   children?: React.ReactNode;
 };
 
-const Modal = ({ isOpen, onRequestClose, children }: ModalProps) => {
+const Modal = ({ title, isOpen, onRequestClose, children }: ModalProps) => {
   const theme = useTheme();
 
   return (
@@ -45,7 +46,7 @@ const Modal = ({ isOpen, onRequestClose, children }: ModalProps) => {
       <>
         <StyledModalTitle>
           <div style={{ width: '12px' }} />
-          <div>New Book</div>
+          <div>{title}</div>
           <IconButton
             onClick={onRequestClose}
             iconSize="12px"

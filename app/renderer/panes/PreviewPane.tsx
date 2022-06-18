@@ -2,13 +2,10 @@
 import { useState, useEffect } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import { PagedPreviewer, Pane } from '../components';
-import { Button } from '../controls';
 import useStore from '../store/useStore';
 import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
-import { buildBookPdf } from '../utils/buildPdf';
-import { useOnBookPdfGenerated } from '../hooks';
 
 const paneStyleMixin = css`
   display: flex;
@@ -33,21 +30,11 @@ const StyledPreviewerContainer = styled.div`
   align-content: center;
 `;
 
-const StyledButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  gap: 20px;
-`;
-
 const PreviewPane = () => {
   const previewEnabled = useStore((state) => state.previewEnabled);
   const [page, setPage] = useState(1);
   const theme = useTheme();
   const [showPreviewer, setShowPreviewer] = useState(false);
-  const [isBuildingPdf, setIsBuildingPdf] = useState(false);
   const next = () => {
     setPage(page + 1);
   };
@@ -66,15 +53,6 @@ const PreviewPane = () => {
       }, 300);
     }
   }, [previewEnabled]);
-
-  const handleGeneratePdf = () => {
-    setIsBuildingPdf(true);
-    buildBookPdf();
-  };
-
-  useOnBookPdfGenerated(() => {
-    setIsBuildingPdf(false);
-  });
 
   return (
     <Pane
@@ -106,11 +84,6 @@ const PreviewPane = () => {
               <PageRightIcon />
             </IconButton>
           </StyledPreviewerContainer>
-          <StyledButtonsContainer>
-            <Button loading={isBuildingPdf} onClick={handleGeneratePdf}>
-              Generate PDF
-            </Button>
-          </StyledButtonsContainer>
         </>
       )}
 
