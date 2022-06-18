@@ -1,4 +1,4 @@
-import NewBookModal from 'renderer/components/NewBookModal';
+import NewBookModal from '../modals/NewBookModal';
 import useStore from '../store/useStore';
 
 const Modals = () => {
