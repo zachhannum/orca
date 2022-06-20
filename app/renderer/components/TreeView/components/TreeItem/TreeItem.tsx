@@ -86,7 +86,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     p.ghost &&
     css`
       margin-left: 10px;
-      background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hex()};
+      background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hsl().string()};
       > * {
         /* Items are hidden using height and opacity to retain focus */
         opacity: 0;
@@ -100,24 +100,24 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       cursor: pointer;
       ${p.contextOpen &&
       css`
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hex()};
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hsl().string()};
       `}
       &:hover {
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hex()};
+        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hsl().string()};
       }
       ${p.isActiveInEditor &&
       css`
-        background-color: ${Color(p.theme.buttonPrimaryBg)};
+        background-color: ${Color(p.theme.buttonPrimaryBg).hsl().string()};
         &:hover {
-          background-color: ${Color(p.theme.buttonPrimaryBg)};
+          background-color: ${Color(p.theme.buttonPrimaryBg).hsl().string()};
         }
       `}
       ${p.isEditable &&
       css`
         cursor: text;
-        background-color: ${Color(p.theme.sidebarBg).darken(0.2).hex()};
+        background-color: ${Color(p.theme.sidebarBg).darken(0.2).hsl().string()};
         &:hover {
-          background-color: ${Color(p.theme.sidebarBg).darken(0.2).hex()}};
+          background-color: ${Color(p.theme.sidebarBg).darken(0.2).hsl().string()}};
         }
       `}
     `}
@@ -125,7 +125,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     ${(p) =>
     p.clone &&
     css`
-      background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3).hex()};
+      background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3).hsl().string()};
     `}
 
     transition: background-color 100ms ease-in-out;
@@ -254,6 +254,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const handleBlur = () => {
       setIsEditable(false);
       const newValue = textRef.current?.innerText;
+      console.log(newValue);
       if (newValue) {
         const success = updateSectionName(value, newValue);
         if (!success) {
@@ -273,8 +274,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     }, []);
     const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
       if (event.code === 'Enter') {
+        console.log("What is happening");
         event.preventDefault();
         setIsEditable(false);
+        handleBlur();
       } else if (event.code === 'Escape') {
         event.preventDefault();
         if (textRef.current) textRef.current.innerText = value;

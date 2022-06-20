@@ -4,9 +4,9 @@ const theme: DefaultTheme = {
   mainBg: 'rgba(41, 41, 46, 1)',
   mainFgText: 'rgba(240, 240, 248, 1)',
   mainFgTextSecondary: 'rgba(207, 207, 222, 1)',
-  sidebarBg: 'rgba(50, 50, 56, .75)',
+  sidebarBg: 'rgba(50, 50, 56, .65)',
   sidebarFgText: 'rgba(240, 240, 248, 1)',
-  sidebarFgTextSecondary: 'rgba(132, 132, 136, 1)',
+  sidebarFgTextSecondary: 'rgba(161, 161, 168, 1)',
   dropdownBg: {
     default: 'rgba(70, 70, 79, 1)',
     alt: 'rgba(117, 117, 128, 1)',

@@ -9,7 +9,7 @@ const theme = (theme: DefaultTheme): Extension => {
     '&.cm-editor': {},
     '&.cm-editor.cm-focused': { outline: 'none' },
     '&.cm-focused .cm-selectionBackground, ::selection': {
-      backgroundColor: `${Color(theme.mainBg).lighten(0.6).hex()}`,
+      backgroundColor: `${Color(theme.mainBg).lighten(0.6).hsl().string()}`,
     },
     '.cm-scroller': {
       fontFamily: 'Poppins',

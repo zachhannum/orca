@@ -1,5 +1,9 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import type { BookDetails, ProjectData } from '../types/types';
+import type {
+  BookDetails,
+  ProjectData,
+  PagedBookContents,
+} from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
@@ -7,7 +11,7 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('ipc-example', 'ping');
     },
     on(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'window'];
+      const validChannels = ['ipc-example', 'window', 'pagedContents'];
       if (validChannels.includes(channel)) {
         const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
           func(...args);
@@ -20,7 +24,7 @@ contextBridge.exposeInMainWorld('electron', {
       return undefined;
     },
     once(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'window'];
+      const validChannels = ['ipc-example', 'window', 'pagedContents'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (_event, ...args) => func(...args));
@@ -48,4 +52,13 @@ contextBridge.exposeInMainWorld('projectApi', {
   },
   onOpenProject: (func: (projectData: ProjectData) => void) =>
     ipcRenderer.on('openProject', (_event, arg) => func(arg)),
+});
+
+contextBridge.exposeInMainWorld('pagedApi', {
+  generateBookPdf: (pagedBookContents: PagedBookContents) => {
+    ipcRenderer.send('generatePdf', pagedBookContents);
+  },
+  onBookPdfGenerated: (func: (pdfStream: Buffer) => void) =>
+    ipcRenderer.on('pdfGenerated', (_event, arg) => func(arg)),
+  pagedRenderComplete: () => ipcRenderer.send('pagedRenderComplete'),
 });

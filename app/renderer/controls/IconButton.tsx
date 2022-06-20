@@ -97,16 +97,15 @@ const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
   ) => {
     const hoverForegroundColor = Color(foregroundColor)
       .lighten(colorAdjustment)
-      .hex();
+      .hsl().string();
     const hoverBackgroundColor = Color(backgroundColor)
-      .lighten(colorAdjustment)
-      .hex();
+      .lighten(colorAdjustment).hsl().string();
     const activeForegroundColor = Color(foregroundColor)
       .darken(colorAdjustment)
-      .hex();
+      .hsl().string();
     const activeBackgroundColor = Color(backgroundColor)
       .darken(colorAdjustment)
-      .hex();
+      .hsl().string();
 
     return (
       <IconAnchor

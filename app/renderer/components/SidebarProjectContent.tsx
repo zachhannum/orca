@@ -48,7 +48,7 @@ const StyledAnchor = styled.a`
   cursor: pointer;
   color: ${(p) => p.theme.buttonPrimaryBg};
   &:hover {
-    color: ${(p) => Color(p.theme.buttonPrimaryBg).darken(0.1).hex()};
+    color: ${(p) => Color(p.theme.buttonPrimaryBg).darken(0.1).hsl().string()};
   }
 `;
 
@@ -76,17 +76,17 @@ const SidebarProjectContent = () => {
             <StyledSidebarP>
               You haven&rsquo;t opened a project yet.
             </StyledSidebarP>
-            <Button
-              label="Open Project"
-              onClick={window.projectApi.openProject}
-            />
+            <Button onClick={window.projectApi.openProject}>
+              Open a Project
+            </Button>
             <StyledSidebarP>Or start a new project.</StyledSidebarP>
             <Button
-              label="New Project"
               onClick={() => {
                 setNewBookModalOpen(true);
               }}
-            />
+            >
+              New Project
+            </Button>
             <StyledSidebarP>
               To learn more about how to use Calamus, you can always check out
               our <StyledAnchor>help pages</StyledAnchor>.

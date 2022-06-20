@@ -36,7 +36,7 @@ const NoProjectDiv = styled.div`
   height: 100%;
   width: 100%;
   user-select: none;
-  color: ${(p) => Color(p.theme.mainBg).lighten(0.7).hex()};
+  color: ${(p) => Color(p.theme.mainBg).lighten(0.7).hsl().string()};
 `;
 
 const NoProjectTitle = styled.span`

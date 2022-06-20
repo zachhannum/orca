@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState, useEffect } from 'react';
-import { useTheme, css } from 'styled-components';
-import { PagedRenderer, Pane } from '../components';
+import styled, { useTheme, css } from 'styled-components';
+import { PagedPreviewer, Pane } from '../components';
 import useStore from '../store/useStore';
 import { Test } from '../pagedjs/pagedTestContent';
 import { IconButton } from '../controls';
@@ -15,6 +15,19 @@ const paneStyleMixin = css`
   align-items: center;
   align-content: center;
   gap: 20px;
+  flex-direction: column;
+`;
+
+const StyledPreviewerContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 70%;
+  flex-direction: row;
+  flex-wrap: none;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 `;
 
 const PreviewPane = () => {
@@ -51,27 +64,27 @@ const PreviewPane = () => {
       styleMixin={paneStyleMixin}
     >
       {showPreviewer && (
-        <IconButton
-          iconSize="11px"
-          foregroundColor={theme.previewArrow}
-          scaleOnHover
-          onClick={prev}
-        >
-          <PageLeftIcon />
-        </IconButton>
-      )}
-      {showPreviewer && (
-        <PagedRenderer pageNumber={page} onPageOverflow={setPage} />
-      )}
-      {showPreviewer && (
-        <IconButton
-          iconSize="11px"
-          foregroundColor={theme.previewArrow}
-          scaleOnHover
-          onClick={next}
-        >
-          <PageRightIcon />
-        </IconButton>
+        <>
+          <StyledPreviewerContainer>
+            <IconButton
+              iconSize="11px"
+              foregroundColor={theme.previewArrow}
+              scaleOnHover
+              onClick={prev}
+            >
+              <PageLeftIcon />
+            </IconButton>
+            <PagedPreviewer pageNumber={page} onPageOverflow={setPage} />
+            <IconButton
+              iconSize="11px"
+              foregroundColor={theme.previewArrow}
+              scaleOnHover
+              onClick={next}
+            >
+              <PageRightIcon />
+            </IconButton>
+          </StyledPreviewerContainer>
+        </>
       )}
 
       <Test />

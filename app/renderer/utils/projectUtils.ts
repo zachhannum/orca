@@ -15,7 +15,6 @@ const saveProject = () => {
   };
   const folderPath = useStore.getState().projectFolder;
   const fileName = useStore.getState().projectFileName;
-  console.log(projectContents);
   window.projectApi.saveProject({
     projectContent: projectContents,
     folderPath,
@@ -31,10 +30,11 @@ const updateSectionName = (oldName: string, newName: string): boolean => {
       const { success, items } = changeItemId(content, oldName, newName);
       if (success) {
         setContentArray(items);
-        const {sectionHistory} = useStore.getState();
-        if(sectionHistory.has(oldName)) {
-          useStore.getState().setSectionHistory(newName, sectionHistory.get(oldName));
-          useStore.getState().removeSectionHistory(oldName);
+        const {editorStateMap} = useStore.getState();
+        const editorState = editorStateMap.get(oldName);
+        if(editorState) {
+          useStore.getState().setEditorState(newName, editorState);
+          useStore.getState().removeEditorState(oldName);
         }
         if(useStore.getState().activeSectionId === oldName) {
           useStore.getState().setActiveSectionId(newName);

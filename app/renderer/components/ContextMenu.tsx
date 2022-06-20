@@ -26,7 +26,7 @@ const StyledContextMenu = styled.div<StyledContextMenuProps>`
   opacity: ${(p) => (p.show ? '1' : '0')};
   transform: ${(p) => (p.show ? 'scale(1)' : 'scale(.7)')};
   animation: ${onOpenKeyframes} 100ms ease-in-out alternate;
-  background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.2).hex()};
+  background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.2).hsl().string()};
   border: ${(p) => p.theme.contextMenuDivider} 1px solid;
   backdrop-filter: blur(40px);
   border-radius: 10px;

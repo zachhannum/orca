@@ -32,12 +32,15 @@ const configuration: webpack.Configuration = {
 
   target: ['web', 'electron-renderer'],
 
-  entry: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
+  entry: {
+    main: [path.join(webpackPaths.srcRendererPath, 'index.tsx')],
+    paged: [path.join(webpackPaths.srcRendererPath, 'paged.tsx')],
+  },
 
   output: {
     path: webpackPaths.distRendererPath,
     publicPath: './',
-    filename: 'renderer.js',
+    filename: '[name].js',
     library: {
       type: 'umd',
     },
@@ -105,7 +108,7 @@ const configuration: webpack.Configuration = {
     }),
 
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: '[name].css',
     }),
 
     new BundleAnalyzerPlugin({
@@ -114,7 +117,20 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: 'index.html',
+      chunks: ['main'],
       template: path.join(webpackPaths.srcRendererPath, 'index.ejs'),
+      minify: {
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+      },
+      isBrowser: false,
+      isDevelopment: process.env.NODE_ENV !== 'production',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'paged.html',
+      chunks: ['paged'],
+      template: path.join(webpackPaths.srcRendererPath, 'paged.ejs'),
       minify: {
         collapseWhitespace: true,
         removeAttributeQuotes: true,

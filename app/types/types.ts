@@ -57,3 +57,10 @@ export type SectionContextMenuClosedEventData = {
   id: string;
   rename: boolean;
 }
+
+/* Content needed for generating a Book PDF*/
+export type PagedBookContents = {
+  html: string;
+  css: string;
+  title: string;
+}
