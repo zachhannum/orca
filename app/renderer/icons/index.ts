@@ -25,5 +25,6 @@ export { default as SectionDeleteIcon } from './SectionDeleteIcon';
 export { default as SectionDuplicateIcon } from './SectionDuplicateIcon';
 export { default as SectionOpenIcon } from './SectionOpenIcon';
 export { default as SectionRenameIcon } from './SectionRenameIcon';
-export { default as GenerateBookIcon} from './GenerateBookIcon';
-export { default as InfoIcon} from './InfoIcon';
+export { default as GenerateBookIcon } from './GenerateBookIcon';
+export { default as InfoIcon } from './InfoIcon';
+export { default as CheckIcon } from './CheckIcon';

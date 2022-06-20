@@ -10,6 +10,7 @@ const StyledModalTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  font-size: 1.1em;
   width: 400px;
   color: ${(p) => p.theme.modalFgText};
   user-select: none;

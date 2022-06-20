@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-
+import Color from 'color';
 
 const Scroller = styled.div`
   overflow-y: overlay;
@@ -26,8 +26,8 @@ const Scroller = styled.div`
     /* display: none; */
   }
   ::-webkit-scrollbar-thumb {
-    background-color: inherit;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: ${(p) =>
+      Color(p.theme.mainBg).alpha(1).darken(0.2).hsl().string()};
   }
   &:hover {
     -webkit-mask-position: left top;
@@ -36,6 +36,7 @@ const Scroller = styled.div`
   css`
     ::-webkit-scrollbar-thumb {
       border-radius: 4px;
+      cursor: pointer;
     }
   `}
 `;
@@ -44,11 +45,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-
 const ScrollContainer = ({ children }: Props) => (
-  <Scroller>
-    {children}
-  </Scroller>
+  <Scroller>{children}</Scroller>
 );
 
 export default ScrollContainer;

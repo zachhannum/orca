@@ -6,14 +6,15 @@ type StyledButtonProps = {
   hoverBackgroundcolor?: string;
   activeBackgroundColor?: string;
   loading?: boolean;
+  disabled?: boolean;
 };
 
 const StyledButton = styled.span<StyledButtonProps>`
   height: 30px;
   position: relative;
   line-height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   user-select: none;
   background-color: ${(p) => p.theme.buttonPrimaryBg};
   color: ${(p) => p.theme.buttonPrimaryText};
@@ -26,6 +27,7 @@ const StyledButton = styled.span<StyledButtonProps>`
 
   ${(p) =>
     !p.loading &&
+    !p.disabled &&
     css`
       cursor: pointer;
       &:hover {
@@ -40,7 +42,8 @@ const StyledButton = styled.span<StyledButtonProps>`
 
 type StyledLoaderProps = {
   loading: boolean;
-}
+  disabled: boolean;
+};
 const StyledLoader = styled.div<StyledLoaderProps>`
   position: absolute;
   height: 100%;
@@ -54,9 +57,11 @@ const StyledLoader = styled.div<StyledLoaderProps>`
   justify-content: center;
   align-content: center;
   opacity: 0;
-  ${(p) => p.loading && css`
-    opacity: 1;
-  `}
+  ${(p) =>
+    (p.loading || p.disabled) &&
+    css`
+      opacity: 1;
+    `}
   transition: opacity 100ms ease-in-out;
 `;
 
@@ -64,9 +69,15 @@ type ButtonProps = {
   children?: React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
+  disabled?: boolean;
 };
 
-const Button = ({ children, onClick, loading = false }: ButtonProps) => {
+const Button = ({
+  children,
+  onClick,
+  loading = false,
+  disabled = false,
+}: ButtonProps) => {
   const theme = useTheme();
   const hoverColor = Color(theme.buttonPrimaryBg).lighten(0.05).hsl().string();
   const activeColor = Color(theme.buttonPrimaryBg).darken(0.05).hsl().string();
@@ -75,21 +86,22 @@ const Button = ({ children, onClick, loading = false }: ButtonProps) => {
       hoverBackgroundcolor={hoverColor}
       activeBackgroundColor={activeColor}
       onClick={() => {
-        if (!loading && onClick) {
+        if (!loading && !disabled && onClick) {
           onClick();
         }
       }}
       loading={loading}
+      disabled={disabled}
     >
       {children}
-        <StyledLoader loading={loading}>
-          <BounceLoader
-            loading={loading}
-            size={20}
-            color={theme.buttonPrimaryText}
-            speedMultiplier={2}
-          />
-        </StyledLoader>
+      <StyledLoader loading={loading} disabled={disabled}>
+        <BounceLoader
+          loading={loading}
+          size={20}
+          color={theme.buttonPrimaryText}
+          speedMultiplier={2}
+        />
+      </StyledLoader>
     </StyledButton>
   );
 };
