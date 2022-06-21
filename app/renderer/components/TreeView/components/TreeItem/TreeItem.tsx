@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import styled, { css, keyframes, useTheme } from 'styled-components';
 import Color from 'color';
-import { FolderOpenIcon } from 'renderer/icons';
+import { FolderOpenIcon, MoreVerticalIcon } from 'renderer/icons';
 import { updateSectionName } from 'renderer/utils/projectUtils';
 import useStore from 'renderer/store/useStore';
 import {
@@ -15,6 +15,7 @@ import {
   SectionContextMenuClosedEventData,
   SectionContextMenuEvent,
 } from 'types/types';
+import { IconButton } from 'renderer/controls';
 
 const animateInFromCollapseKeframes = keyframes`
   from {
@@ -158,6 +159,18 @@ const StyledText = styled.span`
   }
 `;
 
+type MoreOptionsStyleProps = {
+  hover: boolean;
+};
+const MoreOptionsStyle = (p: MoreOptionsStyleProps) => css`
+  opacity: 0;
+  ${p.hover &&
+  css`
+    opacity: 1;
+  `}
+  transition: opacity 100ms ease-in-out;
+`;
+
 export interface Props extends HTMLAttributes<HTMLLIElement> {
   clone?: boolean;
   collapsed?: boolean;
@@ -220,6 +233,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     const thisWrapperRef = useRef<HTMLLIElement | null>(null);
     const textRef = useRef<HTMLSpanElement>(null);
     const theme = useTheme();
+    const moreOptionsRef = useRef<HTMLAnchorElement>(null);
+    const [hover, setHover] = useState(false);
 
     const handleContextClosed = (event: CustomEventInit) => {
       const { id, rename } = event.detail as SectionContextMenuClosedEventData;
@@ -233,12 +248,17 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         }
       }
     };
-
-    const handleOpenContext = (event: React.MouseEvent<HTMLLIElement>) => {
+    const handleOpenContext = (
+      event: React.MouseEvent<Element>,
+      x?: number,
+      y?: number
+    ) => {
       event.preventDefault();
       setContextOpen(true);
+      x = x ? x : event.clientX;
+      y = y ? y : event.clientY;
       const contextEvent = new CustomEvent(SectionContextMenuEvent, {
-        detail: { id: value, x: event.clientX, y: event.clientY },
+        detail: { id: value, x, y },
       });
       document.addEventListener(
         SectionContextMenuClosedEvent,
@@ -371,6 +391,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           canHaveChildren={canHaveChildren}
           contextOpen={contextOpen}
           {...dragProps}
+          onMouseEnter={() => {
+            setHover(true);
+          }}
+          onMouseLeave={() => setHover(false)}
         >
           {canHaveChildren && (
             <>
@@ -382,7 +406,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             </>
           )}
           <StyledText
-            // onDoubleClick={handleDoubleClick}
             contentEditable={isEditable}
             suppressContentEditableWarning
             onBlur={handleBlur}
@@ -391,6 +414,26 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           >
             {value}
           </StyledText>
+          <IconButton
+            onClick={(event: React.MouseEvent<Element>) => {
+              const moreOptions = moreOptionsRef.current;
+              if (moreOptions) {
+                handleOpenContext(
+                  event,
+                  moreOptions.getBoundingClientRect().right - 5,
+                  moreOptions.getBoundingClientRect().bottom - 5
+                );
+              }
+            }}
+            iconSize={'18px'}
+            ref={moreOptionsRef}
+            foregroundColor={theme.sidebarFgTextSecondary}
+            cssMixin={MoreOptionsStyle({
+              hover: (hover || contextOpen) && !isEditable,
+            })}
+          >
+            <MoreVerticalIcon />
+          </IconButton>
         </StyledTreeItem>
       </StyledTreeItemWrapper>
     );
