@@ -100,10 +100,16 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       cursor: pointer;
       ${p.contextOpen &&
       css`
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hsl().string()};
+        background-color: ${Color(p.theme.sidebarBg)
+          .lighten(0.3)
+          .hsl()
+          .string()};
       `}
       &:hover {
-        background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hsl().string()};
+        background-color: ${Color(p.theme.sidebarBg)
+          .lighten(0.3)
+          .hsl()
+          .string()};
       }
       ${p.isActiveInEditor &&
       css`
@@ -115,9 +121,15 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       ${p.isEditable &&
       css`
         cursor: text;
-        background-color: ${Color(p.theme.sidebarBg).darken(0.2).hsl().string()};
+        background-color: ${Color(p.theme.sidebarBg)
+          .darken(0.2)
+          .hsl()
+          .string()};
         &:hover {
-          background-color: ${Color(p.theme.sidebarBg).darken(0.2).hsl().string()}};
+          background-color: ${Color(p.theme.sidebarBg)
+            .darken(0.2)
+            .hsl()
+            .string()}};
         }
       `}
     `}
@@ -125,7 +137,11 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     ${(p) =>
     p.clone &&
     css`
-      background-color: ${Color(p.theme.sidebarBg).alpha(0.8).lighten(0.3).hsl().string()};
+      background-color: ${Color(p.theme.sidebarBg)
+        .alpha(0.8)
+        .lighten(0.3)
+        .hsl()
+        .string()};
     `}
 
     transition: background-color 100ms ease-in-out;
@@ -244,17 +260,18 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
     const handleClick = () => {
-      if (canHaveChildren) {
-        if (onCollapse) onCollapse();
-      } else {
-        const { setActiveSectionId } = useStore.getState();
-        setActiveSectionId(value);
+      if (!isEditable) {
+        if (canHaveChildren) {
+          if (onCollapse) onCollapse();
+        } else {
+          const { setActiveSectionId } = useStore.getState();
+          setActiveSectionId(value);
+        }
       }
     };
     const handleBlur = () => {
       setIsEditable(false);
       const newValue = textRef.current?.innerText;
-      console.log(newValue);
       if (newValue) {
         const success = updateSectionName(value, newValue);
         if (!success) {
@@ -274,7 +291,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     }, []);
     const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
       if (event.code === 'Enter') {
-        console.log("What is happening");
         event.preventDefault();
         setIsEditable(false);
         handleBlur();
