@@ -1,6 +1,12 @@
 import React from 'react';
 import Color from 'color';
 import styled, { css } from 'styled-components';
+import type {
+  FlattenInterpolation,
+  ThemeProps,
+  FlattenSimpleInterpolation,
+  DefaultTheme,
+} from 'styled-components';
 
 type IconAnchorProps = {
   height?: string;
@@ -15,6 +21,7 @@ type IconAnchorProps = {
   activeBackgroundColor?: string;
   activeForegroundColor?: string;
   roundCorners?: boolean;
+  styleMixin?: CssMixinType;
 };
 const IconAnchor = styled.a<IconAnchorProps>`
   display: flex;
@@ -62,7 +69,15 @@ const IconAnchor = styled.a<IconAnchorProps>`
   &:active path {
     fill: ${(p) => p.activeForegroundColor} !important;
   }
+
+  ${(p) => p.styleMixin}
 `;
+
+type CssMixinType =
+  | FlattenInterpolation<ThemeProps<DefaultTheme>>
+  | FlattenSimpleInterpolation
+  | string
+  | undefined;
 
 type IconButtonProps = {
   height?: string;
@@ -74,7 +89,8 @@ type IconButtonProps = {
   scaleOnHover?: boolean;
   onlyShowBackgroundOnHover?: boolean;
   roundCorners?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
+  cssMixin?: CssMixinType;
   children: React.ReactElement;
 };
 
@@ -91,6 +107,7 @@ const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
       onlyShowBackgroundOnHover,
       roundCorners,
       onClick = () => {},
+      cssMixin,
       children,
     },
     ref
@@ -107,12 +124,17 @@ const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
       .darken(colorAdjustment)
       .hsl().string();
 
+      const handleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onClick(e);
+      }
+
     return (
       <IconAnchor
         height={height}
         width={width}
         iconSize={iconSize}
-        onClick={onClick}
+        onClick={handleClick}
         foregroundColor={foregroundColor}
         hoverForegroundColor={hoverForegroundColor}
         backgroundColor={backgroundColor}
@@ -123,6 +145,7 @@ const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
         roundCorners={roundCorners}
         onlyShowBackgroundOnHover={onlyShowBackgroundOnHover}
         ref={ref}
+        styleMixin={cssMixin}
       >
         {React.cloneElement(children, {
           size: iconSize,
