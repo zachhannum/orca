@@ -1,10 +1,12 @@
 import { DefaultTheme } from 'styled-components';
 
+const sidebarOpacity = window.windowApi.os() === 'darwin' ? 0.6 : 1;
+
 const theme: DefaultTheme = {
   mainBg: 'rgba(41, 41, 46, 1)',
   mainFgText: 'rgba(240, 240, 248, 1)',
   mainFgTextSecondary: 'rgba(207, 207, 222, 1)',
-  sidebarBg: 'rgba(50, 50, 56, .65)',
+  sidebarBg: `rgba(50, 50, 56, ${sidebarOpacity})`,
   sidebarFgText: 'rgba(240, 240, 248, 1)',
   sidebarFgTextSecondary: 'rgba(161, 161, 168, 1)',
   dropdownBg: {

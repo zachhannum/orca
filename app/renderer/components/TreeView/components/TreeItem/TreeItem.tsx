@@ -87,7 +87,11 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     p.ghost &&
     css`
       margin-left: 10px;
-      background-color: ${Color(p.theme.sidebarBg).lighten(0.3).hsl().string()};
+      background-color: ${Color(p.theme.sidebarBg)
+        .lighten(0.3)
+        .alpha(0.6)
+        .hsl()
+        .string()};
       > * {
         /* Items are hidden using height and opacity to retain focus */
         opacity: 0;
@@ -103,12 +107,14 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       css`
         background-color: ${Color(p.theme.sidebarBg)
           .lighten(0.3)
+          .alpha(0.6)
           .hsl()
           .string()};
       `}
       &:hover {
         background-color: ${Color(p.theme.sidebarBg)
           .lighten(0.3)
+          .alpha(0.6)
           .hsl()
           .string()};
       }
@@ -123,12 +129,12 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       css`
         cursor: text;
         background-color: ${Color(p.theme.sidebarBg)
-          .darken(0.2)
+          .darken(0.2).alpha(0.6)
           .hsl()
           .string()};
         &:hover {
           background-color: ${Color(p.theme.sidebarBg)
-            .darken(0.2)
+            .darken(0.2).alpha(.6)
             .hsl()
             .string()}};
         }
