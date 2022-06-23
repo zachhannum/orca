@@ -13,6 +13,7 @@ const MainContent = styled.div`
   color: ${(p) => p.theme.mainFgText};
   background-color: ${(p) => p.theme.mainBg};
   display: flex;
+  align-items: stretch;
   flex-direction: column;
 `;
 

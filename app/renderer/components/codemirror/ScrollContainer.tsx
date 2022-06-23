@@ -1,13 +1,19 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
+import useStore from 'renderer/store/useStore';
 
-const Scroller = styled.div`
+type ScrollerProps = {
+  sidebarOpen: boolean;
+};
+
+const Scroller = styled.div<ScrollerProps>`
   overflow-y: overlay;
   height: 100%;
-  width: calc(100% - 125px);
   padding-right: 50px;
-  padding-left: 75px;
+  padding-left: ${(p) => (p.sidebarOpen ? '50px' : '125px')};
+  margin-right: 5px;
+  box-sizing: border-box;
 
   mask-image: linear-gradient(to top, transparent, black),
     linear-gradient(to left, transparent 17px, black 17px);
@@ -17,7 +23,7 @@ const Scroller = styled.div`
     linear-gradient(to left, transparent 17px, black 17px);
   -webkit-mask-size: 100% 20000px;
   -webkit-mask-position: left bottom;
-  transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+  transition: mask-position 0.3s, -webkit-mask-position 0.3s, padding-left 300ms ease-in-out;
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -45,8 +51,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-const ScrollContainer = ({ children }: Props) => (
-  <Scroller>{children}</Scroller>
-);
+const ScrollContainer = ({ children }: Props) => {
+  const sidebarOpen = useStore((state) => state.sidebarOpen);
+
+  return <Scroller sidebarOpen={sidebarOpen}>{children}</Scroller>;
+};
 
 export default ScrollContainer;

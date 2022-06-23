@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
 import {
@@ -13,6 +14,7 @@ import {
   SettingsIcon,
 } from '../icons';
 import { useToggle } from '../hooks';
+import useStore from '../store/useStore';
 
 const SidebarTopContainer = styled.div`
   display: flex;
@@ -49,9 +51,11 @@ const SidebarBottomItem = styled.span`
     fill: ${(p) => p.theme.sidebarFgTextSecondary};
   }
   &:hover {
-    color: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hsl().string()};
+    color: ${(p) =>
+      Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hsl().string()};
     path {
-      fill: ${(p) => Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hsl().string()};
+      fill: ${(p) =>
+        Color(p.theme.sidebarFgTextSecondary).lighten(0.2).hsl().string()};
     }
   }
   gap: 12px;
@@ -81,6 +85,11 @@ const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
 const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
+  const setSidebarOpen = useStore((state) => state.setSidebarOpen);
+
+  useEffect(() => {
+    setSidebarOpen(open);
+  }, [open]);
 
   return (
     <Pane

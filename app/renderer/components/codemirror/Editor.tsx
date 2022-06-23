@@ -4,7 +4,7 @@ import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { searchKeymap } from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
-import ScrollContainer from '../ScrollContainer';
+import ScrollContainer from './ScrollContainer';
 import useStore from 'renderer/store/useStore';
 import { findItemDeep } from '../TreeView/utilities';
 import {
@@ -25,7 +25,7 @@ const EditorDiv = styled.div`
   max-width: 650px;
   min-height: 100%;
   box-sizing: border-box;
-  padding-top: 10vh;
+  padding-top: 2vh;
   padding-bottom: 10vh;
 `;
 
