@@ -17,6 +17,7 @@ import {
   code,
   pasteEventHandler,
   search,
+  placeholder,
 } from './extensions';
 
 const EditorDiv = styled.div`
@@ -25,7 +26,7 @@ const EditorDiv = styled.div`
   max-width: 650px;
   min-height: 100%;
   box-sizing: border-box;
-  padding-top: 2vh;
+  padding-top: 4vh;
   padding-bottom: 10vh;
 `;
 
@@ -47,6 +48,7 @@ const Editor = () => {
       code(styledTheme),
       history(),
       pasteEventHandler(),
+      placeholder(),
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });

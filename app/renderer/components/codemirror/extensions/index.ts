@@ -7,3 +7,4 @@ export { default as pasteEventHandler } from './pasteEventHandler';
 export { default as blockquote } from './blockquote';
 export { default as search } from './search';
 export { default as code } from './code';
+export { default as placeholder } from './placeholder';
