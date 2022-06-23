@@ -4,6 +4,8 @@ import type { CalamusState } from '../useStore';
 export interface AppSlice {
   previewEnabled: boolean;
   setPreviewEnabled: (val: boolean) => void;
+  sidebarOpen: boolean;
+  setSidebarOpen: (val: boolean) => void;
   newBookModalOpen: boolean;
   setNewBookModalOpen: (val: boolean) => void;
   generateBookModalOpen: boolean;
@@ -22,6 +24,12 @@ const createAppSlice = (
   previewEnabled: false,
   setPreviewEnabled: (val: boolean) => {
     set(() => ({ previewEnabled: val }));
+  },
+  sidebarOpen: true,
+  setSidebarOpen: (val: boolean) => {
+    set(() => ({
+      sidebarOpen: val,
+    }));
   },
   newBookModalOpen: false,
   setNewBookModalOpen: (val: boolean) => {
