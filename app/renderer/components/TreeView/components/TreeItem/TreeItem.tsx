@@ -68,9 +68,15 @@ type StyledTreeItemProps = {
   isActiveInEditor?: boolean;
   contextOpen?: boolean;
   canHaveChildren?: boolean;
+  hoverColor?: string;
+  editColor?: string;
+  cloneColor?: string;
 };
 
 const StyledTreeItem = styled.div<StyledTreeItemProps>`
+  &:focus {
+    outline: none;
+  }
   position: relative;
   margin-right: 7px;
   display: flex;
@@ -87,11 +93,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     p.ghost &&
     css`
       margin-left: 10px;
-      background-color: ${Color(p.theme.sidebarBg)
-        .lighten(0.3)
-        .alpha(0.6)
-        .hsl()
-        .string()};
+      background-color: ${p.hoverColor};
       > * {
         /* Items are hidden using height and opacity to retain focus */
         opacity: 0;
@@ -105,38 +107,24 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       cursor: pointer;
       ${p.contextOpen &&
       css`
-        background-color: ${Color(p.theme.sidebarBg)
-          .lighten(0.3)
-          .alpha(0.6)
-          .hsl()
-          .string()};
+        background-color: ${p.hoverColor};
       `}
       &:hover {
-        background-color: ${Color(p.theme.sidebarBg)
-          .lighten(0.3)
-          .alpha(0.6)
-          .hsl()
-          .string()};
+        background-color: ${p.hoverColor};
       }
       ${p.isActiveInEditor &&
       css`
-        background-color: ${Color(p.theme.buttonPrimaryBg).hsl().string()};
+        background-color: ${p.theme.buttonPrimaryBg};
         &:hover {
-          background-color: ${Color(p.theme.buttonPrimaryBg).hsl().string()};
+          background-color: ${p.theme.buttonPrimaryBg};
         }
       `}
       ${p.isEditable &&
       css`
         cursor: text;
-        background-color: ${Color(p.theme.sidebarBg)
-          .darken(0.2).alpha(0.6)
-          .hsl()
-          .string()};
+        background-color: ${p.editColor};
         &:hover {
-          background-color: ${Color(p.theme.sidebarBg)
-            .darken(0.2).alpha(.6)
-            .hsl()
-            .string()}};
+          background-color: ${p.editColor};
         }
       `}
     `}
@@ -401,6 +389,21 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             setHover(true);
           }}
           onMouseLeave={() => setHover(false)}
+          hoverColor={Color(theme.sidebarBg)
+            .lighten(0.3)
+            .alpha(0.6)
+            .hsl()
+            .string()}
+          editColor={Color(theme.sidebarBg)
+            .darken(0.2)
+            .alpha(0.6)
+            .hsl()
+            .string()}
+          cloneColor={Color(theme.sidebarBg)
+            .alpha(0.8)
+            .lighten(0.3)
+            .hsl()
+            .string()}
         >
           {canHaveChildren && (
             <>
