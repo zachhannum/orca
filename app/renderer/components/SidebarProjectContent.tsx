@@ -8,7 +8,7 @@ const StyledSidebarProjectContent = styled.div`
   display: flex;
   user-select: none;
   flex-direction: column;
-  padding: 20px;
+  padding: 5px;
   box-sizing: border-box;
   gap: 20px;
   flex-grow: 1;
@@ -16,6 +16,8 @@ const StyledSidebarProjectContent = styled.div`
 
 const StyledTitleBlock = styled.div`
   display: flex;
+  padding: 15px 15px 0px 15px;
+  box-sizing: border-box;
   flex-direction: column;
   gap: 5px;
 `;
@@ -23,7 +25,17 @@ const StyledTitleBlock = styled.div`
 const StyledContentBlock = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 15px;
   gap: 5px;
+  flex-grow: 1;
+`;
+
+const StyledNoProjectBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0px 15px;
+  box-sizing: border-box;
   flex-grow: 1;
 `;
 
@@ -71,8 +83,10 @@ const SidebarProjectContent = () => {
         </>
       ) : (
         <>
-          <StyledTitle>No Project Open</StyledTitle>
-          <StyledContentBlock>
+          <StyledTitleBlock>
+            <StyledTitle>No Project Open</StyledTitle>
+          </StyledTitleBlock>
+          <StyledNoProjectBlock>
             <StyledSidebarP>
               You haven&rsquo;t opened a project yet.
             </StyledSidebarP>
@@ -91,7 +105,7 @@ const SidebarProjectContent = () => {
               To learn more about how to use Calamus, you can always check out
               our <StyledAnchor>help pages</StyledAnchor>.
             </StyledSidebarP>
-          </StyledContentBlock>
+          </StyledNoProjectBlock>
         </>
       )}
     </StyledSidebarProjectContent>

@@ -84,7 +84,6 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     outline: none;
   }
   position: relative;
-  margin-right: 7px;
   display: flex;
   align-items: center;
   padding: 3px 6px;

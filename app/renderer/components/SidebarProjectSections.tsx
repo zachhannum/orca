@@ -32,6 +32,7 @@ const SectionHeader = styled.div`
 
 const ContentIcons = styled.div`
   display: flex;
+  padding-right: 15px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
