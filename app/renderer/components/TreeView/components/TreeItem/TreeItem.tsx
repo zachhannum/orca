@@ -7,7 +7,12 @@ import React, {
 } from 'react';
 import styled, { css, keyframes, useTheme } from 'styled-components';
 import Color from 'color';
-import { FolderOpenIcon, MoreVerticalIcon } from 'renderer/icons';
+import {
+  FolderOpenIcon,
+  MoreVerticalIcon,
+  NewFileIcon,
+  NewFolderIcon,
+} from 'renderer/icons';
 import { updateSectionName } from 'renderer/utils/projectUtils';
 import useStore from 'renderer/store/useStore';
 import {
@@ -16,6 +21,7 @@ import {
   SectionContextMenuEvent,
 } from 'types/types';
 import { IconButton } from 'renderer/controls';
+import { addNewFolder, addNewSection } from 'renderer/utils/projectUtils';
 
 const animateInFromCollapseKeframes = keyframes`
   from {
@@ -132,11 +138,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
     ${(p) =>
     p.clone &&
     css`
-      background-color: ${Color(p.theme.sidebarBg)
-        .alpha(0.8)
-        .lighten(0.3)
-        .hsl()
-        .string()};
+      background-color: ${p.cloneColor};
     `}
 
     transition: background-color 100ms ease-in-out;
@@ -155,6 +157,7 @@ const StyledText = styled.span`
 
 type MoreOptionsStyleProps = {
   hover: boolean;
+  edit: boolean;
 };
 const MoreOptionsStyle = (p: MoreOptionsStyleProps) => css`
   opacity: 0;
@@ -162,7 +165,16 @@ const MoreOptionsStyle = (p: MoreOptionsStyleProps) => css`
   css`
     opacity: 1;
   `}
+  ${p.edit &&
+  css`
+    display: none;
+  `}
   transition: opacity 100ms ease-in-out;
+`;
+
+const NewSectionButtons = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 export interface Props extends HTMLAttributes<HTMLLIElement> {
@@ -389,21 +401,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             setHover(true);
           }}
           onMouseLeave={() => setHover(false)}
-          hoverColor={Color(theme.sidebarBg)
-            .lighten(0.3)
-            .alpha(0.6)
-            .hsl()
-            .string()}
-          editColor={Color(theme.sidebarBg)
-            .darken(0.2)
-            .alpha(0.6)
-            .hsl()
-            .string()}
-          cloneColor={Color(theme.sidebarBg)
-            .alpha(0.8)
-            .lighten(0.3)
-            .hsl()
-            .string()}
+          hoverColor={Color('#fff').alpha(0.1).hsl().string()}
+          editColor={Color('#000').alpha(0.2).hsl().string()}
+          cloneColor={Color('#fff').alpha(0.2).hsl().string()}
         >
           {canHaveChildren && (
             <>
@@ -423,6 +423,36 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           >
             {value}
           </StyledText>
+          {canHaveChildren && (
+            <NewSectionButtons>
+              <IconButton
+                onClick={() => {
+                  addNewSection(value);
+                }}
+                iconSize={'15px'}
+                ref={moreOptionsRef}
+                foregroundColor={theme.sidebarFgTextSecondary}
+                cssMixin={MoreOptionsStyle({
+                  hover: hover,
+                  edit: isEditable,
+                })}
+              >
+                <NewFileIcon />
+              </IconButton>
+              <IconButton
+              onClick={() => {addNewFolder(value)}}
+                iconSize={'15px'}
+                ref={moreOptionsRef}
+                foregroundColor={theme.sidebarFgTextSecondary}
+                cssMixin={MoreOptionsStyle({
+                  hover: hover,
+                  edit: isEditable,
+                })}
+              >
+                <NewFolderIcon />
+              </IconButton>
+            </NewSectionButtons>
+          )}
           <IconButton
             onClick={(event: React.MouseEvent<Element>) => {
               const moreOptions = moreOptionsRef.current;
@@ -438,7 +468,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             ref={moreOptionsRef}
             foregroundColor={theme.sidebarFgTextSecondary}
             cssMixin={MoreOptionsStyle({
-              hover: (hover || contextOpen) && !isEditable,
+              hover: hover || contextOpen,
+              edit: isEditable,
             })}
           >
             <MoreVerticalIcon />

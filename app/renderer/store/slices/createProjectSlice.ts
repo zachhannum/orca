@@ -1,6 +1,6 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
-import { updateSectionContentDeep } from '../../components/TreeView/utilities';
+import { updateSectionContentDeep, addSectionAt } from '../../components/TreeView/utilities';
 import type { CalamusState } from '../useStore';
 import type { Project, Section } from 'types/types';
 import { EditorState } from '@codemirror/state';
@@ -22,6 +22,7 @@ export interface ProjectSlice extends Project {
   setContentArray: (val: Section[]) => void;
   updateSectionContent: (id: string, newContent: string) => void;
   addNewSection: (val: Section) => void;
+  addNewSectionAt: (val: Section, atId: string) => void;
   addingSections: boolean;
   setAddingSections: (val: boolean) => void;
   activeSectionId: string;
@@ -94,6 +95,9 @@ const createProjectSlice = (
         state.content.push(val);
       })
     ),
+  addNewSectionAt: (val: Section, atId: string) => {
+    set((state) => ({content: addSectionAt(val, state.content, atId)}))
+  },
   addingSections: false,
   setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),
   activeSectionId: '',

@@ -30,13 +30,13 @@ const updateSectionName = (oldName: string, newName: string): boolean => {
       const { success, items } = changeItemId(content, oldName, newName);
       if (success) {
         setContentArray(items);
-        const {editorStateMap} = useStore.getState();
+        const { editorStateMap } = useStore.getState();
         const editorState = editorStateMap.get(oldName);
-        if(editorState) {
+        if (editorState) {
           useStore.getState().setEditorState(newName, editorState);
           useStore.getState().removeEditorState(oldName);
         }
-        if(useStore.getState().activeSectionId === oldName) {
+        if (useStore.getState().activeSectionId === oldName) {
           useStore.getState().setActiveSectionId(newName);
         }
       }
@@ -46,7 +46,10 @@ const updateSectionName = (oldName: string, newName: string): boolean => {
   return false;
 };
 
-const addNewSection = (type: SectionType = SectionType.maincontent) => {
+const addNewSection = (
+  atId?: string,
+  type: SectionType = SectionType.maincontent
+) => {
   const { content, setAddingSections } = useStore.getState();
   setAddingSections(true);
   const defaultNameBase = 'Untitled';
@@ -57,22 +60,28 @@ const addNewSection = (type: SectionType = SectionType.maincontent) => {
     name = `${defaultNameBase}${i}`;
     i += 1;
   }
-  const { addNewSection } = useStore.getState();
-  addNewSection({
+  const sectionContent = {
     id: name,
     content: '',
     type: type,
     canHaveChildren: type === SectionType.folder ? true : false,
     collapsed: false,
     children: [],
-  });
+  } as Section;
+  if (atId) {
+    const { addNewSectionAt } = useStore.getState();
+    addNewSectionAt(sectionContent, atId);
+  } else {
+    const { addNewSection } = useStore.getState();
+    addNewSection(sectionContent);
+  }
   setTimeout(() => {
     setAddingSections(false);
   }, 10);
 };
 
-const addNewFolder = () => {
-  addNewSection(SectionType.folder);
+const addNewFolder = (atId?: string) => {
+  addNewSection(atId, SectionType.folder);
 };
 
 export { saveProject, updateSectionName, addNewSection, addNewFolder };
