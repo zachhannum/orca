@@ -21,6 +21,7 @@ import {
   SectionContextMenuEvent,
 } from 'types/types';
 import { IconButton } from 'renderer/controls';
+import { addNewFolder, addNewSection } from 'renderer/utils/projectUtils';
 
 const animateInFromCollapseKeframes = keyframes`
   from {
@@ -425,6 +426,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {canHaveChildren && (
             <NewSectionButtons>
               <IconButton
+                onClick={() => {
+                  addNewSection(value);
+                }}
                 iconSize={'15px'}
                 ref={moreOptionsRef}
                 foregroundColor={theme.sidebarFgTextSecondary}
@@ -436,6 +440,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
                 <NewFileIcon />
               </IconButton>
               <IconButton
+              onClick={() => {addNewFolder(value)}}
                 iconSize={'15px'}
                 ref={moreOptionsRef}
                 foregroundColor={theme.sidebarFgTextSecondary}

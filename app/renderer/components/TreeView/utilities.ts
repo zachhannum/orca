@@ -204,7 +204,7 @@ export const changeItemId = (
       newItems.push({ ...item, id: newId });
       continue;
     }
-    let newItem = {...item};
+    let newItem = { ...item };
     if (item.children.length) {
       const { items } = changeItemId(item.children, id, newId);
       newItem.children = items;
@@ -212,6 +212,26 @@ export const changeItemId = (
     newItems.push(newItem);
   }
   return { success: true, items: newItems };
+};
+
+export const addSectionAt = (
+  val: Section,
+  content: Sections,
+  atId: string
+): Sections => {
+  const newItems = [] as Sections;
+  for (let item of content) {
+    let newItem = { ...item };
+    if (item.children.length) {
+      newItem.children = addSectionAt(val, item.children, atId);
+    }
+    if (item.id === atId && newItem.canHaveChildren) {
+      newItem.children.push(val);
+      newItem.collapsed = false;
+    }
+    newItems.push(newItem);
+  }
+  return newItems;
 };
 
 export function setProperty<T extends keyof Section>(
