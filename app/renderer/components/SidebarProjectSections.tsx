@@ -45,7 +45,7 @@ const SectionsContainer = styled.div`
   align-items: flex-start;
   padding-bottom: 20px;
   gap: 2px;
-  overflow-y: auto;
+  overflow-y: scroll;
   flex-basis: 0;
   flex-grow: 1;
   mask-image: linear-gradient(to top, transparent, black),
