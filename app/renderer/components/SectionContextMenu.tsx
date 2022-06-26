@@ -39,10 +39,12 @@ const StyledContextMenuItem = styled.div`
   color: ${(p) => p.theme.mainFgTextSecondary};
 
   &:hover {
-    background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.6).hsl().string()};
+    background-color: ${(p) =>
+      Color(p.theme.contextMenuBg).lighten(0.6).hsl().string()};
   }
   &:active {
-    background-color: ${(p) => Color(p.theme.contextMenuBg).darken(0.2).hsl().string()};
+    background-color: ${(p) =>
+      Color(p.theme.contextMenuBg).darken(0.2).hsl().string()};
   }
 
   transition: background-color 100ms ease-in-out;
@@ -93,15 +95,22 @@ const SectionContextMenu = () => {
   }, [showMenu, id]);
 
   /* Menu Item handlers */
+  const handleOpen = () => {
+    const { setActiveSectionId } = useStore.getState();
+    setActiveSectionId(id);
+    setShowMenu(false);
+  };
+
   const handleRename = () => {
     setRenameSelected(true);
     setShowMenu(false);
   };
 
   const handleDelete = () => {
-    const { content, setContentArray, activeSectionId, setActiveSectionId } = useStore.getState();
+    const { content, setContentArray, activeSectionId, setActiveSectionId } =
+      useStore.getState();
     setContentArray(removeItem(content, id));
-    if(id === activeSectionId) {
+    if (id === activeSectionId) {
       setActiveSectionId('');
     }
     setShowMenu(false);
@@ -121,10 +130,7 @@ const SectionContextMenu = () => {
       position={position}
     >
       {!isFolder && (
-        <StyledContextMenuItem
-          onClick={() => {
-          }}
-        >
+        <StyledContextMenuItem onClick={handleOpen}>
           <SectionOpenIcon {...itemIconProps} />
           <span>Open in Editor</span>
         </StyledContextMenuItem>
