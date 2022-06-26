@@ -34,7 +34,9 @@ const MoreOptionsSidebarMenu = () => {
   const previewEnabled = useStore((state) => state.previewEnabled);
   const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
-  const setGenerateBookModalOpen = useStore((state) => state.setGenerateBookModalOpen);
+  const setGenerateBookModalOpen = useStore(
+    (state) => state.setGenerateBookModalOpen
+  );
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
   const getMenuPosition = (): Position => {
@@ -121,7 +123,7 @@ const MoreOptionsSidebarMenu = () => {
                     altColor
                     onChange={setPreviewEnabled}
                     defaultValue={previewEnabled}
-                    disabled={activeSectionId === ""}
+                    disabled={activeSectionId === ''}
                   />
                 }
                 label="Preview"
@@ -150,6 +152,9 @@ const MoreOptionsSidebarMenu = () => {
             iconElement={<ExitIcon />}
             iconColorOverride={theme.contextMenuExit}
             label="Exit"
+            onClick={() => {
+              window.windowApi.closeWindow();
+            }}
           />
         </div>
       </ContextMenu>

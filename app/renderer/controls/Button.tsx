@@ -5,8 +5,8 @@ import { BounceLoader } from 'react-spinners';
 type StyledButtonProps = {
   hoverBackgroundcolor?: string;
   activeBackgroundColor?: string;
-  loading?: boolean;
-  disabled?: boolean;
+  isLoading?: boolean;
+  isDisabled?: boolean;
 };
 
 const StyledButton = styled.span<StyledButtonProps>`
@@ -26,8 +26,8 @@ const StyledButton = styled.span<StyledButtonProps>`
   font-size: 0.9em;
 
   ${(p) =>
-    !p.loading &&
-    !p.disabled &&
+    !p.isLoading &&
+    !p.isDisabled &&
     css`
       cursor: pointer;
       &:hover {
@@ -41,8 +41,8 @@ const StyledButton = styled.span<StyledButtonProps>`
 `;
 
 type StyledLoaderProps = {
-  loading: boolean;
-  disabled: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
 };
 const StyledLoader = styled.div<StyledLoaderProps>`
   position: absolute;
@@ -58,7 +58,7 @@ const StyledLoader = styled.div<StyledLoaderProps>`
   align-content: center;
   opacity: 0;
   ${(p) =>
-    (p.loading || p.disabled) &&
+    (p.isLoading || p.isDisabled) &&
     css`
       opacity: 1;
     `}
@@ -90,11 +90,11 @@ const Button = ({
           onClick();
         }
       }}
-      loading={loading}
-      disabled={disabled}
+      isLoading={loading}
+      isDisabled={disabled}
     >
       {children}
-      <StyledLoader loading={loading} disabled={disabled}>
+      <StyledLoader isLoading={loading} isDisabled={disabled}>
         <BounceLoader
           loading={loading}
           size={20}
