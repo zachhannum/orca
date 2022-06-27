@@ -234,6 +234,27 @@ export const addSectionAt = (
   return newItems;
 };
 
+export const duplicateSection = (id: string, content: Sections) => {
+  const newItems = [] as Sections;
+  for (let item of content) {
+    let newItem = { ...item };
+    if (item.children.length) {
+      newItem.children = duplicateSection(id, item.children);
+    }
+    newItems.push(newItem);
+    if (item.id === id) {
+      let i = 1;
+      let duplicateId = `${id}${i}`;
+      while (findItemDeep(content, duplicateId) !== undefined) {
+        duplicateId = `${id}${i}`;
+        i += 1;
+      }
+      newItems.push({ ...newItem, id: duplicateId });
+    }
+  }
+  return newItems;
+};
+
 export function setProperty<T extends keyof Section>(
   items: Sections,
   id: string,

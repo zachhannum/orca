@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 import Color from 'color';
 import useStore from '../store/useStore';
-import { findItemDeep, removeItem } from './TreeView/utilities';
+import {
+  findItemDeep,
+  removeItem,
+  duplicateSection,
+} from './TreeView/utilities';
 import {
   SectionDeleteIcon,
   SectionDuplicateIcon,
@@ -101,6 +105,16 @@ const SectionContextMenu = () => {
     setShowMenu(false);
   };
 
+  const handleDuplicate = () => {
+    const { content, setContentArray, setAddingSections } = useStore.getState();
+    setAddingSections(true);
+    setContentArray(duplicateSection(id, content));
+    setTimeout(() => {
+      setAddingSections(false);
+    }, 10);
+    setShowMenu(false);
+  };
+
   const handleRename = () => {
     setRenameSelected(true);
     setShowMenu(false);
@@ -139,10 +153,12 @@ const SectionContextMenu = () => {
         <SectionRenameIcon {...itemIconProps} />
         Rename
       </StyledContextMenuItem>
-      <StyledContextMenuItem>
-        <SectionDuplicateIcon {...itemIconProps} />
-        Duplicate
-      </StyledContextMenuItem>
+      {!isFolder && (
+        <StyledContextMenuItem onClick={handleDuplicate}>
+          <SectionDuplicateIcon {...itemIconProps} />
+          Duplicate
+        </StyledContextMenuItem>
+      )}
       <StyledContextMenuItem onClick={handleDelete}>
         <SectionDeleteIcon {...itemIconProps} />
         Delete
