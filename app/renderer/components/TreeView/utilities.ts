@@ -266,17 +266,17 @@ export function setProperty<T extends keyof Section>(
 ) {
   const newItems = [] as Sections;
   for (let item of items) {
+    let newItem = { ...item };
     if (item.id === id) {
-      let newItem = { ...item };
       newItem[property] = setter(newItem[property]);
       newItems.push(newItem);
       continue;
     }
 
-    if (item.children.length) {
-      item.children = setProperty(item.children, id, property, setter);
+    if (newItem.children.length) {
+      newItem.children = setProperty(newItem.children, id, property, setter);
     }
-    newItems.push(item);
+    newItems.push(newItem);
   }
 
   return newItems;
