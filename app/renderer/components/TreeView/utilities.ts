@@ -226,7 +226,10 @@ export const addSectionAt = (
       newItem.children = addSectionAt(val, item.children, atId);
     }
     if (item.id === atId && newItem.canHaveChildren) {
-      newItem.children.push(val);
+      if(newItem.children.length === 0) {
+        newItem.children = [];
+      }
+      newItem.children.push({...val});
       newItem.collapsed = false;
     }
     newItems.push(newItem);

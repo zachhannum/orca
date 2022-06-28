@@ -1,6 +1,6 @@
 import { DefaultTheme } from 'styled-components';
 
-const sidebarOpacity = window.windowApi.os() === 'darwin' ? 0.3 : 1;
+const sidebarOpacity = window.windowApi.os() === 'darwin' ? 0.5 : 1;
 
 const theme: DefaultTheme = {
   mainBg: 'rgba(41, 41, 46, 1)',

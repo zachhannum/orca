@@ -1,6 +1,6 @@
 {
   "name": "calamus",
-  "version": "0.5.4-pre-alpha",
+  "version": "0.5.5-pre-alpha",
   "description": "Write and Publish Books with Ease",
   "main": "./dist/main/main.js",
   "author": {
