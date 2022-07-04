@@ -1,6 +1,8 @@
-import { Section, SectionType } from 'types/types';
+/* eslint-disable prefer-const */
+import { v4 as uuidv4 } from 'uuid';
+import { Section, SectionType, Sections } from 'types/types';
 import useStore from '../store/useStore';
-import { findItemDeep, changeItemId } from '../components/TreeView/utilities';
+import { findItemDeep, changeItemName } from '../components/TreeView/utilities';
 
 const saveProject = () => {
   const projectContents = {
@@ -22,26 +24,21 @@ const saveProject = () => {
   });
 };
 
-const updateSectionName = (oldName: string, newName: string): boolean => {
-  if (oldName !== newName) {
-    const { content, setContentArray } = useStore.getState();
-    const section = findItemDeep(content, oldName);
-    if (section) {
-      const { success, items } = changeItemId(content, oldName, newName);
-      if (success) {
-        setContentArray(items);
-        const { editorStateMap } = useStore.getState();
-        const editorState = editorStateMap.get(oldName);
-        if (editorState) {
-          useStore.getState().setEditorState(newName, editorState);
-          useStore.getState().removeEditorState(oldName);
-        }
-        if (useStore.getState().activeSectionId === oldName) {
-          useStore.getState().setActiveSectionId(newName);
-        }
+const updateSectionName = (id: string, newName: string): boolean => {
+  const { content, setContentArray } = useStore.getState();
+  const section = findItemDeep(content, id);
+  if (section) {
+    const { success, items } = changeItemName(content, id, newName);
+    if (success) {
+      setContentArray(items);
+      const { activeSectionId } = useStore.getState();
+      if (activeSectionId === id) {
+        useStore
+          .getState()
+          .setActiveSectionId({ id: activeSectionId, name: newName });
       }
-      return success;
     }
+    return success;
   }
   return false;
 };
@@ -52,19 +49,13 @@ const addNewSection = (
 ) => {
   const { content, setAddingSections } = useStore.getState();
   setAddingSections(true);
-  const defaultNameBase = 'Untitled';
-  let i = 1;
-  let name = defaultNameBase;
-  // eslint-disable-next-line @typescript-eslint/no-loop-func
-  while (findItemDeep(content, name) !== undefined) {
-    name = `${defaultNameBase}${i}`;
-    i += 1;
-  }
+  let name = 'Untitled';
   const sectionContent = {
-    id: name,
+    name,
+    id: uuidv4(),
     content: '',
-    type: type,
-    canHaveChildren: type === SectionType.folder ? true : false,
+    type,
+    canHaveChildren: type === SectionType.folder,
     collapsed: false,
     children: [],
   } as Section;
@@ -84,4 +75,29 @@ const addNewFolder = (atId?: string) => {
   addNewSection(atId, SectionType.folder);
 };
 
-export { saveProject, updateSectionName, addNewSection, addNewFolder };
+const addUuidToProject = (content: Sections): Sections => {
+  const newSections = [] as Sections;
+
+  for (let section of content) {
+    // Swaps the old id to name prop, and adds unique uuid as id
+    let newSection = {
+      ...section,
+      name: section.id,
+      id: uuidv4(),
+    } as Section;
+    if (section.children.length) {
+      newSection.children = addUuidToProject(section.children);
+    }
+    newSections.push(newSection);
+  }
+
+  return newSections;
+};
+
+export {
+  saveProject,
+  updateSectionName,
+  addNewSection,
+  addNewFolder,
+  addUuidToProject,
+};

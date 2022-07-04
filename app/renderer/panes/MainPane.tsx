@@ -69,11 +69,12 @@ const NoProjectHotkey = styled.div`
 const MainPane = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const activeSectionId = useStore((state) => state.activeSectionId);
+  const activeSectionName = useStore((state) => state.activeSectionName);
   return (
     <MainContent>
       {isProjectOpen && activeSectionId !== '' ? (
         <>
-          <SectionTitle>{activeSectionId}</SectionTitle>
+          <SectionTitle>{activeSectionName}</SectionTitle>
           <Editor />
         </>
       ) : (

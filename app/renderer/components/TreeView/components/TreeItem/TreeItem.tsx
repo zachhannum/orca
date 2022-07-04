@@ -13,7 +13,6 @@ import {
   NewFileIcon,
   NewFolderIcon,
 } from 'renderer/icons';
-import { updateSectionName } from 'renderer/utils/projectUtils';
 import useStore from 'renderer/store/useStore';
 import {
   SectionContextMenuClosedEvent,
@@ -21,7 +20,11 @@ import {
   SectionContextMenuEvent,
 } from 'types/types';
 import { IconButton } from 'renderer/controls';
-import { addNewFolder, addNewSection } from 'renderer/utils/projectUtils';
+import {
+  addNewFolder,
+  addNewSection,
+  updateSectionName,
+} from 'renderer/utils/projectUtils';
 
 const animateInFromCollapseKeframes = keyframes`
   from {
@@ -186,6 +189,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   handleProps?: any;
   indicator?: boolean;
   indentationWidth: number;
+  uuid: string;
   value: string;
   canHaveChildren: boolean;
   animateIndex: number;
@@ -224,6 +228,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       onCollapse,
       onRemove,
       style,
+      uuid,
       value,
       canHaveChildren,
       wrapperRef,
@@ -243,7 +248,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
 
     const handleContextClosed = (event: CustomEventInit) => {
       const { id, rename } = event.detail as SectionContextMenuClosedEventData;
-      if (id === value) {
+      if (id === uuid) {
         setContextOpen(false);
         if (rename) {
           setIsEditable(true);
@@ -260,10 +265,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ) => {
       event.preventDefault();
       setContextOpen(true);
-      x = x ? x : event.clientX;
-      y = y ? y : event.clientY;
+      x = x || event.clientX;
+      y = y || event.clientY;
       const contextEvent = new CustomEvent(SectionContextMenuEvent, {
-        detail: { id: value, x, y },
+        detail: { id: uuid, name: value, x, y },
       });
       document.addEventListener(
         SectionContextMenuClosedEvent,
@@ -274,10 +279,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
 
     const handleEdit = () => {
       textRef.current?.focus();
-      var range = document.createRange();
+      const range = document.createRange();
       if (textRef.current) {
         range.selectNodeContents(textRef.current);
-        var sel = window.getSelection();
+        const sel = window.getSelection();
         if (sel) {
           sel.removeAllRanges();
           sel.addRange(range);
@@ -290,7 +295,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           if (onCollapse) onCollapse();
         } else {
           const { setActiveSectionId } = useStore.getState();
-          setActiveSectionId(value);
+          setActiveSectionId({ id: uuid, name: value });
         }
       }
     };
@@ -298,7 +303,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       setIsEditable(false);
       const newValue = textRef.current?.innerText;
       if (newValue) {
-        const success = updateSectionName(value, newValue);
+        const success = updateSectionName(uuid, newValue);
         if (!success) {
           if (textRef.current) textRef.current.innerText = value;
         }
@@ -392,7 +397,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           disableSelection={disableSelection}
           disableInteraction={disableInteraction}
           isEditable={isEditable}
-          isActiveInEditor={activeSectionId === value}
+          isActiveInEditor={activeSectionId === uuid}
           canHaveChildren={canHaveChildren}
           contextOpen={contextOpen}
           {...dragProps}
@@ -426,25 +431,27 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             <NewSectionButtons>
               <IconButton
                 onClick={() => {
-                  addNewSection(value);
+                  addNewSection(uuid);
                 }}
-                iconSize={'15px'}
+                iconSize="15px"
                 ref={moreOptionsRef}
                 foregroundColor={theme.sidebarFgTextSecondary}
                 cssMixin={MoreOptionsStyle({
-                  hover: hover,
+                  hover,
                   edit: isEditable,
                 })}
               >
                 <NewFileIcon />
               </IconButton>
               <IconButton
-              onClick={() => {addNewFolder(value)}}
-                iconSize={'15px'}
+                onClick={() => {
+                  addNewFolder(uuid);
+                }}
+                iconSize="15px"
                 ref={moreOptionsRef}
                 foregroundColor={theme.sidebarFgTextSecondary}
                 cssMixin={MoreOptionsStyle({
-                  hover: hover,
+                  hover,
                   edit: isEditable,
                 })}
               >
@@ -463,7 +470,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
                 );
               }
             }}
-            iconSize={'18px'}
+            iconSize="18px"
             ref={moreOptionsRef}
             foregroundColor={theme.sidebarFgTextSecondary}
             cssMixin={MoreOptionsStyle({

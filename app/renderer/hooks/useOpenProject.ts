@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import useStore from '../store/useStore';
+import { addUuidToProject } from '../utils/projectUtils';
 import type { ProjectData } from '../../types/types';
 
 const useOpenProject = () => {
@@ -21,7 +22,7 @@ const useOpenProject = () => {
         setActiveSectionId,
         setPreviewEnabled,
         setPreviewContent,
-        clearEditorStateMap
+        clearEditorStateMap,
       } = useStore.getState();
       setProjectFolder(folderPath);
       setProjectFileName(fileName);
@@ -32,8 +33,16 @@ const useOpenProject = () => {
       setISBN(projectContent.ISBN);
       setLanguage(projectContent.language);
       setPublisher(projectContent.publisher);
-      setContentArray(projectContent.content);
-      setActiveSectionId('');
+      // Convert old project files to use name and uuid
+      if (
+        projectContent.content.length &&
+        !('name' in projectContent.content[0])
+      ) {
+        setContentArray(addUuidToProject(projectContent.content));
+      } else {
+        setContentArray(projectContent.content);
+      }
+      setActiveSectionId({ id: '', name: '' });
       clearEditorStateMap();
       setPreviewContent('');
       setPreviewEnabled(false);
