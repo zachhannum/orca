@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-return */
+/* eslint-disable consistent-return */
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
@@ -22,6 +24,8 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
+import useStore from 'renderer/store/useStore';
+import { Sections } from 'types/types';
 import {
   buildTree,
   flattenTree,
@@ -31,9 +35,7 @@ import {
   setProperty,
 } from './utilities';
 import type { FlattenedItem, SensorContext } from './types';
-import { Sections } from 'types/types';
 import { SortableTreeItem } from './components';
-import useStore from 'renderer/store/useStore';
 
 const measuring = {
   droppable: {
@@ -174,15 +176,18 @@ export function SortableTree({
     >
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
         {flattenedItems.map(
-          ({ id, canHaveChildren, collapsed, depth }, index) => (
+          ({ id, name, canHaveChildren, collapsed, depth }, index) => (
             <SortableTreeItem
               key={id}
               id={id}
               animateIndex={
-                isIndexBetweenStartAndEndAnimationIdx(index) ? index - animateInFromCollapseStartIdx : 0
+                isIndexBetweenStartAndEndAnimationIdx(index)
+                  ? index - animateInFromCollapseStartIdx
+                  : 0
               }
               animateIn={isIndexBetweenStartAndEndAnimationIdx(index)}
-              value={id}
+              uuid={id}
+              value={name}
               depth={id === activeId && projected ? projected.depth : depth}
               indentationWidth={indentationWidth}
               indicator={indicator}
@@ -207,7 +212,8 @@ export function SortableTree({
                 animateIn={false}
                 depth={activeItem.depth}
                 clone
-                value={activeId}
+                uuid={activeId}
+                value={activeItem.name}
                 indentationWidth={indentationWidth}
                 canHaveChildren={activeItem.canHaveChildren}
               />
@@ -287,7 +293,7 @@ export function SortableTree({
       setAnimateInFromCollapseStartIdx(startIdx);
       setAnimateInFromCollapseEndIdx(endIdx);
     } else {
-      //fallback in case item is collapsed before animation finishes
+      // fallback in case item is collapsed before animation finishes
       setAnimateInFromCollapseStartIdx(-1);
       setAnimateInFromCollapseEndIdx(-1);
       useStore.getState().resetAnimatingCollapseRefCount();
@@ -303,7 +309,7 @@ export function SortableTree({
     eventName: string,
     activeId: string,
     overId?: string
-  ) {
+  ): any {
     if (overId && projected) {
       if (eventName !== 'onDragEnd') {
         if (
@@ -312,6 +318,7 @@ export function SortableTree({
           overId === currentPosition.overId
         ) {
           return;
+          // eslint-disable-next-line no-else-return
         } else {
           setCurrentPosition({
             parentId: projected.parentId,
@@ -335,11 +342,13 @@ export function SortableTree({
         const nextItem = sortedItems[overIndex + 1];
         announcement = `${activeId} was ${movedVerb} before ${nextItem.id}.`;
       } else {
+        // eslint-disable-next-line no-lonely-if
         if (projected.depth > previousItem.depth) {
           announcement = `${activeId} was ${nestedVerb} under ${previousItem.id}.`;
         } else {
           let previousSibling: FlattenedItem | undefined = previousItem;
           while (previousSibling && projected.depth < previousSibling.depth) {
+            // eslint-disable-next-line prefer-destructuring
             const parentId: string | null = previousSibling.parentId;
             previousSibling = sortedItems.find(({ id }) => id === parentId);
           }

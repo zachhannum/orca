@@ -1,5 +1,5 @@
-import type {MutableRefObject} from 'react';
-import type {Section} from 'types/types';
+import type { MutableRefObject } from 'react';
+import type { Section } from 'types/types';
 
 export interface FlattenedItem extends Section {
   parentId: null | string;

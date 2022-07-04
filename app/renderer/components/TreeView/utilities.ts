@@ -1,61 +1,12 @@
+/* eslint-disable prefer-const */
 import { arrayMove } from '@dnd-kit/sortable';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Section, Sections, SectionType } from 'types/types';
 import type { FlattenedItem } from './types';
 
 function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);
-}
-
-export function getProjection(
-  items: FlattenedItem[],
-  activeId: string,
-  overId: string,
-  dragOffset: number,
-  indentationWidth: number
-) {
-  const overItemIndex = items.findIndex(({ id }) => id === overId);
-  const activeItemIndex = items.findIndex(({ id }) => id === activeId);
-  const activeItem = items[activeItemIndex];
-  const newItems = arrayMove(items, activeItemIndex, overItemIndex);
-  const previousItem = newItems[overItemIndex - 1];
-  const nextItem = newItems[overItemIndex + 1];
-  const dragDepth = getDragDepth(dragOffset, indentationWidth);
-  const projectedDepth = activeItem.depth + dragDepth;
-  const maxDepth = getMaxDepth({
-    previousItem,
-  });
-  const minDepth = getMinDepth({ nextItem });
-  let depth = projectedDepth;
-
-  if (projectedDepth >= maxDepth) {
-    depth = maxDepth;
-  } else if (projectedDepth < minDepth) {
-    depth = minDepth;
-  }
-
-  return { depth, maxDepth, minDepth, parentId: getParentId() };
-
-  function getParentId() {
-    if (depth === 0 || !previousItem) {
-      return null;
-    }
-
-    if (depth === previousItem.depth) {
-      return previousItem.parentId;
-    }
-
-    if (depth > previousItem.depth) {
-      return previousItem.id;
-    }
-
-    const newParent = newItems
-      .slice(0, overItemIndex)
-      .reverse()
-      .find((item) => item.depth === depth)?.parentId;
-
-    return newParent ?? null;
-  }
 }
 
 function getMaxDepth({ previousItem }: { previousItem: FlattenedItem }) {
@@ -94,31 +45,32 @@ export function flattenTree(items: Sections): FlattenedItem[] {
   return flatten(items);
 }
 
+export function findItem(items: Sections, itemId: string) {
+  return items.find(({ id }) => id === itemId);
+}
+
 export function buildTree(flattenedItems: FlattenedItem[]): Sections {
   const root: Section = {
     id: 'root',
+    name: 'root',
     children: [],
     canHaveChildren: true,
     content: '',
     type: SectionType.folder,
   };
-  const nodes: Record<string, Section> = { [root.id]: root };
+  const nodes: Record<string, Section> = { [root.name]: root };
   const items = flattenedItems.map((item) => ({ ...item, children: [] }));
 
   for (const item of items) {
-    const { id, children, canHaveChildren, content, type } = item;
+    const { id, name, children, canHaveChildren, content, type } = item;
     const parentId = item.parentId ?? root.id;
     const parent = nodes[parentId] ?? findItem(items, parentId);
 
-    nodes[id] = { id, children, canHaveChildren, content, type };
+    nodes[id] = { id, name, children, canHaveChildren, content, type };
     parent.children.push(item);
   }
 
   return root.children;
-}
-
-export function findItem(items: Sections, itemId: string) {
-  return items.find(({ id }) => id === itemId);
 }
 
 export function findItemDeep(
@@ -148,15 +100,14 @@ export function removeItem(items: Sections, id: string) {
   const newItems = [] as Sections;
 
   for (let item of items) {
-    if (item.id === id) {
-      continue;
-    }
-    let newItem = { ...item };
-    if (item.children.length) {
-      newItem.children = removeItem(item.children, id);
-    }
+    if (item.id !== id) {
+      let newItem = { ...item };
+      if (item.children.length) {
+        newItem.children = removeItem(item.children, id);
+      }
 
-    newItems.push(newItem);
+      newItems.push(newItem);
+    }
   }
 
   return newItems;
@@ -171,45 +122,39 @@ export const updateSectionContentDeep = (
   for (let item of content) {
     if (item.id === id) {
       newItems.push({ ...item, content: newContent });
-      continue;
+    } else {
+      let newItem = { ...item };
+      if (item.children.length) {
+        newItem.children = updateSectionContentDeep(
+          item.children,
+          id,
+          newContent
+        );
+      }
+      newItems.push(newItem);
     }
-    let newItem = { ...item };
-    if (item.children.length) {
-      newItem.children = updateSectionContentDeep(
-        item.children,
-        id,
-        newContent
-      );
-    }
-    newItems.push(newItem);
   }
 
   return newItems;
 };
 
-export const changeItemId = (
+export const changeItemName = (
   items: Sections,
   id: string,
-  newId: string
+  newName: string
 ): { success: boolean; items: Sections } => {
-  if (findItemDeep(items, newId)) {
-    return {
-      success: false,
-      items,
-    };
-  }
   const newItems = [] as Sections;
   for (let item of items) {
     if (item.id === id) {
-      newItems.push({ ...item, id: newId });
-      continue;
+      newItems.push({ ...item, name: newName });
+    } else {
+      let newItem = { ...item };
+      if (item.children.length) {
+        const childrenItems = changeItemName(item.children, id, newName).items;
+        newItem.children = childrenItems;
+      }
+      newItems.push(newItem);
     }
-    let newItem = { ...item };
-    if (item.children.length) {
-      const { items } = changeItemId(item.children, id, newId);
-      newItem.children = items;
-    }
-    newItems.push(newItem);
   }
   return { success: true, items: newItems };
 };
@@ -226,10 +171,10 @@ export const addSectionAt = (
       newItem.children = addSectionAt(val, item.children, atId);
     }
     if (item.id === atId && newItem.canHaveChildren) {
-      if(newItem.children.length === 0) {
+      if (newItem.children.length === 0) {
         newItem.children = [];
       }
-      newItem.children.push({...val});
+      newItem.children.push({ ...val });
       newItem.collapsed = false;
     }
     newItems.push(newItem);
@@ -246,13 +191,7 @@ export const duplicateSection = (id: string, content: Sections) => {
     }
     newItems.push(newItem);
     if (item.id === id) {
-      let i = 1;
-      let duplicateId = `${id}${i}`;
-      while (findItemDeep(content, duplicateId) !== undefined) {
-        duplicateId = `${id}${i}`;
-        i += 1;
-      }
-      newItems.push({ ...newItem, id: duplicateId });
+      newItems.push({ ...newItem, id: uuidv4() });
     }
   }
   return newItems;
@@ -270,13 +209,12 @@ export function setProperty<T extends keyof Section>(
     if (item.id === id) {
       newItem[property] = setter(newItem[property]);
       newItems.push(newItem);
-      continue;
+    } else {
+      if (newItem.children.length) {
+        newItem.children = setProperty(newItem.children, id, property, setter);
+      }
+      newItems.push(newItem);
     }
-
-    if (newItem.children.length) {
-      newItem.children = setProperty(newItem.children, id, property, setter);
-    }
-    newItems.push(newItem);
   }
 
   return newItems;
@@ -315,4 +253,55 @@ export function removeChildrenOf(items: FlattenedItem[], ids: string[]) {
 
     return true;
   });
+}
+
+export function getProjection(
+  items: FlattenedItem[],
+  activeId: string,
+  overId: string,
+  dragOffset: number,
+  indentationWidth: number
+) {
+  const overItemIndex = items.findIndex(({ id }) => id === overId);
+  const activeItemIndex = items.findIndex(({ id }) => id === activeId);
+  const activeItem = items[activeItemIndex];
+  const newItems = arrayMove(items, activeItemIndex, overItemIndex);
+  const previousItem = newItems[overItemIndex - 1];
+  const nextItem = newItems[overItemIndex + 1];
+  const dragDepth = getDragDepth(dragOffset, indentationWidth);
+  const projectedDepth = activeItem.depth + dragDepth;
+  const maxDepth = getMaxDepth({
+    previousItem,
+  });
+  const minDepth = getMinDepth({ nextItem });
+  let depth = projectedDepth;
+
+  if (projectedDepth >= maxDepth) {
+    depth = maxDepth;
+  } else if (projectedDepth < minDepth) {
+    depth = minDepth;
+  }
+
+  function getParentId() {
+    if (depth === 0 || !previousItem) {
+      return null;
+    }
+
+    if (depth === previousItem.depth) {
+      return previousItem.parentId;
+    }
+
+    if (depth > previousItem.depth) {
+      return previousItem.id;
+    }
+
+    const newParent = newItems
+      .slice(0, overItemIndex)
+      .reverse()
+      .find((item) => item.depth === depth)?.parentId;
+
+    return newParent ?? null;
+  }
+
+  return { depth, maxDepth, minDepth, parentId: getParentId() };
 }

@@ -4,8 +4,8 @@ import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { searchKeymap } from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
-import ScrollContainer from './ScrollContainer';
 import useStore from 'renderer/store/useStore';
+import ScrollContainer from './ScrollContainer';
 import { findItemDeep } from '../TreeView/utilities';
 import {
   theme,
@@ -72,7 +72,7 @@ const Editor = () => {
 
   /* Set Active Section Id */
   useEffect(() => {
-    if (activeSectionId != '' && editorContainerRef.current) {
+    if (activeSectionId !== '' && editorContainerRef.current) {
       const { content, setPreviewContent } = useStore.getState();
       const sectionContent = findItemDeep(content, activeSectionId)?.content;
       const editorContent = sectionContent === undefined ? '' : sectionContent;

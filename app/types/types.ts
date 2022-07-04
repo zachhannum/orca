@@ -16,11 +16,17 @@ export enum SectionType {
 /* Section is a data structure that represents section content in a project */
 export type Section = {
   id: string;
+  name: string;
   content: string;
   type: SectionType;
   canHaveChildren: boolean;
   children: Section[];
   collapsed?: boolean;
+};
+
+export type SectionIdentifier = {
+  id: string;
+  name: string;
 };
 
 export type Sections = Section[];
@@ -46,21 +52,23 @@ export type ProjectData = {
 
 /* Context Menu event types */
 export const SectionContextMenuEvent = 'section-context-menu-event';
-export const SectionContextMenuClosedEvent = 'section-context-menu-closed-event';
+export const SectionContextMenuClosedEvent =
+  'section-context-menu-closed-event';
 /* Event Data for Context Menu Events */
 export type SectionContextMenuEventData = {
   id: string;
+  name: string;
   x: number;
   y: number;
 };
 export type SectionContextMenuClosedEventData = {
   id: string;
   rename: boolean;
-}
+};
 
-/* Content needed for generating a Book PDF*/
+/* Content needed for generating a Book PDF */
 export type PagedBookContents = {
   html: string;
   css: string;
   title: string;
-}
+};

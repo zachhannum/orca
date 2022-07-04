@@ -1,9 +1,12 @@
 import { GetState, SetState } from 'zustand';
 import { produce } from 'immer';
-import { updateSectionContentDeep, addSectionAt } from '../../components/TreeView/utilities';
-import type { CalamusState } from '../useStore';
-import type { Project, Section } from 'types/types';
 import { EditorState } from '@codemirror/state';
+import type { Project, Section, SectionIdentifier } from 'types/types';
+import {
+  updateSectionContentDeep,
+  addSectionAt,
+} from '../../components/TreeView/utilities';
+import type { CalamusState } from '../useStore';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
@@ -26,7 +29,8 @@ export interface ProjectSlice extends Project {
   addingSections: boolean;
   setAddingSections: (val: boolean) => void;
   activeSectionId: string;
-  setActiveSectionId: (id: string) => void;
+  activeSectionName: string;
+  setActiveSectionId: (id: SectionIdentifier) => void;
   previewContent: string;
   setPreviewContent: (txt: string) => void;
   editorStateMap: Map<string, EditorState>;
@@ -96,13 +100,14 @@ const createProjectSlice = (
       })
     ),
   addNewSectionAt: (val: Section, atId: string) => {
-    set((state) => ({content: addSectionAt(val, state.content, atId)}))
+    set((state) => ({ content: addSectionAt(val, state.content, atId) }));
   },
   addingSections: false,
   setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),
   activeSectionId: '',
-  setActiveSectionId: (id: string) => {
-    set(() => ({ activeSectionId: id }));
+  activeSectionName: '',
+  setActiveSectionId: (id: SectionIdentifier) => {
+    set(() => ({ activeSectionId: id.id, activeSectionName: id.name }));
   },
   previewContent: '',
   setPreviewContent: (txt: string) => {
