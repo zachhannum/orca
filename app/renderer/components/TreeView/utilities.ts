@@ -182,6 +182,17 @@ export const addSectionAt = (
   return newItems;
 };
 
+const duplicationSectionChildren = (items: Sections): Sections => {
+  const newItems = [] as Sections;
+  for (let item of items) {
+    let newItem = { ...item, id: uuidv4() };
+    if (item.children.length) {
+      newItem.children = duplicationSectionChildren(item.children);
+    }
+    newItems.push(newItem);
+  }
+  return newItems;
+};
 export const duplicateSection = (id: string, content: Sections) => {
   const newItems = [] as Sections;
   for (let item of content) {
@@ -191,7 +202,11 @@ export const duplicateSection = (id: string, content: Sections) => {
     }
     newItems.push(newItem);
     if (item.id === id) {
-      newItems.push({ ...newItem, id: uuidv4() });
+      newItems.push({
+        ...newItem,
+        id: uuidv4(),
+        children: duplicationSectionChildren(newItem.children),
+      });
     }
   }
   return newItems;
