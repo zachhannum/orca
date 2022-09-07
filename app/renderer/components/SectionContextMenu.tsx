@@ -154,12 +154,10 @@ const SectionContextMenu = () => {
         <SectionRenameIcon {...itemIconProps} />
         Rename
       </StyledContextMenuItem>
-      {!isFolder && (
-        <StyledContextMenuItem onClick={handleDuplicate}>
-          <SectionDuplicateIcon {...itemIconProps} />
-          Duplicate
-        </StyledContextMenuItem>
-      )}
+      <StyledContextMenuItem onClick={handleDuplicate}>
+        <SectionDuplicateIcon {...itemIconProps} />
+        Duplicate
+      </StyledContextMenuItem>
       <StyledContextMenuItem onClick={handleDelete}>
         <SectionDeleteIcon {...itemIconProps} />
         Delete
