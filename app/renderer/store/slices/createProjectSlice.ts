@@ -10,11 +10,13 @@ import type { CalamusState } from '../useStore';
 
 export interface ProjectSlice extends Project {
   isProjectOpen: boolean;
+  setIsProjectOpen: (val: boolean) => void;
+  isProjectDirty: boolean;
+  setIsProjectDirty: (val: boolean) => void;
   projectFolder: string;
   setProjectFolder: (val: string) => void;
   projectFileName: string;
   setProjectFileName: (val: string) => void;
-  setIsProjectOpen: (val: boolean) => void;
   setBookTitle: (val: string) => void;
   setBookSubTitle: (val: string) => void;
   setAuthorName: (val: string) => void;
@@ -48,59 +50,68 @@ const createProjectSlice = (
   setIsProjectOpen: (val: boolean) => {
     set(() => ({ isProjectOpen: val }));
   },
+  isProjectDirty: false,
+  setIsProjectDirty: (val: boolean) => {
+    set(() => ({ isProjectDirty: val }));
+  },
   projectFolder: '',
   setProjectFolder: (val: string) => {
-    set(() => ({ projectFolder: val }));
+    set(() => ({ projectFolder: val, isProjectDirty: true }));
   },
   projectFileName: '',
   setProjectFileName: (val: string) => {
-    set(() => ({ projectFileName: val }));
+    set(() => ({ projectFileName: val, isProjectDirty: true }));
   },
   bookTitle: '',
   setBookTitle: (val: string) => {
-    set(() => ({ bookTitle: val }));
+    set(() => ({ bookTitle: val, isProjectDirty: true }));
   },
   bookSubTitle: '',
   setBookSubTitle: (val: string) => {
-    set(() => ({ bookSubTitle: val }));
+    set(() => ({ bookSubTitle: val, isProjectDirty: true }));
   },
   authorName: '',
   setAuthorName: (val: string) => {
-    set(() => ({ authorName: val }));
+    set(() => ({ authorName: val, isProjectDirty: true }));
   },
   seriesName: '',
   setSeriesName: (val: string) => {
-    set(() => ({ seriesName: val }));
+    set(() => ({ seriesName: val, isProjectDirty: true }));
   },
   ISBN: '',
   setISBN: (val: string) => {
-    set(() => ({ ISBN: val }));
+    set(() => ({ ISBN: val, isProjectDirty: true }));
   },
   language: '',
   setLanguage: (val: string) => {
-    set(() => ({ language: val }));
+    set(() => ({ language: val, isProjectDirty: true }));
   },
   publisher: '',
   setPublisher: (val: string) => {
-    set(() => ({ publisher: val }));
+    set(() => ({ publisher: val, isProjectDirty: true }));
   },
   content: [],
   setContentArray: (val: Section[]) => {
-    set(() => ({ content: val }));
+    set(() => ({ content: val, isProjectDirty: true }));
   },
   updateSectionContent: (id: string, newContent: string) => {
     set((state) => ({
       content: updateSectionContentDeep(state.content, id, newContent),
+      isProjectDirty: true,
     }));
   },
   addNewSection: (val: Section) =>
     set(
       produce((state: CalamusState) => {
         state.content.push(val);
+        state.isProjectDirty = true;
       })
     ),
   addNewSectionAt: (val: Section, atId: string) => {
-    set((state) => ({ content: addSectionAt(val, state.content, atId) }));
+    set((state) => ({
+      content: addSectionAt(val, state.content, atId),
+      isProjectDirty: true,
+    }));
   },
   addingSections: false,
   setAddingSections: (val: boolean) => set(() => ({ addingSections: val })),

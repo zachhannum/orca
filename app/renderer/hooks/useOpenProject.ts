@@ -23,6 +23,7 @@ const useOpenProject = () => {
         setPreviewEnabled,
         setPreviewContent,
         clearEditorStateMap,
+        setIsProjectDirty,
       } = useStore.getState();
       setProjectFolder(folderPath);
       setProjectFileName(fileName);
@@ -46,7 +47,8 @@ const useOpenProject = () => {
       clearEditorStateMap();
       setPreviewContent('');
       setPreviewEnabled(false);
-      setIsProjectOpen(true);
+      setIsProjectOpen(true); // We set it false here so that it can be set to true in useProjectMarkDirty
+      setIsProjectDirty(false);
     });
   });
 };

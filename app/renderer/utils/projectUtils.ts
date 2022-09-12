@@ -22,6 +22,8 @@ const saveProject = () => {
     folderPath,
     fileName,
   });
+  const { setIsProjectDirty } = useStore.getState();
+  setIsProjectDirty(false);
 };
 
 const updateSectionName = (id: string, newName: string): boolean => {

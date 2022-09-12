@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Color from 'color';
 import { Button } from '../controls';
@@ -69,12 +70,20 @@ const SidebarProjectContent = () => {
   const bookTitle = useStore((state) => state.bookTitle);
   const authorName = useStore((state) => state.authorName);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
+  const isProjectDirty = useStore((state) => state.isProjectDirty);
+  const [projectStatus, setProjectStatus] = useState('Good!');
+
+  useEffect(() => {
+    setProjectStatus(isProjectDirty ? 'Dirty!' : 'Good!');
+  }, [isProjectDirty]);
+
   return (
     <StyledSidebarProjectContent>
       {isProjectOpen ? (
         <>
           <StyledTitleBlock>
             <StyledTitle>{bookTitle}</StyledTitle>
+            <StyledTitle>{projectStatus}</StyledTitle>
             <StyledAuthorName>{authorName}</StyledAuthorName>
           </StyledTitleBlock>
           <StyledContentBlock>
