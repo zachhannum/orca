@@ -122,6 +122,14 @@ const createWindow = async () => {
     mainWindow?.webContents.send('window', 'unmaximize');
   });
 
+  mainWindow.on('enter-full-screen', () => {
+    mainWindow?.webContents.send('window', 'maximize');
+  });
+
+  mainWindow.on('leave-full-screen', () => {
+    mainWindow?.webContents.send('window', 'unmaximize');
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });

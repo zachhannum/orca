@@ -5,6 +5,7 @@ const useIsWindowMaxized = (): boolean => {
 
   useEffect(() => {
     window.electron.ipcRenderer.on('window', (arg) => {
+      console.log(arg);
       if (arg === 'maximize') {
         setIsWindowMaximized(true);
       } else if (arg === 'unmaximize') {
