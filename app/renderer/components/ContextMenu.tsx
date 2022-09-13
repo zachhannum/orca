@@ -156,11 +156,9 @@ const ContextMenu = ({
 
   return (
     <StyledRoot ref={root}>
-      {/* {visible && ( */}
       <StyledContextMenu ref={menuRef} show={showMenu} visible={visible}>
         {children}
       </StyledContextMenu>
-      {/* )} */}
     </StyledRoot>
   );
 };

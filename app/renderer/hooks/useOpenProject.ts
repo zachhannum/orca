@@ -47,7 +47,7 @@ const useOpenProject = () => {
       clearEditorStateMap();
       setPreviewContent('');
       setPreviewEnabled(false);
-      setIsProjectOpen(true); // We set it false here so that it can be set to true in useProjectMarkDirty
+      setIsProjectOpen(true);
       setIsProjectDirty(false);
     });
   });
