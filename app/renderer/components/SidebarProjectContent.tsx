@@ -4,6 +4,7 @@ import Color from 'color';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
 import SidebarProjectSections from './SidebarProjectSections';
+import SaveIndicator from './SaveIndicator';
 
 const StyledSidebarProjectContent = styled.div`
   display: flex;
@@ -40,13 +41,20 @@ const StyledNoProjectBlock = styled.div`
   flex-grow: 1;
 `;
 
-const StyledTitle = styled.div`
+const StyledTitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StyledTitle = styled.span`
   color: ${(p) => p.theme.sidebarFgText};
+  padding-right: 10px;
   font-weight: 500; //semi-bold
   font-size: 1.1em;
 `;
 
-const StyledAuthorName = styled.div`
+const StyledAuthorName = styled.span`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
   font-weight: 500;
   font-size: 1em;
@@ -70,20 +78,16 @@ const SidebarProjectContent = () => {
   const bookTitle = useStore((state) => state.bookTitle);
   const authorName = useStore((state) => state.authorName);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
-  const isProjectDirty = useStore((state) => state.isProjectDirty);
-  const [projectStatus, setProjectStatus] = useState('Good!');
-
-  useEffect(() => {
-    setProjectStatus(isProjectDirty ? 'Dirty!' : 'Good!');
-  }, [isProjectDirty]);
 
   return (
     <StyledSidebarProjectContent>
       {isProjectOpen ? (
         <>
           <StyledTitleBlock>
-            <StyledTitle>{bookTitle}</StyledTitle>
-            <StyledTitle>{projectStatus}</StyledTitle>
+            <StyledTitleContainer>
+              <StyledTitle>{bookTitle}</StyledTitle>
+              <SaveIndicator />
+            </StyledTitleContainer>
             <StyledAuthorName>{authorName}</StyledAuthorName>
           </StyledTitleBlock>
           <StyledContentBlock>
