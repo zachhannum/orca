@@ -23,6 +23,7 @@ const useOpenProject = () => {
         setPreviewEnabled,
         setPreviewContent,
         clearEditorStateMap,
+        setIsProjectDirty,
       } = useStore.getState();
       setProjectFolder(folderPath);
       setProjectFileName(fileName);
@@ -47,6 +48,7 @@ const useOpenProject = () => {
       setPreviewContent('');
       setPreviewEnabled(false);
       setIsProjectOpen(true);
+      setIsProjectDirty(false);
     });
   });
 };

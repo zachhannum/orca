@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
 import {
@@ -13,7 +13,7 @@ import {
   HelpIcon,
   SettingsIcon,
 } from '../icons';
-import { useToggle } from '../hooks';
+import { useIsWindowMaxized, useToggle } from '../hooks';
 import useStore from '../store/useStore';
 
 const SidebarTopContainer = styled.div`
@@ -86,6 +86,13 @@ const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
   const setSidebarOpen = useStore((state) => state.setSidebarOpen);
+  const isWindowMaximized = useIsWindowMaxized();
+  const sidebarBackground = useMemo(() => {
+    if (isWindowMaximized) {
+      return Color(theme.sidebarBg).alpha(1).hsl().toString();
+    }
+    return theme.sidebarBg;
+  }, [isWindowMaximized]);
 
   useEffect(() => {
     setSidebarOpen(open);
@@ -95,7 +102,7 @@ const SidebarPane = () => {
     <Pane
       enabled={open}
       defaultWidth="250px"
-      backgroundColor={theme.sidebarBg}
+      backgroundColor={sidebarBackground}
       styleMixin={paneStyleMixin}
     >
       <SidebarTopContainer>

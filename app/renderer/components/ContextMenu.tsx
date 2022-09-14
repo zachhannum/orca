@@ -9,7 +9,8 @@ const StyledRoot = styled.div`
 `;
 
 type StyledContextMenuProps = {
-  show?: boolean;
+  show: boolean;
+  visible: boolean;
 };
 const onOpenKeyframes = keyframes`
  from {
@@ -25,8 +26,11 @@ const onOpenKeyframes = keyframes`
 const StyledContextMenu = styled.div<StyledContextMenuProps>`
   opacity: ${(p) => (p.show ? '1' : '0')};
   transform: ${(p) => (p.show ? 'scale(1)' : 'scale(.7)')};
+  height: ${(p) => (p.visible ? 'inherit' : '0')};
+  width: ${(p) => (p.visible ? 'inherit' : '0')};
   animation: ${onOpenKeyframes} 100ms ease-in-out alternate;
-  background-color: ${(p) => Color(p.theme.contextMenuBg).lighten(0.2).hsl().string()};
+  background-color: ${(p) =>
+    Color(p.theme.contextMenuBg).lighten(0.2).hsl().string()};
   border: ${(p) => p.theme.contextMenuDivider} 1px solid;
   backdrop-filter: blur(40px);
   border-radius: 10px;
@@ -152,11 +156,9 @@ const ContextMenu = ({
 
   return (
     <StyledRoot ref={root}>
-      {visible && (
-        <StyledContextMenu ref={menuRef} show={showMenu}>
-          {children}
-        </StyledContextMenu>
-      )}
+      <StyledContextMenu ref={menuRef} show={showMenu} visible={visible}>
+        {children}
+      </StyledContextMenu>
     </StyledRoot>
   );
 };
