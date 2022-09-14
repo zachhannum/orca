@@ -17,6 +17,7 @@ import {
 } from '../icons';
 import useStore from '../store/useStore';
 import { saveProject } from '../utils/projectUtils';
+import { useCommandKeyString } from '../hooks';
 
 const StyledMenuDivider = styled.div`
   height: 2px;
@@ -29,6 +30,7 @@ const MoreOptionsSidebarMenu = () => {
   const theme = useTheme();
   const [showMenu, setShowMenu] = useState(false);
   const buttonRef = useRef<HTMLAnchorElement>(null);
+  const commandKeyString = useCommandKeyString();
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const activeSectionId = useStore((state) => state.activeSectionId);
   const previewEnabled = useStore((state) => state.previewEnabled);
@@ -75,7 +77,7 @@ const MoreOptionsSidebarMenu = () => {
           <MoreOptionsSidebarItem
             hover
             iconElement={<NewBookIcon />}
-            rightElement={<span>⌘N</span>}
+            rightElement={<span>{commandKeyString}N</span>}
             label="New Book"
             onClick={() => {
               setShowMenu(false);
@@ -85,7 +87,7 @@ const MoreOptionsSidebarMenu = () => {
           <MoreOptionsSidebarItem
             hover
             iconElement={<OpenBookIcon />}
-            rightElement={<span>⌘O</span>}
+            rightElement={<span>{commandKeyString}O</span>}
             label="Open Book"
             onClick={() => {
               setShowMenu(false);
@@ -97,7 +99,7 @@ const MoreOptionsSidebarMenu = () => {
               <MoreOptionsSidebarItem
                 hover
                 iconElement={<SaveIcon />}
-                rightElement={<span>⌘S</span>}
+                rightElement={<span>{commandKeyString}S</span>}
                 label="Save Book"
                 onClick={() => {
                   if (isProjectOpen) {
@@ -109,7 +111,7 @@ const MoreOptionsSidebarMenu = () => {
               <MoreOptionsSidebarItem
                 hover
                 iconElement={<GenerateBookIcon />}
-                rightElement={<span>⌘G</span>}
+                rightElement={<span>{commandKeyString}G</span>}
                 label="Generate Book"
                 onClick={() => {
                   setShowMenu(false);

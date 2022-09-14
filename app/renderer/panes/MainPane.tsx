@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Color from 'color';
 import { Editor } from '../components';
 import useStore from '../store/useStore';
+import { useCommandKeyString } from '../hooks';
 
 const MainContent = styled.div`
   --top-padding: calc(
@@ -70,6 +71,7 @@ const MainPane = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const activeSectionId = useStore((state) => state.activeSectionId);
   const activeSectionName = useStore((state) => state.activeSectionName);
+  const commandKeyString = useCommandKeyString();
   return (
     <MainContent>
       {isProjectOpen && activeSectionId !== '' ? (
@@ -86,11 +88,11 @@ const MainPane = () => {
           <NoProjectHotkeys>
             <NoProjectHotkey>
               <span>Open a project</span>
-              <span>⌘O</span>
+              <span>{commandKeyString}O</span>
             </NoProjectHotkey>
             <NoProjectHotkey>
               <span>Start a new project</span>
-              <span>⌘N</span>
+              <span>{commandKeyString}N</span>
             </NoProjectHotkey>
           </NoProjectHotkeys>
         </NoProjectDiv>

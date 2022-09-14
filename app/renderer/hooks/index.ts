@@ -7,3 +7,5 @@ export { default as useOnWheel } from './useOnWheel';
 export { default as useOnClickOutside } from './useOnClickOutside';
 export { default as useIsHovering } from './useIsHovering';
 export { default as useOnBookPdfGenerated } from './useOnBookPdfGenerated';
+export { default as useProjectHotkeys } from './useProjectHotkeys';
+export { default as useCommandKeyString } from './useCommandKeyString';
