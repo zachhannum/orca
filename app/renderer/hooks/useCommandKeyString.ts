@@ -1,5 +1,5 @@
 const useCommandKeyString = () => {
-  return window.windowApi.os() === 'darwin' ? '⌘' : 'Ctrl';
+  return window.windowApi.os() === 'darwin' ? '⌘' : 'Ctrl+';
 };
 
 export default useCommandKeyString;
