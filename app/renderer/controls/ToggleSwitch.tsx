@@ -7,6 +7,7 @@ type ToggleSwitchProps = {
   altColor?: boolean;
   onChange?: (value: boolean) => void;
   disabled?: boolean;
+  value?: boolean | undefined;
 };
 
 type StyledToggleBaseProps = {
@@ -73,6 +74,7 @@ const ToggleSwitch = ({
   altColor,
   disabled = false,
   onChange,
+  value = undefined,
 }: ToggleSwitchProps) => {
   const [enabled, toggleValue] = useToggle(defaultValue);
   const [animate, setAnimate] = useState(false);
@@ -86,6 +88,14 @@ const ToggleSwitch = ({
       }, 300);
     }
   }, [enabled, onChange, isMount, disabled]);
+
+  useEffect(() => {
+    if (value !== undefined) {
+      if (value !== enabled) {
+        toggleValue();
+      }
+    }
+  }, [value]);
 
   const handleToggleClicked = () => {
     if (!disabled) toggleValue();
