@@ -122,7 +122,7 @@ const MoreOptionsSidebarMenu = () => {
                 iconElement={<PreviewIcon />}
                 rightElement={
                   <ToggleSwitch
-                    altColor
+                    type="alt"
                     onChange={setPreviewEnabled}
                     defaultValue={previewEnabled}
                     disabled={activeSectionId === ''}

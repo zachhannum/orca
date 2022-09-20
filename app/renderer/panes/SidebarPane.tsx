@@ -6,7 +6,7 @@ import {
   Pane,
   SidebarProjectContent,
 } from '../components';
-import { IconButton } from '../controls';
+import { IconButton, TwoOptionSlider } from '../controls';
 import {
   SidebarOpenIcon,
   SidebarClosedIcon,
@@ -86,6 +86,7 @@ const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
   const setSidebarOpen = useStore((state) => state.setSidebarOpen);
+  const isProjectOpen = useStore((state) => state.isProjectOpen);
   const isWindowMaximized = useIsWindowMaxized();
   const sidebarBackground = useMemo(() => {
     if (isWindowMaximized) {
@@ -102,11 +103,16 @@ const SidebarPane = () => {
     <Pane
       enabled={open}
       defaultWidth="250px"
+      minWidth={225}
       backgroundColor={sidebarBackground}
       styleMixin={paneStyleMixin}
     >
       <SidebarTopContainer>
-        <div /* placeholder */ />
+        {isProjectOpen ? (
+          <TwoOptionSlider optionOne="Write" optionTwo="Publish" />
+        ) : (
+          <div />
+        )}
         <SidebarToggleButtonDiv open={open}>
           <IconButton
             iconSize="22px"

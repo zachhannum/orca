@@ -15,10 +15,14 @@ const theme: DefaultTheme = {
   },
   dropdownText: 'rgba(240, 240, 248, 1)',
   dropdownArrow: 'rgba(240, 240, 248, 1)',
-  optionSliderBg: 'rgba(70, 70, 79, 1)',
-  optionSliderAltBg: 'rgba(117, 117, 128, 1)',
-  optionSliderFg: 'rgba(50, 50, 56, 1)',
-  optionSliderAltFg: 'rgba(78, 78, 87, 1)',
+  optionSliderBg: {
+    default: 'rgba(70, 70, 79, 1)',
+    alt: 'rgba(117, 117, 128, 1)',
+  },
+  optionSliderFg: {
+    default: 'rgba(50, 50, 56, 1)',
+    alt: 'rgba(78, 78, 87, 1)',
+  },
   optionSliderText: 'rgba(240, 240, 248, 1)',
   buttonPrimaryBg: 'rgba(96, 96, 255, 1)',
   buttonPrimaryText: 'rgba(240, 240, 248, 1)',

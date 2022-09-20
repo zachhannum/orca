@@ -129,6 +129,10 @@ const ContextMenu = ({
   };
 
   useEffect(() => {
+    setPosition();
+  }, []);
+
+  useEffect(() => {
     if (showMenu) {
       setPosition();
     }

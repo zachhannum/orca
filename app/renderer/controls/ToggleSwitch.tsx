@@ -1,127 +1,42 @@
-import { useEffect, useState } from 'react';
-import styled, { keyframes, css } from 'styled-components';
-import { useToggle, useIsMount } from '../hooks';
+import { useTheme } from 'styled-components';
+import SwitchBase from './SwitchBase';
 
 type ToggleSwitchProps = {
   defaultValue?: boolean;
-  altColor?: boolean;
+  type?: 'alt' | 'default';
   onChange?: (value: boolean) => void;
   disabled?: boolean;
   value?: boolean | undefined;
 };
 
-type StyledToggleBaseProps = {
-  type: string;
-  enabled: boolean;
-  disabled: boolean;
-};
-
-const StyledToggleBase = styled.div<StyledToggleBaseProps>`
-  cursor: ${(p) => (p.disabled ? 'auto' : 'pointer')};
-  height: 15px;
-  width: 28px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: ${(p) =>
-    p.enabled ? p.theme.toggleOnBg : p.theme.toggleOffBg[p.type]};
-  border-radius: 8px;
-  overflow: hidden;
-  user-select: none;
-  transition: all 100ms ease-in-out;
-  opacity: ${(p) => (p.disabled ? '0.5' : '1')};
-`;
-
-type StyledToggleThumbProps = {
-  type: string;
-  enabled: boolean;
-  animate: boolean;
-};
-
-const animateThumb = keyframes`
-  0% {
-    width: 11px;
-  }
-  50% {
-    width: 25px;
-  }
-  100% {
-    width: 11px;
-  }
-`;
-
-const StyledToggleThumb = styled.div<StyledToggleThumbProps>`
-  height: 11px;
-  width: 11px;
-  border-radius: 8px;
-  margin: 4px 2px;
-  ${(p) =>
-    p.animate &&
-    css`
-      animation: ${animateThumb} 200ms ease-in-out;
-    `}
-
-  margin-left: ${(p) => (p.enabled ? '15px' : '2px')};
-  background-color: ${(p) =>
-    p.enabled ? p.theme.toggleOnFg : p.theme.toggleOffFg[p.type]};
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-  user-select: none;
-  transition: all 200ms ease-in-out;
-`;
-
 const ToggleSwitch = ({
   defaultValue,
-  altColor,
+  type = 'default',
   disabled = false,
   onChange,
   value = undefined,
 }: ToggleSwitchProps) => {
-  const [enabled, toggleValue] = useToggle(defaultValue);
-  const [animate, setAnimate] = useState(false);
-  const isMount = useIsMount();
-  useEffect(() => {
-    if (!isMount && !disabled) {
-      setAnimate(true);
-      if (onChange) onChange(enabled);
-      setTimeout(() => {
-        setAnimate(false);
-      }, 300);
-    }
-  }, [enabled, onChange, isMount, disabled]);
-
-  useEffect(() => {
-    if (value !== undefined) {
-      if (value !== enabled) {
-        toggleValue();
-      }
-    }
-  }, [value]);
-
-  const handleToggleClicked = () => {
-    if (!disabled) toggleValue();
-  };
+  const theme = useTheme();
 
   return (
-    <StyledToggleBase
-      enabled={enabled}
+    <SwitchBase
+      horizontalPadding={2}
+      thumbHeight={11}
+      thumbWidth={11}
+      thumbBorderRadius={6}
+      thumbCheckedColor={theme.toggleOnFg}
+      thumbUncheckedColor={theme.toggleOffFg[type]}
+      baseHeight={15}
+      baseWidth={28}
+      baseBorderRadius={8}
+      baseCheckedColor={theme.toggleOnBg}
+      baseUncheckedColor={theme.toggleOffBg[type]}
+      defaultValue={defaultValue}
+      onChange={onChange}
       disabled={disabled}
-      type={altColor ? 'alt' : 'default'}
-      onClick={handleToggleClicked}
-    >
-      <StyledToggleThumb
-        animate={animate}
-        enabled={enabled}
-        type={altColor ? 'alt' : 'default'}
-      />
-    </StyledToggleBase>
+      value={value}
+    />
   );
-};
-
-ToggleSwitch.defaultProps = {
-  defaultValue: false,
-  altColor: false,
-  disabled: false,
-  onChange: () => {},
 };
 
 export default ToggleSwitch;
