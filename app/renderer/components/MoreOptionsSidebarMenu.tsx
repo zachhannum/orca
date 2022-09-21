@@ -127,6 +127,7 @@ const MoreOptionsSidebarMenu = () => {
                     defaultValue={previewEnabled}
                     disabled={activeSectionId === ''}
                     value={previewEnabled}
+                    size="small"
                   />
                 }
                 label="Preview"

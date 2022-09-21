@@ -15,6 +15,7 @@ import {
 } from '../icons';
 import { useIsWindowMaxized, useToggle } from '../hooks';
 import useStore from '../store/useStore';
+import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const SidebarTopContainer = styled.div`
   display: flex;
@@ -109,7 +110,15 @@ const SidebarPane = () => {
     >
       <SidebarTopContainer>
         {isProjectOpen ? (
-          <TwoOptionSlider optionOne="Write" optionTwo="Publish" />
+          <TwoOptionSlider
+            optionOne="Write"
+            optionTwo="Publish"
+            onChange={(value: string) => {
+              const { setAppMode } = useStore.getState();
+              const newMode = value as AppMode;
+              setAppMode(newMode);
+            }}
+          />
         ) : (
           <div />
         )}

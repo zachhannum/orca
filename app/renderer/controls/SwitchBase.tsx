@@ -6,6 +6,7 @@ type SwitchBaseProps = {
   horizontalPadding: number;
   thumbHeight: number;
   thumbWidth: number;
+  thumbAnimateWidth?: number;
   thumbBorderRadius: number;
   thumbCheckedColor: string;
   thumbUncheckedColor: string;
@@ -52,18 +53,19 @@ type StyledThumbProps = {
   uncheckedColor: string;
   height: number;
   width: number;
+  animateWidth: number;
   borderRadius: number;
   baseWidth: number;
   baseHeight: number;
   horizontalPadding: number;
 };
 
-const animateThumb = (width: number) => keyframes`
+const animateThumb = (width: number, animateWidth: number) => keyframes`
   0% {
     width: ${`${width}px`};
   }
   50% {
-    width: ${`${width * 2}px`};
+    width: ${`${animateWidth}px`};
   }
   100% {
     width: ${`${width}px`};
@@ -77,7 +79,7 @@ const StyledThumb = styled.div<StyledThumbProps>`
   ${(p) =>
     p.animate &&
     css`
-      animation: ${animateThumb(p.width)} 200ms ease-in-out;
+      animation: ${animateThumb(p.width, p.animateWidth)} 200ms ease-in-out;
     `}
 
   margin-left: ${(p) =>
@@ -94,6 +96,7 @@ const SwitchBase = ({
   horizontalPadding,
   thumbHeight,
   thumbWidth,
+  thumbAnimateWidth = thumbWidth * 1.25,
   thumbBorderRadius,
   thumbCheckedColor,
   thumbUncheckedColor,
@@ -107,29 +110,28 @@ const SwitchBase = ({
   disabled,
   value,
 }: SwitchBaseProps) => {
-  const [enabled, toggleValue] = useToggle(defaultValue);
-  const [animate, setAnimate] = useState(true);
-  const isMount = useIsMount();
-  useEffect(() => {
-    if (!isMount && !disabled) {
-      setAnimate(true);
-      if (onChange) onChange(enabled);
-      setTimeout(() => {
-        setAnimate(false);
-      }, 300);
-    }
-  }, [enabled, onChange, isMount, disabled]);
+  const [checked, toggleChecked] = useToggle(defaultValue);
+  const [animate, setAnimate] = useState(false);
+
+  const handleToggle = () => {
+    setAnimate(true);
+    if (onChange) onChange(!checked);
+    setTimeout(() => {
+      setAnimate(false);
+    }, 1000);
+    toggleChecked();
+  };
 
   useEffect(() => {
     if (value !== undefined) {
-      if (value !== enabled) {
-        toggleValue();
+      if (value !== checked) {
+        handleToggle();
       }
     }
   }, [value]);
 
   const handleToggleClicked = () => {
-    if (!disabled) toggleValue();
+    if (!disabled) handleToggle();
   };
 
   return (
@@ -139,18 +141,19 @@ const SwitchBase = ({
       checkedColor={baseCheckedColor}
       uncheckedColor={baseUncheckedColor}
       borderRadius={baseBorderRadius}
-      value={enabled}
+      value={checked}
       disabled={disabled}
       onClick={handleToggleClicked}
     >
       <StyledThumb
         height={thumbHeight}
         width={thumbWidth}
+        animateWidth={thumbAnimateWidth}
         checkedColor={thumbCheckedColor}
         uncheckedColor={thumbUncheckedColor}
         borderRadius={thumbBorderRadius}
         animate={animate}
-        value={enabled}
+        value={checked}
         baseHeight={baseHeight}
         baseWidth={baseWidth}
         horizontalPadding={horizontalPadding}

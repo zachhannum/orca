@@ -10,3 +10,4 @@ export { default as ContextMenu } from './ContextMenu';
 export { default as TooltipText } from './TooltipText';
 export { default as Editor } from './codemirror/Editor';
 export { default as SaveIndicator } from './SaveIndicator';
+export { default as PublishSettings } from './publish/PublishSettings';

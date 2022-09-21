@@ -80,12 +80,13 @@ const TwoOptionSlider = ({
         horizontalPadding={5}
         thumbHeight={25}
         thumbWidth={55}
-        thumbBorderRadius={5}
+        thumbAnimateWidth={70}
+        thumbBorderRadius={9}
         thumbCheckedColor={theme.optionSliderFg[type]}
         thumbUncheckedColor={theme.optionSliderFg[type]}
         baseHeight={35}
         baseWidth={120}
-        baseBorderRadius={8}
+        baseBorderRadius={13}
         baseCheckedColor={theme.optionSliderBg[type]}
         baseUncheckedColor={theme.optionSliderBg[type]}
         defaultValue={defaultValue === optionTwo}

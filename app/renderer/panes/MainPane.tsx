@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { Editor } from '../components';
+import { Editor, PublishSettings } from '../components';
 import useStore from '../store/useStore';
 import { useCommandKeyString } from '../hooks';
+import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const MainContent = styled.div`
   --top-padding: calc(
@@ -67,35 +68,50 @@ const NoProjectHotkey = styled.div`
   flex-direction: row;
 `;
 
+type AppContentProps = {
+  appMode: AppMode;
+};
+const AppContent = ({ appMode }: AppContentProps) => {
+  if (appMode === 'Write') {
+    return <Editor />;
+  }
+  if (appMode === 'Publish') {
+    return <PublishSettings />;
+  }
+  return <div>Bad App Mode!</div>;
+};
+
 const MainPane = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
+  const appMode = useStore((state) => state.appMode);
   const activeSectionId = useStore((state) => state.activeSectionId);
   const activeSectionName = useStore((state) => state.activeSectionName);
   const commandKeyString = useCommandKeyString();
   return (
     <MainContent>
-      {isProjectOpen && activeSectionId !== '' ? (
+      {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
         <>
           <SectionTitle>{activeSectionName}</SectionTitle>
-          <Editor />
+          <AppContent appMode={appMode} />
         </>
       ) : (
-        <NoProjectDiv>
-          <NoProjectTitle>Calamus</NoProjectTitle>
-          <NoProjectSubtitle>
-            <b>Write</b> and <b>Publish</b> novels with ease.
-          </NoProjectSubtitle>
-          <NoProjectHotkeys>
-            <NoProjectHotkey>
-              <span>Open a project</span>
-              <span>{commandKeyString}O</span>
-            </NoProjectHotkey>
-            <NoProjectHotkey>
-              <span>Start a new project</span>
-              <span>{commandKeyString}N</span>
-            </NoProjectHotkey>
-          </NoProjectHotkeys>
-        </NoProjectDiv>
+        <AppContent appMode="Publish" />
+        // <NoProjectDiv>
+        //   <NoProjectTitle>Calamus</NoProjectTitle>
+        //   <NoProjectSubtitle>
+        //     <b>Write</b> and <b>Publish</b> novels with ease.
+        //   </NoProjectSubtitle>
+        //   <NoProjectHotkeys>
+        //     <NoProjectHotkey>
+        //       <span>Open a project</span>
+        //       <span>{commandKeyString}O</span>
+        //     </NoProjectHotkey>
+        //     <NoProjectHotkey>
+        //       <span>Start a new project</span>
+        //       <span>{commandKeyString}N</span>
+        //     </NoProjectHotkey>
+        //   </NoProjectHotkeys>
+        // </NoProjectDiv>
       )}
     </MainContent>
   );

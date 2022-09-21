@@ -5,7 +5,7 @@ import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { searchKeymap } from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
 import useStore from 'renderer/store/useStore';
-import ScrollContainer from './ScrollContainer';
+import ScrollContainer from '../ScrollContainer';
 import { findItemDeep } from '../TreeView/utilities';
 import {
   theme,
