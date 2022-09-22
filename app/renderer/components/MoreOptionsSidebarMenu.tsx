@@ -72,6 +72,7 @@ const MoreOptionsSidebarMenu = () => {
           setShowMenu(false);
         }}
         position={menuPosition}
+        clickRef={buttonRef}
       >
         <div style={{ width: '180px' }}>
           <MoreOptionsSidebarItem

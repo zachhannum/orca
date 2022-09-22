@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled, { useTheme, css } from 'styled-components';
 import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { searchKeymap } from '@codemirror/search';
@@ -30,11 +30,19 @@ const EditorDiv = styled.div`
   padding-bottom: 10vh;
 `;
 
+const scrollerCss = (sidebarOpen: boolean) => css`
+  padding-right: 50px;
+  padding-left: ${sidebarOpen ? '50px' : '125px'};
+  margin-right: 5px;
+  transition: padding-left 300ms ease-in-out;
+`;
+
 const Editor = () => {
   const activeSectionId = useStore((state) => state.activeSectionId);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const editorViewRef = useRef<EditorView | null>(null);
   const styledTheme = useTheme();
+  const sidebarOpen = useStore((state) => state.sidebarOpen);
 
   const newEditorState = (txt: string): EditorState => {
     const extensions = [
@@ -94,7 +102,7 @@ const Editor = () => {
   }, [activeSectionId]);
 
   return (
-    <ScrollContainer>
+    <ScrollContainer cssMixin={scrollerCss(sidebarOpen)}>
       <EditorDiv ref={editorContainerRef} />
     </ScrollContainer>
   );

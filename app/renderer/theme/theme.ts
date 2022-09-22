@@ -16,7 +16,7 @@ const theme: DefaultTheme = {
   dropdownText: 'rgba(240, 240, 248, 1)',
   dropdownArrow: 'rgba(240, 240, 248, 1)',
   optionSliderBg: {
-    default: 'rgba(70, 70, 79, 1)',
+    default: `rgba(70, 70, 79, ${sidebarOpacity})`,
     alt: 'rgba(117, 117, 128, 1)',
   },
   optionSliderFg: {

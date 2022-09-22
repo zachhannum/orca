@@ -1,3 +1,10 @@
+import type {
+  FlattenInterpolation,
+  ThemeProps,
+  FlattenSimpleInterpolation,
+  DefaultTheme,
+} from 'styled-components';
+
 /* BookDetails is used for creating a new project */
 export type BookDetails = {
   bookTitle: string;
@@ -72,3 +79,13 @@ export type PagedBookContents = {
   css: string;
   title: string;
 };
+
+/* Component Styling */
+export type CssMixinType =
+  | FlattenInterpolation<ThemeProps<DefaultTheme>>
+  | FlattenSimpleInterpolation
+  | string
+  | undefined;
+
+/* Publish Types */
+export type LeadIn = 'None' | 'Small Caps' | 'Italics';

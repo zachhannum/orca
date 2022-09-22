@@ -1,42 +1,31 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import Color from 'color';
-import useStore from 'renderer/store/useStore';
+import { CssMixinType } from 'types/types';
 
 type ScrollerProps = {
-  sidebarOpen: boolean;
+  cssMixin?: CssMixinType;
 };
 
 const Scroller = styled.div<ScrollerProps>`
-  overflow-y: overlay;
+  overflow-y: auto;
   height: 100%;
-  padding-right: 50px;
-  padding-left: ${(p) => (p.sidebarOpen ? '50px' : '125px')};
-  margin-right: 5px;
   box-sizing: border-box;
-
-  mask-image: linear-gradient(to top, transparent, black),
-    linear-gradient(to left, transparent 17px, black 17px);
-  mask-size: 100% 20000px;
-  mask-position: left bottom;
-  -webkit-mask-image: linear-gradient(to top, transparent, black),
-    linear-gradient(to left, transparent 17px, black 17px);
-  -webkit-mask-size: 100% 20000px;
-  -webkit-mask-position: left bottom;
-  transition: mask-position 0.3s, -webkit-mask-position 0.3s, padding-left 300ms ease-in-out;
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  border-color: transparent;
+  transition: border-color 300ms ease-in-out;
+  &:hover {
+    border-color: rgba(0, 0, 0, 0.2);
   }
-  ::-webkit-scrollbar-track {
-    /* display: none; */
+
+  ::-webkit-scrollbar,
+  ::-webkit-scrollbar-thumb,
+  ::-webkit-scrollbar-corner {
+    border-right-style: inset;
+    border-color: transparent;
+    width: 8px;
+    border-width: 8px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: ${(p) =>
-      Color(p.theme.mainBg).alpha(1).darken(0.2).hsl().string()};
-  }
-  &:hover {
-    -webkit-mask-position: left top;
+    border-color: inherit;
   }
   ${window.windowApi.os() === 'darwin' &&
   css`
@@ -45,16 +34,17 @@ const Scroller = styled.div<ScrollerProps>`
       cursor: pointer;
     }
   `}
+
+  ${(p) => p.cssMixin}
 `;
 
-type Props = {
+type ScrollContainerProps = {
+  cssMixin?: CssMixinType;
   children: React.ReactNode;
 };
 
-const ScrollContainer = ({ children }: Props) => {
-  const sidebarOpen = useStore((state) => state.sidebarOpen);
-
-  return <Scroller sidebarOpen={sidebarOpen}>{children}</Scroller>;
+const ScrollContainer = ({ cssMixin, children }: ScrollContainerProps) => {
+  return <Scroller cssMixin={cssMixin}>{children}</Scroller>;
 };
 
 export default ScrollContainer;

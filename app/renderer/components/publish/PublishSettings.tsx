@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import ScrollContainer from '../ScrollContainer';
 import FirstLineDecorations from './FirstLineDecorations';
+import useStore from '../../store/useStore';
 
 const PublishSectionTitle = styled.div`
   color: ${(p) => p.theme.mainFgText};
@@ -20,9 +21,15 @@ const Section = styled.div`
   margin: 50px 0px;
 `;
 
+const scrollerCss = css`
+  padding-right: 50px;
+  padding-left: 50px;
+  margin-right: 5px;
+`;
+
 const PublishSettings = () => {
   return (
-    <ScrollContainer>
+    <ScrollContainer cssMixin={scrollerCss}>
       <SettingsContainer>
         <Section>
           <PublishSectionTitle>Chapter Titles</PublishSectionTitle>

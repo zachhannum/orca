@@ -8,7 +8,7 @@ import React, {
 import styled, { css, keyframes, useTheme } from 'styled-components';
 import Color from 'color';
 import {
-  FolderOpenIcon,
+  ArrowDownIcon,
   MoreVerticalIcon,
   NewFileIcon,
   NewFolderIcon,
@@ -202,7 +202,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
 type StyledFolderIconProps = {
   collapsed?: boolean;
 };
-const StyledFolderIcon = styled(FolderOpenIcon)<StyledFolderIconProps>`
+const StyledFolderIcon = styled(ArrowDownIcon)<StyledFolderIconProps>`
   ${(p) =>
     p.collapsed &&
     css`
