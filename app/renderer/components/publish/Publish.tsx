@@ -1,13 +1,16 @@
 import styled, { css } from 'styled-components';
 import ScrollContainer from '../ScrollContainer';
-import FirstLineDecorations from './FirstLineDecorations';
-import useStore from '../../store/useStore';
+import FirstLineDecorationsSettings from './FirstLineDecorationsSettings';
+import ParagraphSettings from './ParagraphSettings';
+import HeadersSettings from './HeadersSettings';
+import PrintSettings from './PrintSettings';
 
 const PublishSectionTitle = styled.div`
-  color: ${(p) => p.theme.mainFgText};
+  color: ${(p) => p.theme.mainFgTextSecondary};
   font-weight: 600;
   font-size: 1.2em;
   user-select: none;
+  padding-bottom: 10px;
 `;
 
 const SettingsContainer = styled.div`
@@ -18,7 +21,7 @@ const SettingsContainer = styled.div`
 const Section = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 50px 0px;
+  margin: 25px 0px;
 `;
 
 const scrollerCss = css`
@@ -27,29 +30,32 @@ const scrollerCss = css`
   margin-right: 5px;
 `;
 
-const PublishSettings = () => {
+const Publish = () => {
   return (
     <ScrollContainer cssMixin={scrollerCss}>
       <SettingsContainer>
-        <Section>
+        {/* <Section>
           <PublishSectionTitle>Chapter Titles</PublishSectionTitle>
-        </Section>
+        </Section> */}
         <Section>
           <PublishSectionTitle>First Line Decorations</PublishSectionTitle>
-          <FirstLineDecorations />
+          <FirstLineDecorationsSettings />
         </Section>
         <Section>
           <PublishSectionTitle>Paragraph</PublishSectionTitle>
+          <ParagraphSettings />
         </Section>
         <Section>
           <PublishSectionTitle>Headers</PublishSectionTitle>
+          <HeadersSettings />
         </Section>
         <Section>
           <PublishSectionTitle>Print</PublishSectionTitle>
+          <PrintSettings />
         </Section>
       </SettingsContainer>
     </ScrollContainer>
   );
 };
 
-export default PublishSettings;
+export default Publish;

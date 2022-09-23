@@ -3,7 +3,7 @@ import type { LeadIn } from 'types/types';
 import { Setting, SettingLabel } from './Setting';
 import { ToggleSwitch, Dropdown } from '../../controls';
 
-const FirstLineDecorations = () => {
+const FirstLineDecorationsSettings = () => {
   const LeadInOptions = ['None', 'Small Caps', 'Italics'] as LeadIn[];
 
   /* TODO replace with store option */
@@ -29,4 +29,4 @@ const FirstLineDecorations = () => {
   );
 };
 
-export default FirstLineDecorations;
+export default FirstLineDecorationsSettings;

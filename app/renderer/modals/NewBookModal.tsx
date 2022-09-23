@@ -41,18 +41,21 @@ const NewBookModal = (props: ModalProps) => {
             styleVariant="altTwo"
             placeholder="Book Title"
             label="Book Title"
+            fullWidth
           />
           <TextField
             name="author"
             styleVariant="altTwo"
             placeholder="Author"
             label="Author Name"
+            fullWidth
           />
           <TextField
             name="series"
             styleVariant="altTwo"
             placeholder="Series Name"
             label="Series Name"
+            fullWidth
           />
           <div />
           <Button

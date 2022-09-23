@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { Editor, PublishSettings } from '../components';
+import { Editor, Publish } from '../components';
 import useStore from '../store/useStore';
 import { useCommandKeyString } from '../hooks';
 import type { AppMode } from '../store/slices/createAppStateSlice';
@@ -76,7 +76,7 @@ const AppContent = ({ appMode }: AppContentProps) => {
     return <Editor />;
   }
   if (appMode === 'Publish') {
-    return <PublishSettings />;
+    return <Publish />;
   }
   return <div>Bad App Mode!</div>;
 };

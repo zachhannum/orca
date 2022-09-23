@@ -1,8 +1,15 @@
-import styled, { useTheme } from 'styled-components';
+import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
 
-const StyledTextField = styled.div`
-  width: 100%;
+type StyledTextFieldProps = {
+  fullWidth: boolean;
+};
+const StyledTextField = styled.div<StyledTextFieldProps>`
+  ${(p) =>
+    p.fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 type StyledInputProps = {
@@ -46,6 +53,7 @@ type TextFieldProps = {
   placeholder?: string;
   label?: string;
   inputRequired?: boolean;
+  fullWidth?: boolean;
 };
 
 const TextField = ({
@@ -56,13 +64,15 @@ const TextField = ({
   // @TODO will be used eventually, see #41
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   inputRequired,
+  fullWidth = false,
 }: TextFieldProps) => {
   const theme = useTheme();
-  const hoverBackgroundColor = Color(theme.textInputBg[styleVariant]).lighten(
-    0.15
-  ).hsl().string();
+  const hoverBackgroundColor = Color(theme.textInputBg[styleVariant])
+    .lighten(0.15)
+    .hsl()
+    .string();
   return (
-    <StyledTextField>
+    <StyledTextField fullWidth={fullWidth}>
       {label !== undefined && <StyledLabel>{label}</StyledLabel>}
       <StyledInput
         type="text"
