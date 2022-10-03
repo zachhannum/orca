@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
 import type { ModalProps } from './Modal';
@@ -20,6 +20,7 @@ const NewBookModal = (props: ModalProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const target = e.target as typeof e.target & {
       book: { value: string };
       author: { value: string };
@@ -30,7 +31,8 @@ const NewBookModal = (props: ModalProps) => {
       authorName: target.author.value,
       seriesName: target.series.value,
     });
-    onRequestClose();
+
+    return onRequestClose();
   };
   return (
     <Modal {...props}>

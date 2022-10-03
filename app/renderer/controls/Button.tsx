@@ -9,7 +9,7 @@ type StyledButtonProps = {
   isDisabled?: boolean;
 };
 
-const StyledButton = styled.span<StyledButtonProps>`
+const StyledButton = styled.button<StyledButtonProps>`
   height: 30px;
   position: relative;
   line-height: 30px;
@@ -19,6 +19,7 @@ const StyledButton = styled.span<StyledButtonProps>`
   background-color: ${(p) => p.theme.buttonPrimaryBg};
   color: ${(p) => p.theme.buttonPrimaryText};
   border-radius: 10px;
+  border: none;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
