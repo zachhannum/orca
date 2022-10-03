@@ -26,6 +26,10 @@ const StyledButton = styled.button<StyledButtonProps>`
   text-overflow: ellipsis;
   font-size: 0.9em;
 
+  &:focus-visible {
+    outline: ${(p) =>
+      `4px solid ${Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};`}
+
   ${(p) =>
     !p.isLoading &&
     !p.isDisabled &&
