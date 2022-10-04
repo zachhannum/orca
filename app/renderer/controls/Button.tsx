@@ -27,8 +27,9 @@ const StyledButton = styled.button<StyledButtonProps>`
   font-size: 0.9em;
 
   &:focus-visible {
-    outline: ${(p) =>
-      `4px solid ${Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};`}
+    outline: 4px solid
+      ${(p) => Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};
+  }
 
   ${(p) =>
     !p.isLoading &&
