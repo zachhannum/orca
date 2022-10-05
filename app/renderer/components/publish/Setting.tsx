@@ -8,6 +8,7 @@ export const Setting = styled.div`
   align-content: center;
   align-items: center;
   margin: 5px 0px;
+  flex-wrap: wrap;
 `;
 
 export const SettingLabel = styled.div`

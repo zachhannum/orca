@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import {
   AdditionalTrimSize,
   InternationalTrimSize,
@@ -9,7 +10,7 @@ import {
   TrimSize,
 } from 'types/types';
 import { Setting, SettingLabel } from './Setting';
-import { Checkbox, Dropdown } from '../../controls';
+import { Checkbox, Dropdown, TextField } from '../../controls';
 
 const PrintSettings = () => {
   /* TODO replace */
@@ -52,6 +53,16 @@ const PrintSettings = () => {
     { name: 'International Trim Sizes', options: internationalTrimSizes },
     { name: 'Mass Market Trim Sizes', options: massMarketTrimSizes },
   ];
+
+  const [topMargin, setTopMargin] = useState(0.5);
+
+  const MarginsContainer = styled.div`
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  `;
 
   return (
     <>
@@ -96,6 +107,23 @@ const PrintSettings = () => {
       </Setting>
       <Setting>
         <SettingLabel>Margins</SettingLabel>
+        <MarginsContainer>
+          <TextField
+            name="top"
+            label="Top"
+            defaultValue={topMargin}
+            onBlur={(event) => {
+              console.log(event.type);
+              const newMargin = parseFloat(event.target.value);
+              if (!Number.isNaN(newMargin)) {
+                setTopMargin(newMargin);
+              }
+            }}
+          />
+          <TextField name="bottom" label="Bottom" />
+          <TextField name="inside" label="Inside" />
+          <TextField name="outside" label="Outside" />
+        </MarginsContainer>
       </Setting>
       <Setting>
         <SettingLabel>Trim Size</SettingLabel>

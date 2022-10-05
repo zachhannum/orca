@@ -1,10 +1,13 @@
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
+import React from 'react';
 
 type StyledTextFieldProps = {
   fullWidth: boolean;
 };
 const StyledTextField = styled.div<StyledTextFieldProps>`
+  display: flex;
+  flex-direction: column;
   ${(p) =>
     p.fullWidth &&
     css`
@@ -41,7 +44,7 @@ const StyledInput = styled.input<StyledInputProps>`
 `;
 
 const StyledLabel = styled.span`
-  margin-left: 10px;
+  padding-bottom: 5px;
   color: ${(p) => p.theme.mainFgTextSecondary};
   font-size: 0.9em;
   user-select: none;
@@ -65,7 +68,8 @@ const TextField = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   inputRequired,
   fullWidth = false,
-}: TextFieldProps) => {
+  ...props
+}: TextFieldProps & React.ComponentPropsWithoutRef<'input'>) => {
   const theme = useTheme();
   const hoverBackgroundColor = Color(theme.textInputBg[styleVariant])
     .lighten(0.15)
@@ -80,6 +84,7 @@ const TextField = ({
         placeholder={placeholder}
         hoverBackgroundColor={hoverBackgroundColor}
         name={name}
+        {...props}
       />
     </StyledTextField>
   );

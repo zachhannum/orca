@@ -95,22 +95,23 @@ const MainPane = () => {
           <AppContent appMode={appMode} />
         </>
       ) : (
-        <NoProjectDiv>
-          <NoProjectTitle>Calamus</NoProjectTitle>
-          <NoProjectSubtitle>
-            <b>Write</b> and <b>Publish</b> novels with ease.
-          </NoProjectSubtitle>
-          <NoProjectHotkeys>
-            <NoProjectHotkey>
-              <span>Open a project</span>
-              <span>{commandKeyString}O</span>
-            </NoProjectHotkey>
-            <NoProjectHotkey>
-              <span>Start a new project</span>
-              <span>{commandKeyString}N</span>
-            </NoProjectHotkey>
-          </NoProjectHotkeys>
-        </NoProjectDiv>
+        <AppContent appMode='Publish' />
+        // <NoProjectDiv>
+        //   <NoProjectTitle>Calamus</NoProjectTitle>
+        //   <NoProjectSubtitle>
+        //     <b>Write</b> and <b>Publish</b> novels with ease.
+        //   </NoProjectSubtitle>
+        //   <NoProjectHotkeys>
+        //     <NoProjectHotkey>
+        //       <span>Open a project</span>
+        //       <span>{commandKeyString}O</span>
+        //     </NoProjectHotkey>
+        //     <NoProjectHotkey>
+        //       <span>Start a new project</span>
+        //       <span>{commandKeyString}N</span>
+        //     </NoProjectHotkey>
+        //   </NoProjectHotkeys>
+        // </NoProjectDiv>
       )}
     </MainContent>
   );
