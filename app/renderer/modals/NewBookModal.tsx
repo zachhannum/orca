@@ -57,13 +57,7 @@ const NewBookModal = (props: ModalProps) => {
             label="Series Name"
           />
           <div />
-          <Button
-            onClick={() => {
-              formRef.current?.requestSubmit();
-            }}
-          >
-            Create
-          </Button>
+          <Button>Create</Button>
         </StyledModalContent>
       </form>
     </Modal>

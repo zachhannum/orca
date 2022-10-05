@@ -26,6 +26,10 @@ const StyledButton = styled.button<StyledButtonProps>`
   text-overflow: ellipsis;
   font-size: 0.9em;
 
+  &:disabled {
+    cursor: unset;
+  }
+
   &:focus-visible {
     outline: 4px solid
       ${(p) => Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};
@@ -75,14 +79,14 @@ type ButtonProps = {
   children?: React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
-  disabled?: boolean;
+  isDisabled?: boolean;
 };
 
 const Button = ({
   children,
   onClick,
   loading = false,
-  disabled = false,
+  isDisabled = false,
 }: ButtonProps) => {
   const theme = useTheme();
   const hoverColor = Color(theme.buttonPrimaryBg).lighten(0.05).hsl().string();
@@ -91,16 +95,16 @@ const Button = ({
     <StyledButton
       hoverBackgroundcolor={hoverColor}
       activeBackgroundColor={activeColor}
+      disabled={isDisabled}
       onClick={() => {
-        if (!loading && !disabled && onClick) {
+        if (!loading && !isDisabled && onClick) {
           onClick();
         }
       }}
       isLoading={loading}
-      isDisabled={disabled}
     >
       {children}
-      <StyledLoader isLoading={loading} isDisabled={disabled}>
+      <StyledLoader isLoading={loading} isDisabled={isDisabled}>
         <BounceLoader
           loading={loading}
           size={20}
