@@ -57,7 +57,7 @@ const NewBookModal = (props: ModalProps) => {
             label="Series Name"
           />
           <div />
-          <Button>Create</Button>
+          <Button isDisabled>Create</Button>
         </StyledModalContent>
       </form>
     </Modal>

@@ -26,10 +26,6 @@ const StyledButton = styled.button<StyledButtonProps>`
   text-overflow: ellipsis;
   font-size: 0.9em;
 
-  &:disabled {
-    cursor: unset;
-  }
-
   &:focus-visible {
     outline: 4px solid
       ${(p) => Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};
@@ -37,7 +33,7 @@ const StyledButton = styled.button<StyledButtonProps>`
 
   ${(p) =>
     !p.isLoading &&
-    !p.isDisabled &&
+    !p.disabled &&
     css`
       cursor: pointer;
       &:hover {

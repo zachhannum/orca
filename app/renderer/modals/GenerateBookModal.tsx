@@ -73,7 +73,7 @@ const GenerateBookModal = (props: ModalProps) => {
           </CheckboxDiv>
         </StyledModalContent>
         <StyledButtonDiv>
-          <Button loading={isBuildingPdf} disabled={!pdfPlatformToggleValue}>
+          <Button loading={isBuildingPdf} isDisabled={!pdfPlatformToggleValue}>
             Generate
           </Button>
         </StyledButtonDiv>
