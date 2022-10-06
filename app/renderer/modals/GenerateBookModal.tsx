@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { buildBookPdf } from 'renderer/utils/buildPdf';
+import { useOnBookPdfGenerated, useToggle } from 'renderer/hooks';
 import Modal from './Modal';
 import type { ModalProps } from './Modal';
 import { Button, Checkbox } from '../controls';
-import { buildBookPdf } from 'renderer/utils/buildPdf';
-import { useOnBookPdfGenerated, useToggle } from 'renderer/hooks';
 
 const StyledModalContent = styled.div`
   display: flex;
@@ -66,20 +66,14 @@ const GenerateBookModal = (props: ModalProps) => {
           <ModalTitle>Output Platforms</ModalTitle>
           <CheckboxDiv>
             <Checkbox
-              label={'PDF'}
+              label="PDF"
               checked={pdfPlatformToggleValue}
               onChange={togglePdfPlatformToggleValue}
             />
           </CheckboxDiv>
         </StyledModalContent>
         <StyledButtonDiv>
-          <Button
-            loading={isBuildingPdf}
-            onClick={() => {
-              formRef.current?.requestSubmit();
-            }}
-            disabled={!pdfPlatformToggleValue}
-          >
+          <Button loading={isBuildingPdf} isDisabled={!pdfPlatformToggleValue}>
             Generate
           </Button>
         </StyledButtonDiv>

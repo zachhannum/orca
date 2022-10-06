@@ -9,7 +9,7 @@ type StyledButtonProps = {
   isDisabled?: boolean;
 };
 
-const StyledButton = styled.span<StyledButtonProps>`
+const StyledButton = styled.button<StyledButtonProps>`
   height: 30px;
   position: relative;
   line-height: 30px;
@@ -19,15 +19,21 @@ const StyledButton = styled.span<StyledButtonProps>`
   background-color: ${(p) => p.theme.buttonPrimaryBg};
   color: ${(p) => p.theme.buttonPrimaryText};
   border-radius: 10px;
+  border: none;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.9em;
 
+  &:focus-visible {
+    outline: 4px solid
+      ${(p) => Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};
+  }
+
   ${(p) =>
     !p.isLoading &&
-    !p.isDisabled &&
+    !p.disabled &&
     css`
       cursor: pointer;
       &:hover {
@@ -69,14 +75,14 @@ type ButtonProps = {
   children?: React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
-  disabled?: boolean;
+  isDisabled?: boolean;
 };
 
 const Button = ({
   children,
   onClick,
   loading = false,
-  disabled = false,
+  isDisabled = false,
 }: ButtonProps) => {
   const theme = useTheme();
   const hoverColor = Color(theme.buttonPrimaryBg).lighten(0.05).hsl().string();
@@ -85,16 +91,16 @@ const Button = ({
     <StyledButton
       hoverBackgroundcolor={hoverColor}
       activeBackgroundColor={activeColor}
+      disabled={isDisabled}
       onClick={() => {
-        if (!loading && !disabled && onClick) {
+        if (!loading && !isDisabled && onClick) {
           onClick();
         }
       }}
       isLoading={loading}
-      isDisabled={disabled}
     >
       {children}
-      <StyledLoader isLoading={loading} isDisabled={disabled}>
+      <StyledLoader isLoading={loading} isDisabled={isDisabled}>
         <BounceLoader
           loading={loading}
           size={20}
