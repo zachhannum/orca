@@ -10,10 +10,7 @@ export { default as ContextMenu } from './ContextMenu';
 export { default as TooltipText } from './TooltipText';
 export { default as Editor } from './codemirror/Editor';
 export { default as SaveIndicator } from './SaveIndicator';
-<<<<<<< HEAD
 export { default as Publish } from './publish/Publish';
 export { default as MenuBase } from './MenuBase';
 export { default as ScrollContainer } from './ScrollContainer';
-=======
 export { default as RecentProjectsList } from './RecentProjectsList';
->>>>>>> d42229c (Add recent projects to sidebar)
