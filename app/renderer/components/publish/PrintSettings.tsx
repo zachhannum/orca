@@ -6,11 +6,18 @@ import {
   LineHeight,
   MassMarketTrimSize,
   PopularTrimSize,
-  SceneBreak,
   TrimSize,
 } from 'types/types';
 import { Setting, SettingLabel } from './Setting';
 import { Checkbox, Dropdown, TextField } from '../../controls';
+
+const MarginsContainer = styled.div`
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+`;
 
 const PrintSettings = () => {
   /* TODO replace */
@@ -55,14 +62,6 @@ const PrintSettings = () => {
   ];
 
   const [topMargin, setTopMargin] = useState(0.5);
-
-  const MarginsContainer = styled.div`
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  `;
 
   return (
     <>

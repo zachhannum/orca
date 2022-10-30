@@ -1,6 +1,5 @@
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
-import { useToggle } from '../hooks';
 import { CheckIcon } from '../icons';
 
 const StyledLabel = styled.label`
