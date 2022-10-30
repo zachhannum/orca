@@ -72,6 +72,7 @@ const MoreOptionsSidebarMenu = () => {
           setShowMenu(false);
         }}
         position={menuPosition}
+        clickRef={buttonRef}
       >
         <div style={{ width: '180px' }}>
           <MoreOptionsSidebarItem
@@ -122,11 +123,12 @@ const MoreOptionsSidebarMenu = () => {
                 iconElement={<PreviewIcon />}
                 rightElement={
                   <ToggleSwitch
-                    altColor
+                    type="alt"
                     onChange={setPreviewEnabled}
                     defaultValue={previewEnabled}
                     disabled={activeSectionId === ''}
                     value={previewEnabled}
+                    size="small"
                   />
                 }
                 label="Preview"

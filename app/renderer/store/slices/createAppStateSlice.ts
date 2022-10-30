@@ -1,9 +1,13 @@
 import { GetState, SetState } from 'zustand';
 import type { CalamusState } from '../useStore';
 
+export type AppMode = 'Write' | 'Publish';
+
 export interface AppSlice {
   previewEnabled: boolean;
   setPreviewEnabled: (val: boolean) => void;
+  appMode: AppMode;
+  setAppMode: (mode: AppMode) => void;
   sidebarOpen: boolean;
   setSidebarOpen: (val: boolean) => void;
   newBookModalOpen: boolean;
@@ -24,6 +28,12 @@ const createAppSlice = (
   previewEnabled: false,
   setPreviewEnabled: (val: boolean) => {
     set(() => ({ previewEnabled: val }));
+  },
+  appMode: 'Write',
+  setAppMode: (mode: AppMode) => {
+    set(() => ({
+      appMode: mode,
+    }));
   },
   sidebarOpen: true,
   setSidebarOpen: (val: boolean) => {

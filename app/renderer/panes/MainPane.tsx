@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { Editor } from '../components';
+import { Editor, Publish } from '../components';
 import useStore from '../store/useStore';
 import { useCommandKeyString } from '../hooks';
+import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const MainContent = styled.div`
   --top-padding: calc(
@@ -67,17 +68,31 @@ const NoProjectHotkey = styled.div`
   flex-direction: row;
 `;
 
+type AppContentProps = {
+  appMode: AppMode;
+};
+const AppContent = ({ appMode }: AppContentProps) => {
+  if (appMode === 'Write') {
+    return <Editor />;
+  }
+  if (appMode === 'Publish') {
+    return <Publish />;
+  }
+  return <div>Bad App Mode!</div>;
+};
+
 const MainPane = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
+  const appMode = useStore((state) => state.appMode);
   const activeSectionId = useStore((state) => state.activeSectionId);
   const activeSectionName = useStore((state) => state.activeSectionName);
   const commandKeyString = useCommandKeyString();
   return (
     <MainContent>
-      {isProjectOpen && activeSectionId !== '' ? (
+      {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
         <>
           <SectionTitle>{activeSectionName}</SectionTitle>
-          <Editor />
+          <AppContent appMode={appMode} />
         </>
       ) : (
         <NoProjectDiv>

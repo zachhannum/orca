@@ -2,18 +2,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
-import type {
-  FlattenInterpolation,
-  ThemeProps,
-  FlattenSimpleInterpolation,
-  DefaultTheme,
-} from 'styled-components';
-
-type CssMixinType =
-  | FlattenInterpolation<ThemeProps<DefaultTheme>>
-  | FlattenSimpleInterpolation
-  | string
-  | undefined;
+import type { CssMixinType } from 'types/types';
 
 type StyledPaneProps = {
   backgroundColor: string;
@@ -81,7 +70,11 @@ const Pane = ({
   styleMixin,
 }: PaneProps) => {
   const [width, setWidth] = useState(defaultWidth);
-  const resizerHoverColor = Color(backgroundColor).alpha(1).lighten(0.5).hsl().string();
+  const resizerHoverColor = Color(backgroundColor)
+    .alpha(1)
+    .lighten(0.5)
+    .hsl()
+    .string();
 
   const handleResize = (resizeEvent: React.MouseEvent<HTMLInputElement>) => {
     const startSize = parseInt(width, 10);

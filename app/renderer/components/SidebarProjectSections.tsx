@@ -10,7 +10,8 @@ import {
   SortableTree,
   ContextMenu,
   TooltipText,
-} from '../components';
+  ScrollContainer,
+} from '.';
 import { useIsHovering } from '../hooks';
 import { getContextMenuPosition } from '../utils/menuUtils';
 
@@ -39,7 +40,7 @@ const ContentIcons = styled.div`
   gap: 7px;
 `;
 
-const SectionsContainer = styled.div`
+const sidebarScrollCss = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -48,37 +49,6 @@ const SectionsContainer = styled.div`
   overflow-y: scroll;
   flex-basis: 0;
   flex-grow: 1;
-  mask-image: linear-gradient(to top, transparent, black),
-    linear-gradient(to left, transparent 8px, black 8px);
-  mask-size: 100% 20000px;
-  mask-position: left bottom;
-  -webkit-mask-image: linear-gradient(to top, transparent, black),
-    linear-gradient(to left, transparent 8px, black 8px);
-  -webkit-mask-size: 100% 20000px;
-  -webkit-mask-position: left bottom;
-  transition: mask-position 0.3s, -webkit-mask-position 0.3s;
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    /* display: none; */
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: inherit;
-    background-color: ${(p) =>
-      Color(p.theme.sidebarBg).alpha(1).darken(0.2).hsl().string()};
-    cursor: pointer;
-  }
-  &:hover {
-    -webkit-mask-position: left top;
-  }
-  ${window.windowApi.os() === 'darwin' &&
-  css`
-    ::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-    }
-  `}
 `;
 
 const SidebarProjectSections = () => {
@@ -158,9 +128,9 @@ const SidebarProjectSections = () => {
         </>
       ) : (
         <>
-          <SectionsContainer>
+          <ScrollContainer cssMixin={sidebarScrollCss}>
             <SortableTree items={content} onItemsSorted={setContentArray} />
-          </SectionsContainer>
+          </ScrollContainer>
           <SectionContextMenu />
         </>
       )}

@@ -1,12 +1,7 @@
 import React from 'react';
 import Color from 'color';
 import styled, { css } from 'styled-components';
-import type {
-  FlattenInterpolation,
-  ThemeProps,
-  FlattenSimpleInterpolation,
-  DefaultTheme,
-} from 'styled-components';
+import type { CssMixinType } from 'types/types';
 
 type IconAnchorProps = {
   height?: string;
@@ -73,12 +68,6 @@ const IconAnchor = styled.a<IconAnchorProps>`
   ${(p) => p.styleMixin}
 `;
 
-type CssMixinType =
-  | FlattenInterpolation<ThemeProps<DefaultTheme>>
-  | FlattenSimpleInterpolation
-  | string
-  | undefined;
-
 type IconButtonProps = {
   height?: string;
   width?: string;
@@ -114,20 +103,25 @@ const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
   ) => {
     const hoverForegroundColor = Color(foregroundColor)
       .lighten(colorAdjustment)
-      .hsl().string();
+      .hsl()
+      .string();
     const hoverBackgroundColor = Color(backgroundColor)
-      .lighten(colorAdjustment).hsl().string();
+      .lighten(colorAdjustment)
+      .hsl()
+      .string();
     const activeForegroundColor = Color(foregroundColor)
       .darken(colorAdjustment)
-      .hsl().string();
+      .hsl()
+      .string();
     const activeBackgroundColor = Color(backgroundColor)
       .darken(colorAdjustment)
-      .hsl().string();
+      .hsl()
+      .string();
 
-      const handleClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onClick(e);
-      }
+    const handleClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onClick(e);
+    };
 
     return (
       <IconAnchor

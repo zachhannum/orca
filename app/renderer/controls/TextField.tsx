@@ -1,8 +1,18 @@
-import styled, { useTheme } from 'styled-components';
+import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
+import React from 'react';
 
-const StyledTextField = styled.div`
-  width: 100%;
+type StyledTextFieldProps = {
+  fullWidth: boolean;
+};
+const StyledTextField = styled.div<StyledTextFieldProps>`
+  display: flex;
+  flex-direction: column;
+  ${(p) =>
+    p.fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 type StyledInputProps = {
@@ -34,7 +44,7 @@ const StyledInput = styled.input<StyledInputProps>`
 `;
 
 const StyledLabel = styled.span`
-  margin-left: 10px;
+  padding-bottom: 5px;
   color: ${(p) => p.theme.mainFgTextSecondary};
   font-size: 0.9em;
   user-select: none;
@@ -46,6 +56,7 @@ type TextFieldProps = {
   placeholder?: string;
   label?: string;
   inputRequired?: boolean;
+  fullWidth?: boolean;
 };
 
 const TextField = ({
@@ -56,13 +67,16 @@ const TextField = ({
   // @TODO will be used eventually, see #41
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   inputRequired,
-}: TextFieldProps) => {
+  fullWidth = false,
+  ...props
+}: TextFieldProps & React.ComponentPropsWithoutRef<'input'>) => {
   const theme = useTheme();
-  const hoverBackgroundColor = Color(theme.textInputBg[styleVariant]).lighten(
-    0.15
-  ).hsl().string();
+  const hoverBackgroundColor = Color(theme.textInputBg[styleVariant])
+    .lighten(0.15)
+    .hsl()
+    .string();
   return (
-    <StyledTextField>
+    <StyledTextField fullWidth={fullWidth}>
       {label !== undefined && <StyledLabel>{label}</StyledLabel>}
       <StyledInput
         type="text"
@@ -70,6 +84,7 @@ const TextField = ({
         placeholder={placeholder}
         hoverBackgroundColor={hoverBackgroundColor}
         name={name}
+        {...props}
       />
     </StyledTextField>
   );

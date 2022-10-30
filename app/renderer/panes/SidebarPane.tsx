@@ -6,7 +6,7 @@ import {
   Pane,
   SidebarProjectContent,
 } from '../components';
-import { IconButton } from '../controls';
+import { IconButton, TwoOptionSlider } from '../controls';
 import {
   SidebarOpenIcon,
   SidebarClosedIcon,
@@ -15,6 +15,7 @@ import {
 } from '../icons';
 import { useIsWindowMaxized, useToggle } from '../hooks';
 import useStore from '../store/useStore';
+import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const SidebarTopContainer = styled.div`
   display: flex;
@@ -86,6 +87,7 @@ const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
   const setSidebarOpen = useStore((state) => state.setSidebarOpen);
+  const isProjectOpen = useStore((state) => state.isProjectOpen);
   const isWindowMaximized = useIsWindowMaxized();
   const sidebarBackground = useMemo(() => {
     if (isWindowMaximized) {
@@ -102,11 +104,24 @@ const SidebarPane = () => {
     <Pane
       enabled={open}
       defaultWidth="250px"
+      minWidth={225}
       backgroundColor={sidebarBackground}
       styleMixin={paneStyleMixin}
     >
       <SidebarTopContainer>
-        <div /* placeholder */ />
+        {isProjectOpen ? (
+          <TwoOptionSlider
+            optionOne="Write"
+            optionTwo="Publish"
+            onChange={(value: string) => {
+              const { setAppMode } = useStore.getState();
+              const newMode = value as AppMode;
+              setAppMode(newMode);
+            }}
+          />
+        ) : (
+          <div />
+        )}
         <SidebarToggleButtonDiv open={open}>
           <IconButton
             iconSize="22px"

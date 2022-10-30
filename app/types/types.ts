@@ -1,3 +1,10 @@
+import type {
+  FlattenInterpolation,
+  ThemeProps,
+  FlattenSimpleInterpolation,
+  DefaultTheme,
+} from 'styled-components';
+
 /* BookDetails is used for creating a new project */
 export type BookDetails = {
   bookTitle: string;
@@ -72,3 +79,34 @@ export type PagedBookContents = {
   css: string;
   title: string;
 };
+
+/* Component Styling */
+export type CssMixinType =
+  | FlattenInterpolation<ThemeProps<DefaultTheme>>
+  | FlattenSimpleInterpolation
+  | string
+  | undefined;
+
+/* Publish Types */
+export type LeadIn = 'None' | 'Small Caps' | 'Italics';
+export type PageHeader =
+  | 'None'
+  | 'Chapter Title'
+  | 'Book Title'
+  | 'Author Name';
+export type ParagraphBreak = 'Indented' | 'Single Line Space';
+export type LineHeight = 'Single' | '1.5' | 'Double';
+export type SceneBreak = '𐫱' | '❦' | '⁂' | '⁕' | '⁕ ⁕ ⁕' | '• • •';
+export type PopularTrimSize = '5 x 8' | '5.25 x 8' | '5.5 x 8.5';
+export type AdditionalTrimSize = '5.06 x 7.81' | '5.5 x 8.25' | '6.14 x 9.21';
+export type InternationalTrimSize =
+  | '4.72 x 7.48'
+  | '4.92 x 7.48'
+  | '5.83 x 8.27'
+  | '5.31 x 8.46';
+export type MassMarketTrimSize = '4.12 x 6.75' | '4.25 x 7' | '4.37 x 7';
+export type TrimSize =
+  | PopularTrimSize
+  | AdditionalTrimSize
+  | InternationalTrimSize
+  | MassMarketTrimSize;

@@ -16,10 +16,14 @@ declare module 'styled-components' {
     };
     dropdownText: string;
     dropdownArrow: string;
-    optionSliderBg: string;
-    optionSliderAltBg: string;
-    optionSliderFg: string;
-    optionSliderAltFg: string;
+    optionSliderBg: {
+      default: string;
+      alt: string;
+    };
+    optionSliderFg: {
+      default: string;
+      alt: string;
+    };
     optionSliderText: string;
     buttonPrimaryBg: string;
     buttonPrimaryText: string;

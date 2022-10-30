@@ -9,3 +9,4 @@ export { default as useIsHovering } from './useIsHovering';
 export { default as useOnBookPdfGenerated } from './useOnBookPdfGenerated';
 export { default as useProjectHotkeys } from './useProjectHotkeys';
 export { default as useCommandKeyString } from './useCommandKeyString';
+export { default as useOnWindowResize } from './useOnWindowResize';
