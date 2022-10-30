@@ -10,7 +10,10 @@ export { default as ContextMenu } from './ContextMenu';
 export { default as TooltipText } from './TooltipText';
 export { default as Editor } from './codemirror/Editor';
 export { default as SaveIndicator } from './SaveIndicator';
+<<<<<<< HEAD
 export { default as Publish } from './publish/Publish';
 export { default as MenuBase } from './MenuBase';
 export { default as ScrollContainer } from './ScrollContainer';
+=======
+>>>>>>> d42229cf4aa5e31ff66529f582aaa4cdce5af443
 export { default as RecentProjectsList } from './RecentProjectsList';
