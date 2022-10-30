@@ -67,4 +67,7 @@ contextBridge.exposeInMainWorld('pagedApi', {
 contextBridge.exposeInMainWorld('appApi', {
   onRecentProjects: (func: (projectGlances: ProjectGlance[]) => void) =>
     ipcRenderer.on('recentProjects', (_event, arg) => func(arg)),
+  getRecentProjects: () => {
+    ipcRenderer.send('getRecentProjects');
+  },
 });

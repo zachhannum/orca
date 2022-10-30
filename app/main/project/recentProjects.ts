@@ -16,8 +16,8 @@ const readRecentProjects = (): ProjectGlance[] => {
 
 export const sendRecentProjects = (mainWindow: BrowserWindow) => {
   const recentProjects = readRecentProjects();
-  if (recentProjects.length) {
-    mainWindow.webContents.send('openProject', readRecentProjects());
+  if (recentProjects.length > 0) {
+    mainWindow.webContents.send('recentProjects', readRecentProjects());
   }
 };
 

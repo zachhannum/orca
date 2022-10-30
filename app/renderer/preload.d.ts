@@ -24,6 +24,7 @@ export interface PagedApi {
 }
 export interface AppApi {
   onRecentProjects: (func: (projectGlances: ProjectGlance[]) => void) => void;
+  getRecentProjects: () => void;
 }
 
 declare global {

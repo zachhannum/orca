@@ -4,6 +4,7 @@ import { BookDetails } from '../../types/types';
 import createProject from './createProject';
 import openProjectDialog from './openProjectDialog';
 import saveProject from './saveProject';
+import { sendRecentProjects } from './recentProjects';
 
 const setupProjectListeners = (mainWindow: BrowserWindow) => {
   ipcMain.on('createProject', async (_event, arg: BookDetails) => {
@@ -14,6 +15,9 @@ const setupProjectListeners = (mainWindow: BrowserWindow) => {
   });
   ipcMain.on('saveProject', async (_event, arg) => {
     saveProject(arg);
+  });
+  ipcMain.on('getRecentProjects', async (_event, _arg) => {
+    sendRecentProjects(mainWindow);
   });
 };
 
