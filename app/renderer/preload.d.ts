@@ -1,4 +1,9 @@
-import type { BookDetails, ProjectData, PagedBookContents } from 'types/types';
+import type {
+  BookDetails,
+  ProjectData,
+  PagedBookContents,
+  ProjectGlance,
+} from 'types/types';
 
 export interface WindowApi {
   os: () => string;
@@ -17,6 +22,10 @@ export interface PagedApi {
   onBookPdfGenerated: (func: (pdfStream: Buffer) => void) => void;
   pagedRenderComplete: () => void;
 }
+export interface AppApi {
+  onRecentProjects: (func: (projectGlances: ProjectGlance[]) => void) => void;
+}
+
 declare global {
   interface Window {
     electron: {
@@ -32,6 +41,7 @@ declare global {
     windowApi: WindowApi;
     projectApi: ProjectApi;
     pagedApi: PagedApi;
+    appApi: AppApi;
   }
 }
 

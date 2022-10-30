@@ -31,7 +31,7 @@ const generatePdf = (
     pdfWindow.webContents.printToPDF({}).then((buffer: Buffer) => {
       const filePath = path.join(
         app.getPath('downloads'),
-        pdfBookContent.title.toLowerCase().trim().replace(/\s+/g, '_') + '.pdf'
+        `${pdfBookContent.title.toLowerCase().trim().replace(/\s+/g, '_')}.pdf`
       );
       fs.writeFile(filePath, buffer, (err) => {
         if (err) {

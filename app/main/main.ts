@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { getPlatformWindowSettings, resolveHtmlPath } from './util';
-import { setupProjectListeners } from './project';
+import { setupProjectListeners, sendRecentProjects } from './project';
 import { setupPdfListeners } from './pdf';
 
 export default class AppUpdater {
@@ -103,10 +103,10 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
-    console.log('Hello world!');
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
+    sendRecentProjects(mainWindow);
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
@@ -150,10 +150,6 @@ const createWindow = async () => {
   setupProjectListeners(mainWindow);
   setupPdfListeners(mainWindow);
 };
-
-/**
- * Add event listeners...
- */
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
