@@ -57,6 +57,14 @@ export type ProjectData = {
   fileName: string;
 };
 
+/* ProjectGlance is stored in appData to be used for recent projects */
+export type ProjectGlance = {
+  bookTitle: string;
+  authorName: string;
+  folderPath: string;
+  fileName: string;
+};
+
 /* Context Menu event types */
 export const SectionContextMenuEvent = 'section-context-menu-event';
 export const SectionContextMenuClosedEvent =

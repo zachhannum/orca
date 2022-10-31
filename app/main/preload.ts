@@ -3,6 +3,7 @@ import type {
   BookDetails,
   ProjectData,
   PagedBookContents,
+  ProjectGlance,
 } from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
@@ -44,6 +45,9 @@ contextBridge.exposeInMainWorld('projectApi', {
   openProject: () => {
     ipcRenderer.send('openProject');
   },
+  openProjectPath: (path: string) => {
+    ipcRenderer.send('openProjectPath', path);
+  },
   saveProject: (projectData: ProjectData) => {
     ipcRenderer.send('saveProject', projectData);
   },
@@ -61,4 +65,12 @@ contextBridge.exposeInMainWorld('pagedApi', {
   onBookPdfGenerated: (func: (pdfStream: Buffer) => void) =>
     ipcRenderer.on('pdfGenerated', (_event, arg) => func(arg)),
   pagedRenderComplete: () => ipcRenderer.send('pagedRenderComplete'),
+});
+
+contextBridge.exposeInMainWorld('appApi', {
+  onRecentProjects: (func: (projectGlances: ProjectGlance[]) => void) =>
+    ipcRenderer.on('recentProjects', (_event, arg) => func(arg)),
+  getRecentProjects: () => {
+    ipcRenderer.send('getRecentProjects');
+  },
 });

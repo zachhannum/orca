@@ -5,6 +5,7 @@ import { Button } from '../controls';
 import useStore from '../store/useStore';
 import SidebarProjectSections from './SidebarProjectSections';
 import SaveIndicator from './SaveIndicator';
+import RecentProjectsList from './RecentProjectsList';
 
 const StyledSidebarProjectContent = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const StyledSidebarProjectContent = styled.div`
 
 const StyledTitleBlock = styled.div`
   display: flex;
-  padding: 15px 15px 0px 15px;
+  padding: 10px 15px 0px 15px;
   box-sizing: border-box;
   flex-direction: column;
   gap: 5px;
@@ -35,8 +36,7 @@ const StyledContentBlock = styled.div`
 const StyledNoProjectBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 0px 15px;
+  padding: 0px 10px;
   box-sizing: border-box;
   flex-grow: 1;
 `;
@@ -118,6 +118,7 @@ const SidebarProjectContent = () => {
               To learn more about how to use Calamus, you can always check out
               our <StyledAnchor>help pages</StyledAnchor>.
             </StyledSidebarP>
+            <RecentProjectsList />
           </StyledNoProjectBlock>
         </>
       )}

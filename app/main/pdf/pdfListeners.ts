@@ -1,5 +1,4 @@
-import { ipcMain } from 'electron';
-import { BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 import { PagedBookContents } from '../../types/types';
 import generatePdf from './generatePdf';
 
