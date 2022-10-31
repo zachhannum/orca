@@ -45,6 +45,9 @@ contextBridge.exposeInMainWorld('projectApi', {
   openProject: () => {
     ipcRenderer.send('openProject');
   },
+  openProjectPath: (path: string) => {
+    ipcRenderer.send('openProjectPath', path);
+  },
   saveProject: (projectData: ProjectData) => {
     ipcRenderer.send('saveProject', projectData);
   },

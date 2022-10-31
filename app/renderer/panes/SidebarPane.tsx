@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
 import {
@@ -6,7 +6,7 @@ import {
   Pane,
   SidebarProjectContent,
 } from '../components';
-import { IconButton, TwoOptionSlider } from '../controls';
+import { IconButton, TwoOptionSlider } from 'renderer/controls';
 import {
   SidebarOpenIcon,
   SidebarClosedIcon,

@@ -31,8 +31,8 @@ export const addRecentProject = (projectGlance: ProjectGlance) => {
       projectGlance.folderPath.concat(projectGlance.fileName)
   );
 
-  // Only keep the 10 most recent projects
-  recentProjects = recentProjects.slice(0, 8);
+  // Only keep the 20 most recent projects
+  recentProjects = recentProjects.slice(0, 19);
   recentProjects.unshift(projectGlance);
 
   const prefsPath = `${app.getPath('userData')}/recents.json`;

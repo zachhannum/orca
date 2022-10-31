@@ -14,6 +14,7 @@ export interface WindowApi {
 export interface ProjectApi {
   saveProject: (projectData: ProjectData) => void;
   openProject: () => void;
+  openProjectPath: (path: string) => void;
   createProject: (bookDetails: BookDetails) => void;
   onOpenProject: (func: (projectData: ProjectData) => void) => void;
 }

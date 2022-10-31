@@ -1,33 +1,48 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ProjectGlance } from 'types/types';
-import ScrollContainer from './codemirror/ScrollContainer';
-
-const StyledRecentProjectsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 10px;
-`;
+import { ScrollContainer } from 'renderer/components';
 
 const StyledProjectGlance = styled.div`
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   padding: 10px;
-  margin: 0px -10px;
   border-radius: 10px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
-  transition: all 100ms ease-in-out;
+  transition: all 300ms ease-in-out;
 `;
 
 const StyledRecentProjectsTitle = styled.div`
   color: ${(p) => p.theme.sidebarFgText};
+  padding-top: 15px;
 `;
 
-const StyledRecentProjectsAuthor = styled.div`
+const StyledProjectGlanceBookTitle = styled.div`
+  color: ${(p) => p.theme.sidebarFgText};
+  font-size: 0.95em;
+`;
+
+const StyledProjectGlanceAuthor = styled.div`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
   font-size: 0.9em;
+`;
+
+const StyledProjectGlancePath = styled.div`
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
+  font-size: 0.8em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const ScrollCss = css`
+  margin: 0px -10px;
+  overflow-y: scroll;
+  flex-basis: 0;
+  flex-grow: 1;
 `;
 
 const RecentProjectsList = () => {
@@ -40,28 +55,40 @@ const RecentProjectsList = () => {
     });
   }, []);
 
+  const handleProjectGlanceClick = (projectGlance: ProjectGlance) => {
+    window.projectApi.openProjectPath(
+      `${projectGlance.folderPath}/${projectGlance.fileName}`
+    );
+  };
+
   return (
-    <StyledRecentProjectsList>
+    <>
       {recentProjects.length > 0 && (
         <>
           <StyledRecentProjectsTitle>Recent Projects</StyledRecentProjectsTitle>
-          <ScrollContainer>
-            {recentProjects.map((projectGlance) => (
+          <ScrollContainer cssMixin={ScrollCss}>
+            {recentProjects.slice(0, 3).map((projectGlance) => (
               <StyledProjectGlance
                 key={projectGlance.folderPath.concat(projectGlance.fileName)}
+                onClick={() => {
+                  handleProjectGlanceClick(projectGlance);
+                }}
               >
-                <StyledRecentProjectsTitle>
+                <StyledProjectGlanceBookTitle>
                   {projectGlance.bookTitle}
-                </StyledRecentProjectsTitle>
-                <StyledRecentProjectsAuthor>
+                </StyledProjectGlanceBookTitle>
+                <StyledProjectGlanceAuthor>
                   {projectGlance.authorName}
-                </StyledRecentProjectsAuthor>
+                </StyledProjectGlanceAuthor>
+                <StyledProjectGlancePath>
+                  {projectGlance.folderPath}
+                </StyledProjectGlancePath>
               </StyledProjectGlance>
             ))}
           </ScrollContainer>
         </>
       )}
-    </StyledRecentProjectsList>
+    </>
   );
 };
 
