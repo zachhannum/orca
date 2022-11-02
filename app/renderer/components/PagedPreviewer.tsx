@@ -2,10 +2,10 @@ import { useRef, useEffect, useState, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
 import { debounce } from 'lodash';
-import { baseStylesheet } from '../pagedjs/defaultPageCss';
-import { useResizeObserver } from '../hooks';
-import useStore from '../store/useStore';
+import useStore from 'renderer/store/useStore';
 import { parseChapterContentToHtml } from 'renderer/utils/buildBook';
+import { usePagedCss } from '../pagedjs/usePagedCss';
+import { useResizeObserver } from '../hooks';
 
 const StyledRenderer = styled.div`
   height: 100%;
@@ -55,14 +55,13 @@ type PagedPreviewerProps = {
   onPageOverflow: (pageNumber: number) => void;
 };
 
-const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => {
+const PagedPreviewer = ({
+  pageNumber,
+  onPageOverflow,
+}: PagedPreviewerProps) => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
   const pagedStageRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<HTMLDivElement>(null);
-  /* Testing dynamic css changes */
-  const printParagraphFontSize = useStore(
-    (state) => state.printParagraphFontSize
-  );
   const previewContent = useStore((state) => state.previewContent);
   const activeSectionId = useStore((state) => state.activeSectionId);
   const polisher = useRef<Polisher>(null);
@@ -72,6 +71,7 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
   const [page, setPage] = useState(1);
   const [overflow, setOverflow] = useState(false);
   const buildingPreview = useRef(false);
+  const styleSheet = usePagedCss();
 
   const setPageCounterIncrement = (pageIncrement: number) => {
     document.documentElement.style.setProperty(
@@ -92,7 +92,7 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
         console.log(`page ${page} found.`);
         navigatePage.style.display = '';
         navigatePage.scrollIntoView();
-        if (prevPage != page) {
+        if (prevPage !== page) {
           console.log(
             `previous page ${prevPage} is different than current page, hiding previous page.`
           );
@@ -136,7 +136,7 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber]);
 
-  useResizeObserver(rendererRef, 100, handleResize);
+  useResizeObserver(rendererRef, 25, handleResize);
 
   const setPagedContent = async (htmlContent: string) => {
     const template = document.querySelector<HTMLTemplateElement>('#flow');
@@ -145,6 +145,15 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
       const container = pageContainerRef.current;
       const pagedStage = pagedStageRef.current;
       console.log('Destroying previous polisher and chunker');
+
+      // Remove stale paged styles
+      const hs = document.getElementsByTagName('style');
+      for (let i = hs.length - 1; i >= 0; --i) {
+        if (hs[i].getAttribute('data-pagedjs-inserted-styles') === 'true') {
+          hs[i].parentNode?.removeChild(hs[i]);
+        }
+      }
+
       if (polisher.current) polisher.current.destroy();
       if (chunker.current) chunker.current.destroy();
       polisher.current = new Polisher();
@@ -155,9 +164,7 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
         await polisher.current.add({
-          '': baseStylesheet({
-            paragraphFontSize: printParagraphFontSize,
-          }).toString(),
+          '': styleSheet.toString(),
         });
         console.log('Starting flow...');
         await chunker.current.flow(template.content, pagedStage);
@@ -182,6 +189,7 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
               `page is ${page}, max page length: ${paged.children.length}, setting page to ${pageNum}`
             );
             for (let i = 0; i < paged.children.length; i += 1) {
+              // eslint-disable-next-line no-continue
               if (i === pageNum - 1) continue;
               (paged.children[i] as HTMLElement).style.display = 'none';
             }
@@ -205,12 +213,12 @@ const PagedPreviewer = ({ pageNumber, onPageOverflow }: PagedPreviewerProps) => 
 
   const updatePreviewDebounce = useMemo(
     () => debounce(updatePreview, 500, { trailing: true }),
-    [page]
+    [page, previewContent, styleSheet]
   );
 
   useEffect(() => {
     updatePreviewDebounce();
-  }, [previewContent]);
+  }, [previewContent, styleSheet]);
 
   return (
     <StyledRenderer ref={rendererRef}>

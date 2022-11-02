@@ -1,19 +1,23 @@
-import { useState } from 'react';
 import type { LeadIn } from 'types/types';
+import useStore from 'renderer/store/useStore';
 import { Setting, SettingLabel } from './Setting';
 import { ToggleSwitch, Dropdown } from '../../controls';
 
 const FirstLineDecorationsSettings = () => {
   const LeadInOptions = ['None', 'Small Caps', 'Italics'] as LeadIn[];
 
-  /* TODO replace with store option */
-  const [leadIn, setLeadIn] = useState<LeadIn>('None');
+  const [dropCap, setDropCap, leadIn, setLeadIn] = useStore((state) => [
+    state.dropCap,
+    state.setDropCap,
+    state.leadIn,
+    state.setLeadIn,
+  ]);
 
   return (
     <>
       <Setting>
         <SettingLabel>Drop Cap</SettingLabel>
-        <ToggleSwitch />
+        <ToggleSwitch onChange={setDropCap} value={dropCap} />
       </Setting>
       <Setting>
         <SettingLabel>Lead-in</SettingLabel>

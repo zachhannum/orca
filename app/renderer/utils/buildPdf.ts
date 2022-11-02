@@ -1,4 +1,4 @@
-import { baseStylesheet } from 'renderer/pagedjs/defaultPageCss';
+import { baseStylesheet } from 'renderer/pagedjs/usePagedCss';
 import { parseBookContentToHtml } from './buildBook';
 import useStore from '../store/useStore';
 

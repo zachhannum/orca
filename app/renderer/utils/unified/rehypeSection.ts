@@ -3,7 +3,7 @@ import { h } from 'hastscript';
 
 const rehypeSection = () => {
   return (tree: Root) => {
-    tree.children = [h('section',{class: 'chapter'}, tree.children )];
+    tree.children = [h('section', { class: 'chapter' }, tree.children)];
   };
 };
 
