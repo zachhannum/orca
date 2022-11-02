@@ -29,7 +29,7 @@ const createAppSlice = (
   setPreviewEnabled: (val: boolean) => {
     set(() => ({ previewEnabled: val }));
   },
-  appMode: 'Write',
+  appMode: 'Write' as AppMode,
   setAppMode: (mode: AppMode) => {
     set(() => ({
       appMode: mode,

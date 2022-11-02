@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState, useMemo, RefObject } from 'react';
-import { throttle } from 'lodash';
+import { debounce } from 'lodash';
 
 const useResizeObserver = (
   ref: RefObject<HTMLElement>,
@@ -23,7 +23,7 @@ const useResizeObserver = (
     }
   };
 
-  const handleResize = useMemo(() => throttle(onResize, wait), [callback]);
+  const handleResize = useMemo(() => debounce(onResize, wait), [callback]);
 
   useLayoutEffect(() => {
     if (!ref.current) {

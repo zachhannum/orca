@@ -1,18 +1,66 @@
 /* eslint-disable import/prefer-default-export */
 // js/modules/pagedmakerCSS.js
+import useStore from 'renderer/store/useStore';
 import { css } from 'styled-components';
+import { LeadIn } from 'types/types';
 
-type StylesheetProps = {
-  paragraphFontSize: number;
+const getLeadInCss = (leadIn: LeadIn) => {
+  switch (leadIn) {
+    case 'Italics':
+      return css`
+        font-style: italic;
+      `;
+    case 'Small Caps':
+      return css`
+        font-variant: small-caps;
+      `;
+    case 'None':
+    default:
+      return css``;
+  }
 };
 
-const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
-  css`
+const usePagedCss = () => {
+  const [
+    dropCap,
+    leadIn,
+    paragraphBreak,
+    sceneBreak,
+    rectoPageHeaders,
+    versoPageHeaders,
+    paragraphFont,
+    fontSize,
+    lineHeight,
+    dropFolio,
+    topMargin,
+    bottomMargin,
+    insideMargin,
+    outsideMargin,
+    trimSize,
+  ] = useStore((state) => [
+    state.dropCap,
+    state.leadIn,
+    state.paragraphBreak,
+    state.sceneBreak,
+    state.rectoPageHeaders,
+    state.versoPageHeaders,
+    state.paragraphFont,
+    state.fontSize,
+    state.lineHeight,
+    state.dropFolio,
+    state.topMargin,
+    state.bottomMargin,
+    state.insideMargin,
+    state.outsideMargin,
+    state.trimSize,
+  ]);
+
+  return css`
     section p {
-      font-family: 'Crimson Pro', serif;
+      font-family: ${paragraphFont}, serif;
       text-align: justify;
       line-height: 1.5;
-      font-size: ${paragraphFontSize}pt;
+      font-size: ${fontSize}pt;
       orphans: 3;
       widows: 2;
       hyphens: auto;
@@ -28,15 +76,22 @@ const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
     }
     /* Chapter leader */
     .firstPara::first-line {
-      font-style: italic;
+      ${getLeadInCss(leadIn)}
     }
     /* Chapter Drop Cap */
-    .firstPara::first-letter {
-      float: left;
-      font-size: 5em;
-      line-height: 0.65;
-      margin: 0.1em 0.1em 0.1em 0;
-    }
+    ${dropCap &&
+    css`
+      .firstPara::first-letter {
+        float: left;
+        font-size: 5em;
+        line-height: 0.65;
+        margin: 0.1em 0.1em 0.1em 0;
+      }
+      .firstPara {
+        text-indent: 0em !important;
+      }
+    `}
+
     h1 {
       font-family: 'Crimson Pro', serif;
       margin-top: 1.5in;
@@ -44,6 +99,7 @@ const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
       text-align: center;
       letter-spacing: 0.1em;
       font-weight: 300;
+      font-style: normal;
     }
 
     h1::before {
@@ -129,5 +185,6 @@ const baseStylesheet = ({ paragraphFontSize }: StylesheetProps) =>
       page-break-after: always;
     }
   `.join('');
+};
 
-export { baseStylesheet };
+export { usePagedCss };
