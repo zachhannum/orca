@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
+import { IconButton, TwoOptionSlider } from 'renderer/controls';
 import {
   MoreOptionsSidebarMenu,
   Pane,
   SidebarProjectContent,
 } from '../components';
-import { IconButton, TwoOptionSlider } from 'renderer/controls';
 import {
   SidebarOpenIcon,
   SidebarClosedIcon,
@@ -111,6 +111,7 @@ const SidebarPane = () => {
       <SidebarTopContainer>
         {isProjectOpen ? (
           <TwoOptionSlider
+            type="alt"
             optionOne="Write"
             optionTwo="Publish"
             onChange={(value: string) => {

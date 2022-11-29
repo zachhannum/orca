@@ -30,20 +30,16 @@ export interface PublishOptionsSlice {
   setLineHeight: (lineHeight: LineHeight) => void;
   dropFolio: boolean;
   setDropFolio: (dropFolio: boolean) => void;
-  topMargin: number;
-  setTopMargin: (topMargin: number) => void;
-  bottomMargin: number;
-  setBottomMargin: (bottomMargin: number) => void;
-  insideMargin: number;
-  setInsideMargin: (insideMargin: number) => void;
-  outsideMargin: number;
-  setOutsideMargin: (outsideMargin: number) => void;
+  topMargin: string;
+  setTopMargin: (topMargin: string) => void;
+  bottomMargin: string;
+  setBottomMargin: (bottomMargin: string) => void;
+  insideMargin: string;
+  setInsideMargin: (insideMargin: string) => void;
+  outsideMargin: string;
+  setOutsideMargin: (outsideMargin: string) => void;
   trimSize: TrimSize;
   setTrimSize: (trimSize: TrimSize) => void;
-
-  // remove
-  printParagraphFontSize: number;
-  setPrintParagraphFontSize: (val: number) => void;
 }
 
 const createPublishOptionsSlice = (
@@ -91,31 +87,25 @@ const createPublishOptionsSlice = (
   setDropFolio: (dropFolio: boolean) => {
     set(() => ({ dropFolio }));
   },
-  topMargin: 0,
-  setTopMargin: (topMargin: number) => {
+  topMargin: '0.5in',
+  setTopMargin: (topMargin: string) => {
     set(() => ({ topMargin }));
   },
-  bottomMargin: 0,
-  setBottomMargin: (bottomMargin: number) => {
+  bottomMargin: '0.5in',
+  setBottomMargin: (bottomMargin: string) => {
     set(() => ({ bottomMargin }));
   },
-  insideMargin: 0,
-  setInsideMargin: (insideMargin: number) => {
+  insideMargin: '0.75in',
+  setInsideMargin: (insideMargin: string) => {
     set(() => ({ insideMargin }));
   },
-  outsideMargin: 0,
-  setOutsideMargin: (outsideMargin: number) => {
+  outsideMargin: '0.5in',
+  setOutsideMargin: (outsideMargin: string) => {
     set(() => ({ outsideMargin }));
   },
   trimSize: '5 x 8' as TrimSize,
   setTrimSize: (trimSize: TrimSize) => {
     set(() => ({ trimSize }));
-  },
-
-  // remove
-  printParagraphFontSize: 12,
-  setPrintParagraphFontSize: (val: number) => {
-    set(() => ({ printParagraphFontSize: val }));
   },
 });
 

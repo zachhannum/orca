@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
+import { CssMixinType } from 'types/types';
 import { useToggle, useIsMount } from '../hooks';
 
 type SwitchBaseProps = {
@@ -19,6 +20,8 @@ type SwitchBaseProps = {
   onChange?: (value: boolean) => void;
   disabled: boolean;
   value: boolean | undefined;
+  baseCssMixin?: CssMixinType;
+  thumbCssMixin?: CssMixinType;
 };
 
 type StyledBaseProps = {
@@ -29,6 +32,7 @@ type StyledBaseProps = {
   height: number;
   width: number;
   borderRadius: number;
+  cssMixin: CssMixinType;
 };
 
 const StyledBase = styled.div<StyledBaseProps>`
@@ -44,6 +48,8 @@ const StyledBase = styled.div<StyledBaseProps>`
   user-select: none;
   transition: all 100ms ease-in-out;
   opacity: ${(p) => (p.disabled ? '0.5' : '1')};
+
+  ${(p) => p.cssMixin}
 `;
 
 type StyledThumbProps = {
@@ -58,6 +64,7 @@ type StyledThumbProps = {
   baseWidth: number;
   baseHeight: number;
   horizontalPadding: number;
+  cssMixin: CssMixinType;
 };
 
 const animateThumb = (width: number, animateWidth: number) => keyframes`
@@ -90,6 +97,8 @@ const StyledThumb = styled.div<StyledThumbProps>`
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
   user-select: none;
   transition: all 200ms ease-in-out;
+
+  ${(p) => p.cssMixin}
 `;
 
 const SwitchBase = ({
@@ -109,6 +118,8 @@ const SwitchBase = ({
   onChange,
   disabled,
   value,
+  baseCssMixin,
+  thumbCssMixin,
 }: SwitchBaseProps) => {
   const [checked, toggleChecked] = useToggle(defaultValue);
   const [animate, setAnimate] = useState(false);
@@ -144,6 +155,7 @@ const SwitchBase = ({
       value={checked}
       disabled={disabled}
       onClick={handleToggleClicked}
+      cssMixin={baseCssMixin}
     >
       <StyledThumb
         height={thumbHeight}
@@ -157,6 +169,7 @@ const SwitchBase = ({
         baseHeight={baseHeight}
         baseWidth={baseWidth}
         horizontalPadding={horizontalPadding}
+        cssMixin={thumbCssMixin}
       />
     </StyledBase>
   );

@@ -164,7 +164,7 @@ const PagedPreviewer = ({
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
         await polisher.current.add({
-          '': styleSheet.toString(),
+          '': styleSheet,
         });
         console.log('Starting flow...');
         await chunker.current.flow(template.content, pagedStage);

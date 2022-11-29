@@ -1,12 +1,21 @@
 import { useState } from 'react';
 import type { PageHeader } from 'types/types';
+import useStore from 'renderer/store/useStore';
 import { Setting, SettingLabel, SettingSubHeading } from './Setting';
 import { Dropdown } from '../../controls';
 
 const HeadersSettings = () => {
-  const [rectoPageHader, setRectoPageHeader] = useState<PageHeader>('None');
-  const [versoPageHeader, setVersoPageHeader] = useState<PageHeader>('None');
-
+  const [
+    rectoPageHeaders,
+    setRectoPageHeaders,
+    versoPageHeaders,
+    setVersoPageHeaders,
+  ] = useStore((state) => [
+    state.rectoPageHeaders,
+    state.setRectoPageHeaders,
+    state.versoPageHeaders,
+    state.setVersoPageHeaders,
+  ]);
   const pageHeaderOptions = [
     'None',
     'Chapter Title',
@@ -21,9 +30,9 @@ const HeadersSettings = () => {
         <Dropdown
           options={pageHeaderOptions}
           onChange={(value) => {
-            setRectoPageHeader(value as PageHeader);
+            setRectoPageHeaders(value as PageHeader);
           }}
-          value={rectoPageHader}
+          value={rectoPageHeaders}
         />
       </Setting>
       <Setting>
@@ -31,9 +40,9 @@ const HeadersSettings = () => {
         <Dropdown
           options={pageHeaderOptions}
           onChange={(value) => {
-            setVersoPageHeader(value as PageHeader);
+            setVersoPageHeaders(value as PageHeader);
           }}
-          value={versoPageHeader}
+          value={versoPageHeaders}
         />
       </Setting>
     </>

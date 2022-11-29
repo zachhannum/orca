@@ -8,6 +8,7 @@ import {
   PopularTrimSize,
   TrimSize,
 } from 'types/types';
+import useStore from 'renderer/store/useStore';
 import { Setting, SettingLabel } from './Setting';
 import { Checkbox, Dropdown, TextField } from '../../controls';
 
@@ -20,19 +21,49 @@ const MarginsContainer = styled.div`
 `;
 
 const PrintSettings = () => {
+  const [
+    paragraphFont,
+    setParagraphFont,
+    fontSize,
+    setFontSize,
+    lineHeight,
+    setLineHeight,
+    dropFolio,
+    setDropFolio,
+    trimSize,
+    setTrimSize,
+    topMargin,
+    setTopMargin,
+    bottomMargin,
+    setBottomMargin,
+    insideMargin,
+    setInsideMargin,
+    outsideMargin,
+    setOutsideMargin,
+  ] = useStore((state) => [
+    state.paragraphFont,
+    state.setParagraphFont,
+    state.fontSize,
+    state.setFontSize,
+    state.lineHeight,
+    state.setLineHeight,
+    state.dropFolio,
+    state.setDropFolio,
+    state.trimSize,
+    state.setTrimSize,
+    state.topMargin,
+    state.setTopMargin,
+    state.bottomMargin,
+    state.setBottomMargin,
+    state.insideMargin,
+    state.setInsideMargin,
+    state.outsideMargin,
+    state.setOutsideMargin,
+  ]);
   /* TODO replace */
-  const [paragraphFont, setParagraphFont] = useState('Crimson Pro');
   const paragraphFontOptions = ['Crimson Pro'];
-
-  const [fontSize, setFontSize] = useState('12');
   const fontSizeOptions = ['8', '9', '10', '11', '12', '14', '16'];
-
-  const [lineHeight, setLineHeight] = useState<LineHeight>('Single');
   const lineHeightOptions = ['Single', '1.5', 'Double'] as LineHeight[];
-
-  const [dropFolio, setDropFolio] = useState(false);
-
-  const [trimSize, setTrimSize] = useState<TrimSize>('5 x 8');
   const popularTrimSizes = [
     '5 x 8',
     '5.25 x 8',
@@ -61,8 +92,6 @@ const PrintSettings = () => {
     { name: 'Mass Market Trim Sizes', options: massMarketTrimSizes },
   ];
 
-  const [topMargin, setTopMargin] = useState(0.5);
-
   return (
     <>
       <Setting>
@@ -80,9 +109,9 @@ const PrintSettings = () => {
         <Dropdown
           options={fontSizeOptions}
           onChange={(value) => {
-            setFontSize(value);
+            setFontSize(Number(value));
           }}
-          value={fontSize}
+          value={String(fontSize)}
         />
       </Setting>
       <Setting>
@@ -112,16 +141,33 @@ const PrintSettings = () => {
             label="Top"
             defaultValue={topMargin}
             onBlur={(event) => {
-              console.log(event.type);
-              const newMargin = parseFloat(event.target.value);
-              if (!Number.isNaN(newMargin)) {
-                setTopMargin(newMargin);
-              }
+              setTopMargin(event.target.value);
             }}
           />
-          <TextField name="bottom" label="Bottom" />
-          <TextField name="inside" label="Inside" />
-          <TextField name="outside" label="Outside" />
+          <TextField
+            name="bottom"
+            label="Bottom"
+            defaultValue={bottomMargin}
+            onBlur={(event) => {
+              setTopMargin(event.target.value);
+            }}
+          />
+          <TextField
+            name="inside"
+            label="Inside"
+            defaultValue={insideMargin}
+            onBlur={(event) => {
+              setInsideMargin(event.target.value);
+            }}
+          />
+          <TextField
+            name="outside"
+            label="Outside"
+            defaultValue={outsideMargin}
+            onBlur={(event) => {
+              setOutsideMargin(event.target.value);
+            }}
+          />
         </MarginsContainer>
       </Setting>
       <Setting>

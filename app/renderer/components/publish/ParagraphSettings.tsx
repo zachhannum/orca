@@ -1,12 +1,15 @@
-import { useState } from 'react';
 import { SceneBreak } from 'types/types';
+import useStore from 'renderer/store/useStore';
 import { Setting, SettingLabel } from './Setting';
-import { Checkbox, Dropdown } from '../../controls';
+import { Dropdown } from '../../controls';
 
 const ParagraphSettings = () => {
-  /* TODO replace */
-  const [sceneBreak, setSceneBreak] = useState<SceneBreak>('⁕');
+  const [sceneBreak, setSceneBreak] = useStore((state) => [
+    state.sceneBreak,
+    state.setSceneBreak,
+  ]);
   const sceneBreakOptions = [
+    'None',
     '⁕',
     '⁂',
     '𐫱',
@@ -16,10 +19,10 @@ const ParagraphSettings = () => {
   ] as SceneBreak[];
   return (
     <>
-      <Setting>
+      {/* <Setting>
         <SettingLabel>Paragraph Break</SettingLabel>
         <div />
-      </Setting>
+      </Setting> */}
       <Setting>
         <SettingLabel>Scene Break</SettingLabel>
         <Dropdown
