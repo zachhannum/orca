@@ -15,13 +15,19 @@ const theme: DefaultTheme = {
   },
   dropdownText: 'rgba(240, 240, 248, 1)',
   dropdownArrow: 'rgba(240, 240, 248, 1)',
-  optionSliderBg: {
-    default: `rgba(70, 70, 79, ${sidebarOpacity})`,
-    alt: 'rgba(117, 117, 128, 1)',
-  },
   optionSliderFg: {
+    default: `rgba(70, 70, 79, 1)`,
+    alt:
+      window.windowApi.os() === 'darwin'
+        ? `rgba(0, 0, 0, 0.4)`
+        : 'rgba(78, 78, 87, 1)',
+  },
+  optionSliderBg: {
     default: 'rgba(50, 50, 56, 1)',
-    alt: 'rgba(78, 78, 87, 1)',
+    alt:
+      window.windowApi.os() === 'darwin'
+        ? `rgba(255, 255, 255, 0.1)`
+        : 'rgba(117, 117, 128, 1)',
   },
   optionSliderText: 'rgba(240, 240, 248, 1)',
   buttonPrimaryBg: 'rgba(96, 96, 255, 1)',

@@ -2,7 +2,7 @@
 // js/modules/pagedmakerCSS.js
 import useStore from 'renderer/store/useStore';
 import { css } from 'styled-components';
-import { LeadIn } from 'types/types';
+import { LeadIn, LineHeight, PageHeader } from 'types/types';
 
 const getLeadInCss = (leadIn: LeadIn) => {
   switch (leadIn) {
@@ -15,6 +15,45 @@ const getLeadInCss = (leadIn: LeadIn) => {
         font-variant: small-caps;
       `;
     case 'None':
+    default:
+      return css``;
+  }
+};
+
+const getPageHeader = (pageHeader: PageHeader) => {
+  switch (pageHeader) {
+    case 'Author Name':
+      return css`
+        content: '${useStore.getState().authorName}';
+      `;
+    case 'Book Title':
+      return css`
+        content: '${useStore.getState().bookTitle}';
+      `;
+    case 'Chapter Title':
+      return css`
+        content: string(chapterTitle);
+      `;
+    case 'None':
+    default:
+      return ' ';
+  }
+};
+
+const getLineHeight = (lineHeight: LineHeight) => {
+  switch (lineHeight) {
+    case 'Single':
+      return css`
+        line-height: 1;
+      `;
+    case '1.5':
+      return css`
+        line-height: 1.5;
+      `;
+    case 'Double':
+      return css`
+        line-height: 2;
+      `;
     default:
       return css``;
   }
@@ -59,9 +98,9 @@ const usePagedCss = () => {
     section p {
       font-family: ${paragraphFont}, serif;
       text-align: justify;
-      line-height: 1.5;
+      ${getLineHeight(lineHeight)}
       font-size: ${fontSize}pt;
-      orphans: 3;
+      orphans: 2;
       widows: 2;
       hyphens: auto;
       text-justify: inter-word;
@@ -95,14 +134,15 @@ const usePagedCss = () => {
     h1 {
       font-family: 'Crimson Pro', serif;
       margin-top: 1.5in;
-      font-size: 15pt;
+      font-size: 18pt;
       text-align: center;
       letter-spacing: 0.1em;
       font-weight: 300;
       font-style: normal;
     }
 
-    h1::before {
+    /* TODO header decorations */
+    /* h1::before {
       content: '⁙';
       text-align: center;
       padding: 0.1in;
@@ -112,11 +152,11 @@ const usePagedCss = () => {
       content: '⁙';
       text-align: center;
       padding: 0.1in;
-    }
+    } */
 
     h2 {
       font-family: 'Crimson Pro', serif;
-      font-size: 18pt;
+      font-size: 15pt;
       text-align: center;
       font-weight: 400;
       letter-spacing: 0.1em;
@@ -125,36 +165,44 @@ const usePagedCss = () => {
 
     @page {
       size: 5.5in 8.25in;
-      margin: 0.5in;
-      margin-top: 0.75in;
-      font-family: 'Crimson Pro', serif;
-      font-size: 12pt;
+      margin-top: ${topMargin};
+      margin-bottom: ${bottomMargin};
+      font-family: '${paragraphFont}', serif;
+      font-size: ${fontSize}pt;
       user-select: none;
       /* marks: crop; */
+    }
 
-      @top-center {
-        vertical-align: bottom;
-        padding-bottom: 0.25in;
-        content: string(booktitle);
-      }
+    /* TODO this should be more dynamic instead of relying on h1 being the chapter title (it might not always be true!) */
+    h1 {
+      string-set: chapterTitle content(text);
     }
 
     @page :left {
-      margin-right: 0.75in;
+      margin-right: ${insideMargin};
+      margin-left: ${outsideMargin};
 
       @top-left {
-        vertical-align: bottom;
-        padding-bottom: 0.1in;
+        vertical-align: center;
         content: counter(page);
+      }
+      @top-center {
+        vertical-align: center;
+        ${getPageHeader(versoPageHeaders)};
       }
     }
 
     @page :right {
-      margin-left: 0.75in;
+      margin-left: ${insideMargin};
+      margin-right: ${outsideMargin};
+
       @top-right {
-        vertical-align: bottom;
-        padding-bottom: 0.1in;
+        vertical-align: center;
         content: counter(page);
+      }
+      @top-center {
+        vertical-align: center;
+        ${getPageHeader(rectoPageHeaders)};
       }
     }
 
@@ -169,12 +217,16 @@ const usePagedCss = () => {
       @top-left {
         content: '';
       }
-      @bottom-center {
-        vertical-align: top;
-        padding-top: 0.05in;
-        content: counter(page);
+      @top-center {
+        content: '';
       }
-      margin-bottom: 0.75in;
+      ${dropFolio &&
+      css`
+        @bottom-center {
+          vertical-align: center;
+          content: counter(page);
+        }
+      `}
     }
 
     title {
@@ -183,6 +235,16 @@ const usePagedCss = () => {
 
     section {
       page-break-after: always;
+    }
+
+    hr {
+      border: none;
+    }
+
+    hr::before {
+      content: '${sceneBreak === 'None' ? ' ' : sceneBreak}';
+      display: block;
+      text-align: center;
     }
   `.join('');
 };

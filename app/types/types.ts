@@ -104,7 +104,7 @@ export type PageHeader =
   | 'Author Name';
 export type ParagraphBreak = 'Indented' | 'Single Line Space';
 export type LineHeight = 'Single' | '1.5' | 'Double';
-export type SceneBreak = '𐫱' | '❦' | '⁂' | '⁕' | '⁕ ⁕ ⁕' | '• • •';
+export type SceneBreak = 'None' | '𐫱' | '❦' | '⁂' | '⁕' | '⁕ ⁕ ⁕' | '• • •';
 export type PopularTrimSize = '5 x 8' | '5.25 x 8' | '5.5 x 8.5';
 export type AdditionalTrimSize = '5.06 x 7.81' | '5.5 x 8.25' | '6.14 x 9.21';
 export type InternationalTrimSize =

@@ -9,7 +9,7 @@ const PagedRenderer = () => {
   const chunker = useRef<Chunker>(null);
 
   useEffect(() => {
-    console.log("Setting paged content listener");
+    console.log('Setting paged content listener');
     window.electron.ipcRenderer.once('pagedContents', (arg) => {
       const { html, css } = arg as PagedBookContents;
       console.log(html);

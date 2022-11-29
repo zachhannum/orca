@@ -47,6 +47,14 @@ const Label = styled.span<LabelProps>`
     `}
 `;
 
+type SliderBaseCssProps = {
+  type: 'default' | 'alt';
+};
+
+const SliderBaseCss = ({ type }: SliderBaseCssProps) => css`
+  /* border: 2px ${(p) => p.theme.optionSliderBg[type]} solid; */
+`;
+
 const TwoOptionSlider = ({
   type = 'default',
   disabled = false,
@@ -99,6 +107,7 @@ const TwoOptionSlider = ({
         }}
         disabled={disabled}
         value={toggleValue}
+        baseCssMixin={SliderBaseCss({ type })}
       />
       <LabelsContainer>
         <Label selected={selectedOption === optionOne}>{optionOne}</Label>

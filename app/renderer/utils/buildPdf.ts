@@ -1,19 +1,17 @@
-import { baseStylesheet } from 'renderer/pagedjs/usePagedCss';
+import { DefaultTheme, ThemedCssFunction } from 'styled-components';
 import { parseBookContentToHtml } from './buildBook';
 import useStore from '../store/useStore';
 
-export const buildBookPdf = async () => {
+export const buildBookPdf = async (css: string) => {
   const html = parseBookContentToHtml();
-  const {bookTitle} = useStore.getState();
+  const { bookTitle } = useStore.getState();
   window.pagedApi.generateBookPdf({
     html,
-    css: baseStylesheet({
-      paragraphFontSize: 11,
-    }).toString(),
-    title: bookTitle
+    css,
+    title: bookTitle,
   });
   window.pagedApi.onBookPdfGenerated((buffer: Buffer) => {
     console.log('book generated!');
     console.log(buffer);
-  })
+  });
 };
