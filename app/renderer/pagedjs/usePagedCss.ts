@@ -60,46 +60,13 @@ const getLineHeight = (lineHeight: LineHeight) => {
 };
 
 const usePagedCss = () => {
-  const [
-    dropCap,
-    leadIn,
-    paragraphBreak,
-    sceneBreak,
-    rectoPageHeaders,
-    versoPageHeaders,
-    paragraphFont,
-    fontSize,
-    lineHeight,
-    dropFolio,
-    topMargin,
-    bottomMargin,
-    insideMargin,
-    outsideMargin,
-    trimSize,
-  ] = useStore((state) => [
-    state.dropCap,
-    state.leadIn,
-    state.paragraphBreak,
-    state.sceneBreak,
-    state.rectoPageHeaders,
-    state.versoPageHeaders,
-    state.paragraphFont,
-    state.fontSize,
-    state.lineHeight,
-    state.dropFolio,
-    state.topMargin,
-    state.bottomMargin,
-    state.insideMargin,
-    state.outsideMargin,
-    state.trimSize,
-  ]);
+  const [publishSettings] = useStore((state) => [state.publishSettings]);
 
   return css`
     section p {
-      font-family: ${paragraphFont}, serif;
       text-align: justify;
-      ${getLineHeight(lineHeight)}
-      font-size: ${fontSize}pt;
+      ${getLineHeight(publishSettings.lineHeight)}
+      font-size: ${publishSettings.fontSize}pt;
       orphans: 2;
       widows: 2;
       hyphens: auto;
@@ -115,16 +82,30 @@ const usePagedCss = () => {
     }
     /* Chapter leader */
     .firstPara::first-line {
-      ${getLeadInCss(leadIn)}
+      ${getLeadInCss(publishSettings.leadIn)}
     }
     /* Chapter Drop Cap */
-    ${dropCap &&
+    ${publishSettings.dropCap &&
     css`
       .firstPara::first-letter {
+        ${publishSettings.dropCapFont.length > 0 &&
+        css`
+          font-family: '${publishSettings.dropCapFont}', serif;
+        `}
         float: left;
         font-size: 5em;
-        line-height: 0.65;
+        font-variant: normal;
+        font-style: normal;
         margin: 0.1em 0.1em 0.1em 0;
+
+        ${publishSettings.dropCapEnableAdvancedSettings
+          ? css`
+              line-height: ${publishSettings.dropCapLineHeight};
+              margin-bottom: ${publishSettings.dropCapBottomMargin}em;
+            `
+          : css`
+              line-height: 0.65;
+            `}
       }
       .firstPara {
         text-indent: 0em !important;
@@ -165,10 +146,10 @@ const usePagedCss = () => {
 
     @page {
       size: 5.5in 8.25in;
-      margin-top: ${topMargin};
-      margin-bottom: ${bottomMargin};
-      font-family: '${paragraphFont}', serif;
-      font-size: ${fontSize}pt;
+      margin-top: ${publishSettings.topMargin}in;
+      margin-bottom: ${publishSettings.bottomMargin}in;
+      font-family: '${publishSettings.paragraphFont}', serif;
+      font-size: ${publishSettings.fontSize}pt;
       user-select: none;
       /* marks: crop; */
     }
@@ -179,8 +160,8 @@ const usePagedCss = () => {
     }
 
     @page :left {
-      margin-right: ${insideMargin};
-      margin-left: ${outsideMargin};
+      margin-right: ${publishSettings.insideMargin}in;
+      margin-left: ${publishSettings.outsideMargin}in;
 
       @top-left {
         vertical-align: center;
@@ -188,13 +169,13 @@ const usePagedCss = () => {
       }
       @top-center {
         vertical-align: center;
-        ${getPageHeader(versoPageHeaders)};
+        ${getPageHeader(publishSettings.versoPageHeaders)};
       }
     }
 
     @page :right {
-      margin-left: ${insideMargin};
-      margin-right: ${outsideMargin};
+      margin-left: ${publishSettings.insideMargin}in;
+      margin-right: ${publishSettings.outsideMargin}in;
 
       @top-right {
         vertical-align: center;
@@ -202,7 +183,7 @@ const usePagedCss = () => {
       }
       @top-center {
         vertical-align: center;
-        ${getPageHeader(rectoPageHeaders)};
+        ${getPageHeader(publishSettings.rectoPageHeaders)};
       }
     }
 
@@ -220,7 +201,7 @@ const usePagedCss = () => {
       @top-center {
         content: '';
       }
-      ${dropFolio &&
+      ${publishSettings.dropFolio &&
       css`
         @bottom-center {
           vertical-align: center;
@@ -242,7 +223,9 @@ const usePagedCss = () => {
     }
 
     hr::before {
-      content: '${sceneBreak === 'None' ? ' ' : sceneBreak}';
+      content: ${publishSettings.sceneBreak === 'None'
+        ? ' '
+        : `'${publishSettings.sceneBreak}'`};
       display: block;
       text-align: center;
     }

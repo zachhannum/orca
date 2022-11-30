@@ -1,6 +1,7 @@
+import { useRef } from 'react';
 import styled, { useTheme, css } from 'styled-components';
+import { debounce } from 'lodash';
 import Color from 'color';
-import React from 'react';
 
 type StyledTextFieldProps = {
   fullWidth: boolean;
@@ -18,6 +19,7 @@ const StyledTextField = styled.div<StyledTextFieldProps>`
 type StyledInputProps = {
   styleVariant: string;
   hoverBackgroundColor: string;
+  type: 'text' | 'number';
 };
 
 const StyledInput = styled.input<StyledInputProps>`
@@ -40,7 +42,20 @@ const StyledInput = styled.input<StyledInputProps>`
   ::placeholder {
     color: ${(p) => p.theme.textInputPlaceholderFg[p.styleVariant]};
   }
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   transition: background-color 100ms ease-in-out;
+
+  ${(p) =>
+    p.type === 'number' &&
+    css`
+      border-radius: 0px;
+      text-align: center;
+      max-width: 50px;
+    `}
 `;
 
 const StyledLabel = styled.span`
@@ -50,6 +65,57 @@ const StyledLabel = styled.span`
   user-select: none;
 `;
 
+const TextFieldDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+`;
+
+const IncrementButtonCss = (backgroundColor: string) => css`
+  cursor: pointer;
+  &:focus-visible {
+    outline: 4px solid
+      ${(p) => Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};
+  }
+  border: none;
+  background-color: ${Color(backgroundColor).darken(0.1).toString()};
+  &:hover {
+    background-color: ${Color(backgroundColor).lighten(0.1).toString()};
+  }
+  width: 30px;
+  height: 30px;
+  transition: background-color 100ms ease-in-out;
+`;
+
+type IncrementButtonProps = {
+  backgroundColor: string;
+};
+
+const MinusButton = styled.button<IncrementButtonProps>`
+  ${(p) => IncrementButtonCss(p.backgroundColor)}
+  border-radius: 10px 0px 0px 10px;
+  ::after {
+    color: ${(p) => p.theme.mainFgText};
+    content: '-';
+  }
+`;
+
+const PlusButton = styled.button<IncrementButtonProps>`
+  ${(p) => IncrementButtonCss(p.backgroundColor)}
+  border-radius: 0px 10px 10px 0px;
+  ::after {
+    color: ${(p) => p.theme.mainFgText};
+    content: '+';
+  }
+`;
+
+const onChangeDebounce = debounce(
+  (change: string, set: (value: string) => void) => {
+    set(change);
+  },
+  500
+);
+
 type TextFieldProps = {
   name: string;
   styleVariant?: string;
@@ -57,6 +123,8 @@ type TextFieldProps = {
   label?: string;
   inputRequired?: boolean;
   fullWidth?: boolean;
+  onChangeCallback?: (value: string) => void;
+  type?: 'text' | 'number';
 };
 
 const TextField = ({
@@ -68,24 +136,60 @@ const TextField = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   inputRequired,
   fullWidth = false,
+  onChangeCallback = undefined,
+  type = 'text',
   ...props
 }: TextFieldProps & React.ComponentPropsWithoutRef<'input'>) => {
   const theme = useTheme();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const hoverBackgroundColor = Color(theme.textInputBg[styleVariant])
     .lighten(0.15)
     .hsl()
     .string();
+
+  const updateValue = () => {
+    if (onChangeCallback && inputRef.current) {
+      onChangeDebounce(inputRef.current.value, onChangeCallback);
+    }
+  };
+
   return (
     <StyledTextField fullWidth={fullWidth}>
       {label !== undefined && <StyledLabel>{label}</StyledLabel>}
-      <StyledInput
-        type="text"
-        styleVariant={styleVariant}
-        placeholder={placeholder}
-        hoverBackgroundColor={hoverBackgroundColor}
-        name={name}
-        {...props}
-      />
+      <TextFieldDiv>
+        {type === 'number' && (
+          <MinusButton
+            backgroundColor={theme.textInputBg[styleVariant]}
+            onClick={() => {
+              inputRef.current?.stepDown();
+              updateValue();
+            }}
+          />
+        )}
+        <StyledInput
+          ref={inputRef}
+          type={type}
+          styleVariant={styleVariant}
+          placeholder={placeholder}
+          hoverBackgroundColor={hoverBackgroundColor}
+          name={name}
+          onChange={() => {
+            updateValue();
+          }}
+          {...props}
+        />
+        {type === 'number' && (
+          <PlusButton
+            backgroundColor={theme.textInputBg[styleVariant]}
+            onClick={() => {
+              inputRef.current?.stepUp();
+              if (onChangeCallback && inputRef.current) {
+                onChangeDebounce(inputRef.current.value, onChangeCallback);
+              }
+            }}
+          />
+        )}
+      </TextFieldDiv>
     </StyledTextField>
   );
 };

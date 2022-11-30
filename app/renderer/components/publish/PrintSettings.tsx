@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import {
   AdditionalTrimSize,
@@ -21,47 +20,11 @@ const MarginsContainer = styled.div`
 `;
 
 const PrintSettings = () => {
-  const [
-    paragraphFont,
-    setParagraphFont,
-    fontSize,
-    setFontSize,
-    lineHeight,
-    setLineHeight,
-    dropFolio,
-    setDropFolio,
-    trimSize,
-    setTrimSize,
-    topMargin,
-    setTopMargin,
-    bottomMargin,
-    setBottomMargin,
-    insideMargin,
-    setInsideMargin,
-    outsideMargin,
-    setOutsideMargin,
-  ] = useStore((state) => [
-    state.paragraphFont,
-    state.setParagraphFont,
-    state.fontSize,
-    state.setFontSize,
-    state.lineHeight,
-    state.setLineHeight,
-    state.dropFolio,
-    state.setDropFolio,
-    state.trimSize,
-    state.setTrimSize,
-    state.topMargin,
-    state.setTopMargin,
-    state.bottomMargin,
-    state.setBottomMargin,
-    state.insideMargin,
-    state.setInsideMargin,
-    state.outsideMargin,
-    state.setOutsideMargin,
+  const [publishSettings, setPublishSettings] = useStore((state) => [
+    state.publishSettings,
+    state.setPublishSettings,
   ]);
-  /* TODO replace */
-  const paragraphFontOptions = ['Crimson Pro'];
+
   const fontSizeOptions = ['8', '9', '10', '11', '12', '14', '16'];
   const lineHeightOptions = ['Single', '1.5', 'Double'] as LineHeight[];
   const popularTrimSizes = [
@@ -96,22 +59,29 @@ const PrintSettings = () => {
     <>
       <Setting>
         <SettingLabel>Paragraph Font</SettingLabel>
-        <Dropdown
+        <TextField
+          name="font"
+          defaultValue={publishSettings.paragraphFont}
+          onChangeCallback={(paragraphFont) => {
+            setPublishSettings({ ...publishSettings, paragraphFont });
+          }}
+        />
+        {/* <Dropdown
           options={paragraphFontOptions}
           onChange={(value) => {
             setParagraphFont(value);
           }}
           value={paragraphFont}
-        />
+        /> */}
       </Setting>
       <Setting>
         <SettingLabel>Font Size</SettingLabel>
         <Dropdown
           options={fontSizeOptions}
           onChange={(value) => {
-            setFontSize(Number(value));
+            setPublishSettings({ ...publishSettings, fontSize: Number(value) });
           }}
-          value={String(fontSize)}
+          value={String(publishSettings.fontSize)}
         />
       </Setting>
       <Setting>
@@ -119,17 +89,20 @@ const PrintSettings = () => {
         <Dropdown
           options={lineHeightOptions}
           onChange={(value) => {
-            setLineHeight(value as LineHeight);
+            setPublishSettings({
+              ...publishSettings,
+              lineHeight: value as LineHeight,
+            });
           }}
-          value={lineHeight}
+          value={publishSettings.lineHeight}
         />
       </Setting>
       <Setting>
         <SettingLabel>Drop Folio</SettingLabel>
         <Checkbox
-          checked={dropFolio}
-          onChange={(checked) => {
-            setDropFolio(checked);
+          checked={publishSettings.dropFolio}
+          onChange={(dropFolio) => {
+            setPublishSettings({ ...publishSettings, dropFolio });
           }}
         />
       </Setting>
@@ -139,33 +112,42 @@ const PrintSettings = () => {
           <TextField
             name="top"
             label="Top"
-            defaultValue={topMargin}
-            onBlur={(event) => {
-              setTopMargin(event.target.value);
+            defaultValue={publishSettings.topMargin}
+            onChangeCallback={(topMargin) => {
+              setPublishSettings({ ...publishSettings, topMargin: +topMargin });
             }}
           />
           <TextField
             name="bottom"
             label="Bottom"
-            defaultValue={bottomMargin}
-            onBlur={(event) => {
-              setTopMargin(event.target.value);
+            defaultValue={publishSettings.bottomMargin}
+            onChangeCallback={(bottomMargin) => {
+              setPublishSettings({
+                ...publishSettings,
+                bottomMargin: +bottomMargin,
+              });
             }}
           />
           <TextField
             name="inside"
             label="Inside"
-            defaultValue={insideMargin}
-            onBlur={(event) => {
-              setInsideMargin(event.target.value);
+            defaultValue={publishSettings.insideMargin}
+            onChangeCallback={(insideMargin) => {
+              setPublishSettings({
+                ...publishSettings,
+                insideMargin: +insideMargin,
+              });
             }}
           />
           <TextField
             name="outside"
             label="Outside"
-            defaultValue={outsideMargin}
-            onBlur={(event) => {
-              setOutsideMargin(event.target.value);
+            defaultValue={publishSettings.outsideMargin}
+            onChangeCallback={(outsideMargin) => {
+              setPublishSettings({
+                ...publishSettings,
+                outsideMargin: +outsideMargin,
+              });
             }}
           />
         </MarginsContainer>
@@ -173,9 +155,12 @@ const PrintSettings = () => {
       <Setting>
         <SettingLabel>Trim Size</SettingLabel>
         <Dropdown
-          value={trimSize}
+          value={publishSettings.trimSize}
           onChange={(value) => {
-            setTrimSize(value as TrimSize);
+            setPublishSettings({
+              ...publishSettings,
+              trimSize: value as TrimSize,
+            });
           }}
           options={trimSizeOptions}
         />

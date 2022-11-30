@@ -1,20 +1,12 @@
-import { useState } from 'react';
 import type { PageHeader } from 'types/types';
 import useStore from 'renderer/store/useStore';
 import { Setting, SettingLabel, SettingSubHeading } from './Setting';
 import { Dropdown } from '../../controls';
 
 const HeadersSettings = () => {
-  const [
-    rectoPageHeaders,
-    setRectoPageHeaders,
-    versoPageHeaders,
-    setVersoPageHeaders,
-  ] = useStore((state) => [
-    state.rectoPageHeaders,
-    state.setRectoPageHeaders,
-    state.versoPageHeaders,
-    state.setVersoPageHeaders,
+  const [publishSettings, setPublishSettings] = useStore((state) => [
+    state.publishSettings,
+    state.setPublishSettings,
   ]);
   const pageHeaderOptions = [
     'None',
@@ -30,9 +22,12 @@ const HeadersSettings = () => {
         <Dropdown
           options={pageHeaderOptions}
           onChange={(value) => {
-            setRectoPageHeaders(value as PageHeader);
+            setPublishSettings({
+              ...publishSettings,
+              rectoPageHeaders: value as PageHeader,
+            });
           }}
-          value={rectoPageHeaders}
+          value={publishSettings.rectoPageHeaders}
         />
       </Setting>
       <Setting>
@@ -40,9 +35,12 @@ const HeadersSettings = () => {
         <Dropdown
           options={pageHeaderOptions}
           onChange={(value) => {
-            setVersoPageHeaders(value as PageHeader);
+            setPublishSettings({
+              ...publishSettings,
+              versoPageHeaders: value as PageHeader,
+            });
           }}
-          value={versoPageHeaders}
+          value={publishSettings.versoPageHeaders}
         />
       </Setting>
     </>
