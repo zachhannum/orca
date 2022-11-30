@@ -118,3 +118,25 @@ export type TrimSize =
   | AdditionalTrimSize
   | InternationalTrimSize
   | MassMarketTrimSize;
+
+export type PublishSettings = {
+  dropCap: boolean;
+  dropCapEnableAdvancedSettings: boolean;
+  dropCapFont: string;
+  dropCapLineHeight: number;
+  dropCapBottomMargin: number;
+  leadIn: LeadIn;
+  paragraphBreak: ParagraphBreak;
+  sceneBreak: SceneBreak;
+  rectoPageHeaders: PageHeader;
+  versoPageHeaders: PageHeader;
+  paragraphFont: string;
+  fontSize: number;
+  lineHeight: LineHeight;
+  dropFolio: boolean;
+  topMargin: number;
+  bottomMargin: number;
+  insideMargin: number;
+  outsideMargin: number;
+  trimSize: TrimSize;
+};

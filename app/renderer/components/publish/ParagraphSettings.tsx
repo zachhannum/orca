@@ -4,9 +4,9 @@ import { Setting, SettingLabel } from './Setting';
 import { Dropdown } from '../../controls';
 
 const ParagraphSettings = () => {
-  const [sceneBreak, setSceneBreak] = useStore((state) => [
-    state.sceneBreak,
-    state.setSceneBreak,
+  const [publishSettings, setPublishSettings] = useStore((state) => [
+    state.publishSettings,
+    state.setPublishSettings,
   ]);
   const sceneBreakOptions = [
     'None',
@@ -28,9 +28,12 @@ const ParagraphSettings = () => {
         <Dropdown
           options={sceneBreakOptions}
           onChange={(value) => {
-            setSceneBreak(value as SceneBreak);
+            setPublishSettings({
+              ...publishSettings,
+              sceneBreak: value as SceneBreak,
+            });
           }}
-          value={sceneBreak}
+          value={publishSettings.sceneBreak}
         />
       </Setting>
     </>
