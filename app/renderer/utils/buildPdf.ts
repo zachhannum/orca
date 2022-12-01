@@ -1,4 +1,3 @@
-import { DefaultTheme, ThemedCssFunction } from 'styled-components';
 import { parseBookContentToHtml } from './buildBook';
 import useStore from '../store/useStore';
 
