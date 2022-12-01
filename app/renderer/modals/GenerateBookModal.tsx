@@ -2,9 +2,10 @@ import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { buildBookPdf } from 'renderer/utils/buildPdf';
 import { useOnBookPdfGenerated, useToggle } from 'renderer/hooks';
+import type { ModalProps } from 'renderer/modals/Modal';
+import { Button, Checkbox } from 'renderer/controls';
+import { usePagedCss } from 'renderer/pagedjs/usePagedCss';
 import Modal from './Modal';
-import type { ModalProps } from './Modal';
-import { Button, Checkbox } from '../controls';
 
 const StyledModalContent = styled.div`
   display: flex;
@@ -49,6 +50,8 @@ const GenerateBookModal = (props: ModalProps) => {
     setIsBuildingPdf(false);
   });
 
+  const pagedCss = usePagedCss();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -57,7 +60,7 @@ const GenerateBookModal = (props: ModalProps) => {
       series: { value: string };
     };
     setIsBuildingPdf(true);
-    buildBookPdf();
+    buildBookPdf(pagedCss);
   };
   return (
     <Modal {...props}>
