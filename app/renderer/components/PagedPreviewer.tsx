@@ -147,6 +147,7 @@ const PagedPreviewer = ({
 
       // Remove stale paged styles
       const hs = document.getElementsByTagName('style');
+      // eslint-disable-next-line no-plusplus
       for (let i = hs.length - 1; i >= 0; --i) {
         if (hs[i].getAttribute('data-pagedjs-inserted-styles') === 'true') {
           hs[i].parentNode?.removeChild(hs[i]);
