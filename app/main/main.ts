@@ -46,6 +46,13 @@ ipcMain.on('window', async (_event, arg) => {
   }
 });
 
+ipcMain.handle('appVersion', (_event) => {
+  if (process.env.NODE_ENV === 'development') {
+    return require('../../release/app/package.json').version;
+  }
+  return app.getVersion();
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
@@ -107,6 +114,7 @@ const createWindow = async () => {
       throw new Error('"mainWindow" is not defined');
     }
     sendRecentProjects(mainWindow);
+    mainWindow.webContents.send('appVersion', app.getVersion());
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {

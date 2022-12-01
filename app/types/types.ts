@@ -40,6 +40,7 @@ export type Sections = Section[];
 
 /* Project is a data structure that mirrors the high level structure of project files */
 export type Project = {
+  version: string;
   bookTitle: string;
   bookSubTitle: string;
   authorName: string;
@@ -48,6 +49,7 @@ export type Project = {
   language: string;
   publisher: string;
   content: Sections;
+  publishSettings: PublishSettings;
 };
 
 /* ProjectData is used for passing Project data structures to and from main for saving/opening projects */
@@ -140,3 +142,25 @@ export type PublishSettings = {
   outsideMargin: number;
   trimSize: TrimSize;
 };
+
+export const defaultPublishSettings = {
+  dropCap: false,
+  dropCapEnableAdvancedSettings: false,
+  dropCapFont: '',
+  dropCapLineHeight: 0.65,
+  dropCapBottomMargin: 0.1,
+  leadIn: 'None',
+  paragraphBreak: 'Indented',
+  sceneBreak: '𐫱',
+  rectoPageHeaders: 'None',
+  versoPageHeaders: 'None',
+  paragraphFont: 'Times New Roman',
+  fontSize: 12,
+  lineHeight: 'Single',
+  dropFolio: false,
+  topMargin: 0.5,
+  bottomMargin: 0.5,
+  insideMargin: 0.75,
+  outsideMargin: 0.5,
+  trimSize: '5 x 8',
+} as PublishSettings;

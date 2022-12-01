@@ -16,7 +16,7 @@ import {
   GenerateBookIcon,
 } from '../icons';
 import useStore from '../store/useStore';
-import { saveProject } from '../utils/projectUtils';
+import { saveProject } from '../project';
 import { useCommandKeyString } from '../hooks';
 
 const StyledMenuDivider = styled.div`

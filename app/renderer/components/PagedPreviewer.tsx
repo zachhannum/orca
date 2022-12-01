@@ -63,7 +63,6 @@ const PagedPreviewer = ({
   const pagedStageRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<HTMLDivElement>(null);
   const previewContent = useStore((state) => state.previewContent);
-  const activeSectionId = useStore((state) => state.activeSectionId);
   const polisher = useRef<Polisher>(null);
   const chunker = useRef<Chunker>(null);
   const [scale, setScale] = useState(0.5);

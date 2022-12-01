@@ -6,6 +6,7 @@ import { findItemDeep, changeItemName } from '../components/TreeView/utilities';
 
 const saveProject = () => {
   const projectContents = {
+    version: useStore.getState().version,
     bookTitle: useStore.getState().bookTitle,
     bookSubTitle: useStore.getState().bookSubTitle,
     authorName: useStore.getState().authorName,
@@ -14,6 +15,7 @@ const saveProject = () => {
     language: useStore.getState().language,
     publisher: useStore.getState().publisher,
     content: useStore.getState().content,
+    publishSettings: useStore.getState().publishSettings,
   };
   const folderPath = useStore.getState().projectFolder;
   const fileName = useStore.getState().projectFileName;
@@ -49,7 +51,7 @@ const addNewSection = (
   atId?: string,
   type: SectionType = SectionType.maincontent
 ) => {
-  const { content, setAddingSections } = useStore.getState();
+  const { setAddingSections } = useStore.getState();
   setAddingSections(true);
   let name = 'Untitled';
   const sectionContent = {

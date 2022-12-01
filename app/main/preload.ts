@@ -73,4 +73,7 @@ contextBridge.exposeInMainWorld('appApi', {
   getRecentProjects: () => {
     ipcRenderer.send('getRecentProjects');
   },
+  appVersion: () => {
+    return ipcRenderer.invoke('appVersion');
+  },
 });
