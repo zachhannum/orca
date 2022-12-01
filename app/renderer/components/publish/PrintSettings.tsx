@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import {
-  AdditionalTrimSize,
-  InternationalTrimSize,
+  additionalTrimSizes,
+  internationalTrimSizes,
   LineHeight,
-  MassMarketTrimSize,
-  PopularTrimSize,
+  massMarketTrimSizes,
+  popularTrimSizes,
   TrimSize,
 } from 'types/types';
 import useStore from 'renderer/store/useStore';
@@ -27,27 +27,7 @@ const PrintSettings = () => {
 
   const fontSizeOptions = ['8', '9', '10', '11', '12', '14', '16'];
   const lineHeightOptions = ['Single', '1.5', 'Double'] as LineHeight[];
-  const popularTrimSizes = [
-    '5 x 8',
-    '5.25 x 8',
-    '5.5 x 8.5',
-  ] as PopularTrimSize[];
-  const additionalTrimSizes = [
-    '5.06 x 7.81',
-    '5.5 x 8.25',
-    '6.14 x 9.21',
-  ] as AdditionalTrimSize[];
-  const internationalTrimSizes = [
-    '4.72 x 7.48',
-    '4.92 x 7.48',
-    '5.31 x 8.46',
-    '5.83 x 8.27',
-  ] as InternationalTrimSize[];
-  const massMarketTrimSizes = [
-    '4.12 x 6.75',
-    '4.25 x 7',
-    '4.37 x 7',
-  ] as MassMarketTrimSize[];
+
   const trimSizeOptions = [
     { name: 'Popular Trim Sizes', options: popularTrimSizes },
     { name: 'Additional Trim Sizes', options: additionalTrimSizes },

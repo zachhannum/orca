@@ -4,10 +4,10 @@ import styled, { css, useTheme } from 'styled-components';
 import { MenuBase, ScrollContainer } from '../components';
 import { ArrowDownIcon } from '../icons';
 
-type OptionSection = { name: string; options: string[] };
+type OptionSection = { name: string; options: readonly string[] };
 
 type DropdownProps = {
-  options: string[] | OptionSection[];
+  options: readonly string[] | OptionSection[];
   onChange: (value: string) => void;
   value: string | undefined;
 };

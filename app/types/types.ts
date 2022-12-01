@@ -107,14 +107,33 @@ export type PageHeader =
 export type ParagraphBreak = 'Indented' | 'Single Line Space';
 export type LineHeight = 'Single' | '1.5' | 'Double';
 export type SceneBreak = 'None' | '𐫱' | '❦' | '⁂' | '⁕' | '⁕ ⁕ ⁕' | '• • •';
-export type PopularTrimSize = '5 x 8' | '5.25 x 8' | '5.5 x 8.5';
-export type AdditionalTrimSize = '5.06 x 7.81' | '5.5 x 8.25' | '6.14 x 9.21';
-export type InternationalTrimSize =
-  | '4.72 x 7.48'
-  | '4.92 x 7.48'
-  | '5.83 x 8.27'
-  | '5.31 x 8.46';
-export type MassMarketTrimSize = '4.12 x 6.75' | '4.25 x 7' | '4.37 x 7';
+export const popularTrimSizes = [
+  '5in x 8in',
+  '5.25in x 8in',
+  '5.5in x 8.5in',
+  '6in x 9in',
+] as const;
+export type PopularTrimSize = typeof popularTrimSizes[number];
+export const additionalTrimSizes = [
+  '5.06in x 7.81in',
+  '5.5in x 8.25in',
+  '6.14in x 9.21in',
+] as const;
+export type AdditionalTrimSize = typeof additionalTrimSizes[number];
+export const internationalTrimSizes = [
+  '4.72in x 7.48in',
+  '4.92in x 7.48in',
+  '5.31in x 8.46in',
+  '5.83in x 8.27in',
+] as const;
+export type InternationalTrimSize = typeof internationalTrimSizes[number];
+export const massMarketTrimSizes = [
+  '4.12in x 6.75in',
+  '4.25in x 7in',
+  '4.37in x 7in',
+] as const;
+export type MassMarketTrimSize = typeof massMarketTrimSizes[number];
+
 export type TrimSize =
   | PopularTrimSize
   | AdditionalTrimSize
@@ -162,5 +181,5 @@ export const defaultPublishSettings = {
   bottomMargin: 0.5,
   insideMargin: 0.75,
   outsideMargin: 0.5,
-  trimSize: '5 x 8',
+  trimSize: '5in x 8in',
 } as PublishSettings;

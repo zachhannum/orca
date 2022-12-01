@@ -2,7 +2,7 @@
 // js/modules/pagedmakerCSS.js
 import useStore from 'renderer/store/useStore';
 import { css } from 'styled-components';
-import { LeadIn, LineHeight, PageHeader } from 'types/types';
+import { LeadIn, LineHeight, PageHeader, TrimSize } from 'types/types';
 
 const getLeadInCss = (leadIn: LeadIn) => {
   switch (leadIn) {
@@ -59,6 +59,10 @@ const getLineHeight = (lineHeight: LineHeight) => {
   }
 };
 
+const getPageDimensions = (trimSize: TrimSize): string => {
+  return trimSize.replace('x', '');
+};
+
 const usePagedCss = () => {
   const [publishSettings] = useStore((state) => [state.publishSettings]);
 
@@ -89,6 +93,7 @@ const usePagedCss = () => {
     css`
       .firstPara::first-letter {
         ${publishSettings.dropCapFont.length > 0 &&
+        publishSettings.dropCapEnableAdvancedSettings &&
         css`
           font-family: '${publishSettings.dropCapFont}', serif;
         `}
@@ -145,7 +150,7 @@ const usePagedCss = () => {
     }
 
     @page {
-      size: 5.5in 8.25in;
+      size: ${getPageDimensions(publishSettings.trimSize)};
       margin-top: ${publishSettings.topMargin}in;
       margin-bottom: ${publishSettings.bottomMargin}in;
       font-family: '${publishSettings.paragraphFont}', serif;
