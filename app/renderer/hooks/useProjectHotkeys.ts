@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useMemo } from 'react';
 import useStore from '../store/useStore';
-import { saveProject } from '../utils/projectUtils';
+import { saveProject } from '../project';
 
 const useProjectHotkeys = () => {
   const { setGenerateBookModalOpen, setPreviewEnabled, setNewBookModalOpen } =

@@ -1,4 +1,4 @@
-import { PublishSettings } from 'types/types';
+import { PublishSettings, defaultPublishSettings } from 'types/types';
 import { GetState, SetState } from 'zustand';
 import type { CalamusState } from '../useStore';
 
@@ -12,29 +12,9 @@ const createPublishOptionsSlice = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _get: GetState<CalamusState>
 ) => ({
-  publishSettings: {
-    dropCap: false,
-    dropCapEnableAdvancedSettings: false,
-    dropCapFont: '',
-    dropCapLineHeight: 0.65,
-    dropCapBottomMargin: 0.1,
-    leadIn: 'None',
-    paragraphBreak: 'Indented',
-    sceneBreak: '𐫱',
-    rectoPageHeaders: 'None',
-    versoPageHeaders: 'None',
-    paragraphFont: 'Times New Roman',
-    fontSize: 12,
-    lineHeight: 'Single',
-    dropFolio: false,
-    topMargin: 0.5,
-    bottomMargin: 0.5,
-    insideMargin: 0.75,
-    outsideMargin: 0.5,
-    trimSize: '5 x 8',
-  } as PublishSettings,
+  publishSettings: defaultPublishSettings,
   setPublishSettings: (publishSettings: PublishSettings) => {
-    set(() => ({ publishSettings }));
+    set(() => ({ publishSettings, isProjectDirty: true }));
   },
 });
 

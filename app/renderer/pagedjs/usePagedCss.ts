@@ -113,7 +113,7 @@ const usePagedCss = () => {
     `}
 
     h1 {
-      font-family: 'Crimson Pro', serif;
+      font-family: '${publishSettings.paragraphFont}', serif;
       margin-top: 1.5in;
       font-size: 18pt;
       text-align: center;
@@ -136,7 +136,7 @@ const usePagedCss = () => {
     } */
 
     h2 {
-      font-family: 'Crimson Pro', serif;
+      font-family: '${publishSettings.paragraphFont}', serif;
       font-size: 15pt;
       text-align: center;
       font-weight: 400;

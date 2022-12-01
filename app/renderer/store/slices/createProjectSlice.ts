@@ -9,6 +9,7 @@ import {
 import type { CalamusState } from '../useStore';
 
 export interface ProjectSlice extends Project {
+  setVersion: (version: string) => void;
   isProjectOpen: boolean;
   setIsProjectOpen: (val: boolean) => void;
   isProjectDirty: boolean;
@@ -46,6 +47,10 @@ const createProjectSlice = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _get: GetState<CalamusState>
 ) => ({
+  version: 'unknown',
+  setVersion: (version: string) => {
+    set(() => ({ version }));
+  },
   isProjectOpen: false,
   setIsProjectOpen: (val: boolean) => {
     set(() => ({ isProjectOpen: val }));

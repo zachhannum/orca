@@ -24,7 +24,7 @@ import {
   addNewFolder,
   addNewSection,
   updateSectionName,
-} from 'renderer/utils/projectUtils';
+} from 'renderer/project';
 
 const animateInFromCollapseKeframes = keyframes`
   from {
