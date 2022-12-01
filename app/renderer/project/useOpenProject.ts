@@ -22,7 +22,6 @@ const useOpenProject = () => {
         setContentArray,
         setActiveSectionId,
         setPreviewEnabled,
-        setPreviewContent,
         clearEditorStateMap,
         setIsProjectDirty,
         setPublishSettings,
@@ -40,7 +39,6 @@ const useOpenProject = () => {
       setPublishSettings(project.publishSettings);
       setActiveSectionId({ id: '', name: '' });
       clearEditorStateMap();
-      setPreviewContent('');
       setPreviewEnabled(false);
       setIsProjectOpen(true);
       setIsProjectDirty(false);
