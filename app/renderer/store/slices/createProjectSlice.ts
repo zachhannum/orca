@@ -5,6 +5,7 @@ import type { Project, Section, SectionIdentifier } from 'types/types';
 import {
   updateSectionContentDeep,
   addSectionAt,
+  findItemDeep,
 } from '../../components/TreeView/utilities';
 import type { CalamusState } from '../useStore';
 
@@ -35,7 +36,6 @@ export interface ProjectSlice extends Project {
   activeSectionName: string;
   setActiveSectionId: (id: SectionIdentifier) => void;
   previewContent: string;
-  setPreviewContent: (txt: string) => void;
   editorStateMap: Map<string, EditorState>;
   setEditorState: (sectionId: string, editorState: EditorState) => void;
   removeEditorState: (sectionId: string) => void;
@@ -44,8 +44,7 @@ export interface ProjectSlice extends Project {
 
 const createProjectSlice = (
   set: SetState<CalamusState>,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _get: GetState<CalamusState>
+  get: GetState<CalamusState>
 ) => ({
   version: 'unknown',
   setVersion: (version: string) => {
@@ -104,6 +103,11 @@ const createProjectSlice = (
       content: updateSectionContentDeep(state.content, id, newContent),
       isProjectDirty: true,
     }));
+    if (get().activeSectionId === id) {
+      set(() => ({
+        previewContent: findItemDeep(get().content, id)?.content,
+      }));
+    }
   },
   addNewSection: (val: Section) =>
     set(
@@ -124,11 +128,13 @@ const createProjectSlice = (
   activeSectionName: '',
   setActiveSectionId: (id: SectionIdentifier) => {
     set(() => ({ activeSectionId: id.id, activeSectionName: id.name }));
+    if (id.id !== '') {
+      set(() => ({
+        previewContent: findItemDeep(get().content, id.id)?.content,
+      }));
+    }
   },
   previewContent: '',
-  setPreviewContent: (txt: string) => {
-    set(() => ({ previewContent: txt }));
-  },
   editorStateMap: new Map<string, EditorState>(),
   setEditorState: (sectionId: string, editorState: EditorState) =>
     set(
