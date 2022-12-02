@@ -119,6 +119,12 @@
   },
   "homepage": "https://github.com/midnightprioriem/calamus",
   "jest": {
+    "roots": [
+      "<rootDir>/app"
+    ],
+    "modulePaths": [
+      "<rootDir>/app"
+    ],
     "testURL": "http://localhost/",
     "testEnvironment": "jsdom",
     "transform": {
@@ -144,6 +150,9 @@
     ],
     "setupFiles": [
       "./.erb/scripts/check-build-exists.ts"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!mdast-*|unist-*|remark-*|unified|bail|is-plain-obj|trough|vfile|micromark|decode-named-character-reference|character-entities|)"
     ]
   },
   "devDependencies": {

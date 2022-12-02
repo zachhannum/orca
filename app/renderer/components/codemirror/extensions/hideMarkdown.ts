@@ -71,7 +71,7 @@ const getNodeDecorations = (
   node: SyntaxNodeRef,
   from: number,
   to: number,
-  view: EditorView
+  _view: EditorView
 ): Range<Decoration>[] => {
   let decorations: Range<Decoration>[] = [];
   if (node.name === 'HorizontalRule') {
@@ -108,7 +108,7 @@ type NodeMarkupRange = {
 
 const getMarkupRange = (
   node: SyntaxNodeRef,
-  view: EditorView
+  _view: EditorView
 ): NodeMarkupRange => {
   if (node.name === 'HeaderMark') {
     return { from: node.from, to: node.to + 1 };

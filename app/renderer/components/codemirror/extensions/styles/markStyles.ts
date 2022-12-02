@@ -1,6 +1,5 @@
 import type { DefaultTheme } from 'styled-components';
 import { tags } from '@lezer/highlight';
-import Color from 'color';
 import { customTags } from '../markdown';
 
 const markStyles = (theme: DefaultTheme) => [

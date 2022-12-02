@@ -54,11 +54,6 @@ const GenerateBookModal = (props: ModalProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const target = e.target as typeof e.target & {
-      book: { value: string };
-      author: { value: string };
-      series: { value: string };
-    };
     setIsBuildingPdf(true);
     buildBookPdf(pagedCss);
   };

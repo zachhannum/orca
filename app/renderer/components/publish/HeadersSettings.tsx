@@ -1,6 +1,6 @@
 import type { PageHeader } from 'types/types';
 import useStore from 'renderer/store/useStore';
-import { Setting, SettingLabel, SettingSubHeading } from './Setting';
+import { Setting, SettingLabel } from './Setting';
 import { Dropdown } from '../../controls';
 
 const HeadersSettings = () => {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { LeadIn } from 'types/types';
 import useStore from 'renderer/store/useStore';
 import { Setting, SettingLabel } from './Setting';

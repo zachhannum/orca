@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import useStore from '../store/useStore';
 
 const useOnBookPdfGenerated = (callback: () => void) => {
   useEffect(() => {
-    window.pagedApi.onBookPdfGenerated((pdfStream: Buffer) => {
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    window.pagedApi.onBookPdfGenerated((_pdfStream: Buffer) => {
       callback();
     });
   }, []);

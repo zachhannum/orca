@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { CssMixinType } from 'types/types';
-import { useToggle, useIsMount } from '../hooks';
+import { useToggle } from '../hooks';
 
 type SwitchBaseProps = {
   horizontalPadding: number;

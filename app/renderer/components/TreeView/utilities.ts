@@ -1,8 +1,8 @@
 /* eslint-disable prefer-const */
 import { arrayMove } from '@dnd-kit/sortable';
 import { v4 as uuidv4 } from 'uuid';
-
 import { Section, Sections, SectionType } from 'types/types';
+
 import type { FlattenedItem } from './types';
 
 function getDragDepth(offset: number, indentationWidth: number) {

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Polisher, Chunker, initializeHandlers } from 'pagedjs';
 import { debounce } from 'lodash';
 import useStore from 'renderer/store/useStore';
@@ -38,10 +38,6 @@ const PagedStagingContainer = styled.div`
   top: -100000px;
 `;
 
-type StyledLoaderProps = {
-  loading: boolean;
-};
-
 type ScalerProps = {
   scale: number;
 };
@@ -63,8 +59,8 @@ const PagedPreviewer = ({
   const pagedStageRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<HTMLDivElement>(null);
   const previewContent = useStore((state) => state.previewContent);
-  const polisher = useRef<Polisher>(null);
-  const chunker = useRef<Chunker>(null);
+  const polisher = useRef<typeof Polisher>(null);
+  const chunker = useRef<typeof Chunker>(null);
   const [scale, setScale] = useState(0.5);
   const [prevPage, setPrevPage] = useState(1);
   const [page, setPage] = useState(1);
