@@ -1,5 +1,5 @@
 import { useRef, useState, useMemo, RefObject, useEffect } from 'react';
-import { debounce, throttle } from 'lodash';
+import { throttle } from 'lodash';
 
 const useResizeObserver = (
   ref: RefObject<HTMLElement>,
