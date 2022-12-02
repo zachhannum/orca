@@ -1,5 +1,5 @@
-import { useLayoutEffect, useState, useMemo, RefObject } from 'react';
-import { debounce } from 'lodash';
+import { useRef, useState, useMemo, RefObject, useEffect } from 'react';
+import { debounce, throttle } from 'lodash';
 
 const useResizeObserver = (
   ref: RefObject<HTMLElement>,
@@ -9,11 +9,14 @@ const useResizeObserver = (
   const [width, setWidth] = useState<number>();
   const [height, setHeight] = useState<number>();
 
+  const resizeObserver = useRef(
+    new ResizeObserver((entries) => handleResize(entries))
+  );
+
   const onResize = (entries: ResizeObserverEntry[]) => {
     if (!Array.isArray(entries)) {
       return;
     }
-
     const entry = entries[0];
     setWidth(entry.contentRect.width);
     setHeight(entry.contentRect.height);
@@ -23,16 +26,14 @@ const useResizeObserver = (
     }
   };
 
-  const handleResize = useMemo(() => debounce(onResize, wait), [callback]);
+  const handleResize = useMemo(() => throttle(onResize, wait), [callback]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!ref.current) {
       return;
     }
-
-    const RO = new ResizeObserver((entries) => handleResize(entries));
-    RO.observe(ref.current);
-  }, [ref, handleResize]);
+    resizeObserver.current.observe(ref.current);
+  }, []);
 
   return [width, height];
 };
