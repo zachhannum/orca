@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, RefObject } from 'react';
 import styled, { css, useTheme } from 'styled-components';
-import Color from 'color';
 import useStore from '../store/useStore';
 import { IconButton } from '../controls';
 import { NewFileIcon, NewFolderIcon } from '../icons';

@@ -5,8 +5,8 @@ import { PagedBookContents } from 'types/types';
 const PagedRenderer = () => {
   const pageContainerRef = useRef<HTMLDivElement>(null);
 
-  const polisher = useRef<Polisher>(null);
-  const chunker = useRef<Chunker>(null);
+  const polisher = useRef<typeof Polisher>(null);
+  const chunker = useRef<typeof Chunker>(null);
 
   useEffect(() => {
     console.log('Setting paged content listener');

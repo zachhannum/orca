@@ -3,11 +3,10 @@ import {
   EditorView,
   DecorationSet,
   Decoration,
-  WidgetType,
 } from '@codemirror/view';
 import { Extension, Range } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
-import { SyntaxNodeRef, SyntaxNode } from '@lezer/common';
+import { SyntaxNodeRef } from '@lezer/common';
 import Color from 'color';
 import type { DefaultTheme } from 'styled-components';
 import { selectionIntersection } from './hideMarkdown';
