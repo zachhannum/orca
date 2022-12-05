@@ -15,6 +15,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     'no-param-reassign': 'off',
     'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

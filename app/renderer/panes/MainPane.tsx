@@ -17,6 +17,7 @@ const MainContent = styled.div`
   display: flex;
   align-items: stretch;
   flex-direction: column;
+  position: relative;
 `;
 
 const SectionTitle = styled.div`

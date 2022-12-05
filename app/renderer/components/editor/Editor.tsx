@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
@@ -18,7 +18,9 @@ import {
   pasteEventHandler,
   search,
   placeholder,
+  countWords,
 } from './extensions';
+import EditorToolbar from './EditorToolbar';
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -43,6 +45,7 @@ const Editor = () => {
   const editorViewRef = useRef<EditorView | null>(null);
   const styledTheme = useTheme();
   const sidebarOpen = useStore((state) => state.sidebarOpen);
+  const [wordCount, setWordCount] = useState(0);
 
   const newEditorState = (txt: string): EditorState => {
     const extensions = [
@@ -57,6 +60,7 @@ const Editor = () => {
       history(),
       pasteEventHandler(),
       placeholder(),
+      countWords(setWordCount),
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });
@@ -103,6 +107,7 @@ const Editor = () => {
   return (
     <ScrollContainer cssMixin={scrollerCss(sidebarOpen)}>
       <EditorDiv ref={editorContainerRef} />
+      <EditorToolbar wordCount={wordCount} />
     </ScrollContainer>
   );
 };
