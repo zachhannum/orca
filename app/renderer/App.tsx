@@ -7,6 +7,7 @@ import GlobalStyles from './theme/globalStyles';
 import { WinControls } from './controls';
 import { useProjectHotkeys, useAppVersion } from './hooks';
 import { useOpenProject } from './project';
+import { useSettings } from './components/settings';
 
 const AppContainer = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const App = () => {
   useOpenProject();
   useProjectHotkeys();
   useAppVersion();
+  useSettings();
   return (
     <ThemeProvider theme={theme}>
       {window.windowApi.os() === 'win32' && <WinControls />}

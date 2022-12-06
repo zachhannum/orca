@@ -8,7 +8,7 @@ import {
   TrimSize,
 } from 'types/types';
 import useStore from 'renderer/store/useStore';
-import { Setting, SettingLabel } from './Setting';
+import { Setting, SettingLabel } from '..';
 import { Checkbox, Dropdown, TextField } from '../../controls';
 
 const MarginsContainer = styled.div`
@@ -86,7 +86,7 @@ const PrintSettings = () => {
           }}
         />
       </Setting>
-      <Setting>
+      <Setting wrapSetting>
         <SettingLabel>Margins</SettingLabel>
         <MarginsContainer>
           <TextField

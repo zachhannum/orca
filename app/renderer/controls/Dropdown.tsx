@@ -10,6 +10,7 @@ type DropdownProps = {
   options: readonly string[] | OptionSection[];
   onChange: (value: string) => void;
   value: string | undefined;
+  disabled?: boolean;
 };
 
 const MenuStyle = css`
@@ -58,7 +59,10 @@ const ArrowIcon = styled(ArrowDownIcon)<ArrowIconProps>`
   transition: transform 200ms ease-in-out;
 `;
 
-const DropdownBase = styled.div`
+type DropdownBaseProps = {
+  disabled: boolean;
+};
+const DropdownBase = styled.div<DropdownBaseProps>`
   height: 30px;
   padding: 0px 5px;
   text-align: center;
@@ -71,6 +75,12 @@ const DropdownBase = styled.div`
   cursor: pointer;
   position: relative;
   text-align: center;
+  ${(p) =>
+    p.disabled &&
+    css`
+      opacity: 0.5;
+      cursor: inherit;
+    `}
 `;
 
 const DropdownSelectedText = styled.div`
@@ -93,7 +103,12 @@ const StyledMenuDivider = styled.div`
   margin: 5px 5px;
 `;
 
-const Dropdown = ({ options, onChange, value }: DropdownProps) => {
+const Dropdown = ({
+  options,
+  onChange,
+  value,
+  disabled = false,
+}: DropdownProps) => {
   const baseRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState(false);
@@ -138,7 +153,15 @@ const Dropdown = ({ options, onChange, value }: DropdownProps) => {
 
   return (
     <DropdownRoot>
-      <DropdownBase onClick={toggleOpen} ref={baseRef}>
+      <DropdownBase
+        onClick={() => {
+          if (!disabled) {
+            toggleOpen();
+          }
+        }}
+        ref={baseRef}
+        disabled={disabled}
+      >
         <DropdownSelectedText>{selected}</DropdownSelectedText>
         <ArrowIcon open={open} size="15px" color={theme.dropdownArrow} />
       </DropdownBase>

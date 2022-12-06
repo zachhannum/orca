@@ -36,7 +36,8 @@ const scrollerCss = (sidebarOpen: boolean) => css`
   padding-right: 50px;
   padding-left: ${sidebarOpen ? '50px' : '125px'};
   margin-right: 5px;
-  transition: padding-left 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+  margin-bottom: 10px;
 `;
 
 const Editor = () => {

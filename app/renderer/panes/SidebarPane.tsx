@@ -86,8 +86,15 @@ const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
 const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
-  const setSidebarOpen = useStore((state) => state.setSidebarOpen);
-  const isProjectOpen = useStore((state) => state.isProjectOpen);
+  const [setSidebarOpen, isProjectOpen, setSettingsModalOpen] = useStore(
+    (state) => {
+      return [
+        state.setSidebarOpen,
+        state.isProjectOpen,
+        state.setSettingsModalOpen,
+      ];
+    }
+  );
   const isWindowMaximized = useIsWindowMaxized();
   const sidebarBackground = useMemo(() => {
     if (isWindowMaximized) {
@@ -140,7 +147,11 @@ const SidebarPane = () => {
           <HelpIcon size="15px" />
           <span>Feedback</span>
         </SidebarBottomItem>
-        <SidebarBottomItem>
+        <SidebarBottomItem
+          onClick={() => {
+            setSettingsModalOpen(true);
+          }}
+        >
           <SettingsIcon size="15px" />
           <span>Settings</span>
         </SidebarBottomItem>

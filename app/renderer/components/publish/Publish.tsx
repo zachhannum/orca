@@ -1,17 +1,10 @@
 import styled, { css } from 'styled-components';
+import { SettingSectionHeading } from '../Setting';
 import ScrollContainer from '../ScrollContainer';
 import FirstLineDecorationsSettings from './FirstLineDecorationsSettings';
 import ParagraphSettings from './ParagraphSettings';
 import HeadersSettings from './HeadersSettings';
 import PrintSettings from './PrintSettings';
-
-const PublishSectionTitle = styled.div`
-  color: ${(p) => p.theme.mainFgTextSecondary};
-  font-weight: 600;
-  font-size: 1.2em;
-  user-select: none;
-  padding-bottom: 10px;
-`;
 
 const SettingsContainer = styled.div`
   max-width: 500px;
@@ -28,6 +21,7 @@ const scrollerCss = css`
   padding-right: 50px;
   padding-left: 50px;
   margin-right: 5px;
+  margin-bottom: 10px;
 `;
 
 const Publish = () => {
@@ -38,19 +32,19 @@ const Publish = () => {
           <PublishSectionTitle>Chapter Titles</PublishSectionTitle>
         </Section> */}
         <Section>
-          <PublishSectionTitle>First Line Decorations</PublishSectionTitle>
+          <SettingSectionHeading>First Line Decorations</SettingSectionHeading>
           <FirstLineDecorationsSettings />
         </Section>
         <Section>
-          <PublishSectionTitle>Paragraph</PublishSectionTitle>
+          <SettingSectionHeading>Paragraph</SettingSectionHeading>
           <ParagraphSettings />
         </Section>
         <Section>
-          <PublishSectionTitle>Headers</PublishSectionTitle>
+          <SettingSectionHeading>Headers</SettingSectionHeading>
           <HeadersSettings />
         </Section>
         <Section>
-          <PublishSectionTitle>Print</PublishSectionTitle>
+          <SettingSectionHeading>Print</SettingSectionHeading>
           <PrintSettings />
         </Section>
       </SettingsContainer>

@@ -96,7 +96,7 @@ const MenuBase = ({
     onCloseMenu();
   }, ...clickRefs);
 
-  useResizeObserver(menuRef, 0, onResize);
+  useResizeObserver(root, 0, onResize);
 
   useOnWindowResize(() => {
     if (showMenu) {
