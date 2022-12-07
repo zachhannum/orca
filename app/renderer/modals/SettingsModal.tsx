@@ -106,6 +106,7 @@ export const SettingsModal = (props: ModalProps) => {
             {settingsSections.map((sectionName) => (
               <StyledSettingsSection
                 id={sectionName}
+                key={sectionName}
                 selected={selectedSection === sectionName}
                 onClick={() => {
                   setSelectedSection(sectionName);

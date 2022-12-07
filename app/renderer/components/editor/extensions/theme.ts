@@ -4,6 +4,7 @@ import { EditorView } from '@codemirror/view';
 import type { DefaultTheme } from 'styled-components';
 import Color from 'color';
 import { headerStyles, markStyles } from './styles';
+
 const theme = (theme: DefaultTheme): Extension => {
   const baseTheme = EditorView.baseTheme({
     '&.cm-editor': {},
@@ -18,11 +19,11 @@ const theme = (theme: DefaultTheme): Extension => {
     },
     '.cm-content': {
       caretColor: theme.mainFgText,
-      minHeight: '70vh', //This is sort of hacky
+      minHeight: '70vh', // This is sort of hacky
     },
     '.cm-line': {
       position: 'relative',
-    }
+    },
   });
 
   const highlighter = syntaxHighlighting(

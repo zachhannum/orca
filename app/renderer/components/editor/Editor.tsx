@@ -3,7 +3,7 @@ import styled, { useTheme, css } from 'styled-components';
 import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { searchKeymap } from '@codemirror/search';
-import { EditorState } from '@codemirror/state';
+import { EditorState, StateEffect } from '@codemirror/state';
 import useStore from 'renderer/store/useStore';
 import { ScrollContainer } from 'renderer/components';
 import { findItemDeep } from '../TreeView/utilities';
@@ -19,8 +19,11 @@ import {
   search,
   placeholder,
   countWords,
+  proofreadTheme,
+  proofreadUnderlineField,
 } from './extensions';
 import EditorToolbar from './EditorToolbar';
+import { addProofreadUnderline } from './extensions/proofreadUnderlines';
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -62,6 +65,8 @@ const Editor = () => {
       pasteEventHandler(),
       placeholder(),
       countWords(setWordCount),
+      proofreadTheme(),
+      proofreadUnderlineField,
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });
@@ -108,7 +113,33 @@ const Editor = () => {
   return (
     <ScrollContainer cssMixin={scrollerCss(sidebarOpen)}>
       <EditorDiv ref={editorContainerRef} />
-      <EditorToolbar wordCount={wordCount} />
+      <EditorToolbar
+        wordCount={wordCount}
+        onProofRead={(res) => {
+          const effects: StateEffect<any>[] = [];
+
+          if (res.matches) {
+            for (const match of res.matches) {
+              const start = match.offset;
+              const end = match.offset + match.length;
+
+              effects.push(
+                addProofreadUnderline.of({
+                  from: start,
+                  to: end,
+                  match,
+                })
+              );
+            }
+          }
+
+          if (effects.length && editorViewRef.current) {
+            editorViewRef.current.dispatch({
+              effects,
+            });
+          }
+        }}
+      />
     </ScrollContainer>
   );
 };
