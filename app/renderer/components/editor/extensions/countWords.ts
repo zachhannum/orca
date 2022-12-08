@@ -5,7 +5,6 @@ export const countWords = (
   onWordCountUpdate: (count: number) => void
 ): Extension => {
   return EditorView.updateListener.of((update: ViewUpdate) => {
-    // if (update.docChanged) {
     let count = 0;
     const iter = update.state.doc.iter();
     while (!iter.next().done) {
@@ -15,6 +14,5 @@ export const countWords = (
       }
     }
     onWordCountUpdate(count);
-    // }
   });
 };

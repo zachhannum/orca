@@ -64,7 +64,10 @@ export interface Category {
   name: string;
 }
 
-export const checkText = async (text: string): Promise<LanguageToolApi> => {
+export const checkText = async (
+  text: string,
+  abortSignal: AbortSignal
+): Promise<LanguageToolApi> => {
   const tree = build(text, {
     ...defaults,
     interpretmarkup(text = ''): string {
@@ -105,6 +108,7 @@ export const checkText = async (text: string): Promise<LanguageToolApi> => {
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json',
       },
+      signal: abortSignal,
     });
   } catch (e) {
     return Promise.reject(e);
@@ -122,6 +126,5 @@ export const checkText = async (text: string): Promise<LanguageToolApi> => {
   } catch (e) {
     return Promise.reject(e);
   }
-  console.log(body);
   return body;
 };

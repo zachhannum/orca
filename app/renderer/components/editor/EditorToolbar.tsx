@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import Color from 'color';
 import { GridLoader } from 'react-spinners';
 import { IconButton } from 'renderer/controls';
 import { SpellCheckIcon } from 'renderer/icons';
 import useStore from 'renderer/store/useStore';
-import { checkText, LanguageToolApi } from './language-tool/api';
+import { ContextMenu, ContextMenuItem } from '..';
+import { Position } from '../MenuBase';
 
 const StyledToolbarDiv = styled.div`
   background-color: ${(p) =>
@@ -45,41 +46,50 @@ const ProofReadDiv = styled.div`
 
 type EditorToolbarProps = {
   wordCount: number;
-  onProofRead?: (value: LanguageToolApi) => void;
+  proofreading: boolean;
+  numProofreadingMatches: number;
+  onProofread?: () => void;
 };
 
-const EditorToolbar = ({ wordCount, onProofRead }: EditorToolbarProps) => {
+const EditorToolbar = ({
+  wordCount,
+  proofreading,
+  numProofreadingMatches,
+  onProofread,
+}: EditorToolbarProps) => {
   const theme = useTheme();
   const settings = useStore((state) => state.settings);
-  const [proofReadLoading, setProofReadLoading] = useState(false);
-  const [numProofreadingMatches, setNumProofreadingMatches] = useState(0);
+  const [showSpellCheckContextMenu, setShowSpellCheckContextMenu] =
+    useState(false);
+  const spellCheckButtonRef = useRef<HTMLAnchorElement>(null);
+
+  const getSpellCheckMenuPosition = useCallback(() => {
+    if (spellCheckButtonRef.current) {
+      const rect = spellCheckButtonRef.current.getBoundingClientRect();
+      const position: Position = {
+        x: rect.left + rect.width / 2,
+        y: rect.top - 15,
+      };
+      return position;
+    }
+    return { x: 0, y: 0 };
+  }, [spellCheckButtonRef]);
+
   return (
     <StyledToolbarDiv>
       <TextDiv>{wordCount} Words</TextDiv>
       {settings.enableLanguageToolIntegration && (
         <ProofReadDiv>
-          {!proofReadLoading && (
+          {!proofreading && (
             <>
               <IconButton
                 iconSize="20px"
                 foregroundColor={theme.mainFgTextSecondary}
                 backgroundColor="transparent"
+                ref={spellCheckButtonRef}
                 onClick={() => {
-                  setProofReadLoading(true);
-                  const { previewContent } = useStore.getState();
-                  checkText(previewContent)
-                    .then((value) => {
-                      console.log(value);
-                      if (value.matches) {
-                        setNumProofreadingMatches(value.matches?.length);
-                      }
-                      if (onProofRead) {
-                        onProofRead(value);
-                      }
-                      setProofReadLoading(false);
-                      return null;
-                    })
-                    .catch((e) => console.log(e));
+                  setShowSpellCheckContextMenu(!showSpellCheckContextMenu);
+                  // if (onProofread) onProofread();
                 }}
               >
                 <SpellCheckIcon />
@@ -87,13 +97,34 @@ const EditorToolbar = ({ wordCount, onProofRead }: EditorToolbarProps) => {
               {numProofreadingMatches > 0 && (
                 <TextDiv>{numProofreadingMatches}</TextDiv>
               )}
+              <ContextMenu
+                showMenu={showSpellCheckContextMenu}
+                clickRef={spellCheckButtonRef}
+                onCloseMenu={() => {
+                  setShowSpellCheckContextMenu(false);
+                }}
+                position={getSpellCheckMenuPosition()}
+                center
+              >
+                <ContextMenuItem>Clear suggestions</ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => {
+                    if (onProofread) {
+                      onProofread();
+                    }
+                    setShowSpellCheckContextMenu(false);
+                  }}
+                >
+                  Check spelling and grammar
+                </ContextMenuItem>
+              </ContextMenu>
             </>
           )}
 
           <GridLoader
             size={3.5}
             margin={1.6}
-            loading={proofReadLoading}
+            loading={proofreading}
             color={theme.mainFgTextSecondary}
           />
         </ProofReadDiv>

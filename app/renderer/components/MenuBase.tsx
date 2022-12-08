@@ -105,6 +105,7 @@ const MenuBase = ({
   });
 
   const setPosition = () => {
+    if (!root.current || !menuRef.current || !position) return;
     const rootDiv = root.current;
     const menuRefDiv = menuRef.current;
     let { x, y } = position;
@@ -148,12 +149,13 @@ const MenuBase = ({
         if (center) {
           x = Math.min(screenW - 2, x + rootW / 2);
           transformOriginX = 'center';
+        } else {
+          transformOriginX = 'right';
         }
         if (offset) {
           x -= offset.x;
         }
         rootDiv.style.left = `${x - rootW}px`;
-        transformOriginX = 'right';
       }
 
       if (top) {

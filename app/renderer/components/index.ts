@@ -14,6 +14,7 @@ export { default as Publish } from './publish/Publish';
 export { default as MenuBase } from './MenuBase';
 export { default as ScrollContainer } from './ScrollContainer';
 export { default as RecentProjectsList } from './RecentProjectsList';
+export { ContextMenuItem } from './ContextMenuItem';
 export {
   Setting,
   SettingLabel,

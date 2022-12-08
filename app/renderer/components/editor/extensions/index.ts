@@ -11,3 +11,5 @@ export { default as placeholder } from './placeholder';
 export { countWords } from './countWords';
 export { proofreadUnderlineField } from './proofreadUnderlines';
 export { proofreadTheme } from './proofreadTheme';
+export { cancelProofreadOnChange } from './cancelProofreadOnChange';
+export { proofreadTooltips, proofreadTooltipTheme } from './proofreadTooltips';

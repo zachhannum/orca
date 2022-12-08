@@ -21,9 +21,13 @@ import {
   countWords,
   proofreadTheme,
   proofreadUnderlineField,
+  cancelProofreadOnChange,
+  proofreadTooltips,
+  proofreadTooltipTheme,
 } from './extensions';
 import EditorToolbar from './EditorToolbar';
 import { addProofreadUnderline } from './extensions/proofreadUnderlines';
+import { checkText } from './language-tool/api';
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -50,6 +54,54 @@ const Editor = () => {
   const styledTheme = useTheme();
   const sidebarOpen = useStore((state) => state.sidebarOpen);
   const [wordCount, setWordCount] = useState(0);
+  const [isProofreading, setIsProofreading] = useState(false);
+  const [numProofreadingMatches, setNumProofreadingMatches] = useState(0);
+  const proofreadAbortController = useRef<AbortController | null>(null);
+
+  const handleProofreadRequest = () => {
+    setIsProofreading(true);
+    const abortController = new AbortController();
+    proofreadAbortController.current = abortController;
+    const { previewContent } = useStore.getState();
+    const { signal } = abortController;
+    checkText(previewContent, signal)
+      .then((result) => {
+        console.log(result);
+        if (result.matches) {
+          setNumProofreadingMatches(result.matches?.length);
+        }
+
+        const effects: StateEffect<any>[] = [];
+
+        if (result.matches) {
+          for (const match of result.matches) {
+            const start = match.offset;
+            const end = match.offset + match.length;
+
+            effects.push(
+              addProofreadUnderline.of({
+                from: start,
+                to: end,
+                match,
+              })
+            );
+          }
+        }
+
+        if (effects.length && editorViewRef.current) {
+          editorViewRef.current.dispatch({
+            effects,
+          });
+        }
+        setIsProofreading(false);
+        return null;
+      })
+      .catch((e) => {
+        console.error(e);
+
+        setIsProofreading(false);
+      });
+  };
 
   const newEditorState = (txt: string): EditorState => {
     const extensions = [
@@ -65,8 +117,11 @@ const Editor = () => {
       pasteEventHandler(),
       placeholder(),
       countWords(setWordCount),
-      proofreadTheme(),
       proofreadUnderlineField,
+      proofreadTooltips(),
+      proofreadTheme(),
+      proofreadTooltipTheme(styledTheme),
+      cancelProofreadOnChange(proofreadAbortController),
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });
@@ -115,30 +170,9 @@ const Editor = () => {
       <EditorDiv ref={editorContainerRef} />
       <EditorToolbar
         wordCount={wordCount}
-        onProofRead={(res) => {
-          const effects: StateEffect<any>[] = [];
-
-          if (res.matches) {
-            for (const match of res.matches) {
-              const start = match.offset;
-              const end = match.offset + match.length;
-
-              effects.push(
-                addProofreadUnderline.of({
-                  from: start,
-                  to: end,
-                  match,
-                })
-              );
-            }
-          }
-
-          if (effects.length && editorViewRef.current) {
-            editorViewRef.current.dispatch({
-              effects,
-            });
-          }
-        }}
+        onProofread={handleProofreadRequest}
+        proofreading={isProofreading}
+        numProofreadingMatches={numProofreadingMatches}
       />
     </ScrollContainer>
   );
