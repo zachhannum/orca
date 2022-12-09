@@ -72,7 +72,7 @@ const theme: DefaultTheme = {
   chapterTitleDropdownInset: 'rgba(72, 72, 81, 1)',
   progressBarBg: 'rgba(107, 107, 120, 1)',
   progressBarFg: 'rgba(240, 240, 248, 1)',
-  contextMenuBg: 'rgba(41, 41, 46, 1)',
+  contextMenuBg: 'rgba(34, 34, 39, 1)',
   contextMenuDivider: 'rgba(57, 57, 70, 1)',
   contextMenuFg: 'rgba(187, 187, 201, 1)',
   contextMenuExit: 'rgba(255, 85, 74, 1)',

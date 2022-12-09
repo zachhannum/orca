@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 export { default as theme } from './theme';
 export { default as lineWrapping } from './lineWrapping';
 export { default as markdown } from './markdown';
@@ -13,3 +14,4 @@ export { proofreadUnderlineField } from './proofreadUnderlines';
 export { proofreadTheme } from './proofreadTheme';
 export { cancelProofreadOnChange } from './cancelProofreadOnChange';
 export { proofreadTooltips, proofreadTooltipTheme } from './proofreadTooltips';
+export { proofreadTooltipHelper } from './proofreadTooltipHelper';

@@ -24,10 +24,13 @@ import {
   cancelProofreadOnChange,
   proofreadTooltips,
   proofreadTooltipTheme,
+  proofreadTooltipHelper,
 } from './extensions';
 import EditorToolbar from './EditorToolbar';
+import { TooltipView } from './TooltipView';
 import { addProofreadUnderline } from './extensions/proofreadUnderlines';
 import { checkText } from './language-tool/api';
+import { TooltipLocation } from './extensions/proofreadTooltipHelper';
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -37,6 +40,7 @@ const EditorDiv = styled.div`
   box-sizing: border-box;
   padding-top: 4vh;
   padding-bottom: 10vh;
+  position: relative;
 `;
 
 const scrollerCss = (sidebarOpen: boolean) => css`
@@ -57,6 +61,8 @@ const Editor = () => {
   const [isProofreading, setIsProofreading] = useState(false);
   const [numProofreadingMatches, setNumProofreadingMatches] = useState(0);
   const proofreadAbortController = useRef<AbortController | null>(null);
+  const [currentTooltipLocation, setCurrentTooltipLocation] =
+    useState<TooltipLocation | null>(null);
 
   const handleProofreadRequest = () => {
     setIsProofreading(true);
@@ -118,7 +124,10 @@ const Editor = () => {
       placeholder(),
       countWords(setWordCount),
       proofreadUnderlineField,
-      proofreadTooltips(),
+      proofreadTooltipHelper((tooltip) => {
+        setCurrentTooltipLocation(tooltip);
+      }),
+      // proofreadTooltips(editorViewRef),
       proofreadTheme(),
       proofreadTooltipTheme(styledTheme),
       cancelProofreadOnChange(proofreadAbortController),
@@ -167,7 +176,9 @@ const Editor = () => {
 
   return (
     <ScrollContainer cssMixin={scrollerCss(sidebarOpen)}>
-      <EditorDiv ref={editorContainerRef} />
+      <EditorDiv ref={editorContainerRef}>
+        <TooltipView tooltip={currentTooltipLocation} />
+      </EditorDiv>
       <EditorToolbar
         wordCount={wordCount}
         onProofread={handleProofreadRequest}

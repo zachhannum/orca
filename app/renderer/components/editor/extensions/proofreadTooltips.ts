@@ -1,5 +1,11 @@
-import { EditorState, Extension, StateField } from '@codemirror/state';
-import { EditorView, showTooltip, Tooltip } from '@codemirror/view';
+import {
+  EditorState,
+  Extension,
+  StateEffect,
+  StateField,
+} from '@codemirror/state';
+import { EditorView, getTooltip, showTooltip, Tooltip } from '@codemirror/view';
+import { RefObject } from 'react';
 import { DefaultTheme } from 'styled-components';
 import { getCategoryClassName } from '../language-tool/utils';
 import {
@@ -9,6 +15,22 @@ import {
 
 export const proofreadTooltipTheme = (theme: DefaultTheme): Extension => {
   const proofreadCss = EditorView.baseTheme({
+    '@keyframes open': {
+      from: { opacity: '0', transform: 'scale(0.8)' },
+      to: { opacity: '1.0', transform: 'scale(1.0)' },
+    },
+    '@keyframes close': {
+      to: { opacity: '0', transform: 'scale(0.8)' },
+      from: { opacity: '1.0', transform: 'scale(1.0)' },
+    },
+    '@keyframes top': {
+      from: { transition: 'top 100ms ease-in-out' },
+      to: { transition: 'inherit' },
+    },
+    '@keyframes bottom': {
+      from: { transition: 'top 100ms ease-in-out' },
+      to: { transition: 'inherit' },
+    },
     '.cm-tooltip.cm-tooltip-proofread': {
       backgroundColor: `${theme.contextMenuBg}`,
       border: `${theme.contextMenuDivider} 1px solid`,
@@ -18,6 +40,15 @@ export const proofreadTooltipTheme = (theme: DefaultTheme): Extension => {
       display: 'flex',
       flexDirection: 'column',
       boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2);',
+      animation: 'open 0.1s ease-in-out forwards',
+      transformOrigin: 'bottom',
+      // transition: 'top left 100ms ease-in-out 10ms',
+    },
+    '.cm-tooltip.cm-tooltip-proofread.cm-tooltip-above': {
+      animation: 'top 0.1s ease-in-out forwards',
+    },
+    '.cm-tooltip.cm-tooltip-proofread.cm-tooltip-below': {
+      animation: 'bottom 0.1s ease-in-out forwards',
     },
     '.cm-tooltip-title': {
       color: `${theme.contextMenuFg}`,
@@ -90,19 +121,55 @@ const createTooltip = (
   return tooltip;
 };
 
-const getTooltip = (
-  tooltips: readonly Tooltip[],
-  state: EditorState
-): readonly Tooltip[] => {
-  const underlines = state.field(proofreadUnderlineField);
+const markTooltipsForRemoval = (
+  view: EditorView,
+  state: EditorState,
+  tooltips: readonly Tooltip[]
+): Tooltip[] => {
+  return tooltips.flatMap((tooltip) => {
+    if (
+      !state.selection.main.empty ||
+      !(
+        tooltip.pos <= state.selection.main.from &&
+        tooltip.end! >= state.selection.main.to
+      )
+    ) {
+      const tooltipView = getTooltip(view, tooltip);
+      if (tooltipView) {
+        /* tooltipView's animation has finished, we can mark for removal */
+        if (tooltipView.dom.style.opacity === '0') {
+          return [];
+        }
+        /* Otherwise, we need to set the animation to close and run it */
+        tooltipView.dom.style.animationName = 'close';
+        setTimeout(() => {
+          tooltipView.dom.style.visibility = 'hidden';
+        }, 100);
+        return tooltip;
+      }
+    }
+    /* Otherwise, just return the tooltip */
+    return tooltip;
+  });
+};
 
+const getTooltips = (
+  tooltips: readonly Tooltip[],
+  state: EditorState,
+  view: RefObject<EditorView>
+): readonly Tooltip[] => {
+  let newTooltips = tooltips;
+  if (view.current) {
+    newTooltips = markTooltipsForRemoval(view.current, state, tooltips);
+  }
+
+  const underlines = state.field(proofreadUnderlineField);
   if (
     underlines.size === 0 ||
     state.selection.ranges.length > 1 ||
-    state.selection.main.from !== state.selection.main.to ||
-    !state.selection.main
+    state.selection.main.from !== state.selection.main.to
   ) {
-    return [];
+    return newTooltips;
   }
 
   let matchedProofreadUnderline: ProofreadUnderlineEffect | null = null;
@@ -118,21 +185,29 @@ const getTooltip = (
     }
   );
 
-  if (matchedProofreadUnderline) {
+  if (matchedProofreadUnderline !== null) {
     const { from, to } = matchedProofreadUnderline;
 
     // if tooltips exists, and the first tooltip is in range, return tooltips
-    if (tooltips.length) {
-      const firstTooltip = tooltips[0];
+    if (newTooltips.length) {
+      const firstTooltip = newTooltips[0];
       if (firstTooltip.pos === from && firstTooltip.end === to) {
-        return tooltips;
+        if (view.current) {
+          const tooltipView = getTooltip(view.current, firstTooltip);
+          if (tooltipView) {
+            tooltipView.dom.style.animationName = 'open';
+            tooltipView.dom.style.visibility = 'visible';
+          }
+        }
+
+        return newTooltips;
       }
     }
 
     return [
       {
-        pos: from,
-        end: to,
+        pos: matchedProofreadUnderline.from,
+        end: matchedProofreadUnderline.to,
         above: true,
         strictSide: false,
         arrow: false,
@@ -144,13 +219,13 @@ const getTooltip = (
       },
     ];
   }
-  return [];
+  return newTooltips;
 };
 
-export const proofreadTooltips = () => {
+export const proofreadTooltips = (view: RefObject<EditorView>) => {
   return StateField.define<readonly Tooltip[]>({
-    create: (state) => getTooltip([], state),
-    update: (tooltips, tr) => getTooltip(tooltips, tr.state),
+    create: (state) => getTooltips([], state, view),
+    update: (tooltips, tr) => getTooltips(tooltips, tr.state, view),
     provide: (f) => showTooltip.computeN([f], (state) => state.field(f)),
   });
 };
