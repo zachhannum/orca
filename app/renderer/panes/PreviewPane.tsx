@@ -8,14 +8,7 @@ import { IconButton } from '../controls';
 import { PageRightIcon, PageLeftIcon } from '../icons';
 
 const paneStyleMixin = css`
-  display: flex;
-  user-select: none;
-  right: 0;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  gap: 20px;
-  flex-direction: column;
+  /* padding: 7px 7px 7px 3.5px; */
 `;
 
 const StyledPreviewerContainer = styled.div`
@@ -28,6 +21,20 @@ const StyledPreviewerContainer = styled.div`
   justify-content: center;
   align-items: center;
   align-content: center;
+`;
+
+const Background = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  user-select: none;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 20px;
+  flex-direction: column;
+  /* border-radius: 7px; */
 `;
 
 const PreviewPane = () => {
@@ -58,36 +65,37 @@ const PreviewPane = () => {
     <Pane
       enabled={previewEnabled}
       invert
-      backgroundColor={theme.previewBg}
+      backgroundColor="transparent"
       defaultWidth="500px"
       minWidth={400}
       styleMixin={paneStyleMixin}
     >
-      {showPreviewer && (
-        <>
-          <StyledPreviewerContainer>
-            <IconButton
-              iconSize="11px"
-              foregroundColor={theme.previewArrow}
-              scaleOnHover
-              onClick={prev}
-            >
-              <PageLeftIcon />
-            </IconButton>
-            <PagedPreviewer pageNumber={page} onPageOverflow={setPage} />
-            <IconButton
-              iconSize="11px"
-              foregroundColor={theme.previewArrow}
-              scaleOnHover
-              onClick={next}
-            >
-              <PageRightIcon />
-            </IconButton>
-          </StyledPreviewerContainer>
-        </>
-      )}
-
-      <Test />
+      <Background>
+        {showPreviewer && (
+          <>
+            <StyledPreviewerContainer>
+              <IconButton
+                iconSize="11px"
+                foregroundColor={theme.previewArrow}
+                scaleOnHover
+                onClick={prev}
+              >
+                <PageLeftIcon />
+              </IconButton>
+              <PagedPreviewer pageNumber={page} onPageOverflow={setPage} />
+              <IconButton
+                iconSize="11px"
+                foregroundColor={theme.previewArrow}
+                scaleOnHover
+                onClick={next}
+              >
+                <PageRightIcon />
+              </IconButton>
+            </StyledPreviewerContainer>
+          </>
+        )}
+        <Test />
+      </Background>
     </Pane>
   );
 };

@@ -20,7 +20,7 @@ import type { AppMode } from '../store/slices/createAppStateSlice';
 const SidebarTopContainer = styled.div`
   display: flex;
   padding-top: calc(
-    env(titlebar-area-height, var(--fallback-title-bar-height)) + 20px
+    env(titlebar-area-height, var(--fallback-title-bar-height))
   );
   padding-left: 20px;
   padding-right: 20px;
@@ -89,12 +89,12 @@ const SidebarPane = () => {
   const setSidebarOpen = useStore((state) => state.setSidebarOpen);
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const isWindowMaximized = useIsWindowMaxized();
-  const sidebarBackground = useMemo(() => {
-    if (isWindowMaximized) {
-      return Color(theme.sidebarBg).alpha(1).hsl().toString();
-    }
-    return theme.sidebarBg;
-  }, [isWindowMaximized]);
+  // const sidebarBackground = useMemo(() => {
+  //   if (isWindowMaximized) {
+  //     return Color(theme.sidebarBg).alpha(1).hsl().toString();
+  //   }
+  //   return theme.sidebarBg;
+  // }, [isWindowMaximized]);
 
   useEffect(() => {
     setSidebarOpen(open);
@@ -105,7 +105,7 @@ const SidebarPane = () => {
       enabled={open}
       defaultWidth="250px"
       minWidth={225}
-      backgroundColor={sidebarBackground}
+      backgroundColor="transparent"
       styleMixin={paneStyleMixin}
     >
       <SidebarTopContainer>

@@ -103,7 +103,7 @@ const createWindow = async () => {
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'hiddenInset',
     ...getPlatformWindowSettings(),
   });
 
