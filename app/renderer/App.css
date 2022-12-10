@@ -30,6 +30,7 @@ iframe {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background-color: rgba(50, 50, 56, 0.3);
 }
 
 body {

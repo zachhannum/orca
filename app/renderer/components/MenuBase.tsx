@@ -135,7 +135,7 @@ const MenuBase = ({
       let transformOriginY = '';
       if (right) {
         if (center) {
-          x = Math.max(2, x - rootW / 2);
+          x = Math.max(10, x - rootW / 2);
           transformOriginX = 'center';
         } else {
           transformOriginX = 'left';
@@ -148,7 +148,7 @@ const MenuBase = ({
 
       if (left) {
         if (center) {
-          x = Math.min(screenW - 2, x + rootW / 2);
+          x = Math.min(screenW - 10, x + rootW / 2);
           transformOriginX = 'center';
         } else {
           transformOriginX = 'right';

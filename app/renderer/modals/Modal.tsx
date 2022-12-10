@@ -9,7 +9,7 @@ const StyledModalTitle = styled.div`
   flex-wrap: no-wrap;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 15px;
   font-size: 1.1em;
   min-width: 400px;
   color: ${(p) => p.theme.modalFgText};
@@ -19,8 +19,8 @@ const StyledModalTitle = styled.div`
 
 const StyledExitDiv = styled.div`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
 `;
 
 ReactModal.setAppElement('#root');
@@ -57,7 +57,7 @@ const Modal = ({ title, isOpen, onRequestClose, children }: ModalProps) => {
           <IconButton
             onClick={onRequestClose}
             iconSize="12px"
-            foregroundColor={theme.modalFgText}
+            foregroundColor={theme.sidebarIconFg}
           >
             <ModalExitIcon />
           </IconButton>

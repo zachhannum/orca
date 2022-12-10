@@ -9,15 +9,25 @@ const MainContent = styled.div`
   --top-padding: calc(
     env(titlebar-area-height, var(--fallback-title-bar-height)) + 10px
   );
-  flex-grow: 1;
-  flex-shrink: 1000;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   color: ${(p) => p.theme.mainFgText};
-  background-color: ${(p) => p.theme.mainBg};
+  background-color: ${(p) => p.theme.previewBg};
   display: flex;
   align-items: stretch;
   flex-direction: column;
   position: relative;
+  border-radius: 7px;
+`;
+
+const Frame = styled.div`
+  --top-padding: calc(
+    env(titlebar-area-height, var(--fallback-title-bar-height)) + 10px
+  );
+  flex-grow: 1;
+  flex-shrink: 1000;
+  height: 100vh;
+  padding: 7px;
 `;
 
 const SectionTitle = styled.div`
@@ -89,31 +99,33 @@ const MainPane = () => {
   const activeSectionName = useStore((state) => state.activeSectionName);
   const commandKeyString = useCommandKeyString();
   return (
-    <MainContent>
-      {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
-        <>
-          <SectionTitle>{activeSectionName}</SectionTitle>
-          <AppContent appMode={appMode} />
-        </>
-      ) : (
-        <NoProjectDiv>
-          <NoProjectTitle>Calamus</NoProjectTitle>
-          <NoProjectSubtitle>
-            <b>Write</b> and <b>Publish</b> novels with ease.
-          </NoProjectSubtitle>
-          <NoProjectHotkeys>
-            <NoProjectHotkey>
-              <span>Open a project</span>
-              <span>{commandKeyString}O</span>
-            </NoProjectHotkey>
-            <NoProjectHotkey>
-              <span>Start a new project</span>
-              <span>{commandKeyString}N</span>
-            </NoProjectHotkey>
-          </NoProjectHotkeys>
-        </NoProjectDiv>
-      )}
-    </MainContent>
+    <Frame>
+      <MainContent>
+        {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
+          <>
+            <SectionTitle>{activeSectionName}</SectionTitle>
+            <AppContent appMode={appMode} />
+          </>
+        ) : (
+          <NoProjectDiv>
+            <NoProjectTitle>Calamus</NoProjectTitle>
+            <NoProjectSubtitle>
+              <b>Write</b> and <b>Publish</b> novels with ease.
+            </NoProjectSubtitle>
+            <NoProjectHotkeys>
+              <NoProjectHotkey>
+                <span>Open a project</span>
+                <span>{commandKeyString}O</span>
+              </NoProjectHotkey>
+              <NoProjectHotkey>
+                <span>Start a new project</span>
+                <span>{commandKeyString}N</span>
+              </NoProjectHotkey>
+            </NoProjectHotkeys>
+          </NoProjectDiv>
+        )}
+      </MainContent>
+    </Frame>
   );
 };
 
