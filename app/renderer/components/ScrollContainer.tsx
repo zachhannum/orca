@@ -1,3 +1,4 @@
+import { useResizeObserver } from 'renderer/hooks';
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { CssMixinType } from 'types/types';
@@ -8,6 +9,7 @@ type ScrollerProps = {
 
 const Scroller = styled.div<ScrollerProps>`
   overflow-y: auto;
+  overflow-x: hidden;
   height: 100%;
   box-sizing: border-box;
   border-color: transparent;
@@ -43,8 +45,18 @@ type ScrollContainerProps = {
   children: React.ReactNode;
 };
 
-const ScrollContainer = ({ cssMixin, children }: ScrollContainerProps) => {
-  return <Scroller cssMixin={cssMixin}>{children}</Scroller>;
-};
+const ScrollContainer = React.forwardRef<HTMLDivElement, ScrollContainerProps>(
+  ({ cssMixin, children }: ScrollContainerProps, ref) => {
+    // const scrollRef = React.useRef<HTMLDivElement>(null);
+    // useResizeObserver(scrollRef, 0, () => {
+    //   console.log('scroll resized');
+    // });
+    return (
+      <Scroller ref={ref} cssMixin={cssMixin}>
+        {children}
+      </Scroller>
+    );
+  }
+);
 
 export default ScrollContainer;

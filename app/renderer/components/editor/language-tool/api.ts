@@ -88,9 +88,12 @@ export const checkText = async (
     language: 'auto',
     enabledOnly: 'false',
     level: 'default',
-    username: languageToolUsername,
-    apiKey: languageToolApiKey,
   };
+
+  if (languageToolEndpointUrl === 'https://api.languagetoolplus.com') {
+    requestParams.username = languageToolUsername;
+    requestParams.apiKey = languageToolApiKey;
+  }
 
   let response: Response;
 

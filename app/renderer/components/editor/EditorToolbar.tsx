@@ -24,6 +24,7 @@ const StyledToolbarDiv = styled.div`
   justify-content: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   transition: all 200ms ease-in-out;
+  z-index: 3;
 `;
 
 const TextDiv = styled.div`

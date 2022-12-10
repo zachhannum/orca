@@ -55,6 +55,7 @@ const Editor = () => {
   const activeSectionId = useStore((state) => state.activeSectionId);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const editorViewRef = useRef<EditorView | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
   const styledTheme = useTheme();
   const sidebarOpen = useStore((state) => state.sidebarOpen);
   const [wordCount, setWordCount] = useState(0);
@@ -175,9 +176,13 @@ const Editor = () => {
   }, [activeSectionId]);
 
   return (
-    <ScrollContainer cssMixin={scrollerCss(sidebarOpen)}>
+    <ScrollContainer ref={editorRef} cssMixin={scrollerCss(sidebarOpen)}>
       <EditorDiv ref={editorContainerRef}>
-        <TooltipView tooltip={currentTooltipLocation} />
+        <TooltipView
+          tooltip={currentTooltipLocation}
+          editorView={editorViewRef.current}
+          viewRef={editorRef}
+        />
       </EditorDiv>
       <EditorToolbar
         wordCount={wordCount}

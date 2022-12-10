@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { EditorView } from '@codemirror/view';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useResizeObserver } from 'renderer/hooks';
 import styled, { keyframes } from 'styled-components';
 import { TooltipLocation } from './extensions/proofreadTooltipHelper';
 
 type TooltipViewProps = {
   tooltip: TooltipLocation | null;
+  editorView: EditorView | null;
+  viewRef: React.RefObject<HTMLDivElement>;
 };
 
 const transitionAnimationDuration = 100;
@@ -14,7 +18,7 @@ const Tooltip = styled.div`
   border-radius: 10px;
   padding: 5px;
   position: absolute;
-  z-index: 100;
+  z-index: 2;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: 'flex';
   flex-direction: 'column';
@@ -24,6 +28,7 @@ const Tooltip = styled.div`
   transition-timing-function: ease-out;
   opacity: 0;
   transform: scale(0.8);
+  transform-origin: bottom;
 `;
 
 const TooltipTitle = styled.div`
@@ -49,7 +54,11 @@ const TooltipSuggestion = styled.div`
   cursor: pointer;
 `;
 
-export const TooltipView = ({ tooltip }: TooltipViewProps) => {
+export const TooltipView = ({
+  tooltip,
+  editorView,
+  viewRef,
+}: TooltipViewProps) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   const [title, setTitle] = useState('');
@@ -60,13 +69,27 @@ export const TooltipView = ({ tooltip }: TooltipViewProps) => {
   const updateTooltipPos = () => {
     if (tooltipRef.current && tooltipRef.current.parentElement) {
       if (tooltipLoc) {
+        let tooltipTop = tooltipLoc.top;
+        let tooltipLeft = tooltipLoc.left;
+        // Update tooltip position if we can just in case it has changed
+        if (editorView) {
+          const newCoords = editorView.coordsAtPos(tooltipLoc.from);
+          if (newCoords) {
+            tooltipTop = newCoords.top;
+            tooltipLeft = newCoords.left;
+          }
+        }
+
+        const scaleFactor =
+          tooltipRef.current.style.transform === 'scale(1)' ? 1 : 0.8;
+
         const top =
-          tooltipLoc.top -
+          tooltipTop -
           tooltipRef.current.parentElement.getBoundingClientRect().top -
-          tooltipRef.current.getBoundingClientRect().height / 0.8 -
+          tooltipRef.current.getBoundingClientRect().height / scaleFactor -
           5;
         const left =
-          tooltipLoc.left -
+          tooltipLeft -
           tooltipRef.current.parentElement.getBoundingClientRect().left;
         tooltipRef.current.style.top = `${top}px`;
         tooltipRef.current.style.left = `${left}px`;
@@ -91,6 +114,12 @@ export const TooltipView = ({ tooltip }: TooltipViewProps) => {
       tooltipRef.current.style.visibility = 'hidden';
       tooltipRef.current.style.opacity = '0';
       tooltipRef.current.style.transform = 'scale(0.8)';
+      setTimeout(() => {
+        if (tooltipRef.current) {
+          tooltipRef.current.style.top = '0';
+          tooltipRef.current.style.left = '0';
+        }
+      }, transitionAnimationDuration);
     }
   };
 
@@ -105,6 +134,8 @@ export const TooltipView = ({ tooltip }: TooltipViewProps) => {
       }, transitionAnimationDuration);
     }
   };
+
+  useResizeObserver(viewRef, 100, updateTooltipPos);
 
   useEffect(() => {
     // don't update if tooltip and tooltipLoc exist and have the same from value
@@ -133,6 +164,8 @@ export const TooltipView = ({ tooltip }: TooltipViewProps) => {
   useEffect(() => {
     if (tooltipRef.current && tooltipRef.current.parentElement) {
       if (tooltipLoc) {
+        // Update the position twice since setting the position the first time might change the tooltip's dimensions
+        updateTooltipPos();
         updateTooltipPos();
         showTooltip();
       }
