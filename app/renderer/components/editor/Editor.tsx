@@ -22,7 +22,7 @@ import {
   proofreadTheme,
   proofreadUnderlineField,
   cancelProofreadOnChange,
-  proofreadTooltips,
+  proofreadUnderlineCount,
   proofreadTooltipTheme,
   proofreadTooltipHelper,
 } from './extensions';
@@ -73,10 +73,6 @@ const Editor = () => {
     const { signal } = abortController;
     checkText(previewContent, signal)
       .then((result) => {
-        console.log(result);
-        if (result.matches) {
-          setNumProofreadingMatches(result.matches?.length);
-        }
 
         const effects: StateEffect<any>[] = [];
 
@@ -128,7 +124,9 @@ const Editor = () => {
       proofreadTooltipHelper((tooltip) => {
         setCurrentTooltipLocation(tooltip);
       }),
-      // proofreadTooltips(editorViewRef),
+      proofreadUnderlineCount((count) => {
+        setNumProofreadingMatches(count);
+      }),
       proofreadTheme(),
       proofreadTooltipTheme(styledTheme),
       cancelProofreadOnChange(proofreadAbortController),
@@ -185,6 +183,7 @@ const Editor = () => {
         />
       </EditorDiv>
       <EditorToolbar
+        editorView={editorViewRef.current}
         wordCount={wordCount}
         onProofread={handleProofreadRequest}
         proofreading={isProofreading}

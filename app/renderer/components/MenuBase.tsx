@@ -39,7 +39,8 @@ const StyledMenuBase = styled.div<StyledMenuBaseProps>`
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: opacity 100ms ease-out, transform 100ms ease-out;
+  transition: opacity 100ms cubic-bezier(0.47, 1.7, 0.41, 0.8),
+    transform 200ms cubic-bezier(0.47, 1.7, 0.41, 0.8);
 
   ${(p) => p.styleMixin}
 `;
@@ -70,8 +71,8 @@ const MenuBase = ({
   position,
   offset,
   fixed = false,
-  verticalAnimateScale = 0.7,
-  horizontalAnimateScale = 0.7,
+  verticalAnimateScale = 0.5,
+  horizontalAnimateScale = 0.5,
   styleMixin,
   clickRef,
   onResize,

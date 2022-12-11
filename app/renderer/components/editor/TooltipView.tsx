@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useResizeObserver } from 'renderer/hooks';
 import styled, { keyframes } from 'styled-components';
 import { TooltipLocation } from './extensions/proofreadTooltipHelper';
+import { clearUnderlinesInRange } from './extensions/proofreadUnderlines';
 
 type TooltipViewProps = {
   tooltip: TooltipLocation | null;
@@ -54,6 +55,8 @@ const TooltipSuggestion = styled.div`
   cursor: pointer;
 `;
 
+const tooltipPadding = 5;
+
 export const TooltipView = ({
   tooltip,
   editorView,
@@ -66,8 +69,8 @@ export const TooltipView = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [tooltipLoc, setTooltipLoc] = useState<TooltipLocation | null>(null);
 
-  const updateTooltipPos = () => {
-    if (tooltipRef.current && tooltipRef.current.parentElement) {
+  const calculateTooltipPos = (): { top: number; left: number } => {
+    if (tooltipRef.current && tooltipRef.current.parentElement && editorView) {
       if (tooltipLoc) {
         let tooltipTop = tooltipLoc.top;
         let tooltipLeft = tooltipLoc.left;
@@ -83,17 +86,59 @@ export const TooltipView = ({
         const scaleFactor =
           tooltipRef.current.style.transform === 'scale(1)' ? 1 : 0.8;
 
-        const top =
+        const tooltipParentRect =
+          tooltipRef.current.parentElement.getBoundingClientRect();
+
+        const tooltipRect = tooltipRef.current.getBoundingClientRect();
+        const scaleTooltipHeight = tooltipRect.height / scaleFactor;
+
+        let top =
           tooltipTop -
-          tooltipRef.current.parentElement.getBoundingClientRect().top -
-          tooltipRef.current.getBoundingClientRect().height / scaleFactor -
-          5;
+          tooltipParentRect.top -
+          scaleTooltipHeight -
+          tooltipPadding;
+
+        tooltipRef.current.style.transformOrigin = 'bottom';
+
+        const leftAdjust = Math.min(
+          0,
+          tooltipParentRect.right - (tooltipLeft + tooltipRect.width)
+        );
+
+        if (top + tooltipParentRect.top < 40) {
+          tooltipRef.current.style.transformOrigin = 'top';
+          top +=
+            scaleTooltipHeight +
+            tooltipPadding * 2 +
+            editorView.defaultLineHeight;
+        }
+
         const left =
           tooltipLeft -
-          tooltipRef.current.parentElement.getBoundingClientRect().left;
-        tooltipRef.current.style.top = `${top}px`;
-        tooltipRef.current.style.left = `${left}px`;
+          tooltipRef.current.parentElement.getBoundingClientRect().left +
+          leftAdjust;
+
+        return { top, left };
       }
+    }
+    return { top: 0, left: 0 };
+  };
+
+  const getTooltipPos = (): { top: number; left: number } => {
+    if (tooltipRef.current) {
+      return {
+        top: parseFloat(tooltipRef.current.style.top),
+        left: parseFloat(tooltipRef.current.style.left),
+      };
+    }
+    return { top: 0, left: 0 };
+  };
+
+  const updateTooltipPos = () => {
+    const { top, left } = calculateTooltipPos();
+    if (tooltipRef.current) {
+      tooltipRef.current.style.top = `${top}px`;
+      tooltipRef.current.style.left = `${left}px`;
     }
   };
 
@@ -164,12 +209,40 @@ export const TooltipView = ({
   useEffect(() => {
     if (tooltipRef.current && tooltipRef.current.parentElement) {
       if (tooltipLoc) {
-        // Update the position twice since setting the position the first time might change the tooltip's dimensions
-        updateTooltipPos();
         updateTooltipPos();
         showTooltip();
       }
     }
+  }, [tooltipLoc]);
+
+  const handleScroll = () => {
+    if (tooltipRef.current && tooltipRef.current.parentElement && editorView) {
+      if (tooltipLoc) {
+        const { top: newTop, left: newLeft } = calculateTooltipPos();
+        const { top: currTop, left: currLeft } = getTooltipPos();
+        if (
+          Math.abs(newTop - currTop) > 75 ||
+          Math.abs(newLeft - currLeft) > 75
+        ) {
+          hideTooltip();
+          setTimeout(() => {
+            updateTooltipPos();
+            showTooltip();
+          }, transitionAnimationDuration);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (viewRef.current) {
+      viewRef.current.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (viewRef.current) {
+        viewRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
   }, [tooltipLoc]);
 
   return (
@@ -177,7 +250,28 @@ export const TooltipView = ({
       {title.length > 0 && <TooltipTitle>{title}</TooltipTitle>}
       <TooltipMessage>{message}</TooltipMessage>
       {suggestions.map((suggestion) => (
-        <TooltipSuggestion key={suggestion}>{suggestion}</TooltipSuggestion>
+        <TooltipSuggestion
+          key={suggestion}
+          onClick={() => {
+            if (editorView && tooltip) {
+              const clearUnderlineEffect = clearUnderlinesInRange.of({
+                from: tooltip.from,
+                to: tooltip.to,
+              });
+              editorView.dispatch({
+                changes: {
+                  from: tooltip.from,
+                  to: tooltip.to,
+                  insert: suggestion,
+                },
+                effects: [clearUnderlineEffect],
+              });
+              editorView.focus();
+            }
+          }}
+        >
+          {suggestion}
+        </TooltipSuggestion>
       ))}
     </Tooltip>
   );

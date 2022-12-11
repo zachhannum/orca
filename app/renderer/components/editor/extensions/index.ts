@@ -10,7 +10,10 @@ export { default as search } from './search';
 export { default as code } from './code';
 export { default as placeholder } from './placeholder';
 export { countWords } from './countWords';
-export { proofreadUnderlineField } from './proofreadUnderlines';
+export {
+  proofreadUnderlineField,
+  proofreadUnderlineCount,
+} from './proofreadUnderlines';
 export { proofreadTheme } from './proofreadTheme';
 export { cancelProofreadOnChange } from './cancelProofreadOnChange';
 export { proofreadTooltips, proofreadTooltipTheme } from './proofreadTooltips';

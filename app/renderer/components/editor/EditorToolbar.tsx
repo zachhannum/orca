@@ -5,8 +5,10 @@ import { GridLoader } from 'react-spinners';
 import { IconButton } from 'renderer/controls';
 import { SpellCheckIcon } from 'renderer/icons';
 import useStore from 'renderer/store/useStore';
+import { EditorView } from '@codemirror/view';
 import { ContextMenu, ContextMenuItem } from '..';
 import { Position } from '../MenuBase';
+import { clearUnderlines } from './extensions/proofreadUnderlines';
 
 const StyledToolbarDiv = styled.div`
   background-color: ${(p) =>
@@ -46,6 +48,7 @@ const ProofReadDiv = styled.div`
 `;
 
 type EditorToolbarProps = {
+  editorView: EditorView | null;
   wordCount: number;
   proofreading: boolean;
   numProofreadingMatches: number;
@@ -53,6 +56,7 @@ type EditorToolbarProps = {
 };
 
 const EditorToolbar = ({
+  editorView,
   wordCount,
   proofreading,
   numProofreadingMatches,
@@ -107,7 +111,19 @@ const EditorToolbar = ({
                 position={getSpellCheckMenuPosition()}
                 center
               >
-                <ContextMenuItem>Clear suggestions</ContextMenuItem>
+                <ContextMenuItem
+                  onClick={() => {
+                    if (editorView) {
+                      const clearAllUnderlinesEffect = clearUnderlines.of(null);
+                      editorView.dispatch({
+                        effects: [clearAllUnderlinesEffect],
+                      });
+                    }
+                    setShowSpellCheckContextMenu(false);
+                  }}
+                >
+                  Clear suggestions
+                </ContextMenuItem>
                 <ContextMenuItem
                   onClick={() => {
                     if (onProofread) {
