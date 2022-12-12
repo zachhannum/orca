@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo, RefObject, useEffect } from 'react';
+import { useRef, useState, RefObject, useEffect } from 'react';
 import { throttle } from 'lodash';
 
 const useResizeObserver = (
@@ -8,10 +8,11 @@ const useResizeObserver = (
 ) => {
   const [width, setWidth] = useState<number>();
   const [height, setHeight] = useState<number>();
+  const callbackRef = useRef(callback);
 
-  const resizeObserver = useRef(
-    new ResizeObserver((entries) => handleResize(entries))
-  );
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
 
   const onResize = (entries: ResizeObserverEntry[]) => {
     if (!Array.isArray(entries)) {
@@ -21,18 +22,19 @@ const useResizeObserver = (
     setWidth(entry.contentRect.width);
     setHeight(entry.contentRect.height);
 
-    if (callback) {
-      callback(entry.contentRect.height, entry.contentRect.width);
+    if (callbackRef.current) {
+      callbackRef.current(entry.contentRect.height, entry.contentRect.width);
     }
   };
 
-  const handleResize = useMemo(() => throttle(onResize, wait), [callback]);
+  const handleResize = throttle(onResize, wait);
 
   useEffect(() => {
     if (!ref.current) {
       return;
     }
-    resizeObserver.current.observe(ref.current);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(ref.current);
   }, []);
 
   return [width, height];

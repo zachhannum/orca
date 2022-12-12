@@ -3,8 +3,7 @@ import Color from 'color';
 import MenuBase from './MenuBase';
 
 const style = css`
-  background-color: ${(p) =>
-    Color(p.theme.contextMenuBg).lighten(0.2).hsl().string()};
+  background-color: ${(p) => Color(p.theme.contextMenuBg).toString()};
   border: ${(p) => p.theme.contextMenuDivider} 1px solid;
   backdrop-filter: blur(40px);
   border-radius: 10px;

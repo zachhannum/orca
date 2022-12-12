@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { MoreOptionsSidebarItem, ContextMenu } from '../components';
+import { MoreOptionsSidebarItem, ContextMenu } from '.';
 import type { Position } from './ContextMenu';
 import { IconButton, ToggleSwitch } from '../controls';
 import {

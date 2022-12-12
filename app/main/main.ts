@@ -16,6 +16,7 @@ import MenuBuilder from './menu';
 import { getPlatformWindowSettings, resolveHtmlPath } from './util';
 import { setupProjectListeners, sendRecentProjects } from './project';
 import { setupPdfListeners } from './pdf';
+import { openSettings, saveSettings } from './settings/settings';
 
 export default class AppUpdater {
   constructor() {
@@ -51,6 +52,10 @@ ipcMain.handle('appVersion', (_event) => {
     return require('../../release/app/package.json').version;
   }
   return app.getVersion();
+});
+
+ipcMain.on('setSettings', (_event, arg) => {
+  saveSettings(arg);
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -114,6 +119,7 @@ const createWindow = async () => {
       throw new Error('"mainWindow" is not defined');
     }
     sendRecentProjects(mainWindow);
+    openSettings(mainWindow);
     mainWindow.webContents.send('appVersion', app.getVersion());
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
@@ -140,6 +146,33 @@ const createWindow = async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  // // In this example, only windows with the `about:blank` url will be created.
+  // // All other urls will be blocked.
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    console.log(url);
+    if (url === 'about:blank') {
+      return {
+        action: 'allow',
+        overrideBrowserWindowOptions: {
+          show: false,
+          width: 1200,
+          height: 800,
+          minWidth: 800,
+          minHeight: 600,
+          icon: getAssetPath('icon.png'),
+          webPreferences: {
+            preload: app.isPackaged
+              ? path.join(__dirname, 'preload.js')
+              : path.join(__dirname, '../../.erb/dll/preload.js'),
+          },
+          titleBarStyle: 'hidden',
+          ...getPlatformWindowSettings(),
+        },
+      };
+    }
+    return { action: 'deny' };
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);

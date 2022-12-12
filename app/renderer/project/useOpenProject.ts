@@ -43,7 +43,7 @@ const useOpenProject = () => {
       setIsProjectOpen(true);
       setIsProjectDirty(false);
     });
-  });
+  }, []);
 };
 
 export default useOpenProject;

@@ -3,6 +3,7 @@ import type {
   ProjectData,
   PagedBookContents,
   ProjectGlance,
+  Settings,
 } from 'types/types';
 
 export interface WindowApi {
@@ -25,6 +26,8 @@ export interface PagedApi {
 }
 export interface AppApi {
   onRecentProjects: (func: (projectGlances: ProjectGlance[]) => void) => void;
+  onSettings: (func: (settings: Settings) => void) => void;
+  setSettings: (settings: Settings) => void;
   getRecentProjects: () => void;
   appVersion: () => Promise<any>;
 }

@@ -39,7 +39,8 @@ const StyledMenuBase = styled.div<StyledMenuBaseProps>`
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: opacity 100ms ease-out, transform 100ms ease-out;
+  transition: opacity 100ms cubic-bezier(0.47, 1.7, 0.41, 0.8),
+    transform 200ms cubic-bezier(0.47, 1.7, 0.41, 0.8);
 
   ${(p) => p.styleMixin}
 `;
@@ -70,8 +71,8 @@ const MenuBase = ({
   position,
   offset,
   fixed = false,
-  verticalAnimateScale = 0.7,
-  horizontalAnimateScale = 0.7,
+  verticalAnimateScale = 0.5,
+  horizontalAnimateScale = 0.5,
   styleMixin,
   clickRef,
   onResize,
@@ -96,7 +97,7 @@ const MenuBase = ({
     onCloseMenu();
   }, ...clickRefs);
 
-  useResizeObserver(menuRef, 0, onResize);
+  useResizeObserver(root, 0, onResize);
 
   useOnWindowResize(() => {
     if (showMenu) {
@@ -105,6 +106,7 @@ const MenuBase = ({
   });
 
   const setPosition = () => {
+    if (!root.current || !menuRef.current || !position) return;
     const rootDiv = root.current;
     const menuRefDiv = menuRef.current;
     let { x, y } = position;
@@ -148,12 +150,13 @@ const MenuBase = ({
         if (center) {
           x = Math.min(screenW - 2, x + rootW / 2);
           transformOriginX = 'center';
+        } else {
+          transformOriginX = 'right';
         }
         if (offset) {
           x -= offset.x;
         }
         rootDiv.style.left = `${x - rootW}px`;
-        transformOriginX = 'right';
       }
 
       if (top) {

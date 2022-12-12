@@ -8,9 +8,17 @@ export { SortableTree } from './TreeView/SortableTree';
 export { default as SectionContextMenu } from './SectionContextMenu';
 export { default as ContextMenu } from './ContextMenu';
 export { default as TooltipText } from './TooltipText';
-export { default as Editor } from './codemirror/Editor';
+export { default as Editor } from './editor/Editor';
 export { default as SaveIndicator } from './SaveIndicator';
 export { default as Publish } from './publish/Publish';
 export { default as MenuBase } from './MenuBase';
 export { default as ScrollContainer } from './ScrollContainer';
 export { default as RecentProjectsList } from './RecentProjectsList';
+export { ContextMenuItem } from './ContextMenuItem';
+export {
+  Setting,
+  SettingLabel,
+  SettingSubHeading,
+  SettingSubSection,
+  SettingSectionHeading,
+} from './Setting';

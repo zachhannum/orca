@@ -14,6 +14,8 @@ export interface AppSlice {
   setNewBookModalOpen: (val: boolean) => void;
   generateBookModalOpen: boolean;
   setGenerateBookModalOpen: (val: boolean) => void;
+  settingsModalOpen: boolean;
+  setSettingsModalOpen: (settingsModalOpen: boolean) => void;
   animatingCollapseRefCount: number;
   incrementAnimatingCollapseRefCount: () => void;
   decrementAnimatingCollapseRefCount: () => void;
@@ -50,6 +52,10 @@ const createAppSlice = (
   generateBookModalOpen: false,
   setGenerateBookModalOpen: (val: boolean) => {
     set(() => ({ generateBookModalOpen: val }));
+  },
+  settingsModalOpen: false,
+  setSettingsModalOpen: (settingsModalOpen: boolean) => {
+    set(() => ({ settingsModalOpen }));
   },
   animatingCollapseRefCount: 0,
   incrementAnimatingCollapseRefCount: () => {

@@ -1,17 +1,31 @@
-import GenerateBookModal from 'renderer/modals/GenerateBookModal';
-import NewBookModal from '../modals/NewBookModal';
+import {
+  GenerateBookModal,
+  NewBookModal,
+  SettingsModal,
+} from 'renderer/modals/';
 import useStore from '../store/useStore';
 
 const Modals = () => {
-  const newBookModalOpen = useStore((state) => state.newBookModalOpen);
-  const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
-  const generateBookModalOpen = useStore(
-    (state) => state.generateBookModalOpen
-  );
-  const setGenerateBookModalOpen = useStore(
-    (state) => state.setGenerateBookModalOpen
-  );
-  const bookTitle = useStore((state) => state.bookTitle);
+  const [
+    bookTitle,
+    newBookModalOpen,
+    setNewBookModalOpen,
+    generateBookModalOpen,
+    setGenerateBookModalOpen,
+    settingsModalOpen,
+    setSettingsModalOpen,
+  ] = useStore((state) => {
+    return [
+      state.bookTitle,
+      state.newBookModalOpen,
+      state.setNewBookModalOpen,
+      state.generateBookModalOpen,
+      state.setGenerateBookModalOpen,
+      state.settingsModalOpen,
+      state.setSettingsModalOpen,
+    ];
+  });
+
   return (
     <div>
       <NewBookModal
@@ -26,6 +40,13 @@ const Modals = () => {
         isOpen={generateBookModalOpen}
         onRequestClose={() => {
           setGenerateBookModalOpen(false);
+        }}
+      />
+      <SettingsModal
+        title=""
+        isOpen={settingsModalOpen}
+        onRequestClose={() => {
+          setSettingsModalOpen(false);
         }}
       />
     </div>

@@ -4,6 +4,7 @@ import type {
   ProjectData,
   PagedBookContents,
   ProjectGlance,
+  Settings,
 } from '../types/types';
 
 contextBridge.exposeInMainWorld('electron', {
@@ -75,5 +76,10 @@ contextBridge.exposeInMainWorld('appApi', {
   },
   appVersion: () => {
     return ipcRenderer.invoke('appVersion');
+  },
+  onSettings: (func: (settings: Settings) => void) =>
+    ipcRenderer.on('onSettings', (_event, arg) => func(arg)),
+  setSettings: (settings: Settings) => {
+    ipcRenderer.send('setSettings', settings);
   },
 });

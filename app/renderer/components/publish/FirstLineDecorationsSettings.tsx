@@ -1,6 +1,6 @@
 import type { LeadIn } from 'types/types';
 import useStore from 'renderer/store/useStore';
-import { Setting, SettingLabel } from './Setting';
+import { Setting, SettingLabel } from '..';
 import { ToggleSwitch, Dropdown, TextField } from '../../controls';
 
 const FirstLineDecorationsSettings = () => {

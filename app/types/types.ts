@@ -90,6 +90,29 @@ export type PagedBookContents = {
   title: string;
 };
 
+/* Settings */
+export const endpointOptions = [
+  'api.languagetool.org',
+  'api.languagetoolplus.com',
+  'Custom',
+] as const;
+export type EndpointOption = typeof endpointOptions[number];
+export type Settings = {
+  enableLanguageToolIntegration: boolean;
+  languageToolEndpoint: EndpointOption;
+  languageToolEndpointUrl: string;
+  languageToolUsername: string;
+  languageToolApiKey: string;
+};
+
+export const defaultSettings = {
+  enableLanguageToolIntegration: false,
+  languageToolEndpointUrl: 'https://api.languagetool.org',
+  languageToolEndpoint: 'api.languagetool.org',
+  languageToolUsername: '',
+  languageToolApiKey: '',
+} as Settings;
+
 /* Component Styling */
 export type CssMixinType =
   | FlattenInterpolation<ThemeProps<DefaultTheme>>

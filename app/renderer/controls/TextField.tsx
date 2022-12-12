@@ -1,14 +1,20 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import { debounce } from 'lodash';
 import Color from 'color';
 
 type StyledTextFieldProps = {
+  width?: number;
   fullWidth: boolean;
 };
 const StyledTextField = styled.div<StyledTextFieldProps>`
   display: flex;
   flex-direction: column;
+  ${(p) =>
+    p.width &&
+    css`
+      width: ${p.width}px;
+    `}
   ${(p) =>
     p.fullWidth &&
     css`
@@ -19,11 +25,12 @@ const StyledTextField = styled.div<StyledTextFieldProps>`
 type StyledInputProps = {
   styleVariant: string;
   hoverBackgroundColor: string;
-  type: 'text' | 'number';
+  type: 'text' | 'number' | 'password';
 };
 
 const StyledInput = styled.input<StyledInputProps>`
-  font-family: 'Poppins', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   color: ${(p) => p.theme.mainFgTextSecondary};
   width: 100%;
   border-width: 0px;
@@ -32,13 +39,18 @@ const StyledInput = styled.input<StyledInputProps>`
   background-color: ${(p) => p.theme.textInputBg[p.styleVariant]};
   padding: 10px;
   box-sizing: border-box;
-  &:hover {
-    background-color: ${(p) => p.hoverBackgroundColor};
-  }
-  &:focus {
-    outline: none;
-    background-color: ${(p) => p.hoverBackgroundColor};
-  }
+  ${(p) =>
+    !p.disabled &&
+    css`
+      &:hover {
+        background-color: ${p.hoverBackgroundColor};
+      }
+      &:focus {
+        outline: none;
+        background-color: ${p.hoverBackgroundColor};
+      }
+    `}
+
   ::placeholder {
     color: ${(p) => p.theme.textInputPlaceholderFg[p.styleVariant]};
   }
@@ -55,6 +67,12 @@ const StyledInput = styled.input<StyledInputProps>`
       border-radius: 0px;
       text-align: center;
       max-width: 50px;
+    `}
+
+  ${(p) =>
+    p.disabled &&
+    css`
+      opacity: 0.5;
     `}
 `;
 
@@ -124,7 +142,8 @@ type TextFieldProps = {
   inputRequired?: boolean;
   fullWidth?: boolean;
   onChangeCallback?: (value: string) => void;
-  type?: 'text' | 'number';
+  type?: 'text' | 'number' | 'password';
+  width?: number;
 };
 
 const TextField = ({
@@ -138,6 +157,9 @@ const TextField = ({
   fullWidth = false,
   onChangeCallback = undefined,
   type = 'text',
+  width = undefined,
+  value,
+  disabled,
   ...props
 }: TextFieldProps & React.ComponentPropsWithoutRef<'input'>) => {
   const theme = useTheme();
@@ -147,6 +169,12 @@ const TextField = ({
     .hsl()
     .string();
 
+  useEffect(() => {
+    if (disabled && inputRef.current && value) {
+      inputRef.current.value = value.toString();
+    }
+  }, [value]);
+
   const updateValue = () => {
     if (onChangeCallback && inputRef.current) {
       onChangeDebounce(inputRef.current.value, onChangeCallback);
@@ -154,7 +182,7 @@ const TextField = ({
   };
 
   return (
-    <StyledTextField fullWidth={fullWidth}>
+    <StyledTextField width={width} fullWidth={fullWidth}>
       {label !== undefined && <StyledLabel>{label}</StyledLabel>}
       <TextFieldDiv>
         {type === 'number' && (
@@ -176,6 +204,7 @@ const TextField = ({
           onChange={() => {
             updateValue();
           }}
+          disabled={disabled}
           {...props}
         />
         {type === 'number' && (

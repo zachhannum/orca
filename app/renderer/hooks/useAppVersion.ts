@@ -15,5 +15,5 @@ export const useAppVersion = () => {
       .catch((e) => {
         console.log(e);
       });
-  });
+  }, []);
 };

@@ -16,6 +16,7 @@ Object.defineProperty(window, 'appApi', {
     getRecentProjects: jest.fn(),
     onRecentProjects: jest.fn(),
     appVersion: jest.fn().mockImplementation(() => new Promise<void>(() => {})),
+    onSettings: jest.fn(),
   },
 });
 
