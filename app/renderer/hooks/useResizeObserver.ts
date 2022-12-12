@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, RefObject, useEffect } from 'react';
+import { useRef, useState, RefObject, useEffect } from 'react';
 import { throttle } from 'lodash';
 
 const useResizeObserver = (

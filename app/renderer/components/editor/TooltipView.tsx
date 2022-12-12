@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useResizeObserver } from 'renderer/hooks';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { TooltipLocation } from './extensions/proofreadTooltipHelper';
 import { clearUnderlinesInRange } from './extensions/proofreadUnderlines';
 

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import styled, { useTheme } from 'styled-components';
-import Color from 'color';
+import { useTheme } from 'styled-components';
 import {
   SectionDeleteIcon,
   SectionDuplicateIcon,

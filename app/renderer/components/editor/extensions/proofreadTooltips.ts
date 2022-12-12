@@ -1,9 +1,4 @@
-import {
-  EditorState,
-  Extension,
-  StateEffect,
-  StateField,
-} from '@codemirror/state';
+import { EditorState, Extension, StateField } from '@codemirror/state';
 import { EditorView, getTooltip, showTooltip, Tooltip } from '@codemirror/view';
 import { RefObject } from 'react';
 import { DefaultTheme } from 'styled-components';
@@ -206,13 +201,14 @@ const getTooltips = (
 
     return [
       {
-        pos: matchedProofreadUnderline.from,
-        end: matchedProofreadUnderline.to,
+        pos: from,
+        end: to,
         above: true,
         strictSide: false,
         arrow: false,
         create: (view) => {
           return {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             dom: createTooltip(view, matchedProofreadUnderline!),
           };
         },

@@ -1,4 +1,3 @@
-import { useResizeObserver } from 'renderer/hooks';
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { CssMixinType } from 'types/types';

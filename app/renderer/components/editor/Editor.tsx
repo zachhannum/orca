@@ -73,7 +73,6 @@ const Editor = () => {
     const { signal } = abortController;
     checkText(previewContent, signal)
       .then((result) => {
-
         const effects: StateEffect<any>[] = [];
 
         if (result.matches) {
@@ -154,6 +153,9 @@ const Editor = () => {
   /* Set Active Section Id */
   useEffect(() => {
     if (activeSectionId !== '' && editorContainerRef.current) {
+      if (proofreadAbortController.current) {
+        proofreadAbortController.current.abort();
+      }
       const { content } = useStore.getState();
       const sectionContent = findItemDeep(content, activeSectionId)?.content;
       const editorContent = sectionContent === undefined ? '' : sectionContent;
