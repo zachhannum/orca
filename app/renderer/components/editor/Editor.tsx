@@ -43,12 +43,9 @@ const EditorDiv = styled.div`
   position: relative;
 `;
 
-const scrollerCss = (sidebarOpen: boolean) => css`
-  padding-right: 50px;
-  padding-left: ${sidebarOpen ? '50px' : '125px'};
+const scrollerCss = css`
+  padding: 0px 50px;
   margin-right: 5px;
-  transition: all 300ms ease-in-out;
-  margin-bottom: 10px;
 `;
 
 const Editor = () => {
@@ -57,7 +54,6 @@ const Editor = () => {
   const editorViewRef = useRef<EditorView | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
   const styledTheme = useTheme();
-  const sidebarOpen = useStore((state) => state.sidebarOpen);
   const [wordCount, setWordCount] = useState(0);
   const [isProofreading, setIsProofreading] = useState(false);
   const [numProofreadingMatches, setNumProofreadingMatches] = useState(0);
@@ -176,7 +172,7 @@ const Editor = () => {
   }, [activeSectionId]);
 
   return (
-    <ScrollContainer ref={editorRef} cssMixin={scrollerCss(sidebarOpen)}>
+    <ScrollContainer ref={editorRef} cssMixin={scrollerCss}>
       <EditorDiv ref={editorContainerRef}>
         <TooltipView
           tooltip={currentTooltipLocation}

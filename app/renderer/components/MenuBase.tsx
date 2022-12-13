@@ -39,10 +39,9 @@ const StyledMenuBase = styled.div<StyledMenuBaseProps>`
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  transition: opacity 100ms cubic-bezier(0.47, 1.7, 0.41, 0.8),
-    transform 200ms cubic-bezier(0.47, 1.7, 0.41, 0.8);
-
-  ${(p) => p.styleMixin}
+  transition: opacity 200ms cubic-bezier(0.47, 1.7, 0.41, 0.8),
+    transform 150ms cubic-bezier(0.47, 1.7, 0.41, 0.8);
+  ${(p) => p.styleMixin};
 `;
 
 export type Position = {

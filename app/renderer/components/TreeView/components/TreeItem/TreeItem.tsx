@@ -89,7 +89,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   position: relative;
   display: flex;
   align-items: center;
-  padding: 4px 6px;
+  padding: 5px 0px;
   color: ${(p) =>
     p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
   font-size: ${(p) => (p.canHaveChildren ? '1em' : '0.9em')};
@@ -122,9 +122,9 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
       }
       ${p.isActiveInEditor &&
       css`
-        background-color: ${p.theme.buttonPrimaryBg};
+        background-color: ${p.hoverColor};
         &:hover {
-          background-color: ${p.theme.buttonPrimaryBg};
+          background-color: ${p.hoverColor};
         }
       `}
       ${p.isEditable &&

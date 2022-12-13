@@ -9,6 +9,8 @@ const StyledProjectGlance = styled.div`
   cursor: pointer;
   padding: 10px;
   border-radius: 10px;
+  margin-left: 10px;
+  gap: 3px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
@@ -17,7 +19,7 @@ const StyledProjectGlance = styled.div`
 
 const StyledRecentProjectsTitle = styled.div`
   color: ${(p) => p.theme.sidebarFgText};
-  padding-top: 15px;
+  padding: 15px 0px 5px 0px;
 `;
 
 const StyledProjectGlanceBookTitle = styled.div`

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { MoreOptionsSidebarItem, ContextMenu } from '.';
 import type { Position } from './ContextMenu';
@@ -31,14 +31,24 @@ const MoreOptionsSidebarMenu = () => {
   const [showMenu, setShowMenu] = useState(false);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const commandKeyString = useCommandKeyString();
-  const isProjectOpen = useStore((state) => state.isProjectOpen);
-  const activeSectionId = useStore((state) => state.activeSectionId);
-  const previewEnabled = useStore((state) => state.previewEnabled);
-  const setPreviewEnabled = useStore((state) => state.setPreviewEnabled);
-  const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
-  const setGenerateBookModalOpen = useStore(
-    (state) => state.setGenerateBookModalOpen
-  );
+  const [
+    isProjectOpen,
+    activeSectionId,
+    previewEnabled,
+    setPreviewEnabled,
+    setNewBookModalOpen,
+    setGenerateBookModalOpen,
+    setSidebarMenuOpen,
+  ] = useStore((state) => [
+    state.isProjectOpen,
+    state.activeSectionId,
+    state.previewEnabled,
+    state.setPreviewEnabled,
+    state.setNewBookModalOpen,
+    state.setGenerateBookModalOpen,
+    state.setSidebarMenuOpen,
+  ]);
+
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
   const getMenuPosition = (): Position => {
@@ -51,6 +61,10 @@ const MoreOptionsSidebarMenu = () => {
         : 0,
     };
   };
+
+  useEffect(() => {
+    setSidebarMenuOpen(showMenu);
+  }, [showMenu]);
 
   return (
     <>

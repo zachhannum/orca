@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { CssMixinType } from 'types/types';
 
 type ScrollerProps = {
+  showScroll: boolean;
   cssMixin?: CssMixinType;
 };
 
@@ -12,10 +13,7 @@ const Scroller = styled.div<ScrollerProps>`
   height: 100%;
   box-sizing: border-box;
   border-color: transparent;
-  transition: border-color 300ms ease-in-out;
-  &:hover {
-    border-color: rgba(0, 0, 0, 0.2);
-  }
+  transition: border-color 200ms ease-in-out;
 
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-thumb,
@@ -36,6 +34,12 @@ const Scroller = styled.div<ScrollerProps>`
     }
   `}
 
+  ${(p) =>
+    p.showScroll &&
+    css`
+      border-color: rgba(0, 0, 0, 0.2);
+    `}
+
   ${(p) => p.cssMixin}
 `;
 
@@ -46,12 +50,44 @@ type ScrollContainerProps = {
 
 const ScrollContainer = React.forwardRef<HTMLDivElement, ScrollContainerProps>(
   ({ cssMixin, children }: ScrollContainerProps, ref) => {
-    // const scrollRef = React.useRef<HTMLDivElement>(null);
-    // useResizeObserver(scrollRef, 0, () => {
-    //   console.log('scroll resized');
-    // });
+    const timeoutIdRef = React.useRef<NodeJS.Timeout | null>(null);
+    const scrollRef = React.useRef<HTMLDivElement | null>(null);
+    const [showScroll, setShowScroll] = React.useState(false);
+
+    const handleScroll = () => {
+      setShowScroll(true);
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
+      }
+      timeoutIdRef.current = setTimeout(() => {
+        setShowScroll(false);
+      }, 750);
+    };
+
+    useEffect(() => {
+      if (scrollRef.current) {
+        scrollRef.current.addEventListener('scroll', handleScroll);
+      }
+      return () => {
+        if (scrollRef.current) {
+          scrollRef.current.removeEventListener('scroll', handleScroll);
+        }
+      };
+    }, []);
+
     return (
-      <Scroller ref={ref} cssMixin={cssMixin}>
+      <Scroller
+        ref={(el: HTMLDivElement) => {
+          if (ref && typeof ref === 'function') {
+            ref(el);
+          } else if (ref?.current) {
+            ref.current = el;
+          }
+          scrollRef.current = el;
+        }}
+        showScroll={showScroll}
+        cssMixin={cssMixin}
+      >
         {children}
       </Scroller>
     );

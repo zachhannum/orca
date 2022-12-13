@@ -69,6 +69,7 @@ const PreviewPane = () => {
       defaultWidth="500px"
       minWidth={400}
       styleMixin={paneStyleMixin}
+      collapsed={!showPreviewer}
     >
       <Background>
         {showPreviewer && (

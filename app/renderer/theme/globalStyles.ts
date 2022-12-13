@@ -1,6 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
+
+  body {
+    background-color: ${(p) => p.theme.sidebarBg};
+  }
+
   .Modal {
     :focus { outline: none; }
     background-color: ${(p) => p.theme.contextMenuBg};

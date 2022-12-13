@@ -21,7 +21,6 @@ const scrollerCss = css`
   padding-right: 50px;
   padding-left: 50px;
   margin-right: 5px;
-  margin-bottom: 10px;
 `;
 
 const Publish = () => {

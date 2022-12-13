@@ -3,6 +3,7 @@ import Color from 'color';
 import { BounceLoader } from 'react-spinners';
 
 type StyledButtonProps = {
+  color: string;
   hoverBackgroundcolor?: string;
   activeBackgroundColor?: string;
   isLoading?: boolean;
@@ -16,7 +17,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   padding-left: 20px;
   padding-right: 20px;
   user-select: none;
-  background-color: ${(p) => p.theme.buttonPrimaryBg};
+  background-color: ${(p) => p.color};
   color: ${(p) => p.theme.buttonPrimaryText};
   border-radius: 10px;
   border: none;
@@ -27,8 +28,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   font-size: 0.9em;
 
   &:focus-visible {
-    outline: 4px solid
-      ${(p) => Color(p.theme.buttonPrimaryBg).alpha(0.5).toString()};
+    outline: 4px solid ${(p) => Color(p.color).alpha(0.5).toString()};
   }
 
   ${(p) =>
@@ -72,6 +72,7 @@ const StyledLoader = styled.div<StyledLoaderProps>`
 `;
 
 type ButtonProps = {
+  color?: string;
   children?: React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
@@ -79,16 +80,21 @@ type ButtonProps = {
 };
 
 const Button = ({
+  color = '',
   children,
   onClick,
   loading = false,
   isDisabled = false,
 }: ButtonProps) => {
   const theme = useTheme();
-  const hoverColor = Color(theme.buttonPrimaryBg).lighten(0.05).hsl().string();
-  const activeColor = Color(theme.buttonPrimaryBg).darken(0.05).hsl().string();
+  if (color.length === 0) {
+    color = theme.buttonPrimaryBg;
+  }
+  const hoverColor = Color(color).lighten(0.2).hsl().string();
+  const activeColor = Color(color).darken(0.2).hsl().string();
   return (
     <StyledButton
+      color={color}
       hoverBackgroundcolor={hoverColor}
       activeBackgroundColor={activeColor}
       disabled={isDisabled}

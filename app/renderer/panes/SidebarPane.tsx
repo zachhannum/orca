@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
 import { IconButton, TwoOptionSlider } from 'renderer/controls';
@@ -13,17 +13,15 @@ import {
   HelpIcon,
   SettingsIcon,
 } from '../icons';
-import { useIsWindowMaxized, useToggle } from '../hooks';
+import { useToggle } from '../hooks';
 import useStore from '../store/useStore';
 import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const SidebarTopContainer = styled.div`
   display: flex;
-  padding-top: calc(
-    env(titlebar-area-height, var(--fallback-title-bar-height))
-  );
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: calc(10px + var(--fallback-title-bar-height));
+  padding-left: 15px;
+  padding-right: 5px;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -70,50 +68,75 @@ const paneStyleMixin = css`
   flex-basis: 1;
 `;
 
-type SidebarToggleButtonDivProps = {
-  open: boolean;
-};
-const SidebarToggleButtonDiv = styled.div<SidebarToggleButtonDivProps>`
+const SidebarToggleButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   height: 100%;
   gap: 10px;
-  margin-right: ${(props) => (props.open ? '0px' : '-100px')};
-  transition: margin-right 300ms ease-in-out;
+  /* margin-right: '0px' : '-100px')}; */
+  /* transition: margin-right 300ms ease-in-out; */
 `;
 
 const SidebarPane = () => {
   const theme = useTheme();
   const [open, toggleOpen] = useToggle(true);
-  const [setSidebarOpen, isProjectOpen, setSettingsModalOpen] = useStore(
-    (state) => {
+  const [autoOpen, setAutoOpen] = useState(false);
+  const [mouseX, setMouseX] = useState(0);
+  const [setSidebarOpen, isProjectOpen, setSettingsModalOpen, sidebarMenuOpen] =
+    useStore((state) => {
       return [
         state.setSidebarOpen,
         state.isProjectOpen,
         state.setSettingsModalOpen,
+        state.sidebarMenuOpen,
       ];
-    }
-  );
-  const isWindowMaximized = useIsWindowMaxized();
-  // const sidebarBackground = useMemo(() => {
-  //   if (isWindowMaximized) {
-  //     return Color(theme.sidebarBg).alpha(1).hsl().toString();
-  //   }
-  //   return theme.sidebarBg;
-  // }, [isWindowMaximized]);
+    });
+  const paneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSidebarOpen(open);
+    if (open) {
+      setAutoOpen(false);
+    }
   }, [open]);
+
+  /* Calculate autoOpen state */
+  useEffect(() => {
+    if (!open && paneRef.current) {
+      if (!autoOpen) {
+        if (mouseX < 20) {
+          setAutoOpen(true);
+        }
+      } else if (
+        mouseX > paneRef.current.clientWidth + 20 &&
+        !sidebarMenuOpen
+      ) {
+        setAutoOpen(false);
+      }
+    }
+  }, [open, autoOpen, mouseX, sidebarMenuOpen]);
+
+  const handleShowSidebarOnMouse = (mouseEvent: MouseEvent) => {
+    setMouseX(mouseEvent.pageX);
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('mousemove', handleShowSidebarOnMouse);
+
+    return () => {
+      document.body.removeEventListener('mousemove', handleShowSidebarOnMouse);
+    };
+  }, []);
 
   return (
     <Pane
-      enabled={open}
+      enabled={open || autoOpen}
       defaultWidth="250px"
       minWidth={225}
       backgroundColor="transparent"
       styleMixin={paneStyleMixin}
+      ref={paneRef}
     >
       <SidebarTopContainer>
         {isProjectOpen ? (
@@ -130,7 +153,7 @@ const SidebarPane = () => {
         ) : (
           <div />
         )}
-        <SidebarToggleButtonDiv open={open}>
+        <SidebarToggleButtonDiv>
           <IconButton
             iconSize="22px"
             foregroundColor={theme.sidebarIconFg}
