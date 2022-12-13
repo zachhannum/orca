@@ -89,7 +89,7 @@ const StyledTreeItem = styled.div<StyledTreeItemProps>`
   position: relative;
   display: flex;
   align-items: center;
-  padding: 5px 0px;
+  padding: 5px;
   color: ${(p) =>
     p.canHaveChildren ? p.theme.sidebarFgTextSecondary : p.theme.sidebarFgText};
   font-size: ${(p) => (p.canHaveChildren ? '1em' : '0.9em')};

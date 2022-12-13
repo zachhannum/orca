@@ -23,17 +23,25 @@ const StyledSidebarDiv = styled.div`
   padding: 20px;
 `;
 
+const SettingsFrame = styled.div`
+  height: 100%;
+  flex-grow: 1;
+  padding: 30px 7px 7px 7px;
+`;
+
 const StyledSettingsDiv = styled.div`
   height: 100%;
   display: flex;
-  flex-grow: 1;
-  padding: 60px;
+  padding: 10px 60px;
+  border-radius: 7px;
+  background-color: ${(p) => p.theme.mainBg};
 `;
 
 const StyledSettingsSectionDiv = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 0px;
+  gap: 5px;
 `;
 
 const StyledSettingsSectionHeader = styled.div`
@@ -117,9 +125,11 @@ export const SettingsModal = (props: ModalProps) => {
             ))}
           </StyledSettingsSectionDiv>
         </StyledSidebarDiv>
-        <StyledSettingsDiv>
-          <SettingsContent settingsSection={selectedSection} />
-        </StyledSettingsDiv>
+        <SettingsFrame>
+          <StyledSettingsDiv>
+            <SettingsContent settingsSection={selectedSection} />
+          </StyledSettingsDiv>
+        </SettingsFrame>
       </StyledModalContent>
     </Modal>
   );

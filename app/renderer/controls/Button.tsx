@@ -4,8 +4,6 @@ import { BounceLoader } from 'react-spinners';
 
 type StyledButtonProps = {
   color: string;
-  hoverBackgroundcolor?: string;
-  activeBackgroundColor?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
 };
@@ -26,6 +24,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.9em;
+  position: relative;
 
   &:focus-visible {
     outline: 4px solid ${(p) => Color(p.color).alpha(0.5).toString()};
@@ -36,12 +35,24 @@ const StyledButton = styled.button<StyledButtonProps>`
     !p.disabled &&
     css`
       cursor: pointer;
-      &:hover {
-        background-color: ${p.hoverBackgroundcolor};
+      &:after {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        transition: background-color 100ms ease-in-out;
       }
-      &:active {
-        background-color: ${p.activeBackgroundColor};
+
+      &:hover:after {
+        background-color: rgba(255, 255, 255, 0.2);
       }
+
+      &:active:after {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
       transition: background-color 100ms ease-in-out;
     `}
 `;
@@ -90,13 +101,10 @@ const Button = ({
   if (color.length === 0) {
     color = theme.buttonPrimaryBg;
   }
-  const hoverColor = Color(color).lighten(0.2).hsl().string();
-  const activeColor = Color(color).darken(0.2).hsl().string();
+
   return (
     <StyledButton
       color={color}
-      hoverBackgroundcolor={hoverColor}
-      activeBackgroundColor={activeColor}
       disabled={isDisabled}
       onClick={() => {
         if (!loading && !isDisabled && onClick) {

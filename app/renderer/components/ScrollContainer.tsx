@@ -15,6 +15,10 @@ const Scroller = styled.div<ScrollerProps>`
   border-color: transparent;
   transition: border-color 200ms ease-in-out;
 
+  ::-webkit-scrollbar {
+    height: 95%;
+  }
+
   ::-webkit-scrollbar,
   ::-webkit-scrollbar-thumb,
   ::-webkit-scrollbar-corner {
@@ -26,13 +30,12 @@ const Scroller = styled.div<ScrollerProps>`
   ::-webkit-scrollbar-thumb {
     border-color: inherit;
   }
-  ${window.windowApi.os() === 'darwin' &&
-  css`
-    ::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  `}
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 0px;
+  }
 
   ${(p) =>
     p.showScroll &&
@@ -80,7 +83,7 @@ const ScrollContainer = React.forwardRef<HTMLDivElement, ScrollContainerProps>(
         ref={(el: HTMLDivElement) => {
           if (ref && typeof ref === 'function') {
             ref(el);
-          } else if (ref?.current) {
+          } else if (ref) {
             ref.current = el;
           }
           scrollRef.current = el;

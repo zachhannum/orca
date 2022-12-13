@@ -139,20 +139,17 @@ const SidebarPane = () => {
       ref={paneRef}
     >
       <SidebarTopContainer>
-        {isProjectOpen ? (
-          <TwoOptionSlider
-            type="alt"
-            optionOne="Write"
-            optionTwo="Publish"
-            onChange={(value: string) => {
-              const { setAppMode } = useStore.getState();
-              const newMode = value as AppMode;
-              setAppMode(newMode);
-            }}
-          />
-        ) : (
-          <div />
-        )}
+        <TwoOptionSlider
+          type="alt"
+          optionOne="Write"
+          optionTwo="Publish"
+          onChange={(value: string) => {
+            const { setAppMode } = useStore.getState();
+            const newMode = value as AppMode;
+            setAppMode(newMode);
+          }}
+          disabled={!isProjectOpen}
+        />
         <SidebarToggleButtonDiv>
           <IconButton
             iconSize="22px"
