@@ -17,7 +17,7 @@ export const ContextMenuItem = styled.div`
   border-radius: 5px;
   font-size: 0.8em;
   width: 100%;
-
+  white-space: nowrap;
   color: ${(p) => p.theme.mainFgTextSecondary};
 
   &:hover {

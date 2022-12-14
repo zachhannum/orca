@@ -66,9 +66,10 @@ const StyledSidebarP = styled.p`
 
 const StyledAnchor = styled.a`
   cursor: pointer;
-  color: ${(p) => p.theme.buttonPrimaryBg};
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
   &:hover {
-    color: ${(p) => Color(p.theme.buttonPrimaryBg).darken(0.1).hsl().string()};
+    color: ${(p) =>
+      Color(p.theme.sidebarFgTextSecondary).darken(0.1).hsl().string()};
   }
 `;
 
@@ -102,7 +103,10 @@ const SidebarProjectContent = () => {
             <StyledSidebarP>
               You haven&rsquo;t opened a project yet.
             </StyledSidebarP>
-            <Button onClick={window.projectApi.openProject}>
+            <Button
+              onClick={window.projectApi.openProject}
+              color="rgba(200,200,200,0.2)"
+            >
               Open a Project
             </Button>
             <StyledSidebarP>Or start a new project.</StyledSidebarP>
@@ -110,6 +114,7 @@ const SidebarProjectContent = () => {
               onClick={() => {
                 setNewBookModalOpen(true);
               }}
+              color="rgba(200,200,200,0.2)"
             >
               New Project
             </Button>

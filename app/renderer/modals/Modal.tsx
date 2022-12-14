@@ -10,9 +10,8 @@ const StyledModalTitle = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  font-size: 1.1em;
   min-width: 400px;
-  color: ${(p) => p.theme.modalFgText};
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
   user-select: none;
   position: relative;
 `;
@@ -56,8 +55,8 @@ const Modal = ({ title, isOpen, onRequestClose, children }: ModalProps) => {
         <StyledExitDiv>
           <IconButton
             onClick={onRequestClose}
-            iconSize="12px"
-            foregroundColor={theme.modalFgText}
+            iconSize="10px"
+            foregroundColor={theme.sidebarIconFg}
           >
             <ModalExitIcon />
           </IconButton>

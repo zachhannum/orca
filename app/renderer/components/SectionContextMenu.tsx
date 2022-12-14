@@ -30,6 +30,7 @@ const SectionContextMenu = () => {
   const [renameSelected, setRenameSelected] = useState(false);
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const theme = useTheme();
+  const setSidebarMenuOpen = useStore((state) => state.setSidebarMenuOpen);
   useEffect(() => {
     const handleSectionContextMenu = (e: CustomEventInit) => {
       const { id, name, x, y } = e.detail as SectionContextMenuEventData;
@@ -40,6 +41,8 @@ const SectionContextMenu = () => {
       const item = findItemDeep(content, id) as Section;
       setIsFolder(item.type === SectionType.folder);
     };
+
+    setSidebarMenuOpen(showMenu);
 
     document.addEventListener(
       SectionContextMenuEvent,

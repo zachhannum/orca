@@ -44,7 +44,7 @@ const sidebarScrollCss = css`
   flex-direction: column;
   align-items: flex-start;
   padding-bottom: 20px;
-  gap: 2px;
+  gap: 4px;
   overflow-y: scroll;
   flex-basis: 0;
   flex-grow: 1;

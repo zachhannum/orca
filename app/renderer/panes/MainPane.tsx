@@ -6,29 +6,39 @@ import { useCommandKeyString } from '../hooks';
 import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const MainContent = styled.div`
-  --top-padding: calc(
-    env(titlebar-area-height, var(--fallback-title-bar-height)) + 10px
-  );
-  flex-grow: 1;
-  flex-shrink: 1000;
-  height: 100vh;
+  height: calc(100% - var(--fallback-title-bar-height));
+  width: 100%;
   color: ${(p) => p.theme.mainFgText};
-  background-color: ${(p) => p.theme.mainBg};
+  background-color: ${(p) => p.theme.previewBg};
   display: flex;
   align-items: stretch;
   flex-direction: column;
   position: relative;
+  border-radius: 7px;
+`;
+
+const Frame = styled.div`
+  --top-padding: calc(var(--fallback-title-bar-height));
+  flex-grow: 1;
+  flex-shrink: 1000;
+  height: 100vh;
+  padding: 7px;
+  padding-top: 0px;
+  /* padding-top: calc(
+    env(titlebar-area-height, var(--fallback-title-bar-height))
+  ); */
 `;
 
 const SectionTitle = styled.div`
   height: var(--top-padding);
-  color: ${(p) => p.theme.mainFgTextSecondary};
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
   width: 100%;
   text-align: center;
   font-size: 0.9em;
   font-weight: 600;
   line-height: var(--top-padding);
   user-select: none;
+  vertical-align: middle;
 `;
 
 const NoProjectDiv = styled.div`
@@ -83,37 +93,53 @@ const AppContent = ({ appMode }: AppContentProps) => {
 };
 
 const MainPane = () => {
-  const isProjectOpen = useStore((state) => state.isProjectOpen);
-  const appMode = useStore((state) => state.appMode);
-  const activeSectionId = useStore((state) => state.activeSectionId);
-  const activeSectionName = useStore((state) => state.activeSectionName);
+  const [
+    isProjectOpen,
+    appMode,
+    activeSectionId,
+    activeSectionName,
+    bookTitle,
+  ] = useStore((state) => [
+    state.isProjectOpen,
+    state.appMode,
+    state.activeSectionId,
+    state.activeSectionName,
+    state.bookTitle,
+  ]);
+
   const commandKeyString = useCommandKeyString();
   return (
-    <MainContent>
-      {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
-        <>
-          <SectionTitle>{activeSectionName}</SectionTitle>
-          <AppContent appMode={appMode} />
-        </>
-      ) : (
-        <NoProjectDiv>
-          <NoProjectTitle>Calamus</NoProjectTitle>
-          <NoProjectSubtitle>
-            <b>Write</b> and <b>Publish</b> novels with ease.
-          </NoProjectSubtitle>
-          <NoProjectHotkeys>
-            <NoProjectHotkey>
-              <span>Open a project</span>
-              <span>{commandKeyString}O</span>
-            </NoProjectHotkey>
-            <NoProjectHotkey>
-              <span>Start a new project</span>
-              <span>{commandKeyString}N</span>
-            </NoProjectHotkey>
-          </NoProjectHotkeys>
-        </NoProjectDiv>
-      )}
-    </MainContent>
+    <Frame>
+      <SectionTitle>
+        {activeSectionName.length > 0
+          ? `${bookTitle} - ${activeSectionName}`
+          : 'Calamus'}
+      </SectionTitle>
+      <MainContent>
+        {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
+          <>
+            <AppContent appMode={appMode} />
+          </>
+        ) : (
+          <NoProjectDiv>
+            <NoProjectTitle>Calamus</NoProjectTitle>
+            <NoProjectSubtitle>
+              <b>Write</b> and <b>Publish</b> novels with ease.
+            </NoProjectSubtitle>
+            <NoProjectHotkeys>
+              <NoProjectHotkey>
+                <span>Open a project</span>
+                <span>{commandKeyString}O</span>
+              </NoProjectHotkey>
+              <NoProjectHotkey>
+                <span>Start a new project</span>
+                <span>{commandKeyString}N</span>
+              </NoProjectHotkey>
+            </NoProjectHotkeys>
+          </NoProjectDiv>
+        )}
+      </MainContent>
+    </Frame>
   );
 };
 

@@ -67,7 +67,6 @@ const WinControls = () => {
     height: '25px',
     width: '40px',
     roundCorners: false,
-    backgroundColor: '#00000026',
     onlyShowBackgroundOnHover: true,
     foregroundColor: theme.mainFgTextSecondary,
   };
@@ -96,7 +95,6 @@ const WinControls = () => {
       </IconButton>
       <IconButton
         {...buttonConfig}
-        backgroundColor={theme.contextMenuExit}
         onClick={window.windowApi.closeWindow}
         ref={closeButtonRef}
       >

@@ -20,6 +20,8 @@ export interface AppSlice {
   incrementAnimatingCollapseRefCount: () => void;
   decrementAnimatingCollapseRefCount: () => void;
   resetAnimatingCollapseRefCount: () => void;
+  setSidebarMenuOpen: (val: boolean) => void;
+  sidebarMenuOpen: boolean;
 }
 
 const createAppSlice = (
@@ -76,6 +78,12 @@ const createAppSlice = (
       animatingCollapseRefCount: 0,
     }));
   },
+  setSidebarMenuOpen: (val: boolean) => {
+    set(() => ({
+      sidebarMenuOpen: val,
+    }));
+  },
+  sidebarMenuOpen: false,
 });
 
 export default createAppSlice;

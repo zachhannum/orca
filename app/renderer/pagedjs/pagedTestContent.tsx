@@ -2,7 +2,7 @@ const Test = () => {
   return <template id="flow" />;
 };
 
-const TestContent = `      
+const TestContent = `
 <section class="chapter">
 
 <h1>CHAPTER I.</h1>

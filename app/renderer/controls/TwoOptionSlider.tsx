@@ -32,6 +32,7 @@ const LabelsContainer = styled.div`
 
 type LabelProps = {
   selected: boolean;
+  disabled: boolean;
 };
 
 const Label = styled.span<LabelProps>`
@@ -44,6 +45,11 @@ const Label = styled.span<LabelProps>`
     p.selected &&
     css`
       font-weight: 600;
+    `}
+  ${(p) =>
+    p.disabled &&
+    css`
+      opacity: 0.5;
     `}
 `;
 
@@ -110,8 +116,12 @@ const TwoOptionSlider = ({
         baseCssMixin={SliderBaseCss({ type })}
       />
       <LabelsContainer>
-        <Label selected={selectedOption === optionOne}>{optionOne}</Label>
-        <Label selected={selectedOption === optionTwo}>{optionTwo}</Label>
+        <Label disabled={disabled} selected={selectedOption === optionOne}>
+          {optionOne}
+        </Label>
+        <Label disabled={disabled} selected={selectedOption === optionTwo}>
+          {optionTwo}
+        </Label>
       </LabelsContainer>
     </StyledSliderContainer>
   );
