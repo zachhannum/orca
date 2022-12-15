@@ -266,6 +266,7 @@
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "remark-stringify": "^10.0.2",
+    "smartquotes": "^2.3.2",
     "styled-components": "^5.3.5",
     "unified": "^10.1.2",
     "unist-util-select": "^4.0.1",

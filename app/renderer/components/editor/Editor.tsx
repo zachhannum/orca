@@ -23,8 +23,8 @@ import {
   proofreadUnderlineField,
   cancelProofreadOnChange,
   proofreadUnderlineCount,
-  proofreadTooltipTheme,
   proofreadTooltipHelper,
+  smartQuotes,
 } from './extensions';
 import EditorToolbar from './EditorToolbar';
 import { TooltipView } from './TooltipView';
@@ -39,8 +39,18 @@ const EditorDiv = styled.div`
   min-height: 100%;
   box-sizing: border-box;
   padding-top: 4vh;
-  padding-bottom: 10vh;
+  padding-bottom: 30vh;
   position: relative;
+
+  .cm-scroller {
+    font-family: ${(p) =>
+      p.theme.editorFont !== ''
+        ? `${p.theme.editorFont}`
+        : "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"};
+    font-size: 12pt;
+    overflow-x: unset;
+    line-height: 1.2;
+  }
 `;
 
 const scrollerCss = css`
@@ -123,8 +133,8 @@ const Editor = () => {
         setNumProofreadingMatches(count);
       }),
       proofreadTheme(),
-      proofreadTooltipTheme(styledTheme),
       cancelProofreadOnChange(proofreadAbortController),
+      smartQuotes(),
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });

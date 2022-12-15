@@ -2,7 +2,7 @@
 import './App.css';
 import styled, { ThemeProvider } from 'styled-components';
 import { SidebarPane, PreviewPane, MainPane, Modals } from './panes';
-import theme from './theme/theme';
+import { useTheme } from './theme/theme';
 import GlobalStyles from './theme/globalStyles';
 import { WinControls } from './controls';
 import { useProjectHotkeys, useAppVersion } from './hooks';
@@ -24,6 +24,7 @@ const App = () => {
   useProjectHotkeys();
   useAppVersion();
   useSettings();
+  const theme = useTheme();
   return (
     <ThemeProvider theme={theme}>
       {window.windowApi.os() === 'win32' && <WinControls />}

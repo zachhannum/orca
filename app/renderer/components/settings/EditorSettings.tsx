@@ -34,6 +34,9 @@ export const EditorSettings = () => {
   return (
     <ScrollContainer cssMixin={scrollerCss}>
       <SettingSubSection>
+        <SettingSectionHeading>Smart Typography</SettingSectionHeading>
+      </SettingSubSection>
+      <SettingSubSection>
         <SettingSectionHeading>LanguageTool</SettingSectionHeading>
         <Setting>
           <SettingLabel>Enable LanguageTool Integration</SettingLabel>

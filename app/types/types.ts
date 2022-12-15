@@ -98,6 +98,9 @@ export const endpointOptions = [
 ] as const;
 export type EndpointOption = typeof endpointOptions[number];
 export type Settings = {
+  interfaceFont: string;
+  editorFont: string;
+  editorFontSize: number;
   enableLanguageToolIntegration: boolean;
   languageToolEndpoint: EndpointOption;
   languageToolEndpointUrl: string;
@@ -106,6 +109,9 @@ export type Settings = {
 };
 
 export const defaultSettings = {
+  interfaceFont: '',
+  editorFont: '',
+  editorFontSize: 12,
   enableLanguageToolIntegration: false,
   languageToolEndpointUrl: 'https://api.languagetool.org',
   languageToolEndpoint: 'api.languagetool.org',

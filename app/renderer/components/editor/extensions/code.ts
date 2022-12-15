@@ -14,47 +14,52 @@ import { selectionIntersection } from './hideMarkdown';
 const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
   EditorView.baseTheme({
     '.cm-inline-code-hidden': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
       paddingLeft: '5px',
       paddingRight: '5px',
       borderRadius: '5px',
       paddingTop: '3px',
       paddingBottom: '3px',
-      fontFamily: 'Roboto Mono',
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       boxSizing: 'border-box',
       display: 'inline-block',
     },
     '.cm-inline-code-mark-left': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
       borderRadius: '5px 0px 0px 5px',
       paddingTop: '3px',
       paddingBottom: '3px',
       paddingLeft: '5px',
-      fontFamily: 'Roboto Mono',
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       boxSizing: 'border-box',
       display: 'inline-block',
     },
     '.cm-inline-code-mark-right': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
       borderRadius: '0px 5px 5px 0px',
       paddingTop: '3px',
       paddingBottom: '3px',
       paddingRight: '5px',
-      fontFamily: 'Roboto Mono',
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       boxSizing: 'border-box',
       display: 'inline-block',
     },
     '.cm-inline-code-content': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
-      fontFamily: 'Roboto Mono',
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       paddingTop: '3px',
       paddingBottom: '3px',
       boxSizing: 'border-box',
       display: 'inline-block',
     },
     '.cm-fenced-code-line-first': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
-      fontFamily: 'Roboto Mono',
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       paddingLeft: '5px',
       paddingRight: '5px',
       paddingTop: '5px',
@@ -62,15 +67,17 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       boxSizing: 'border-box',
     },
     '.cm-fenced-code-line': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
-      fontFamily: 'Roboto Mono',
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       paddingLeft: '5px',
       paddingRight: '5px',
       boxSizing: 'border-box',
     },
     '.cm-fenced-code-line-last': {
-      backgroundColor: `${Color(theme.mainBg).darken(0.2).hsl().string()}`,
-      fontFamily: 'Roboto Mono',
+      backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
+      fontFamily:
+        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
       paddingLeft: '5px',
       paddingRight: '5px',
       paddingBottom: '5px',

@@ -16,12 +16,15 @@ const theme = (theme: DefaultTheme): Extension => {
         .hsl()
         .string()}`,
     },
+<<<<<<< HEAD
     '.cm-scroller': {
       fontFamily:
         "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
       overflowX: 'unset',
       lineHeight: 'unset',
     },
+=======
+>>>>>>> 7778117 (Custom fonts for editor and interface)
     '.cm-content': {
       caretColor: theme.mainFgText,
       minHeight: '70vh', // This is sort of hacky

@@ -16,5 +16,5 @@ export {
 } from './proofreadUnderlines';
 export { proofreadTheme } from './proofreadTheme';
 export { cancelProofreadOnChange } from './cancelProofreadOnChange';
-export { proofreadTooltips, proofreadTooltipTheme } from './proofreadTooltips';
 export { proofreadTooltipHelper } from './proofreadTooltipHelper';
+export { smartQuotes } from './smartQuotes';
