@@ -29,8 +29,8 @@ type StyledInputProps = {
 };
 
 const StyledInput = styled.input<StyledInputProps>`
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: inherit;
+  font-size: inherit;
   color: ${(p) => p.theme.mainFgTextSecondary};
   width: 100%;
   border-width: 0px;
@@ -52,7 +52,7 @@ const StyledInput = styled.input<StyledInputProps>`
     `}
 
   ::placeholder {
-    color: ${(p) => p.theme.textInputPlaceholderFg[p.styleVariant]};
+    color: rgba(255, 255, 255, 0.2);
   }
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {

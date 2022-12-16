@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { TextField, ToggleSwitch } from 'renderer/controls';
+import { TextField, Slider } from 'renderer/controls';
 import useStore from 'renderer/store/useStore';
 import ScrollContainer from '../ScrollContainer';
 import {
@@ -40,6 +40,17 @@ export const AppearanceSettings = () => {
           />
         </Setting>
         <Setting>
+          <SettingLabel>Interface Font Size</SettingLabel>
+          <Slider
+            defaultValue={settings.interfaceFontSize}
+            min={8}
+            max={24}
+            onChange={(value) => {
+              setSettings({ ...settings, interfaceFontSize: value });
+            }}
+          />
+        </Setting>
+        <Setting>
           <SettingLabel>Editor Font</SettingLabel>
           <TextField
             name="editor font"
@@ -50,6 +61,17 @@ export const AppearanceSettings = () => {
                 ...settings,
                 editorFont: value,
               });
+            }}
+          />
+        </Setting>
+        <Setting>
+          <SettingLabel>Editor Font Size</SettingLabel>
+          <Slider
+            defaultValue={settings.editorFontSize}
+            min={8}
+            max={24}
+            onChange={(value) => {
+              setSettings({ ...settings, editorFontSize: value });
             }}
           />
         </Setting>

@@ -5,7 +5,9 @@ import 'styled-components';
 declare module 'styled-components' {
   export interface DefaultTheme {
     interfaceFont: string;
+    interfaceFontSize: number;
     editorFont: string;
+    editorMonoFont: string;
     editorFontSize: number;
     mainBg: string;
     mainFgText: string;

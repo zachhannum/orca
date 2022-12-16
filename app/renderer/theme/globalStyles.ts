@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     align-items: center;
     margin: 0;
-    font-size: 11pt;
+    font-size: ${(p) => p.theme.interfaceFontSize}pt;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
               Helvetica, Arial, sans-serif, 'Apple Color Emoji',
               'Segoe UI Emoji', 'Segoe UI Symbol';

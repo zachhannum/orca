@@ -111,7 +111,7 @@ const decorateInlineCode = (
     );
     decorations.push(
       Decoration.mark({
-        class: 'cm-inline-code-hidden',
+        class: 'cm-inline-code-hidden cm-code',
         inclusive: false,
       }).range(firstCodeMark.to, lastCodeMark.from)
     );

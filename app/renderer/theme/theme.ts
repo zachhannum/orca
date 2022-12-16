@@ -12,14 +12,18 @@ export const useTheme = (): DefaultTheme => {
     setTheme({
       ...theme,
       interfaceFont: settings.interfaceFont,
+      interfaceFontSize: settings.interfaceFontSize,
       editorFont: settings.editorFont,
       editorFontSize: settings.editorFontSize,
+      editorMonoFont: settings.editorMonoFont,
     });
-  }, [settings.interfaceFont, settings.editorFont, settings.editorFontSize]);
+  }, [settings]);
 
-  const [theme, setTheme] = useState({
+  const [theme, setTheme] = useState<DefaultTheme>({
     interfaceFont: settings.interfaceFont,
+    interfaceFontSize: settings.interfaceFontSize,
     editorFont: settings.editorFont,
+    editorMonoFont: settings.editorMonoFont,
     editorFontSize: settings.editorFontSize,
     mainBg: 'rgba(41, 41, 46, 1)',
     mainFgText: 'rgba(240, 240, 248, 0.8)',

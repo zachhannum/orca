@@ -34,9 +34,10 @@ const Tooltip = styled.div`
 
 const TooltipTitle = styled.div`
   color: ${(p) => p.theme.contextMenuFg};
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: bold;
   padding: 7px;
+  white-space: nowrap;
 `;
 
 const TooltipMessage = styled.div`

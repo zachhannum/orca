@@ -25,6 +25,7 @@ import {
   proofreadUnderlineCount,
   proofreadTooltipHelper,
   smartQuotes,
+  smartTypography,
 } from './extensions';
 import EditorToolbar from './EditorToolbar';
 import { TooltipView } from './TooltipView';
@@ -47,7 +48,7 @@ const EditorDiv = styled.div`
       p.theme.editorFont !== ''
         ? `${p.theme.editorFont}`
         : "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"};
-    font-size: 12pt;
+    font-size: ${(p) => p.theme.editorFontSize}pt;
     overflow-x: unset;
     line-height: 1.2;
   }
@@ -135,6 +136,7 @@ const Editor = () => {
       proofreadTheme(),
       cancelProofreadOnChange(proofreadAbortController),
       smartQuotes(),
+      smartTypography(),
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });
