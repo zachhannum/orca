@@ -2,8 +2,10 @@ import { Extension, Transaction } from '@codemirror/state';
 import { ViewUpdate, EditorView } from '@codemirror/view';
 import smartquotes from 'smartquotes';
 
-export const smartQuotes = (): Extension => {
+export const smartQuotes = (enabled: boolean): Extension => {
   return EditorView.updateListener.of((update: ViewUpdate) => {
+    if (!enabled) return;
+
     // prevent smartquotes from running if the update is from an undo/redo by checking the userEvent
     if (
       update.docChanged &&

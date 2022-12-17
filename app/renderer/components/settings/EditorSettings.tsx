@@ -9,6 +9,7 @@ import {
   SettingLabel,
   SettingSubSection,
   SettingSectionHeading,
+  SettingTooltip,
 } from '..';
 
 const scrollerCss = css`
@@ -35,6 +36,52 @@ export const EditorSettings = () => {
     <ScrollContainer cssMixin={scrollerCss}>
       <SettingSubSection>
         <SettingSectionHeading>Smart Typography</SettingSectionHeading>
+        <Setting>
+          <SettingLabel>
+            Dashes{' '}
+            <SettingTooltip>
+              Two dashes will be replaced with an en-dash (–), an en-dash
+              followed by a dash will be replaced with an em-dash (—), and an
+              em-dash followed by a dash will be replaced with three dashes
+              (---)
+            </SettingTooltip>
+          </SettingLabel>
+          <ToggleSwitch
+            onChange={(value) => {
+              setSettings({
+                ...settings,
+                smartTypography: {
+                  ...settings.smartTypography,
+                  dashes: value,
+                },
+              });
+            }}
+            value={settings.smartTypography.dashes}
+          />
+        </Setting>
+        <Setting>
+          <SettingLabel>
+            Quotes
+            <SettingTooltip>
+              While typing, any double or single quotes on the current editor
+              line will be replaced with the appropriate &quot;curly
+              quotes&quot;
+            </SettingTooltip>
+          </SettingLabel>
+
+          <ToggleSwitch
+            onChange={(value) => {
+              setSettings({
+                ...settings,
+                smartTypography: {
+                  ...settings.smartTypography,
+                  quotes: value,
+                },
+              });
+            }}
+            value={settings.smartTypography.quotes}
+          />
+        </Setting>
       </SettingSubSection>
       <SettingSubSection>
         <SettingSectionHeading>LanguageTool</SettingSectionHeading>

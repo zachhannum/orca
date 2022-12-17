@@ -1,17 +1,19 @@
 import { Annotation, Extension, Transaction } from '@codemirror/state';
 import { ViewUpdate, EditorView } from '@codemirror/view';
 
-const smartTypographyAnnotation = Annotation.define<boolean>();
+const smartDashesAnnotation = Annotation.define<boolean>();
 
-export const smartTypography = (): Extension => {
+export const smartDashes = (enabled: boolean): Extension => {
   return EditorView.updateListener.of((update: ViewUpdate) => {
+    if (!enabled) return;
+
     if (
       update.docChanged &&
       !update.transactions.some(
         (t) =>
           t.isUserEvent('redo') ||
           t.isUserEvent('undo') ||
-          t.annotation(smartTypographyAnnotation)
+          t.annotation(smartDashesAnnotation)
       )
     ) {
       const { view } = update;
@@ -72,7 +74,7 @@ export const smartTypography = (): Extension => {
           // },
           annotations: [
             Transaction.userEvent.of('full'),
-            smartTypographyAnnotation.of(true),
+            smartDashesAnnotation.of(true),
           ],
         });
       }

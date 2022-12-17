@@ -2,7 +2,6 @@ import { useTheme } from 'styled-components';
 import SwitchBase from './SwitchBase';
 
 type ToggleSwitchProps = {
-  defaultValue?: boolean;
   type?: 'alt' | 'default';
   onChange?: (value: boolean) => void;
   disabled?: boolean;
@@ -11,7 +10,6 @@ type ToggleSwitchProps = {
 };
 
 const ToggleSwitch = ({
-  defaultValue,
   type = 'default',
   disabled = false,
   onChange,
@@ -48,7 +46,6 @@ const ToggleSwitch = ({
       thumbUncheckedColor={theme.toggleOffFg[type]}
       baseCheckedColor={theme.toggleOnBg}
       baseUncheckedColor={theme.toggleOffBg[type]}
-      defaultValue={defaultValue}
       onChange={onChange}
       disabled={disabled}
       value={value}

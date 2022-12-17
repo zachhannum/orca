@@ -3,7 +3,7 @@ import styled, { useTheme, css } from 'styled-components';
 import { EditorView, keymap } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { searchKeymap } from '@codemirror/search';
-import { EditorState, StateEffect } from '@codemirror/state';
+import { EditorState, StateEffect, Compartment } from '@codemirror/state';
 import useStore from 'renderer/store/useStore';
 import { ScrollContainer } from 'renderer/components';
 import { findItemDeep } from '../TreeView/utilities';
@@ -25,13 +25,16 @@ import {
   proofreadUnderlineCount,
   proofreadTooltipHelper,
   smartQuotes,
-  smartTypography,
+  smartDashes,
 } from './extensions';
 import EditorToolbar from './EditorToolbar';
 import { TooltipView } from './TooltipView';
 import { addProofreadUnderline } from './extensions/proofreadUnderlines';
 import { checkText } from './language-tool/api';
 import { TooltipLocation } from './extensions/proofreadTooltipHelper';
+
+const smartQuotesCompartment = new Compartment();
+const smartDashesCompartment = new Compartment();
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -60,7 +63,10 @@ const scrollerCss = css`
 `;
 
 const Editor = () => {
-  const activeSectionId = useStore((state) => state.activeSectionId);
+  const [activeSectionId, settings] = useStore((state) => [
+    state.activeSectionId,
+    state.settings,
+  ]);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const editorViewRef = useRef<EditorView | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
@@ -135,8 +141,8 @@ const Editor = () => {
       }),
       proofreadTheme(),
       cancelProofreadOnChange(proofreadAbortController),
-      smartQuotes(),
-      smartTypography(),
+      smartQuotesCompartment.of(smartQuotes(settings.smartTypography.quotes)),
+      smartDashesCompartment.of(smartDashes(settings.smartTypography.dashes)),
       keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
     ];
     return EditorState.create({ doc: txt, extensions });
@@ -157,6 +163,26 @@ const Editor = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (editorViewRef.current) {
+      editorViewRef.current.dispatch({
+        effects: smartQuotesCompartment.reconfigure(
+          smartQuotes(settings.smartTypography.quotes)
+        ),
+      });
+    }
+  }, [settings.smartTypography.quotes]);
+
+  useEffect(() => {
+    if (editorViewRef.current) {
+      editorViewRef.current.dispatch({
+        effects: smartDashesCompartment.reconfigure(
+          smartDashes(settings.smartTypography.dashes)
+        ),
+      });
+    }
+  }, [settings.smartTypography.dashes]);
 
   /* Set Active Section Id */
   useEffect(() => {

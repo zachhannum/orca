@@ -18,4 +18,4 @@ export { proofreadTheme } from './proofreadTheme';
 export { cancelProofreadOnChange } from './cancelProofreadOnChange';
 export { proofreadTooltipHelper } from './proofreadTooltipHelper';
 export { smartQuotes } from './smartQuotes';
-export { smartTypography } from './smartTypography';
+export { smartDashes } from './smartDashes';
