@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 export { default as MoreOptionsSidebarItem } from './MoreOptionsSidebarItem';
 export { default as MoreOptionsSidebarMenu } from './MoreOptionsSidebarMenu';
 export { default as SidebarProjectContent } from './SidebarProjectContent';
@@ -22,3 +23,4 @@ export {
   SettingSubSection,
   SettingSectionHeading,
 } from './Setting';
+export { SettingTooltip } from './SettingTooltip';

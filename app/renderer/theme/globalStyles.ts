@@ -1,8 +1,29 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 
   body {
+    background-color: ${(p) => p.theme.sidebarBg};
+  }
+
+  body {
+    position: relative;
+    height: 100vh;
+    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: ${(p) => p.theme.interfaceFontSize}pt;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+              Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+              'Segoe UI Emoji', 'Segoe UI Symbol';
+    ${(p) =>
+      p.theme.interfaceFont !== '' &&
+      css`
+        font-family: ${p.theme.interfaceFont};
+      `}
+
     background-color: ${(p) => p.theme.sidebarBg};
   }
 

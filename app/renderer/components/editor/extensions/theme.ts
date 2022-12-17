@@ -16,12 +16,6 @@ const theme = (theme: DefaultTheme): Extension => {
         .hsl()
         .string()}`,
     },
-    '.cm-scroller': {
-      fontFamily:
-        "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
-      overflowX: 'unset',
-      lineHeight: 'unset',
-    },
     '.cm-content': {
       caretColor: theme.mainFgText,
       minHeight: '70vh', // This is sort of hacky

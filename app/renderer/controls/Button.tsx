@@ -9,6 +9,7 @@ type StyledButtonProps = {
 };
 
 const StyledButton = styled.button<StyledButtonProps>`
+  font-family: inherit;
   height: 30px;
   position: relative;
   line-height: 30px;

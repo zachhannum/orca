@@ -98,6 +98,23 @@ export const endpointOptions = [
 ] as const;
 export type EndpointOption = typeof endpointOptions[number];
 export type Settings = {
+  // Appearance
+  interfaceFont: string;
+  interfaceFontSize: number;
+  editorFont: string;
+  editorMonoFont: string;
+  editorFontSize: number;
+
+  // Editor Settings
+  smartTypography: {
+    dashes: boolean;
+    quotes: boolean;
+    ellipses: boolean;
+    fractions: boolean;
+    guillemets: boolean;
+    arrows: boolean;
+    comparitors: boolean;
+  };
   enableLanguageToolIntegration: boolean;
   languageToolEndpoint: EndpointOption;
   languageToolEndpointUrl: string;
@@ -106,6 +123,23 @@ export type Settings = {
 };
 
 export const defaultSettings = {
+  // Appearance
+  interfaceFont: '',
+  interfaceFontSize: 11,
+  editorFont: '',
+  editorMonoFont: '',
+  editorFontSize: 11,
+
+  // Editor Settings
+  smartTypography: {
+    dashes: false,
+    quotes: false,
+    ellipses: false,
+    fractions: false,
+    guillemets: false,
+    arrows: false,
+    comparitors: false,
+  },
   enableLanguageToolIntegration: false,
   languageToolEndpointUrl: 'https://api.languagetool.org',
   languageToolEndpoint: 'api.languagetool.org',

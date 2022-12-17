@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
-import { EditorSettings } from 'renderer/components/settings';
+import {
+  EditorSettings,
+  AppearanceSettings,
+} from 'renderer/components/settings';
 import Modal from './Modal';
 import type { ModalProps } from './Modal';
 
@@ -90,7 +93,7 @@ const SettingsContent = ({ settingsSection }: SettingsContentProps) => {
     case 'Editor':
       return <EditorSettings />;
     case 'Appearance':
-      return <div />;
+      return <AppearanceSettings />;
     case 'Hotkeys':
       return <div />;
     case 'About':

@@ -28,3 +28,4 @@ export { default as GenerateBookIcon } from './GenerateBookIcon';
 export { default as InfoIcon } from './InfoIcon';
 export { default as CheckIcon } from './CheckIcon';
 export { SpellCheckIcon } from './SpellCheckIcon';
+export { AnnotationInfoIcon } from './AnnotationInfoIcon';

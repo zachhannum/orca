@@ -3,7 +3,6 @@ import styled, { useTheme, css } from 'styled-components';
 import SwitchBase from './SwitchBase';
 
 type TwoOptionSliderProps = {
-  defaultValue?: string;
   type?: 'alt' | 'default';
   onChange?: (value: string) => void;
   disabled?: boolean;
@@ -68,7 +67,6 @@ const TwoOptionSlider = ({
   value = undefined,
   optionOne,
   optionTwo,
-  defaultValue = optionOne,
 }: TwoOptionSliderProps) => {
   const theme = useTheme();
 
@@ -76,7 +74,7 @@ const TwoOptionSlider = ({
     undefined
   );
 
-  const [selectedOption, setSelectedOption] = useState(defaultValue);
+  const [selectedOption, setSelectedOption] = useState(value);
 
   useEffect(() => {
     if (value) {
@@ -103,7 +101,6 @@ const TwoOptionSlider = ({
         baseBorderRadius={13}
         baseCheckedColor={theme.optionSliderBg[type]}
         baseUncheckedColor={theme.optionSliderBg[type]}
-        defaultValue={defaultValue === optionTwo}
         onChange={(value: boolean) => {
           const selected = value ? optionTwo : optionOne;
           setSelectedOption(selected);

@@ -16,7 +16,6 @@ type SwitchBaseProps = {
   baseBorderRadius: number;
   baseCheckedColor: string;
   baseUncheckedColor: string;
-  defaultValue: boolean | undefined;
   onChange?: (value: boolean) => void;
   disabled: boolean;
   value: boolean | undefined;
@@ -114,35 +113,38 @@ const SwitchBase = ({
   baseBorderRadius,
   baseCheckedColor,
   baseUncheckedColor,
-  defaultValue,
   onChange,
   disabled,
   value,
   baseCssMixin,
   thumbCssMixin,
 }: SwitchBaseProps) => {
-  const [checked, toggleChecked] = useToggle(defaultValue);
+  const [checked, toggleChecked] = useToggle(value);
   const [animate, setAnimate] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const handleToggle = () => {
-    setAnimate(true);
+  const handleToggle = (animate: boolean) => {
+    if (animate) {
+      setAnimate(true);
+      setTimeout(() => {
+        setAnimate(false);
+      }, 1000);
+    }
     if (onChange) onChange(!checked);
-    setTimeout(() => {
-      setAnimate(false);
-    }, 1000);
     toggleChecked();
   };
 
   useEffect(() => {
     if (value !== undefined) {
       if (value !== checked) {
-        handleToggle();
+        handleToggle(mounted);
       }
     }
+    setMounted(true);
   }, [value]);
 
   const handleToggleClicked = () => {
-    if (!disabled) handleToggle();
+    if (!disabled) handleToggle(true);
   };
 
   return (
