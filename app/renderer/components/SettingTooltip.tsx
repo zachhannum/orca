@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ContextMenu } from 'renderer/components';
 import { useIsHovering } from 'renderer/hooks';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 type SettingTooltipProps = {
   children?: React.ReactNode;
@@ -40,7 +40,6 @@ export const SettingTooltip = ({ children }: SettingTooltipProps) => {
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const isHovering = useIsHovering(tooltipRef);
-  const theme = useTheme();
 
   useEffect(() => {
     if (isHovering) {

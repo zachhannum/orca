@@ -139,7 +139,6 @@ const MoreOptionsSidebarMenu = () => {
                   <ToggleSwitch
                     type="alt"
                     onChange={setPreviewEnabled}
-                    defaultValue={previewEnabled}
                     disabled={activeSectionId === ''}
                     value={previewEnabled}
                     size="small"
