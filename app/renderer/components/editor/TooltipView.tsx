@@ -2,8 +2,14 @@ import { EditorView } from '@codemirror/view';
 import { useEffect, useRef, useState } from 'react';
 import { useResizeObserver } from 'renderer/hooks';
 import styled from 'styled-components';
+import useStore from 'renderer/store/useStore';
+import { DictionaryAddIcon } from 'renderer/icons';
+import { addToDictionary } from './language-tool/api';
 import { TooltipLocation } from './extensions/proofreadTooltipHelper';
-import { clearUnderlinesInRange } from './extensions/proofreadUnderlines';
+import {
+  clearUnderlinesInRange,
+  proofreadUnderlineField,
+} from './extensions/proofreadUnderlines';
 
 type TooltipViewProps = {
   tooltip: TooltipLocation | null;
@@ -46,14 +52,30 @@ const TooltipMessage = styled.div`
   padding: 7px;
 `;
 
-const TooltipSuggestion = styled.div`
+type TooltipSuggestionProps = {
+  color?: string;
+};
+
+const TooltipSuggestion = styled.div<TooltipSuggestionProps>`
   color: ${(p) => p.theme.buttonPrimaryBg};
+  ${(p) => p.color && `color: ${p.color};`}
   padding: 7px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
   border-radius: 7px;
   cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const TooltipBottom = styled.div`
+  display: flex;
+  padding-top: 7px;
+  gap: 5px;
+  flex-direction: row;
+  justify-content: flex-start;
 `;
 
 const tooltipPadding = 5;
@@ -69,6 +91,50 @@ export const TooltipView = ({
   const [message, setMessage] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [tooltipLoc, setTooltipLoc] = useState<TooltipLocation | null>(null);
+  const [settings] = useStore((s) => [s.settings]);
+
+  const handleDismiss = () => {
+    if (editorView && tooltipLoc && tooltip) {
+      const clearUnderlineEffect = clearUnderlinesInRange.of({
+        from: tooltip.from,
+        to: tooltip.to,
+      });
+      editorView.dispatch({
+        effects: [clearUnderlineEffect],
+      });
+    }
+  };
+
+  const handleAddToDictionary = () => {
+    if (editorView && tooltipLoc && tooltip) {
+      const word = editorView.state.sliceDoc(tooltip.from, tooltip.to);
+      addToDictionary(word)
+        .then((result) => {
+          if (!result.added) {
+            console.error('Failed to add word to dictionary');
+          }
+          return null;
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+
+      const underlines = editorView.state.field(proofreadUnderlineField);
+
+      underlines.between(0, editorView.state.doc.length, (from, to) => {
+        const underline = editorView.state.sliceDoc(from, to);
+        if (underline === word) {
+          const clearUnderlineEffect = clearUnderlinesInRange.of({
+            from,
+            to,
+          });
+          editorView.dispatch({
+            effects: [clearUnderlineEffect],
+          });
+        }
+      });
+    }
+  };
 
   const calculateTooltipPos = (): { top: number; left: number } => {
     if (tooltipRef.current && tooltipRef.current.parentElement && editorView) {
@@ -274,6 +340,20 @@ export const TooltipView = ({
           {suggestion}
         </TooltipSuggestion>
       ))}
+      <TooltipBottom>
+        <TooltipSuggestion
+          color="rgba(255,255,255,0.4)"
+          onClick={handleDismiss}
+        >
+          Dismiss
+        </TooltipSuggestion>
+        {tooltipLoc?.match.rule.issueType === 'misspelling' &&
+          settings.languageToolApiKey !== '' && (
+            <TooltipSuggestion onClick={handleAddToDictionary}>
+              <DictionaryAddIcon size="18px" color="rgba(255,255,255,0.4)" />
+            </TooltipSuggestion>
+          )}
+      </TooltipBottom>
     </Tooltip>
   );
 };
