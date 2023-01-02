@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { IconProps, IconPropDefaults } from './type';
 
-const IconDiv = styled.span<IconProps>`
+const IconDiv = styled.div<IconProps>`
   height: ${(props) => props.size};
   width: ${(props) => props.size};
   overflow: hidden;
-  /* display: inline-block; */
+  display: inline-block;
 `;
 
 const StyledSvg = styled.svg<IconProps>`

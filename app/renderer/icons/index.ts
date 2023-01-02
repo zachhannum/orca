@@ -29,3 +29,4 @@ export { default as InfoIcon } from './InfoIcon';
 export { default as CheckIcon } from './CheckIcon';
 export { SpellCheckIcon } from './SpellCheckIcon';
 export { AnnotationInfoIcon } from './AnnotationInfoIcon';
+export { DictionaryAddIcon } from './DictionaryAddIcon';

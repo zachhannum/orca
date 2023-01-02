@@ -86,6 +86,7 @@ const Editor = () => {
     const { signal } = abortController;
     checkText(previewContent, signal)
       .then((result) => {
+        console.log(result);
         const effects: StateEffect<any>[] = [];
 
         if (result.matches) {

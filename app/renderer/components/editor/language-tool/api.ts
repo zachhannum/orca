@@ -64,6 +64,10 @@ export interface Category {
   name: string;
 }
 
+export interface LanguageToolDictionaryResponse {
+  added: boolean;
+}
+
 export const checkText = async (
   text: string,
   abortSignal: AbortSignal
@@ -124,6 +128,56 @@ export const checkText = async (
   }
 
   let body: LanguageToolApi;
+  try {
+    body = await response.json();
+  } catch (e) {
+    return Promise.reject(e);
+  }
+  return body;
+};
+
+export const addToDictionary = async (
+  text: string
+): Promise<LanguageToolDictionaryResponse> => {
+  const { languageToolEndpointUrl, languageToolUsername, languageToolApiKey } =
+    useStore.getState().settings;
+
+  const requestParams: { [key: string]: string } = {
+    word: text,
+  };
+
+  if (languageToolEndpointUrl === 'https://api.languagetoolplus.com') {
+    requestParams.username = languageToolUsername;
+    requestParams.apiKey = languageToolApiKey;
+  }
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${languageToolEndpointUrl}/v2/words/add`, {
+      method: 'POST',
+      body: Object.keys(requestParams)
+        .map((key) => {
+          return `${encodeURIComponent(key)}=${encodeURIComponent(
+            requestParams[key]
+          )}`;
+        })
+        .join('&'),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json',
+      },
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+
+  if (!response.ok) {
+    return Promise.reject(
+      new Error(`unexpected status ${response.status}, see network tab`)
+    );
+  }
+  let body: { added: boolean };
   try {
     body = await response.json();
   } catch (e) {
