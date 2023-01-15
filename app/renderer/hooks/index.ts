@@ -10,3 +10,4 @@ export { default as useProjectHotkeys } from './useProjectHotkeys';
 export { default as useCommandKeyString } from './useCommandKeyString';
 export { default as useOnWindowResize } from './useOnWindowResize';
 export { useAppVersion } from './useAppVersion';
+export { useBookWordCount } from './useBookWordCount';

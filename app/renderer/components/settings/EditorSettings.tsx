@@ -35,6 +35,29 @@ export const EditorSettings = () => {
   return (
     <ScrollContainer cssMixin={scrollerCss}>
       <SettingSubSection>
+        <SettingSectionHeading>Writing Stats</SettingSectionHeading>
+        <Setting>
+          <SettingLabel>
+            Book Word Count{' '}
+            <SettingTooltip>
+              Show the total word count of the book in the sidebar
+            </SettingTooltip>
+          </SettingLabel>
+          <ToggleSwitch
+            onChange={(value) => {
+              setSettings({
+                ...settings,
+                writingStats: {
+                  ...settings.writingStats,
+                  showWordCount: value,
+                },
+              });
+            }}
+            value={settings.writingStats.showWordCount}
+          />
+        </Setting>
+      </SettingSubSection>
+      <SettingSubSection>
         <SettingSectionHeading>Smart Typography</SettingSectionHeading>
         <Setting>
           <SettingLabel>
