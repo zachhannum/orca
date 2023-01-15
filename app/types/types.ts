@@ -120,6 +120,9 @@ export type Settings = {
   languageToolEndpointUrl: string;
   languageToolUsername: string;
   languageToolApiKey: string;
+  writingStats: {
+    showWordCount: boolean;
+  };
 };
 
 export const defaultSettings = {
@@ -145,6 +148,9 @@ export const defaultSettings = {
   languageToolEndpoint: 'api.languagetool.org',
   languageToolUsername: '',
   languageToolApiKey: '',
+  writingStats: {
+    showWordCount: false,
+  },
 } as Settings;
 
 /* Component Styling */

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Color from 'color';
+import { useBookWordCount } from 'renderer/hooks';
 import { Button } from '../controls';
 import useStore from '../store/useStore';
 import SidebarProjectSections from './SidebarProjectSections';
@@ -73,11 +74,21 @@ const StyledAnchor = styled.a`
   }
 `;
 
+const StyledWordCount = styled.div`
+  color: ${(p) => p.theme.sidebarFgTextSecondary};
+  font-size: 0.85em;
+  padding: 5px;
+`;
+
 const SidebarProjectContent = () => {
   const isProjectOpen = useStore((state) => state.isProjectOpen);
   const bookTitle = useStore((state) => state.bookTitle);
   const authorName = useStore((state) => state.authorName);
   const setNewBookModalOpen = useStore((state) => state.setNewBookModalOpen);
+  const showBookWordCount = useStore(
+    (state) => state.settings.writingStats.showWordCount
+  );
+  const bookWordCount = useBookWordCount();
 
   return (
     <StyledSidebarProjectContent>
@@ -89,6 +100,11 @@ const SidebarProjectContent = () => {
               <SaveIndicator />
             </StyledTitleContainer>
             <StyledAuthorName>{authorName}</StyledAuthorName>
+            {showBookWordCount && (
+              <StyledWordCount>
+                {bookWordCount.toLocaleString('en-US')} words
+              </StyledWordCount>
+            )}
           </StyledTitleBlock>
           <StyledContentBlock>
             <SidebarProjectSections />
