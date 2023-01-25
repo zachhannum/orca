@@ -12,7 +12,7 @@
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
   <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
 
-  <img width="1391" alt="app" src="https://user-images.githubusercontent.com/6120081/172929435-fa370411-1a5a-4bcf-ad36-3ffc54d09676.png">
+  <img width="1391" alt="app" src="assets/app_preview.png">
 
   
 </div>
