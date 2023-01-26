@@ -31,17 +31,20 @@ Calamus is a React Electron application for writing and publishing novels.
 
 Calamus is currently still in pre-alpha stages---not all features are available. For a feature roadmap, please visit our <a href="https://github.com/midnightprioriem/calamus/projects/2" target="_blank">Project Board</a>.
 
+- Open format project files (json)
+- Markdown Editor
+- LanguageTool Integration
+- Customizable Interface
+- Print-ready PDF export
+- Custom print formatting
+
 #### 🖊️ Write Your Next Novel
 
 Calamus has what you need to organize and write your next novel. Organize your project into folders and use Markdown to make writing a breeze.
 
-https://user-images.githubusercontent.com/6120081/172926916-38874b37-d46b-4995-8378-2fb09e563f38.mp4
-
 #### 👐 Open Format
 
 Calamus stores all of your project data in a human readable json format. In addition, all book content is written using Markdown, making all of your work truly portable. You can export all of your book's content into markdown files at any time.
-
-https://user-images.githubusercontent.com/6120081/172928356-98c0f824-c98c-47cb-83b2-14ae3df1077b.mp4
 
 ##### .cala Format
 
@@ -49,28 +52,55 @@ https://user-images.githubusercontent.com/6120081/172928356-98c0f824-c98c-47cb-8
 
 Calamus project files use the `.cala` file extension, but are really just `json` files (yes this means you can edit `.cala` files by hand, but it is not recommended!). See below for a table detailing the properties inside of a `.cala` file.
 
-| Property Name | Description                                                                      |
-|---------------|----------------------------------------------------------------------------------|
-| bookTitle    	| The novel's title.                                                           	   |
-| bookSubTitle 	| YThe novel's sub title. This is an optional property.                        	   |
-| authorName   	| The novel's author name.                                                     	   |
-| seriesName   	| The name of the series the novel is a part of. This is an optional property. 	   |
-| ISBN         	| The novel's ISBN number.                                                     	   |
-| language     	| The language the novel is written in.                                        	   |
-| publisher    	| The name of the novel's publisher.                                           	   |
-| content      	| Array containing the novel's content. See a table detailing the `Section` below. |
+| Property Name     | Description                                                                      |
+|-------------------|----------------------------------------------------------------------------------|
+| bookTitle         | The novel's title.                                                           	   |
+| bookSubTitle 	    | YThe novel's sub title. This is an optional property.                        	   |
+| authorName   	    | The novel's author name.                                                     	   |
+| seriesName   	    | The name of the series the novel is a part of. This is an optional property. 	   |
+| ISBN             	| The novel's ISBN number.                                                     	   |
+| language         	| The language the novel is written in.                                        	   |
+| publisher    	    | The name of the novel's publisher.                                           	   |
+| content         	| Array containing the novel's content. See a table detailing the `Section` below. |
+| publishSettings   | `PublishSettings` object. See a table detailing `PublishSettings` below.         |
 
 The content property contains a JSON array of the `Section` object type, detailed below.
 
 | Property Name   | Description                                                                                                 |
 |-----------------|-------------------------------------------------------------------------------------------------------------|
-| id            	| The name of the section. Appears as the name in the project sidebar. **Must be unique**.    	              |
+| id            	| A uniquely generated identifier.                                                             	              |
+| name           	| The section's name.                                                                         	              |
 | content       	| Minified string of markdown content. Newlines are replaced with `\n` and `"` with `\"`.   	                |
 | type          	| Section type. One of 4 values: `folder`, `maincontent`, `frontmatter`, `backmatter`.        	              |
 | canHaveChildren | `true` or `false` value indicating whether the Section can have children. Only valid for `folder` sections.	|
 | children      	| A JSON array of `Section[]`. Only valid for `folder` sections.                                             	|
 | collapsed     	| `true` or `false` value indicating whether then section is collapsed. Only valid for `folder` sections.    	|
+| depth         	| Depth of the section in the tree. Starts at 0.                                                            	|
+| index         	| Index of section related to its children. Starts at 0.                                                     	|
+| parentId       	| For child sections, this is equal to the id of the section's parent                                        	|
 
+The `PublishSettings` object type contains the book's formatting settings for eBook and print PDF.
+
+| Property Name                  | Description                                                                                    |
+|--------------------------------|------------------------------------------------------------------------------------------------|
+| dropCap            	           | Boolean value indicating whether or not to use a drop cap at the beginning of chapters.        |
+| dropCapEnableAdvancedSettings  | Boolean value for enabling advanced drop cap settings.                        	                |
+| dropCapFont       	           | An advanced drop cap setting for setting the drop cap to a different font.  	                  |
+| dropCapLineHeight              | An advanced drop cap setting for adjusting the line height of the drop cap.   	                |
+| dropCapBottomMargin            | An advanced drop cap setting for adjusting the bottom margin of the drop cap.              	  |
+| leadIn      	                 | Lead in (first line of each chapter) type. Can be 'None', 'Small Caps', or 'Italics'          	|
+| sceneBreak                     | A string that will be used for scene breaks. Replaces horizontal rules.                     	  |
+| rectoPageHeaders               | Header for recto (odd) pages. Can be 'None', 'Chapter Title', 'Book Title', or 'Author Name'	  |
+| versoPageHeaders               | Header for verso (even) pages. Can be 'None', 'Chapter Title', 'Book Title', or 'Author Name'  |
+| paragraphFont                  | Font to use for paragraph text. Can be any font installed on system.                           |
+| fontSize                       | Font size to use for paragraph text.                                                           |
+| lineHeight                     | Paragraph line height. Can be 'Single', '1.5', or 'Double'.                                    |
+| dropFolio                      | Boolean value indicating whether or not to add a drop folio to the first page of each chapter. |
+| topMargin                      | Top margin of each page in inches.                                                             |
+| bottomMargin                   | Bottom margin of each page in inches.                                                          |
+| insideMargin                   | Inside margin of each page in inches.                                                          |
+| outsideMargin                  | Outside margin of each page in inches.                                                         |
+| trimSize                       | Trim size of the book. i.e., '5in x 8in'                                                       |
 
 </details>
 
