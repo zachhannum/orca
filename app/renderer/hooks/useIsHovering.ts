@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from 'react';
 
-const useIsHovering = (ref: RefObject<HTMLElement>) => {
+const useIsHovering = (ref: RefObject<HTMLElement | null>) => {
   const [isHovering, setIsHovering] = useState(false);
   useEffect(() => {
     const onMouseEnter = (_event: MouseEvent) => {
@@ -15,7 +15,7 @@ const useIsHovering = (ref: RefObject<HTMLElement>) => {
       ref.current?.removeEventListener('mouseenter', onMouseEnter);
       ref.current?.removeEventListener('mouseleave', onMouseLeave);
     };
-  }, [ref]);
+  }, [ref.current]);
   return isHovering;
 };
 

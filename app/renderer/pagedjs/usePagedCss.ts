@@ -79,18 +79,21 @@ const usePagedCss = () => {
       margin: 0px;
       text-indent: 2em;
     }
+
     blockquote p {
       text-align: left;
       font-style: italic;
       text-indent: unset;
     }
+
     /* Chapter leader */
     .firstPara::first-line {
       ${getLeadInCss(publishSettings.leadIn)}
     }
-    /* Chapter Drop Cap */
+
     ${publishSettings.dropCap &&
     css`
+      /* Chapter Drop Cap */
       .firstPara::first-letter {
         ${publishSettings.dropCapFont.length > 0 &&
         publishSettings.dropCapEnableAdvancedSettings &&
@@ -127,19 +130,6 @@ const usePagedCss = () => {
       font-style: normal;
     }
 
-    /* TODO header decorations */
-    /* h1::before {
-      content: '⁙';
-      text-align: center;
-      padding: 0.1in;
-    }
-
-    h1::after {
-      content: '⁙';
-      text-align: center;
-      padding: 0.1in;
-    } */
-
     h2 {
       font-family: '${publishSettings.paragraphFont}', serif;
       font-size: 15pt;
@@ -156,10 +146,8 @@ const usePagedCss = () => {
       font-family: '${publishSettings.paragraphFont}', serif;
       font-size: ${publishSettings.fontSize}pt;
       user-select: none;
-      /* marks: crop; */
     }
 
-    /* TODO this should be more dynamic instead of relying on h1 being the chapter title (it might not always be true!) */
     h1 {
       string-set: chapterTitle content(text);
     }

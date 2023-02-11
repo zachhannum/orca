@@ -66,4 +66,5 @@ export const SettingSectionHeading = styled.div`
   color: ${(p) => p.theme.sidebarFgTextSecondary};
   padding: 10px 0px;
   font-weight: 600;
+  user-select: none;
 `;

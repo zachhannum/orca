@@ -2,12 +2,15 @@ import { GetState, SetState } from 'zustand';
 import type { OrcaState } from '../useStore';
 
 export type AppMode = 'Write' | 'Publish';
+export type PublishSettingsMode = 'Options' | 'CSS';
 
 export interface AppSlice {
   previewEnabled: boolean;
   setPreviewEnabled: (val: boolean) => void;
   appMode: AppMode;
   setAppMode: (mode: AppMode) => void;
+  publishSettingsMode: PublishSettingsMode;
+  setPublishSettingsMode: (mode: PublishSettingsMode) => void;
   sidebarOpen: boolean;
   setSidebarOpen: (val: boolean) => void;
   newBookModalOpen: boolean;
@@ -37,6 +40,12 @@ const createAppSlice = (
   setAppMode: (mode: AppMode) => {
     set(() => ({
       appMode: mode,
+    }));
+  },
+  publishSettingsMode: 'Options' as PublishSettingsMode,
+  setPublishSettingsMode: (mode: PublishSettingsMode) => {
+    set(() => ({
+      publishSettingsMode: mode,
     }));
   },
   sidebarOpen: true,
