@@ -20,6 +20,9 @@ const AppModeButtonContainer = styled.div`
   top: 10px;
   right: 20px;
   z-index: 2;
+  background-color: ${(p) => p.theme.mainBg};
+  border-radius: 9px;
+  padding: 3px;
 `;
 
 const TooltipContent = styled.div`

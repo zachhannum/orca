@@ -67,6 +67,9 @@ const usePagedCss = () => {
   const [publishSettings] = useStore((state) => [state.publishSettings]);
 
   return css`
+    /* Read-only styles calculated from Publish Options */
+    /* Add custom CSS below to override these styles */
+
     section p {
       text-align: justify;
       ${getLineHeight(publishSettings.lineHeight)}
@@ -222,6 +225,8 @@ const usePagedCss = () => {
       display: block;
       text-align: center;
     }
+
+    /* Add Custom CSS Below */
   `.join('');
 };
 

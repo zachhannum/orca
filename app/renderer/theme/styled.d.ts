@@ -9,6 +9,7 @@ declare module 'styled-components' {
     editorFont: string;
     editorMonoFont: string;
     editorFontSize: number;
+    cssEditorFontSize: number;
     mainBg: string;
     mainFgText: string;
     mainFgTextSecondary: string;
@@ -32,7 +33,6 @@ declare module 'styled-components' {
     optionSliderText: string;
     buttonPrimaryBg: string;
     buttonPrimaryText: string;
-    previewBg: string;
     previewDropdownBg: string;
     previewDropdownText: string;
     previewArrow: string;

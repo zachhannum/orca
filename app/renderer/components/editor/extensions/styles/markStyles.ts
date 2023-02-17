@@ -7,30 +7,31 @@ const markStyles = (theme: DefaultTheme) => [
     tag: tags.processingInstruction,
     color: theme.buttonPrimaryBg,
     fontSize: '0.9em',
-    fontFamily:
-      'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+    fontFamily: theme.editorMonoFont,
   },
   {
     tag: tags.emphasis,
     fontSize: '0.9em',
     fontStyle: 'italic',
+    fontFamily: theme.editorMonoFont,
   },
   {
     tag: tags.strong,
     fontSize: '0.9em',
     fontWeight: '700',
+    fontFamily: theme.editorMonoFont,
   },
   {
     tag: customTags.codeMark,
     fontSize: '0.9em',
     color: theme.buttonPrimaryBg,
+    fontFamily: theme.editorMonoFont,
   },
   {
     tag: customTags.horizontalRule,
     fontSize: '0.9em',
     color: `${theme.buttonPrimaryBg}`,
-    fontFamily:
-      'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+    fontFamily: theme.editorMonoFont,
   },
 ];
 

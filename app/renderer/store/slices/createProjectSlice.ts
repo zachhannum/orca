@@ -28,6 +28,7 @@ export interface ProjectSlice extends Project {
   setPublisher: (val: string) => void;
   setContentArray: (val: Section[]) => void;
   updateSectionContent: (id: string, newContent: string) => void;
+  setCustomCss: (val: string) => void;
   addNewSection: (val: Section) => void;
   addNewSectionAt: (val: Section, atId: string) => void;
   addingSections: boolean;
@@ -108,6 +109,10 @@ const createProjectSlice = (
         previewContent: findItemDeep(get().content, id)?.content,
       }));
     }
+  },
+  customCss: '',
+  setCustomCss: (val: string) => {
+    set(() => ({ customCss: val, isProjectDirty: true }));
   },
   addNewSection: (val: Section) =>
     set(

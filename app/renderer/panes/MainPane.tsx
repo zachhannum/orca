@@ -10,7 +10,7 @@ const MainContent = styled.div`
   height: calc(100% - var(--fallback-title-bar-height));
   width: 100%;
   color: ${(p) => p.theme.mainFgText};
-  background-color: ${(p) => p.theme.previewBg};
+  background-color: ${(p) => p.theme.mainBg};
   display: flex;
   align-items: stretch;
   flex-direction: column;

@@ -1,22 +1,26 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styled, { useTheme, css } from 'styled-components';
-import { EditorView, keymap } from '@codemirror/view';
+import { EditorView, gutter, keymap, lineNumbers } from '@codemirror/view';
 import {
   defaultKeymap,
   history,
   historyKeymap,
   indentWithTab,
-  indentSelection,
 } from '@codemirror/commands';
-import { EditorState, StateEffect } from '@codemirror/state';
+import { EditorState } from '@codemirror/state';
+import { css as codeMirrorCss } from '@codemirror/lang-css';
 import Color from 'color';
 import prettier from 'prettier';
 import cssParser from 'prettier/parser-postcss';
 import useStore from 'renderer/store/useStore';
 import { usePagedCss } from 'renderer/pagedjs/usePagedCss';
 import { ScrollContainer } from 'renderer/components';
-import { theme } from './extensions';
-import { readOnlyLines } from './extensions/readOnlyLines';
+import {
+  theme,
+  readOnlyLines,
+  readOnlyLinesDecoration,
+  updateCustomCss,
+} from './extensions';
 
 const EditorDiv = styled.div`
   width: 100%;
@@ -25,47 +29,61 @@ const EditorDiv = styled.div`
   position: relative;
 
   .cm-scroller {
-    font-size: ${(p) => p.theme.editorFontSize}pt;
+    font-size: ${(p) => p.theme.cssEditorFontSize}pt;
+    font-family: ${(p) => p.theme.editorMonoFont};
   }
 `;
 
 const scrollerCss = css`
   background-color: ${(p) => Color(p.theme.mainBg).darken(0.3).toString()};
-  margin: 5px;
-  border-radius: 5px;
+  padding: 5px;
+  border-radius: 7px;
   overflow-x: auto;
-  /* width: 800px; */
   white-space: nowrap;
 `;
 
 export const CssEditor = () => {
-  const [settings] = useStore((state) => [state.settings]);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const editorViewRef = useRef<EditorView | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
   const styledTheme = useTheme();
   const pagedCss = usePagedCss();
 
-  const newEditorState = (txt: string): EditorState => {
+  const newEditorState = (txt: string, readOnlyPos: number): EditorState => {
     const extensions = [
+      lineNumbers(),
+      gutter({ class: 'cm-mygutter' }),
+      codeMirrorCss(),
       history(),
-      readOnlyLines(txt.length - 1),
+      readOnlyLines(readOnlyPos),
+      readOnlyLinesDecoration(readOnlyPos),
       theme(styledTheme),
+      updateCustomCss(readOnlyPos),
       keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
     ];
     return EditorState.create({ doc: txt, extensions });
   };
 
-  const initEditorState = (editorContent: string): EditorState => {
-    const editorState = newEditorState(editorContent);
+  const initEditorState = (
+    editorContent: string,
+    readOnlyPos: number
+  ): EditorState => {
+    const editorState = newEditorState(editorContent, readOnlyPos);
     return editorState;
   };
 
-  const initEditorView = (editorState: EditorState) => {
+  const initEditorView = (editorState: EditorState, readOnlyPos: number) => {
     if (editorContainerRef.current) {
       editorViewRef.current = new EditorView({
         state: editorState,
         parent: editorContainerRef.current,
+      });
+
+      /* Dispatch editor selection to move cursor to end of text */
+      editorViewRef.current.focus();
+      editorViewRef.current.dispatch({
+        selection: { anchor: readOnlyPos + 1 },
+        scrollIntoView: true,
       });
     }
   };
@@ -75,8 +93,11 @@ export const CssEditor = () => {
       parser: 'css',
       plugins: [cssParser],
     });
-    const editorState = initEditorState(css);
-    initEditorView(editorState);
+    const { customCss } = useStore.getState();
+    const editorContent = css + customCss;
+    const readOnlyPos = css.length - 1;
+    const editorState = initEditorState(editorContent, readOnlyPos);
+    initEditorView(editorState, readOnlyPos);
   }, []);
 
   return (

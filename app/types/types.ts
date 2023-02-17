@@ -50,6 +50,7 @@ export type Project = {
   publisher: string;
   content: Sections;
   publishSettings: PublishSettings;
+  customCss: string;
 };
 
 /* ProjectData is used for passing Project data structures to and from main for saving/opening projects */
@@ -96,7 +97,7 @@ export const endpointOptions = [
   'api.languagetoolplus.com',
   'Custom',
 ] as const;
-export type EndpointOption = typeof endpointOptions[number];
+export type EndpointOption = (typeof endpointOptions)[number];
 export type Settings = {
   // Appearance
   interfaceFont: string;
@@ -104,6 +105,7 @@ export type Settings = {
   editorFont: string;
   editorMonoFont: string;
   editorFontSize: number;
+  cssEditorFontSize: number;
 
   // Editor Settings
   smartTypography: {
@@ -132,6 +134,7 @@ export const defaultSettings = {
   editorFont: '',
   editorMonoFont: '',
   editorFontSize: 11,
+  cssEditorFontSize: 11,
 
   // Editor Settings
   smartTypography: {
@@ -176,26 +179,26 @@ export const popularTrimSizes = [
   '5.5in x 8.5in',
   '6in x 9in',
 ] as const;
-export type PopularTrimSize = typeof popularTrimSizes[number];
+export type PopularTrimSize = (typeof popularTrimSizes)[number];
 export const additionalTrimSizes = [
   '5.06in x 7.81in',
   '5.5in x 8.25in',
   '6.14in x 9.21in',
 ] as const;
-export type AdditionalTrimSize = typeof additionalTrimSizes[number];
+export type AdditionalTrimSize = (typeof additionalTrimSizes)[number];
 export const internationalTrimSizes = [
   '4.72in x 7.48in',
   '4.92in x 7.48in',
   '5.31in x 8.46in',
   '5.83in x 8.27in',
 ] as const;
-export type InternationalTrimSize = typeof internationalTrimSizes[number];
+export type InternationalTrimSize = (typeof internationalTrimSizes)[number];
 export const massMarketTrimSizes = [
   '4.12in x 6.75in',
   '4.25in x 7in',
   '4.37in x 7in',
 ] as const;
-export type MassMarketTrimSize = typeof massMarketTrimSizes[number];
+export type MassMarketTrimSize = (typeof massMarketTrimSizes)[number];
 
 export type TrimSize =
   | PopularTrimSize

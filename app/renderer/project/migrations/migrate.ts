@@ -13,6 +13,11 @@ const migrate = (project: Project): Project => {
     ...project.publishSettings,
   };
 
+  // Add css settings
+  if (!project.customCss) {
+    project.customCss = '';
+  }
+
   return project;
 };
 

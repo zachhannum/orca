@@ -28,8 +28,7 @@ const hideMarkdownBaseTheme = (theme: DefaultTheme) =>
       color: theme.buttonPrimaryBg,
       border: ` 1.5px ${theme.buttonPrimaryBg} solid;`,
       boxSizing: 'border-box',
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       fontSize: '0.8em',
       marginLeft: '-5ch',
       paddingRight: '.2ch',

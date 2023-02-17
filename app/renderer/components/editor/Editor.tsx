@@ -47,10 +47,7 @@ const EditorDiv = styled.div`
   position: relative;
 
   .cm-scroller {
-    font-family: ${(p) =>
-      p.theme.editorFont !== ''
-        ? `${p.theme.editorFont}`
-        : "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'"};
+    font-family: ${(p) => p.theme.editorFont};
     font-size: ${(p) => p.theme.editorFontSize}pt;
     overflow-x: unset;
     line-height: 1.2;

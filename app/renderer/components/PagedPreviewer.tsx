@@ -67,6 +67,7 @@ const PagedPreviewer = ({
   const [overflow, setOverflow] = useState(false);
   const buildingPreview = useRef(false);
   const styleSheet = usePagedCss();
+  const customCss = useStore((state) => state.customCss);
 
   const setPageCounterIncrement = (pageIncrement: number) => {
     document.documentElement.style.setProperty(
@@ -160,7 +161,7 @@ const PagedPreviewer = ({
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
         await polisher.current.add({
-          '': styleSheet,
+          '': styleSheet + customCss,
         });
         console.log('Starting flow...');
         await chunker.current.flow(template.content, pagedStage);
@@ -209,12 +210,12 @@ const PagedPreviewer = ({
 
   const updatePreviewDebounce = useMemo(
     () => debounce(updatePreview, 500, { trailing: true }),
-    [page, previewContent, styleSheet]
+    [page, previewContent, styleSheet, customCss]
   );
 
   useEffect(() => {
     updatePreviewDebounce();
-  }, [previewContent, styleSheet]);
+  }, [previewContent, styleSheet, customCss]);
 
   return (
     <StyledRenderer ref={rendererRef}>

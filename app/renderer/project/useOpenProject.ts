@@ -25,6 +25,7 @@ const useOpenProject = () => {
         clearEditorStateMap,
         setIsProjectDirty,
         setPublishSettings,
+        setCustomCss,
       } = useStore.getState();
       setProjectFolder(folderPath);
       setProjectFileName(fileName);
@@ -42,6 +43,7 @@ const useOpenProject = () => {
       setPreviewEnabled(false);
       setIsProjectOpen(true);
       setIsProjectDirty(false);
+      setCustomCss(project.customCss);
     });
   }, []);
 };
