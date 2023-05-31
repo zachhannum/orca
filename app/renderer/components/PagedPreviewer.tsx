@@ -146,8 +146,11 @@ const PagedPreviewer = ({
       const hs = document.getElementsByTagName('style');
       // eslint-disable-next-line no-plusplus
       for (let i = hs.length - 1; i >= 0; --i) {
-        if (hs[i].getAttribute('data-pagedjs-inserted-styles') === 'true') {
-          hs[i].parentNode?.removeChild(hs[i]);
+        if (
+          hs[i].getAttribute('data-pagedjs-inserted-styles') === 'true' ||
+          hs[i].childNodes.length === 0
+        ) {
+          hs[i].remove();
         }
       }
 
@@ -160,11 +163,20 @@ const PagedPreviewer = ({
         polisher.current.setup();
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
-        await polisher.current.add({
-          '': styleSheet + customCss,
-        });
+        try {
+          await polisher.current.add({
+            '': styleSheet + customCss,
+          });
+        } catch (e) {
+          console.log('Error adding stylesheet');
+        }
         console.log('Starting flow...');
-        await chunker.current.flow(template.content, pagedStage);
+        try {
+          await chunker.current.flow(template.content, pagedStage);
+        } catch (e) {
+          console.log('Error flowing content');
+        }
+
         console.log(
           'Flow complete! Copying flowed content to preview container.'
         );

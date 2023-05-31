@@ -6,7 +6,7 @@ export const updateCustomCss = (readOnlyPos: number) => {
   return EditorView.updateListener.of((update: ViewUpdate) => {
     if (update.docChanged) {
       const customCss = update.state.doc.sliceString(
-        readOnlyPos,
+        readOnlyPos + 1,
         update.state.doc.length
       );
       setCustomCss(customCss);
