@@ -38,7 +38,7 @@ jobs:
           npm exec electron-builder -- --publish always --mac
 
   release_windows:
-    runs-on: [self-hosted, Windows]
+    runs-on: [windows-latest]
 
     steps:
       - name: Checkout git repo
