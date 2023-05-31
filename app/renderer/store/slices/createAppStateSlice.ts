@@ -1,5 +1,5 @@
 import { GetState, SetState } from 'zustand';
-import type { CalamusState } from '../useStore';
+import type { OrcaState } from '../useStore';
 
 export type AppMode = 'Write' | 'Publish';
 
@@ -25,9 +25,9 @@ export interface AppSlice {
 }
 
 const createAppSlice = (
-  set: SetState<CalamusState>,
+  set: SetState<OrcaState>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _get: GetState<CalamusState>
+  _get: GetState<OrcaState>
 ) => ({
   previewEnabled: false,
   setPreviewEnabled: (val: boolean) => {

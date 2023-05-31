@@ -1,12 +1,12 @@
 {
-  "name": "calamus",
+  "name": "orca",
   "version": "0.6.2-pre-alpha",
   "description": "Write and Publish Books with Ease",
   "main": "./dist/main/main.js",
   "author": {
-    "name": "MidnightPrioriem",
+    "name": "Zach Hannum",
     "email": "zacharyhannum@gmail.com",
-    "url": "https://github.com/midnightprioriem"
+    "url": "https://github.com/zachhannum"
   },
   "scripts": {
     "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",

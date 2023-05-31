@@ -1,6 +1,6 @@
 import { PublishSettings, defaultPublishSettings } from 'types/types';
 import { GetState, SetState } from 'zustand';
-import type { CalamusState } from '../useStore';
+import type { OrcaState } from '../useStore';
 
 export interface PublishOptionsSlice {
   publishSettings: PublishSettings;
@@ -8,9 +8,9 @@ export interface PublishOptionsSlice {
 }
 
 const createPublishOptionsSlice = (
-  set: SetState<CalamusState>,
+  set: SetState<OrcaState>,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _get: GetState<CalamusState>
+  _get: GetState<OrcaState>
 ) => ({
   publishSettings: defaultPublishSettings,
   setPublishSettings: (publishSettings: PublishSettings) => {

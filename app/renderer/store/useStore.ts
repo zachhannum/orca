@@ -9,14 +9,14 @@ import createPublishOptionsSlice from './slices/createPublishOptionsSlice';
 import type { SettingsSlice } from './slices/createSettingsSlice';
 import createSettingsSlice from './slices/createSettingsSlice';
 
-export type CalamusState = AppSlice &
+export type OrcaState = AppSlice &
   PublishOptionsSlice &
   ProjectSlice &
   SettingsSlice;
 
 enableMapSet();
 
-const useStore = create<CalamusState>((set, get) => ({
+const useStore = create<OrcaState>((set, get) => ({
   ...createAppSlice(set, get),
   ...createPublishOptionsSlice(set, get),
   ...createProjectSlice(set, get),

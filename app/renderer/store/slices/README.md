@@ -1,6 +1,6 @@
-# Calamus Store Slices
+# Orca Store Slices
 
-The application state for Calamus will be split into logical slices.
+The application state for Orca will be split into logical slices.
 
 * Project File
   * Book description
