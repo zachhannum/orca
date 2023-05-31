@@ -1,16 +1,16 @@
 <div align="center">
 
-  <img src="assets/icon.png" alt="logo" width="200" height="auto" />
-  <h1>Calamus</h1>
+  <img src="assets/orca.png" alt="logo" width="200" height="auto" />
+  <h1>Orca</h1>
   
   <p>
     Write and Publish Novels With Ease
   </p>
     
-  [![Build and Test](https://github.com/midnightprioriem/calamus/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/build-and-test.yml)
-  [![Release](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml/badge.svg)](https://github.com/midnightprioriem/calamus/actions/workflows/release.yml)
-  <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/release/midnightprioriem/calamus.svg" alt="github release version"></a>
-  <a href="https://github.com/midnightprioriem/calamus/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/calamus/total.svg" alt="github release downloads"></a>
+  [![Build and Test](https://github.com/midnightprioriem/orca/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/midnightprioriem/orca/actions/workflows/build-and-test.yml)
+  [![Release](https://github.com/midnightprioriem/orca/actions/workflows/release.yml/badge.svg)](https://github.com/midnightprioriem/orca/actions/workflows/release.yml)
+  <a href="https://github.com/midnightprioriem/orca/releases"><img src="https://img.shields.io/github/release/midnightprioriem/orca.svg" alt="github release version"></a>
+  <a href="https://github.com/midnightprioriem/orca/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/orca/total.svg" alt="github release downloads"></a>
 
   <img width="1391" alt="app" src="assets/app_preview.png">
 
@@ -24,12 +24,12 @@
 <!-- About the Project -->
 ## :star2: About the Project
 
-Calamus is a React Electron application for writing and publishing novels.
+Orca is a React Electron application for writing and publishing novels.
 
 <!-- Features -->
 ### :dart: Features
 
-Calamus is currently still in pre-alpha stages---not all features are available. For a feature roadmap, please visit our <a href="https://github.com/midnightprioriem/calamus/projects/2" target="_blank">Project Board</a>.
+Orca is currently still in pre-alpha stages---not all features are available. For a feature roadmap, please visit our <a href="https://github.com/midnightprioriem/orca/projects/2" target="_blank">Project Board</a>.
 
 - Open format project files (json)
 - Markdown Editor
@@ -40,17 +40,17 @@ Calamus is currently still in pre-alpha stages---not all features are available.
 
 #### 🖊️ Write Your Next Novel
 
-Calamus has what you need to organize and write your next novel. Organize your project into folders and use Markdown to make writing a breeze.
+Orca has what you need to organize and write your next novel. Organize your project into folders and use Markdown to make writing a breeze.
 
 #### 👐 Open Format
 
-Calamus stores all of your project data in a human readable json format. In addition, all book content is written using Markdown, making all of your work truly portable. You can export all of your book's content into markdown files at any time.
+Orca stores all of your project data in a human readable json format. In addition, all book content is written using Markdown, making all of your work truly portable. You can export all of your book's content into markdown files at any time.
 
-##### .cala Format
+##### .orca Format
 
 <details>
 
-Calamus project files use the `.cala` file extension, but are really just `json` files (yes this means you can edit `.cala` files by hand, but it is not recommended!). See below for a table detailing the properties inside of a `.cala` file.
+Orca project files use the `.orca` file extension, but are really just `json` files (yes this means you can edit `.orca` files by hand, but it is not recommended!). See below for a table detailing the properties inside of a `.orca` file.
 
 | Property Name     | Description                                                                      |
 |-------------------|----------------------------------------------------------------------------------|
@@ -107,7 +107,7 @@ The `PublishSettings` object type contains the book's formatting settings for eB
 
 #### 📕 Print-ready PDF and EBook
 
-Calamus is equipped to format your novel for Print and Ebook publication, with pre-made themes and endless customization.
+Orca is equipped to format your novel for Print and Ebook publication, with pre-made themes and endless customization.
 
 https://user-images.githubusercontent.com/6120081/172929343-21c5411f-2e3e-4b0d-9c42-8e9a98dee466.mp4
 
@@ -116,7 +116,7 @@ https://user-images.githubusercontent.com/6120081/172929360-425be8b4-3f57-43f6-9
 <!-- Installation -->
 ## :gear: Installation
 
-Download the [latest release here](https://github.com/midnightprioriem/calamus/releases).
+Download the [latest release here](https://github.com/midnightprioriem/orca/releases).
 
 
 
@@ -134,7 +134,7 @@ TODO
 Clone the project
 
 ```bash
-  git clone https://github.com/midnightprioriem/calamus.git
+  git clone https://github.com/midnightprioriem/orca.git
 ```
 
 Go to the project directory

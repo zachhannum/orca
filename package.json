@@ -1,5 +1,5 @@
 {
-  "name": "calamus",
+  "name": "orca",
   "description": "Write and Publish Novels with Ease",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "Calamus",
-    "appId": "app.calamus.id",
+    "productName": "Orca",
+    "appId": "app.orca.id",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -89,23 +89,23 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "midnightprioriem",
-      "repo": "calamus"
+      "owner": "zachhannum",
+      "repo": "orca"
     },
     "fileAssociations": {
-      "ext": "cala",
-      "name": "Calamus Project File",
+      "ext": "orca",
+      "name": "Orca Project File",
       "role": "Editor"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/midnightprioriem/calamus.git"
+    "url": "git+https://github.com/midnightprioriem/orca.git"
   },
   "author": {
-    "name": "MidnightPrioriem",
+    "name": "Zach Hannum",
     "email": "zacharyhannum@gmail.com",
-    "url": "https://github.com/midnightprioriem/calamus"
+    "url": "https://github.com/zachhannum"
   },
   "contributors": [
     {
@@ -115,9 +115,9 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/midnightprioriem/calamus/issues"
+    "url": "https://github.com/midnightprioriem/orca/issues"
   },
-  "homepage": "https://github.com/midnightprioriem/calamus",
+  "homepage": "https://github.com/midnightprioriem/orca",
   "jest": {
     "roots": [
       "<rootDir>/app"

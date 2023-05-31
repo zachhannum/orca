@@ -135,7 +135,7 @@ const SidebarProjectContent = () => {
               New Project
             </Button>
             <StyledSidebarP>
-              To learn more about how to use Calamus, you can always check out
+              To learn more about how to use Orca, you can always check out
               our <StyledAnchor>help pages</StyledAnchor>.
             </StyledSidebarP>
             <RecentProjectsList />

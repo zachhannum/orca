@@ -11,7 +11,7 @@ labels: 'bug'
 <!-- If the following boxes are not ALL checked, your issue is likely to be closed -->
 
 - [ ] Using yarn
-- [ ] Using an up-to-date [`main` branch](https://github.com/midnightprioriem/calamus/tree/main)
+- [ ] Using an up-to-date [`main` branch](https://github.com/midnightprioriem/orca/tree/main)
 - [ ] For issue in production release, add devtools output of `DEBUG_PROD=true yarn build && yarn start`
 
 ## Expected Behavior
@@ -50,5 +50,5 @@ labels: 'bug'
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 
 - Node version :
-- calamus version or branch :
+- orca version or branch :
 - Operating System and version :

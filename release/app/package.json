@@ -1,18 +1,18 @@
 {
-  "name": "calamus",
+  "name": "orca",
   "version": "0.6.2-pre-alpha",
   "description": "Write and Publish Books with Ease",
   "main": "./dist/main/main.js",
   "author": {
-    "name": "MidnightPrioriem",
+    "name": "Zach Hannum",
     "email": "zacharyhannum@gmail.com",
-    "url": "https://github.com/midnightprioriem"
+    "url": "https://github.com/zachhannum"
   },
   "scripts": {
     "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts",
     "postinstall": "npm run electron-rebuild && npm run link-modules",
-    "icons": "png-to-ico ../../assets/icons/256x256.png > ./assets/icon.ico && mk-icns ../../assets/icons/1024x1024.png ./assets/ -n icon"
+    "icons": "png-to-ico ../../assets/icons/256x256.png > ../../assets/icon.ico && mk-icns ../../assets/icons/1024x1024.png ../../assets/ -n icon"
   },
   "dependencies": {
     "make-icns": "^1.1.4",

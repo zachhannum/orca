@@ -10,9 +10,7 @@ const createProject = (mainWindow: BrowserWindow, bookDetails: BookDetails) => {
     .showSaveDialog(mainWindow, {
       title: 'Create Book Project',
       properties: ['createDirectory', 'showOverwriteConfirmation'],
-      filters: [
-        { name: 'Calamus Project Files', extensions: ['cala', 'json'] },
-      ],
+      filters: [{ name: 'Orca Project Files', extensions: ['orca', 'json'] }],
       buttonLabel: 'Create',
     })
     .then((result) => {

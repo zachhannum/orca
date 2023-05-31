@@ -54,17 +54,17 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Calamus',
+      label: 'Orca',
       submenu: [
         {
-          label: 'About Calamus',
+          label: 'About Orca',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide Calamus',
+          label: 'Hide Orca',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -157,14 +157,14 @@ export default class MenuBuilder {
         {
           label: 'Learn More',
           click() {
-            shell.openExternal('https://github.com/midnightprioriem/calamus');
+            shell.openExternal('https://github.com/midnightprioriem/orca');
           },
         },
         {
           label: 'Search Issues',
           click() {
             shell.openExternal(
-              'https://github.com/midnightprioriem/calamus/issues'
+              'https://github.com/midnightprioriem/orca/issues'
             );
           },
         },

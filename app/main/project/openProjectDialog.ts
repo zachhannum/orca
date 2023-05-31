@@ -6,7 +6,7 @@ const openProjectDialog = (mainWindow: BrowserWindow) => {
     .showOpenDialog(mainWindow, {
       title: 'Open Book Project',
       properties: ['openFile'],
-      filters: [{ name: 'Calamus Project File', extensions: ['cala', 'json'] }],
+      filters: [{ name: 'Orca Project File', extensions: ['orca', 'json'] }],
       buttonLabel: 'Open',
     })
     .then((result) => {

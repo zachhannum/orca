@@ -113,7 +113,7 @@ const MainPane = () => {
       <SectionTitle>
         {activeSectionName.length > 0
           ? `${bookTitle} - ${activeSectionName}`
-          : 'Calamus'}
+          : 'Orca'}
       </SectionTitle>
       <MainContent>
         {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
@@ -122,7 +122,7 @@ const MainPane = () => {
           </>
         ) : (
           <NoProjectDiv>
-            <NoProjectTitle>Calamus</NoProjectTitle>
+            <NoProjectTitle>Orca</NoProjectTitle>
             <NoProjectSubtitle>
               <b>Write</b> and <b>Publish</b> novels with ease.
             </NoProjectSubtitle>

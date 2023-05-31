@@ -7,7 +7,7 @@ import {
   addSectionAt,
   findItemDeep,
 } from '../../components/TreeView/utilities';
-import type { CalamusState } from '../useStore';
+import type { OrcaState } from '../useStore';
 
 export interface ProjectSlice extends Project {
   setVersion: (version: string) => void;
@@ -43,8 +43,8 @@ export interface ProjectSlice extends Project {
 }
 
 const createProjectSlice = (
-  set: SetState<CalamusState>,
-  get: GetState<CalamusState>
+  set: SetState<OrcaState>,
+  get: GetState<OrcaState>
 ) => ({
   version: 'unknown',
   setVersion: (version: string) => {
@@ -111,7 +111,7 @@ const createProjectSlice = (
   },
   addNewSection: (val: Section) =>
     set(
-      produce((state: CalamusState) => {
+      produce((state: OrcaState) => {
         state.content.push(val);
         state.isProjectDirty = true;
       })
@@ -138,13 +138,13 @@ const createProjectSlice = (
   editorStateMap: new Map<string, EditorState>(),
   setEditorState: (sectionId: string, editorState: EditorState) =>
     set(
-      produce((state: CalamusState) => {
+      produce((state: OrcaState) => {
         state.editorStateMap.set(sectionId, editorState);
       })
     ),
   removeEditorState: (sectionId: string) =>
     set(
-      produce((state: CalamusState) => {
+      produce((state: OrcaState) => {
         state.editorStateMap.delete(sectionId);
       })
     ),
