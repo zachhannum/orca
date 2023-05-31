@@ -102,7 +102,6 @@ const createWindow = async () => {
     height: 800,
     minWidth: 800,
     minHeight: 600,
-    icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -161,7 +160,6 @@ const createWindow = async () => {
           height: 800,
           minWidth: 800,
           minHeight: 600,
-          icon: getAssetPath('icon.png'),
           webPreferences: {
             preload: app.isPackaged
               ? path.join(__dirname, 'preload.js')

@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="assets/icon.png" alt="logo" width="200" height="auto" />
+  <img src="assets/orca.png" alt="logo" width="200" height="auto" />
   <h1>Orca</h1>
   
   <p>
