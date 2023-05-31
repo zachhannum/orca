@@ -7,10 +7,10 @@
     Write and Publish Novels With Ease
   </p>
     
-  [![Build and Test](https://github.com/midnightprioriem/orca/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/midnightprioriem/orca/actions/workflows/build-and-test.yml)
-  [![Release](https://github.com/midnightprioriem/orca/actions/workflows/release.yml/badge.svg)](https://github.com/midnightprioriem/orca/actions/workflows/release.yml)
-  <a href="https://github.com/midnightprioriem/orca/releases"><img src="https://img.shields.io/github/release/midnightprioriem/orca.svg" alt="github release version"></a>
-  <a href="https://github.com/midnightprioriem/orca/releases"><img src="https://img.shields.io/github/downloads/midnightprioriem/orca/total.svg" alt="github release downloads"></a>
+  [![Build and Test](https://github.com/zachhannum/orca/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/zachhannum/orca/actions/workflows/build-and-test.yml)
+  [![Release](https://github.com/zachhannum/orca/actions/workflows/release.yml/badge.svg)](https://github.com/zachhannum/orca/actions/workflows/release.yml)
+  <a href="https://github.com/midnightprioriem/orca/releases"><img src="https://img.shields.io/github/release/zachhannum/orca.svg" alt="github release version"></a>
+  <a href="https://github.com/midnightprioriem/orca/releases"><img src="https://img.shields.io/github/downloads/zachhannum/orca/total.svg" alt="github release downloads"></a>
 
   <img width="1391" alt="app" src="assets/app_preview.png">
 
