@@ -24,7 +24,7 @@
 <!-- About the Project -->
 ## :star2: About the Project
 
-Orca is a React Electron application for writing and publishing novels.
+Orca (previously Calamus) is a React Electron application for writing and publishing novels.
 
 <!-- Features -->
 ### :dart: Features
