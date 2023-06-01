@@ -188,6 +188,9 @@ const PagedPreviewer = ({
           });
         }
 
+        //Resize after flow in case the page size changed
+        handleResize(rendererRef.current?.offsetHeight || 0, rendererRef.current?.offsetWidth || 0);
+
         if (container) {
           const paged = container.children[0];
           if (paged) {
