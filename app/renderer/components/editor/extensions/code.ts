@@ -20,8 +20,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       borderRadius: '5px',
       paddingTop: '3px',
       paddingBottom: '3px',
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       boxSizing: 'border-box',
       display: 'inline-block',
     },
@@ -31,8 +30,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       paddingTop: '3px',
       paddingBottom: '3px',
       paddingLeft: '5px',
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       boxSizing: 'border-box',
       display: 'inline-block',
     },
@@ -42,15 +40,13 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
       paddingTop: '3px',
       paddingBottom: '3px',
       paddingRight: '5px',
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       boxSizing: 'border-box',
       display: 'inline-block',
     },
     '.cm-inline-code-content': {
       backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       paddingTop: '3px',
       paddingBottom: '3px',
       boxSizing: 'border-box',
@@ -58,8 +54,7 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
     },
     '.cm-fenced-code-line-first': {
       backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       paddingLeft: '5px',
       paddingRight: '5px',
       paddingTop: '5px',
@@ -68,16 +63,14 @@ const codeDecorationsBaseTheme = (theme: DefaultTheme) =>
     },
     '.cm-fenced-code-line': {
       backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       paddingLeft: '5px',
       paddingRight: '5px',
       boxSizing: 'border-box',
     },
     '.cm-fenced-code-line-last': {
       backgroundColor: `${Color(theme.mainBg).darken(0.5).string()}`,
-      fontFamily:
-        'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;',
+      fontFamily: theme.editorMonoFont,
       paddingLeft: '5px',
       paddingRight: '5px',
       paddingBottom: '5px',

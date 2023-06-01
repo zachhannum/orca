@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
 
@@ -15,14 +15,7 @@ const GlobalStyles = createGlobalStyle`
     align-items: center;
     margin: 0;
     font-size: ${(p) => p.theme.interfaceFontSize}pt;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-              Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-              'Segoe UI Emoji', 'Segoe UI Symbol';
-    ${(p) =>
-      p.theme.interfaceFont !== '' &&
-      css`
-        font-family: ${p.theme.interfaceFont};
-      `}
+    font-family: ${(p) => p.theme.interfaceFont};
 
     background-color: ${(p) => p.theme.sidebarBg};
   }

@@ -5,6 +5,7 @@ import { useOnBookPdfGenerated, useToggle } from 'renderer/hooks';
 import type { ModalProps } from 'renderer/modals/Modal';
 import { Button, Checkbox } from 'renderer/controls';
 import { usePagedCss } from 'renderer/pagedjs/usePagedCss';
+import useStore from 'renderer/store/useStore';
 import Modal from './Modal';
 
 const StyledModalContent = styled.div`
@@ -51,11 +52,12 @@ const GenerateBookModal = (props: ModalProps) => {
   });
 
   const pagedCss = usePagedCss();
+  const { customCss } = useStore();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsBuildingPdf(true);
-    buildBookPdf(pagedCss);
+    buildBookPdf(pagedCss + customCss);
   };
   return (
     <Modal {...props}>

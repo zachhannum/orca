@@ -6,6 +6,7 @@ const TooltipText = styled.span`
   font-weight: 500;
   color: ${(p) => p.theme.mainFgTextSecondary};
   white-space: nowrap;
+  user-select: none;
 `;
 
 export default TooltipText;

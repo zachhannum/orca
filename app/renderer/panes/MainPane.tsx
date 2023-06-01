@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Color from 'color';
-import { Editor, Publish } from '../components';
+import { AppModeControls } from 'renderer/controls';
+import { Editor, Publish } from 'renderer/components';
 import useStore from '../store/useStore';
 import { useCommandKeyString } from '../hooks';
 import type { AppMode } from '../store/slices/createAppStateSlice';
@@ -9,7 +10,7 @@ const MainContent = styled.div`
   height: calc(100% - var(--fallback-title-bar-height));
   width: 100%;
   color: ${(p) => p.theme.mainFgText};
-  background-color: ${(p) => p.theme.previewBg};
+  background-color: ${(p) => p.theme.mainBg};
   display: flex;
   align-items: stretch;
   flex-direction: column;
@@ -24,9 +25,6 @@ const Frame = styled.div`
   height: 100vh;
   padding: 7px;
   padding-top: 0px;
-  /* padding-top: calc(
-    env(titlebar-area-height, var(--fallback-title-bar-height))
-  ); */
 `;
 
 const SectionTitle = styled.div`
@@ -118,6 +116,7 @@ const MainPane = () => {
       <MainContent>
         {isProjectOpen && (activeSectionId !== '' || appMode === 'Publish') ? (
           <>
+            <AppModeControls />
             <AppContent appMode={appMode} />
           </>
         ) : (

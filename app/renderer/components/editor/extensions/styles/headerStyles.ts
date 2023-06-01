@@ -7,6 +7,7 @@ const headerStyles = (theme: DefaultTheme) => [
     tag: customTags.headerMark,
     fontWeight: '700',
     color: theme.buttonPrimaryBg,
+    fontFamily: theme.editorMonoFont,
   },
   {
     tag: tags.heading1,

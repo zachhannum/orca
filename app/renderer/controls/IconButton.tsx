@@ -66,6 +66,7 @@ const IconAnchor = styled.a<IconAnchorProps>`
   }
 
   ${(p) => p.styleMixin}
+  transition: background 0.1s ease-in-out, fill 0.1s ease-in-out;
 `;
 
 type IconButtonProps = {
@@ -83,7 +84,7 @@ type IconButtonProps = {
   children: React.ReactElement;
 };
 
-const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
+export const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
   (
     {
       height,
@@ -150,7 +151,6 @@ const IconButton = React.forwardRef<HTMLAnchorElement, IconButtonProps>(
 );
 
 IconButton.defaultProps = {
-  ref: undefined,
   height: undefined,
   width: undefined,
   iconSize: '40px',
@@ -162,5 +162,3 @@ IconButton.defaultProps = {
   roundCorners: true,
   onClick: () => {},
 };
-
-export default IconButton;

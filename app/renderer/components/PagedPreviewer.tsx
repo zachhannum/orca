@@ -67,6 +67,7 @@ const PagedPreviewer = ({
   const [overflow, setOverflow] = useState(false);
   const buildingPreview = useRef(false);
   const styleSheet = usePagedCss();
+  const customCss = useStore((state) => state.customCss);
 
   const setPageCounterIncrement = (pageIncrement: number) => {
     document.documentElement.style.setProperty(
@@ -145,8 +146,11 @@ const PagedPreviewer = ({
       const hs = document.getElementsByTagName('style');
       // eslint-disable-next-line no-plusplus
       for (let i = hs.length - 1; i >= 0; --i) {
-        if (hs[i].getAttribute('data-pagedjs-inserted-styles') === 'true') {
-          hs[i].parentNode?.removeChild(hs[i]);
+        if (
+          hs[i].getAttribute('data-pagedjs-inserted-styles') === 'true' ||
+          hs[i].childNodes.length === 0
+        ) {
+          hs[i].remove();
         }
       }
 
@@ -159,11 +163,20 @@ const PagedPreviewer = ({
         polisher.current.setup();
         initializeHandlers(chunker.current, polisher.current);
         console.log('Adding stylesheet');
-        await polisher.current.add({
-          '': styleSheet,
-        });
+        try {
+          await polisher.current.add({
+            '': styleSheet + customCss,
+          });
+        } catch (e) {
+          console.log('Error adding stylesheet');
+        }
         console.log('Starting flow...');
-        await chunker.current.flow(template.content, pagedStage);
+        try {
+          await chunker.current.flow(template.content, pagedStage);
+        } catch (e) {
+          console.log('Error flowing content');
+        }
+
         console.log(
           'Flow complete! Copying flowed content to preview container.'
         );
@@ -174,6 +187,9 @@ const PagedPreviewer = ({
             container.appendChild(node.cloneNode(true));
           });
         }
+
+        //Resize after flow in case the page size changed
+        handleResize(rendererRef.current?.offsetHeight || 0, rendererRef.current?.offsetWidth || 0);
 
         if (container) {
           const paged = container.children[0];
@@ -209,12 +225,12 @@ const PagedPreviewer = ({
 
   const updatePreviewDebounce = useMemo(
     () => debounce(updatePreview, 500, { trailing: true }),
-    [page, previewContent, styleSheet]
+    [page, previewContent, styleSheet, customCss]
   );
 
   useEffect(() => {
     updatePreviewDebounce();
-  }, [previewContent, styleSheet]);
+  }, [previewContent, styleSheet, customCss]);
 
   return (
     <StyledRenderer ref={rendererRef}>

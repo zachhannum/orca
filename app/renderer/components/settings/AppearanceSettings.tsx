@@ -65,6 +65,20 @@ export const AppearanceSettings = () => {
           />
         </Setting>
         <Setting>
+          <SettingLabel>Editor Monospace Font</SettingLabel>
+          <TextField
+            name="editor monospace font"
+            placeholder="System Mono Font"
+            defaultValue={settings.editorMonoFont}
+            onChangeCallback={(value) => {
+              setSettings({
+                ...settings,
+                editorMonoFont: value,
+              });
+            }}
+          />
+        </Setting>
+        <Setting>
           <SettingLabel>Editor Font Size</SettingLabel>
           <Slider
             defaultValue={settings.editorFontSize}
@@ -72,6 +86,17 @@ export const AppearanceSettings = () => {
             max={24}
             onChange={(value) => {
               setSettings({ ...settings, editorFontSize: value });
+            }}
+          />
+        </Setting>
+        <Setting>
+          <SettingLabel>CSS Editor Font Size</SettingLabel>
+          <Slider
+            defaultValue={settings.cssEditorFontSize}
+            min={8}
+            max={24}
+            onChange={(value) => {
+              setSettings({ ...settings, cssEditorFontSize: value });
             }}
           />
         </Setting>

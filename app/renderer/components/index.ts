@@ -24,3 +24,5 @@ export {
   SettingSectionHeading,
 } from './Setting';
 export { SettingTooltip } from './SettingTooltip';
+export { CssEditor } from './css-editor/CssEditor';
+export { Tooltip } from './Tooltip';

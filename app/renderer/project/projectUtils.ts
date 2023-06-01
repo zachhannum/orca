@@ -16,6 +16,7 @@ const saveProject = () => {
     publisher: useStore.getState().publisher,
     content: useStore.getState().content,
     publishSettings: useStore.getState().publishSettings,
+    customCss: useStore.getState().customCss,
   };
   const folderPath = useStore.getState().projectFolder;
   const fileName = useStore.getState().projectFileName;

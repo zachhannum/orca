@@ -1,10 +1,12 @@
 import styled, { css } from 'styled-components';
+import useStore from 'renderer/store/useStore';
 import { SettingSectionHeading } from '../Setting';
 import ScrollContainer from '../ScrollContainer';
 import FirstLineDecorationsSettings from './FirstLineDecorationsSettings';
 import ParagraphSettings from './ParagraphSettings';
 import HeadersSettings from './HeadersSettings';
 import PrintSettings from './PrintSettings';
+import { CssEditor } from '../css-editor/CssEditor';
 
 const SettingsContainer = styled.div`
   max-width: 500px;
@@ -18,36 +20,45 @@ const Section = styled.div`
 `;
 
 const scrollerCss = css`
-  padding-right: 50px;
-  padding-left: 50px;
+  padding-right: 60px;
+  padding-left: 60px;
   margin-right: 5px;
 `;
 
 const Publish = () => {
+  const publishSettingsMode = useStore((state) => state.publishSettingsMode);
   return (
-    <ScrollContainer cssMixin={scrollerCss}>
-      <SettingsContainer>
-        {/* <Section>
+    <>
+      {publishSettingsMode === 'CSS' ? (
+        <CssEditor />
+      ) : (
+        <ScrollContainer cssMixin={scrollerCss}>
+          <SettingsContainer>
+            {/* <Section>
           <PublishSectionTitle>Chapter Titles</PublishSectionTitle>
         </Section> */}
-        <Section>
-          <SettingSectionHeading>First Line Decorations</SettingSectionHeading>
-          <FirstLineDecorationsSettings />
-        </Section>
-        <Section>
-          <SettingSectionHeading>Paragraph</SettingSectionHeading>
-          <ParagraphSettings />
-        </Section>
-        <Section>
-          <SettingSectionHeading>Headers</SettingSectionHeading>
-          <HeadersSettings />
-        </Section>
-        <Section>
-          <SettingSectionHeading>Print</SettingSectionHeading>
-          <PrintSettings />
-        </Section>
-      </SettingsContainer>
-    </ScrollContainer>
+            <Section>
+              <SettingSectionHeading>
+                First Line Decorations
+              </SettingSectionHeading>
+              <FirstLineDecorationsSettings />
+            </Section>
+            <Section>
+              <SettingSectionHeading>Paragraph</SettingSectionHeading>
+              <ParagraphSettings />
+            </Section>
+            <Section>
+              <SettingSectionHeading>Headers</SettingSectionHeading>
+              <HeadersSettings />
+            </Section>
+            <Section>
+              <SettingSectionHeading>Print</SettingSectionHeading>
+              <PrintSettings />
+            </Section>
+          </SettingsContainer>
+        </ScrollContainer>
+      )}
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
-import { IconButton, TwoOptionSlider } from 'renderer/controls';
+import { IconButton } from 'renderer/controls';
 import {
   MoreOptionsSidebarMenu,
   Pane,
@@ -15,17 +15,16 @@ import {
 } from '../icons';
 import { useToggle } from '../hooks';
 import useStore from '../store/useStore';
-import type { AppMode } from '../store/slices/createAppStateSlice';
 
 const SidebarTopContainer = styled.div`
   display: flex;
-  padding-top: calc(10px + var(--fallback-title-bar-height));
   padding-left: 15px;
   padding-right: 5px;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: flex-end;
   z-index: 2;
+  padding-top: var(--fallback-title-bar-height);
 `;
 
 const SidebarBottomContainer = styled.div`
@@ -83,15 +82,15 @@ const SidebarPane = () => {
   const [open, toggleOpen] = useToggle(true);
   const [autoOpen, setAutoOpen] = useState(false);
   const [mouseX, setMouseX] = useState(0);
-  const [setSidebarOpen, isProjectOpen, setSettingsModalOpen, sidebarMenuOpen] =
-    useStore((state) => {
+  const [setSidebarOpen, setSettingsModalOpen, sidebarMenuOpen] = useStore(
+    (state) => {
       return [
         state.setSidebarOpen,
-        state.isProjectOpen,
         state.setSettingsModalOpen,
         state.sidebarMenuOpen,
       ];
-    });
+    }
+  );
   const paneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -139,17 +138,6 @@ const SidebarPane = () => {
       ref={paneRef}
     >
       <SidebarTopContainer>
-        <TwoOptionSlider
-          type="alt"
-          optionOne="Write"
-          optionTwo="Publish"
-          onChange={(value: string) => {
-            const { setAppMode } = useStore.getState();
-            const newMode = value as AppMode;
-            setAppMode(newMode);
-          }}
-          disabled={!isProjectOpen}
-        />
         <SidebarToggleButtonDiv>
           <IconButton
             iconSize="22px"

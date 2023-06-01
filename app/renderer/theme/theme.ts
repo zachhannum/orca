@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import useStore from 'renderer/store/useStore';
 import { DefaultTheme } from 'styled-components';
 
+const defaultInterfaceFont =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'";
+const defaultMonospaceFont =
+  'ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro","Fira Mono", "Droid Sans Mono", "Courier New", monospace;';
+
 export const useTheme = (): DefaultTheme => {
   const sidebarOpacity = window.windowApi.os() === 'darwin' ? 0.5 : 1;
 
@@ -11,11 +16,19 @@ export const useTheme = (): DefaultTheme => {
   useEffect(() => {
     setTheme({
       ...theme,
-      interfaceFont: settings.interfaceFont,
+      interfaceFont:
+        settings.interfaceFont !== ''
+          ? settings.interfaceFont
+          : defaultInterfaceFont,
       interfaceFontSize: settings.interfaceFontSize,
-      editorFont: settings.editorFont,
+      editorFont:
+        settings.editorFont !== '' ? settings.editorFont : defaultInterfaceFont,
       editorFontSize: settings.editorFontSize,
-      editorMonoFont: settings.editorMonoFont,
+      editorMonoFont:
+        settings.editorMonoFont !== ''
+          ? settings.editorMonoFont
+          : defaultMonospaceFont,
+      cssEditorFontSize: settings.cssEditorFontSize,
     });
   }, [settings]);
 
@@ -25,7 +38,8 @@ export const useTheme = (): DefaultTheme => {
     editorFont: settings.editorFont,
     editorMonoFont: settings.editorMonoFont,
     editorFontSize: settings.editorFontSize,
-    mainBg: 'rgba(41, 41, 46, 1)',
+    cssEditorFontSize: settings.cssEditorFontSize,
+    mainBg: 'rgba(33, 33, 37, 1)',
     mainFgText: 'rgba(240, 240, 248, 0.8)',
     mainFgTextSecondary: 'rgba(207, 207, 222, 0.8)',
     sidebarBg: `rgba(50, 50, 56, ${sidebarOpacity})`,
@@ -54,7 +68,6 @@ export const useTheme = (): DefaultTheme => {
     optionSliderText: 'rgba(240, 240, 248, 1)',
     buttonPrimaryBg: 'rgba(96, 96, 255, 1)',
     buttonPrimaryText: 'rgba(240, 240, 248, 0.8)',
-    previewBg: 'rgba(33, 33, 37, 1)',
     previewDropdownBg: 'rgba(41, 41, 46, 1)',
     previewDropdownText: 'rgba(240, 240, 248, 1)',
     previewArrow: 'rgba(240, 240, 248, 1)',

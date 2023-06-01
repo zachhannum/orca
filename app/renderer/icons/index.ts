@@ -30,3 +30,7 @@ export { default as CheckIcon } from './CheckIcon';
 export { SpellCheckIcon } from './SpellCheckIcon';
 export { AnnotationInfoIcon } from './AnnotationInfoIcon';
 export { DictionaryAddIcon } from './DictionaryAddIcon';
+export { WritingModeIcon } from './WritingModeIcon';
+export { PublishModeIcon } from './PublishModeIcon';
+export { CssModeIcon } from './CssModeIcon';
+export { OptionModeIcon } from './OptionModeIcon';
