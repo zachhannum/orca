@@ -8,15 +8,6 @@ const PagedRenderer = () => {
   const polisher = useRef<typeof Polisher>(null);
   const chunker = useRef<typeof Chunker>(null);
 
-  useEffect(() => {
-    console.log('Setting paged content listener');
-    window.electron.ipcRenderer.once('pagedContents', (arg) => {
-      const { html, css } = arg as PagedBookContents;
-      console.log(html);
-      setPagedContent(html, css);
-    });
-  }, []);
-
   const setPagedContent = async (html: string, css: string) => {
     const template = document.querySelector<HTMLTemplateElement>('#flow');
     console.log(template);
@@ -42,6 +33,15 @@ const PagedRenderer = () => {
       }
     }
   };
+
+  useEffect(() => {
+    console.log('Setting paged content listener');
+    window.electron.ipcRenderer.once('pagedContents', (arg) => {
+      const { html, css } = arg as PagedBookContents;
+      console.log(html);
+      setPagedContent(html, css);
+    });
+  }, []);
 
   return <div ref={pageContainerRef} />;
 };

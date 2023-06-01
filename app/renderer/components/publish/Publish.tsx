@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import useStore from 'renderer/store/useStore';
 import { SettingSectionHeading } from '../Setting';

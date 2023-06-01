@@ -1,4 +1,4 @@
-import { RefObject, useState, useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import styled, { css } from 'styled-components';
 import useStore from 'renderer/store/useStore';
 import {
@@ -47,73 +47,70 @@ export const AppModeControls = () => {
   const publishSettingsModeButtonRef = useRef<HTMLAnchorElement | null>(null);
 
   return (
-    <>
-      <AppModeButtonContainer>
-        {appMode === 'Publish' && (
-          <>
-            <IconButton
-              ref={publishSettingsModeButtonRef}
-              iconSize="27px"
-              foregroundColor={theme.sidebarIconFg}
-              backgroundColor="rgba(255,255,255,0.1)"
-              onlyShowBackgroundOnHover
-              cssMixin={css`
-                padding: 3px;
-              `}
-              onClick={() => {
-                if (publishSettingsMode === 'CSS') {
-                  setPublishSettingsMode('Options');
-                } else {
-                  setPublishSettingsMode('CSS');
-                }
-              }}
-            >
-              {publishSettingsMode === 'CSS' ? (
-                <OptionModeIcon />
-              ) : (
-                <CssModeIcon />
-              )}
-            </IconButton>
-            <Tooltip hoverRef={publishSettingsModeButtonRef}>
-              <TooltipContent>
-                <div>Current Publish Mode: {publishSettingsMode}</div>
-                <div>
-                  Click to switch to{' '}
-                  {publishSettingsMode === 'Options' ? 'CSS' : 'Options'} mode{' '}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </>
-        )}
-        <IconButton
-          ref={appModeButtonRef}
-          iconSize="27px"
-          foregroundColor={theme.sidebarIconFg}
-          backgroundColor="rgba(255,255,255,0.1)"
-          onlyShowBackgroundOnHover
-          cssMixin={css`
-            padding: 3px;
-          `}
-          onClick={() => {
-            if (appMode === 'Publish') {
-              setAppMode('Write');
-            } else {
-              setAppMode('Publish');
-            }
-          }}
-        >
-          {appMode === 'Write' ? <PublishModeIcon /> : <WritingModeIcon />}
-        </IconButton>
-        <Tooltip hoverRef={appModeButtonRef}>
-          <TooltipContent>
-            <div>Current Mode: {appMode}</div>
-            <div>
-              Click to switch to {appMode === 'Write' ? 'Publish' : 'Write'}{' '}
-              mode
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      </AppModeButtonContainer>
-    </>
+    <AppModeButtonContainer>
+      {appMode === 'Publish' && (
+        <>
+          <IconButton
+            ref={publishSettingsModeButtonRef}
+            iconSize="27px"
+            foregroundColor={theme.sidebarIconFg}
+            backgroundColor="rgba(255,255,255,0.1)"
+            onlyShowBackgroundOnHover
+            cssMixin={css`
+              padding: 3px;
+            `}
+            onClick={() => {
+              if (publishSettingsMode === 'CSS') {
+                setPublishSettingsMode('Options');
+              } else {
+                setPublishSettingsMode('CSS');
+              }
+            }}
+          >
+            {publishSettingsMode === 'CSS' ? (
+              <OptionModeIcon />
+            ) : (
+              <CssModeIcon />
+            )}
+          </IconButton>
+          <Tooltip hoverRef={publishSettingsModeButtonRef}>
+            <TooltipContent>
+              <div>Current Publish Mode: {publishSettingsMode}</div>
+              <div>
+                Click to switch to{' '}
+                {publishSettingsMode === 'Options' ? 'CSS' : 'Options'} mode{' '}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </>
+      )}
+      <IconButton
+        ref={appModeButtonRef}
+        iconSize="27px"
+        foregroundColor={theme.sidebarIconFg}
+        backgroundColor="rgba(255,255,255,0.1)"
+        onlyShowBackgroundOnHover
+        cssMixin={css`
+          padding: 3px;
+        `}
+        onClick={() => {
+          if (appMode === 'Publish') {
+            setAppMode('Write');
+          } else {
+            setAppMode('Publish');
+          }
+        }}
+      >
+        {appMode === 'Write' ? <PublishModeIcon /> : <WritingModeIcon />}
+      </IconButton>
+      <Tooltip hoverRef={appModeButtonRef}>
+        <TooltipContent>
+          <div>Current Mode: {appMode}</div>
+          <div>
+            Click to switch to {appMode === 'Write' ? 'Publish' : 'Write'} mode
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </AppModeButtonContainer>
   );
 };

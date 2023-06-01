@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import styled, { useTheme, css } from 'styled-components';
 import Color from 'color';
-import { IconButton, TwoOptionSlider } from 'renderer/controls';
+import { IconButton } from 'renderer/controls';
 import {
   MoreOptionsSidebarMenu,
   Pane,

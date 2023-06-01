@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { useIsWindowMaxized, useIsHovering } from '../hooks';
-import IconButton from './IconButton';
+import { useIsWindowMaxized, useIsHovering } from 'renderer/hooks';
+import { IconButton } from 'renderer/controls';
 import {
   WinCloseIcon,
   WinMaximizeIcon,
@@ -35,16 +35,14 @@ const WinControls = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  const calculateAndSetTooltipPosition = (ref: RefObject<HTMLAnchorElement | null>) => {
+  const calculateAndSetTooltipPosition = (
+    ref: RefObject<HTMLAnchorElement | null>
+  ) => {
     if (ref.current) {
-      const { x, y } = getContextMenuPosition(
-        ref.current,
-        'center',
-        'bottom'
-      );
+      const { x, y } = getContextMenuPosition(ref.current, 'center', 'bottom');
       setTooltipPosition({ x, y: y + 5 });
     }
-  }
+  };
 
   useEffect(() => {
     if (isHoveringMinimize) {
