@@ -1,6 +1,6 @@
 {
   "name": "orca",
-  "version": "0.6.2-pre-alpha",
+  "version": "0.7.0-pre-alpha",
   "description": "Write and Publish Books with Ease",
   "main": "./dist/main/main.js",
   "author": {
