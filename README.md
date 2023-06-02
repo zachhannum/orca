@@ -29,7 +29,7 @@ Orca (previously Calamus) is a React Electron application for writing and publis
 <!-- Features -->
 ### :dart: Features
 
-Orca is currently still in pre-alpha stages---not all features are available. For a feature roadmap, please visit our <a href="https://github.com/midnightprioriem/orca/projects/2" target="_blank">Project Board</a>.
+Orca is currently still in pre-alpha stages---not all features are available. For a feature roadmap, please visit our <a href="https://github.com/users/zachhannum/projects/4/views/8" target="_blank">Project Board</a>.
 
 - Open format project files (json)
 - Markdown Editor
